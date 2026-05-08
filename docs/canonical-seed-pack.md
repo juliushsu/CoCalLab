@@ -1,0 +1,67 @@
+# CaCalLab Canonical Seed Pack (Staging)
+
+## Active Canonical Pack
+- `scenario_code`: `stg_core_closed_beta`
+- `seed_pack_version`: `v2026.04.07.v2`
+- `schema_version`: `202604070006`
+- `registry`: `seed_pack_registry.is_canonical=true`
+
+## v2 Storyline (Showcase Grade)
+1. One staging organization with active owner membership and active subscription.
+2. Two projects:
+   - Primary showcase project for cross-page chain
+   - Secondary project for isolation checks
+3. 14 uploaded documents (Jan-Jun):
+   - electricity + diesel monthly evidence
+   - attachment-type pending evidence for review queue
+4. 14 extracted drafts:
+   - 12 confirmed/classified
+   - 2 pending/unclassified review items
+5. 12 emission activities:
+   - 11 included
+   - 1 pending factor
+6. 12 calculation results:
+   - 11 calculated
+   - 1 pending_factor
+7. Analytics-ready data from same chain:
+   - `ghg_scope`
+   - `iso_category` (`category_1..category_6` full output shape)
+   - monthly trend (Jan-Jun)
+   - top 10 hotspot
+8. Two report generations:
+   - Q1 baseline (`report_version=1`)
+   - H1 with adjustment application (`report_version=2`)
+9. Three adjustment chains:
+   - internal management REC (applied)
+   - voluntary offset (approved)
+   - IFRS removal (submitted but blocked by verification/approval)
+
+## v1 -> v2 Delta
+- Documents: `2 -> 14`
+- Drafts: `2 -> 14`
+- Activities: `2 -> 12`
+- Calculations: `2 -> 12`
+- Reports: `1 -> 2`
+- Adjustment items/certs/apps: `1/1/1 -> 3/3/3`
+- Added trend/hotspot-capable volume and mixed adjustment states for richer UI demonstrations.
+
+## Source of Truth Files
+- Governance migration:
+  - `supabase/migrations/202604070006_v1_canonical_seed_pack_governance.sql`
+- Canonical seed scripts:
+  - `supabase/seed/canonical_seed_pack_staging_v20260407.sql` (v1 baseline)
+  - `supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql` (active showcase)
+- Validation checks:
+  - `docs/canonical-seed-pack-validation.sql`
+
+## Reseed Flow (Staging)
+1. Ensure CLI is linked to staging.
+2. Execute v2 reseed:
+   - `npx supabase db query --linked -f supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql`
+3. Validate:
+   - `npx supabase db query --linked -f docs/canonical-seed-pack-validation.sql`
+
+## Versioning Rules
+- Every schema expansion that affects UI-visible models must bump `seed_pack_version`.
+- Seed scenario must stay cross-page consistent: `documents -> drafts -> activities -> calculations -> analytics -> reports -> adjustments`.
+- New modules cannot be marked handoff-ready without matching canonical seed rows plus validation SQL.
