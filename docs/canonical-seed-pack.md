@@ -6,6 +6,10 @@
 - `schema_version`: `202604070006`
 - `registry`: `seed_pack_registry.is_canonical=true`
 
+Governance source:
+- `docs/seed-governance/CANONICAL_SEED_GOVERNANCE.md`
+- `docs/seed-governance/SEED_COMPATIBILITY_MATRIX.md`
+
 ## v2 Storyline (Showcase Grade)
 1. One staging organization with active owner membership and active subscription.
 2. Two projects:
