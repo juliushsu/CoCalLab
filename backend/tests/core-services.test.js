@@ -160,9 +160,32 @@ test('build_report_payload should include required summary sections', () => {
       project_code: 'PJT-2026-001',
       name: 'Inventory 2026',
       status: 'active',
+      legal_entity_id: 'e1111111-1111-4111-8111-111111111111',
+      site_id: 'e2111111-1111-4111-8111-111111111111',
       boundary_type: 'operational_control',
       reporting_start_date: '2026-01-01',
       reporting_end_date: '2026-12-31',
+    },
+    workspace: {
+      id: ORGANIZATION_ID,
+      slug: 'stg-canonical-org',
+      display_name: '[STG] Canonical Org',
+    },
+    legal_entity: {
+      id: 'e1111111-1111-4111-8111-111111111111',
+      entity_code: 'STG-LE-001',
+      registered_name: 'STG Canonical Manufacturing Co., Ltd.',
+      display_name: '[STG] Canonical Manufacturing',
+      tax_id: '87654321',
+      country_code: 'TW',
+    },
+    site: {
+      id: 'e2111111-1111-4111-8111-111111111111',
+      site_code: 'STG-SITE-PRIMARY',
+      site_name: '[STG] Taichung Main Plant',
+      facility_type: 'manufacturing_plant',
+      country_code: 'TW',
+      cbam_installation_ref: 'CBAM-STG-TC-001',
     },
     activities: [
       {
@@ -214,6 +237,10 @@ test('build_report_payload should include required summary sections', () => {
   assert.ok(payload.project_metadata);
   assert.ok(payload.reporting_period);
   assert.ok(payload.boundary_summary);
+  assert.equal(payload.project_metadata.workspace_id, ORGANIZATION_ID);
+  assert.equal(payload.legal_entity_snapshot.legal_entity_label, '[STG] Canonical Manufacturing');
+  assert.equal(payload.site_snapshot.site_label, '[STG] Taichung Main Plant');
+  assert.equal(payload.boundary_snapshot.boundary_type, 'operational_control');
   assert.ok(payload.scope_totals);
   assert.ok(payload.category_totals);
   assert.ok(Array.isArray(payload.factor_sources_used));

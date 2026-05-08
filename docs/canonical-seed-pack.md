@@ -2,13 +2,24 @@
 
 ## Active Canonical Pack
 - `scenario_code`: `stg_core_closed_beta`
-- `seed_pack_version`: `v2026.04.07.v2`
-- `schema_version`: `202604070006`
+- `seed_pack_version`: `v2026.04.07.v3` (Phase 1 boundary execution draft)
+- `schema_version`: `202605080001`
 - `registry`: `seed_pack_registry.is_canonical=true`
 
 Governance source:
 - `docs/seed-governance/CANONICAL_SEED_GOVERNANCE.md`
 - `docs/seed-governance/SEED_COMPATIBILITY_MATRIX.md`
+- `docs/seed-governance/phase1-boundary-validation.sql`
+
+## v3 Storyline (Phase 1 Boundary Execution)
+1. One staging workspace represented by the existing `organizations` table.
+2. One legal entity under that workspace.
+3. Two sites under that legal entity:
+   - primary manufacturing plant
+   - secondary office/lab for isolation checks
+4. Primary showcase project bound to legal entity + primary site.
+5. Secondary isolation project bound to legal entity + secondary site.
+6. Completed report rows include `legal_entity_snapshot`, `site_snapshot`, and `boundary_snapshot`.
 
 ## v2 Storyline (Showcase Grade)
 1. One staging organization with active owner membership and active subscription.
@@ -54,16 +65,19 @@ Governance source:
   - `supabase/migrations/202604070006_v1_canonical_seed_pack_governance.sql`
 - Canonical seed scripts:
   - `supabase/seed/canonical_seed_pack_staging_v20260407.sql` (v1 baseline)
-  - `supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql` (active showcase)
+  - `supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql` (v2 showcase baseline)
+  - `supabase/seed/canonical_seed_pack_staging_v20260407_v3.sql` (Phase 1 boundary execution)
 - Validation checks:
   - `docs/canonical-seed-pack-validation.sql`
+  - `docs/seed-governance/phase1-boundary-validation.sql`
 
 ## Reseed Flow (Staging)
 1. Ensure CLI is linked to staging.
-2. Execute v2 reseed:
-   - `npx supabase db query --linked -f supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql`
+2. Execute v3 reseed:
+   - `npx supabase db query --linked -f supabase/seed/canonical_seed_pack_staging_v20260407_v3.sql`
 3. Validate:
    - `npx supabase db query --linked -f docs/canonical-seed-pack-validation.sql`
+   - `npx supabase db query --linked -f docs/seed-governance/phase1-boundary-validation.sql`
 
 ## Versioning Rules
 - Every schema expansion that affects UI-visible models must bump `seed_pack_version`.

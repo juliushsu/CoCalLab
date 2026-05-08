@@ -71,7 +71,57 @@ function uniqueFactorSources(calculationResults) {
   return Array.from(map.values());
 }
 
-export function build_report_payload({ project, activities, calculation_results }) {
+function workspaceSnapshot(workspace) {
+  if (!workspace) return {};
+  return {
+    workspace_id: workspace.id,
+    workspace_label: workspace.display_name || workspace.legal_name || workspace.slug || null,
+    slug: workspace.slug || null,
+  };
+}
+
+function legalEntitySnapshot(legal_entity) {
+  if (!legal_entity) return {};
+  return {
+    legal_entity_id: legal_entity.id,
+    legal_entity_label: legal_entity.display_name || legal_entity.registered_name || null,
+    entity_code: legal_entity.entity_code || null,
+    registered_name: legal_entity.registered_name || null,
+    tax_id: legal_entity.tax_id || null,
+    country_code: legal_entity.country_code || null,
+  };
+}
+
+function siteSnapshot(site) {
+  if (!site) return {};
+  return {
+    site_id: site.id,
+    site_label: site.site_name || null,
+    site_code: site.site_code || null,
+    facility_type: site.facility_type || null,
+    address: site.address || null,
+    country_code: site.country_code || null,
+    cbam_installation_ref: site.cbam_installation_ref || null,
+  };
+}
+
+function boundarySnapshot({ project, workspace, legal_entity, site }) {
+  return {
+    workspace_id: project.organization_id,
+    workspace_label: workspace?.display_name || workspace?.legal_name || workspace?.slug || null,
+    legal_entity_id: project.legal_entity_id || legal_entity?.id || null,
+    legal_entity_label: legal_entity?.display_name || legal_entity?.registered_name || null,
+    site_id: project.site_id || site?.id || null,
+    site_label: site?.site_name || null,
+    boundary_type: project.boundary_type,
+    reporting_period: {
+      start_date: project.reporting_start_date,
+      end_date: project.reporting_end_date,
+    },
+  };
+}
+
+export function build_report_payload({ project, activities, calculation_results, workspace = null, legal_entity = null, site = null }) {
   const calculationByActivityId = new Map(
     calculation_results
       .filter((row) => row.is_latest !== false)
@@ -96,10 +146,20 @@ export function build_report_payload({ project, activities, calculation_results 
     }
   }
 
+  const snapshots = {
+    workspace_snapshot: workspaceSnapshot(workspace),
+    legal_entity_snapshot: legalEntitySnapshot(legal_entity),
+    site_snapshot: siteSnapshot(site),
+    boundary_snapshot: boundarySnapshot({ project, workspace, legal_entity, site }),
+  };
+
   return {
     project_metadata: {
       project_id: project.id,
       organization_id: project.organization_id,
+      workspace_id: project.organization_id,
+      legal_entity_id: project.legal_entity_id || null,
+      site_id: project.site_id || null,
       project_code: project.project_code,
       name: project.name,
       status: project.status,
@@ -114,6 +174,7 @@ export function build_report_payload({ project, activities, calculation_results 
       excluded_count: excluded.length,
       pending_count: pending.length,
     },
+    ...snapshots,
     included_activities_summary: included.map((activity) => ({
       emission_activity_id: activity.id,
       activity_code: activity.activity_code,

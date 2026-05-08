@@ -7,11 +7,13 @@ Status: closed-beta governance standard.
 ## Canonical Pack
 
 - Scenario code: `stg_core_closed_beta`
-- Current active seed pack: `v2026.04.07.v2`
-- Current schema version: `202604070006`
+- Current active seed pack: `v2026.04.07.v3` (Phase 1 boundary execution draft)
+- Current schema version: `202605080001`
 - Registry source: `seed_pack_registry`
-- Active seed SQL: `backend/supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql`
-- Validation SQL: `docs/canonical-seed-pack-validation.sql`
+- Active seed SQL: `backend/supabase/seed/canonical_seed_pack_staging_v20260407_v3.sql`
+- Validation SQL:
+  - `docs/canonical-seed-pack-validation.sql`
+  - `docs/seed-governance/phase1-boundary-validation.sql`
 
 ## Required Migration Workflow
 

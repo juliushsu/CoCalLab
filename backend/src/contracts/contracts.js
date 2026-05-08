@@ -113,7 +113,7 @@ export const GENERATE_REPORT_CONTRACT = {
       'payload',
       'warning_count',
     ],
-    optional: [],
+    optional: ['legal_entity_snapshot', 'site_snapshot', 'boundary_snapshot'],
   },
 };
 

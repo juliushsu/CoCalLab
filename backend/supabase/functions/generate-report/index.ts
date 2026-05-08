@@ -79,6 +79,37 @@ Deno.serve(async (request: Request) => {
       });
     }
 
+    const { data: workspace, error: workspaceError } = await supabase
+      .from('organizations')
+      .select('id, slug, legal_name, display_name, tax_id, country_code, timezone')
+      .eq('id', input.organization_id)
+      .single();
+    if (workspaceError) throw workspaceError;
+
+    let legalEntity = null;
+    if (project.legal_entity_id) {
+      const { data, error } = await supabase
+        .from('legal_entities')
+        .select('id, workspace_id, entity_code, registered_name, display_name, tax_id, country_code, registration_address, industry_code, status')
+        .eq('id', project.legal_entity_id)
+        .eq('workspace_id', input.organization_id)
+        .single();
+      if (error) throw error;
+      legalEntity = data;
+    }
+
+    let site = null;
+    if (project.site_id) {
+      const { data, error } = await supabase
+        .from('sites')
+        .select('id, workspace_id, legal_entity_id, site_code, site_name, facility_type, address, country_code, timezone, cbam_installation_ref, status')
+        .eq('id', project.site_id)
+        .eq('workspace_id', input.organization_id)
+        .single();
+      if (error) throw error;
+      site = data;
+    }
+
     const { data: activities, error: activitiesError } = await supabase
       .from('emission_activities')
       .select('*')
@@ -97,6 +128,9 @@ Deno.serve(async (request: Request) => {
 
     const payload = build_report_payload({
       project,
+      workspace,
+      legal_entity: legalEntity,
+      site,
       activities: activities || [],
       calculation_results: calcResults || [],
     });
@@ -210,6 +244,9 @@ Deno.serve(async (request: Request) => {
         adjustment_summary: adjustmentSummary,
         claim_results: claimResults,
         adjustment_manifest: adjustmentManifest,
+        legal_entity_snapshot: payload.legal_entity_snapshot || {},
+        site_snapshot: payload.site_snapshot || {},
+        boundary_snapshot: payload.boundary_snapshot || {},
       })
       .eq('id', rpcResult.report_generation_id)
       .eq('organization_id', input.organization_id)
@@ -248,6 +285,9 @@ Deno.serve(async (request: Request) => {
       adjustment_summary: adjustmentSummary,
       claim_results: claimResults,
       adjustment_manifest: adjustmentManifest,
+      legal_entity_snapshot: payload.legal_entity_snapshot || {},
+      site_snapshot: payload.site_snapshot || {},
+      boundary_snapshot: payload.boundary_snapshot || {},
       payload,
       warning_count: payload.data_gaps_and_warnings.length,
     }, {

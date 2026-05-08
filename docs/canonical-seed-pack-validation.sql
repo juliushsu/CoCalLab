@@ -1,6 +1,6 @@
 -- CaCalLab canonical seed pack validation (staging)
 -- Scenario: stg_core_closed_beta
--- Active version: v2026.04.07.v2
+-- Active version: v2026.04.07.v3
 
 -- A) Registry and latest reseed run
 select

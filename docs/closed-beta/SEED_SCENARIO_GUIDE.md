@@ -5,8 +5,8 @@ Status: canonical closed-beta seed guide.
 ## Canonical Scenario
 
 - Scenario code: `stg_core_closed_beta`
-- Seed pack version: `v2026.04.07.v2`
-- Purpose: cross-page staging verification for workspace, documents, drafts, activities, calculations, analytics, reports, and adjustments.
+- Seed pack version: `v2026.04.07.v3`
+- Purpose: cross-page staging verification for workspace, legal entity, sites, documents, drafts, activities, calculations, analytics, reports, and adjustments.
 
 ## Scenario Story
 
@@ -16,11 +16,14 @@ The canonical seed represents one closed-beta workspace with:
 - active subscription,
 - primary showcase project,
 - secondary isolation project,
+- one legal entity,
+- two sites,
 - January to June evidence chain,
 - confirmed and pending review drafts,
 - calculated and pending-factor activities,
 - analytics-ready scope/category/month/hotspot data,
 - report history with baseline and adjustment report versions,
+- report history with Phase 1 boundary snapshots,
 - adjustment chains with applied, approved, and blocked states.
 
 ## Required Verification Order
@@ -34,8 +37,9 @@ The canonical seed represents one closed-beta workspace with:
 
 ## Canonical Files
 
-- `backend/supabase/seed/canonical_seed_pack_staging_v20260407_v2.sql`
+- `backend/supabase/seed/canonical_seed_pack_staging_v20260407_v3.sql`
 - `docs/canonical-seed-pack-validation.sql`
+- `docs/seed-governance/phase1-boundary-validation.sql`
 - `docs/seed-governance/SEED_COMPATIBILITY_MATRIX.md`
 
 ## Boundary Phase Expectations
