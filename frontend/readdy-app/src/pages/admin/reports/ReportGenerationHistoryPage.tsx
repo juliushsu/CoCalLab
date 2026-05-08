@@ -10,6 +10,7 @@ import { EdgeFunctionService } from '@/services/edgeFunction';
 import LoadingState from '@/components/base/LoadingState';
 import EmptyState from '@/components/base/EmptyState';
 import ErrorState from '@/components/base/ErrorState';
+import GovernanceBanner from '@/components/feature/GovernanceBanner';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -508,6 +509,12 @@ export default function ReportGenerationHistoryPage() {
             {t('reports.generate_button')}
           </button>
         </div>
+
+        {/* Beta / Governance notice */}
+        <GovernanceBanner
+          variant="beta"
+          message={t('reports.betaReportWarningDesc', '目前生成報告僅供測試與內部盤查流程驗證，正式申報/查驗前需人工審核。盤查法人與據點資訊將於下一階段完整顯示。')}
+        />
 
         {/* Three-layer emissions summary panel */}
         <div className="mb-6 bg-white border border-gray-200 rounded-xl p-5">

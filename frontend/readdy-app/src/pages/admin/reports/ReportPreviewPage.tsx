@@ -7,6 +7,7 @@ import { ErrorState } from '../../../components/base/ErrorState';
 import { EmptyState } from '../../../components/base/EmptyState';
 import { StatusBadge } from '../../../components/base/StatusBadge';
 import ReadonlyBanner from '../../../components/feature/ReadonlyBanner';
+import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
 import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ApiResponse } from '../../../services/types';
@@ -340,11 +341,17 @@ export default function ReportPreviewPage() {
       {isReadonly && (
         <ReadonlyBanner
           onRenew={() => navigate('/admin/subscription')}
-          onContact={() => window.open('mailto:support@cacalab.com', '_blank')}
+          onContact={() => window.open('mailto:support@cocallab.com', '_blank')}
         />
       )}
 
       <div className="space-y-6">
+        {/* Beta / Governance notice */}
+        <GovernanceBanner
+          variant="beta"
+          message={t('reports.betaReportWarningDesc', '目前生成報告僅供測試與內部盤查流程驗證，正式申報/查驗前需人工審核。盤查法人與據點資訊將於下一階段完整顯示。')}
+        />
+
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>

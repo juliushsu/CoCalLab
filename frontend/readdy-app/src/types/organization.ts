@@ -18,6 +18,11 @@ export interface Organization {
   // 前端相容別名
   name?: string;        // alias for display_name，供舊有 UI 使用
   description?: string; // DB 無此欄位，前端 UI 顯示用
+  contact_person?: string | null;
+  contact_email?: string | null;
+  contact_phone?: string | null;
+  industry?: string | null;
+  address?: string | null;
 }
 
 export interface CreateOrganizationInput {
@@ -31,6 +36,14 @@ export interface CreateOrganizationInput {
 
 export interface UpdateOrganizationInput extends Partial<CreateOrganizationInput> {
   id: string;
+  name?: string;
+  contact_person?: string;
+  contact_email?: string;
+  contact_phone?: string;
+  industry?: string;
+  address?: string;
+  description?: string;
+  status?: OrganizationStatus;
 }
 
 // ── Member types ───────────────────────────────────────────────

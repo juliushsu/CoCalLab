@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ConfirmDialogProps {
@@ -20,6 +20,8 @@ interface ConfirmDialogProps {
   confirmButtonClass?: string;
   isLoading?: boolean;
   loading?: boolean;
+  isProcessing?: boolean;
+  isDanger?: boolean;
   // 支援 variant 與 type 兩種危險樣式寫法
   variant?: 'primary' | 'danger';
   type?: 'danger' | 'default';
@@ -41,6 +43,8 @@ export function ConfirmDialog({
   confirmButtonClass,
   isLoading = false,
   loading = false,
+  isProcessing: processing = false,
+  isDanger: danger = false,
   variant = 'primary',
   type,
   children,
@@ -48,12 +52,12 @@ export function ConfirmDialog({
   const { t } = useTranslation();
 
   const isVisible = open ?? isOpen ?? false;
-  const isProcessing = isLoading || loading;
-  const handleClose = onClose ?? onCancel ?? (() => {});
+  const isProcessing = isLoading || loading || processing;
+  const handleClose = useMemo(() => onClose ?? onCancel ?? (() => {}), [onClose, onCancel]);
   const confirmBtnText = confirmText ?? confirmLabel ?? t('common.confirm');
   const cancelBtnText = cancelText ?? cancelLabel ?? t('common.cancel');
 
-  const isDanger = variant === 'danger' || type === 'danger';
+  const isDanger = danger || variant === 'danger' || type === 'danger';
   const defaultConfirmClass = isDanger
     ? 'bg-red-600 hover:bg-red-700'
     : 'bg-teal-600 hover:bg-teal-700';
@@ -67,7 +71,7 @@ export function ConfirmDialog({
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [isVisible, isProcessing]);
+  }, [isVisible, isProcessing, handleClose]);
 
   if (!isVisible) return null;
 

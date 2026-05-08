@@ -9,6 +9,7 @@ import ReadonlyBanner from '../../../components/feature/ReadonlyBanner';
 import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
 import { getProjectById, getProjectStatistics } from '../../../services/projectService';
 import type { Project, ProjectStatistics } from '../../../types/project';
+import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 
 export default function ProjectOverviewPage() {
   const { t } = useTranslation();
@@ -103,7 +104,7 @@ export default function ProjectOverviewPage() {
       {isReadonly && (
         <ReadonlyBanner
           onRenew={() => navigate('/admin/subscription')}
-          onContact={() => window.open('mailto:support@cacalab.com', '_blank')}
+          onContact={() => window.open('mailto:support@cocallab.com', '_blank')}
         />
       )}
 
@@ -132,6 +133,12 @@ export default function ProjectOverviewPage() {
             </button>
           </div>
         </div>
+
+        {/* Beta / Governance notice */}
+        <GovernanceBanner
+          variant="beta"
+          message={t('projects.betaNoticeDesc', '目前專案直接綁定工作空間（Workspace）。盤查法人（Legal Entity）與據點（Site）將於下一階段獨立管理。')}
+        />
 
         {/* Basic Info Card */}
         <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">

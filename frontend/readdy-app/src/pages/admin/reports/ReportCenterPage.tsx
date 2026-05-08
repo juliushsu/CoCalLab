@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AdminLayout from '@/components/layout/AdminLayout';
 import type { ReportTypeCode, CapabilityGateStatus } from '@/types/capability';
 import { mockEmissionsSummary } from '@/mocks/carbonAdjustments.fixture';
+import GovernanceBanner from '@/components/feature/GovernanceBanner';
 
 // ─── Feature-flag adapter ─────────────────────────────────────────────────────
 // TODO: Replace with real capability gate from Codex subscription API.
@@ -180,6 +181,12 @@ export default function ReportCenterPage() {
           <h1 className="text-2xl font-bold text-gray-900">{t('reports.title')}</h1>
           <p className="text-sm text-gray-500 mt-1">{t('capabilities.sectionDesc')}</p>
         </div>
+
+        {/* Beta / Governance notice */}
+        <GovernanceBanner
+          variant="beta"
+          message={t('reports.betaReportWarningDesc', '目前生成報告僅供測試與內部盤查流程驗證，正式申報/查驗前需人工審核。盤查法人與據點資訊將於下一階段完整顯示。')}
+        />
 
         {/* Report type grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5 mb-10">

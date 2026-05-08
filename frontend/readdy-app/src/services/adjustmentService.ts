@@ -77,7 +77,7 @@ export async function fetchAdjustmentRuleResults(
 ): Promise<AdjustmentRuleResultResponse | null> {
   const response = await EdgeFunctionService.invoke<AdjustmentRuleResultResponse>({
     functionName: 'adjustment-rule-result',
-    payload: params,
+    payload: { ...params },
   });
 
   if (!response.success || !response.data) {

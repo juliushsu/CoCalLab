@@ -268,7 +268,7 @@ export default function CreateProjectPage() {
                 <p className="text-xs text-gray-500 mt-1">{t('common.optional')}</p>
               </div>
 
-              {/* Organization */}
+              {/* Organization — with workspace semantic clarification */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {t('projects.fields.organization')} <span className="text-red-500">*</span>
@@ -298,11 +298,42 @@ export default function CreateProjectPage() {
                         {t('projects.autoSelectedOrg')}
                       </p>
                     )}
+                    <p className="text-xs text-gray-400 mt-1">
+                      {t('projects.workspaceOrgNote', '此處選擇的是工作空間（Workspace），盤查法人（Legal Entity）將於下一階段獨立選擇。')}
+                    </p>
                     {errors.organization_id && (
                       <p className="text-xs text-red-500 mt-1">{errors.organization_id}</p>
                     )}
                   </>
                 )}
+              </div>
+
+              {/* Reporting Entity — disabled placeholder */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">
+                  {t('projects.fields.reportingEntity', '盤查法人（Reporting Entity）')}
+                </label>
+                <div className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 text-gray-400 flex items-center gap-2 cursor-not-allowed select-none">
+                  <i className="ri-lock-line text-gray-400 w-4 h-4 flex items-center justify-center"></i>
+                  <span>{t('common.comingSoon', '即將推出')}</span>
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  {t('projects.reportingEntityNote', '盤查法人將於 Codex canonical model 完成後獨立管理。')}
+                </p>
+              </div>
+
+              {/* Site / Facility — disabled placeholder */}
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">
+                  {t('projects.fields.siteFacility', '據點 / 設施（Site / Facility）')}
+                </label>
+                <div className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 text-gray-400 flex items-center gap-2 cursor-not-allowed select-none">
+                  <i className="ri-lock-line text-gray-400 w-4 h-4 flex items-center justify-center"></i>
+                  <span>{t('common.comingSoon', '即將推出')}</span>
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  {t('projects.siteFacilityNote', '據點與設施管理將於下一階段開放。')}
+                </p>
               </div>
 
               {/* Boundary Type */}

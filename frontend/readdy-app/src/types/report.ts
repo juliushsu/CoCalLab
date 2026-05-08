@@ -15,19 +15,33 @@ export type ReportSectionType =
   | 'scope2_analysis'
   | 'scope3_analysis'
   | 'reduction_recommendations'
-  | 'appendix';
+  | 'appendix'
+  | 'organization_overview'
+  | 'scope1_emissions'
+  | 'scope2_emissions'
+  | 'scope3_emissions'
+  | 'reduction_plan'
+  | 'conclusion';
 
 // 報告章節
 export interface ReportSection {
   id: string;
-  report_version_id: string;
+  report_version_id?: string;
+  report_id?: string;
   section_type: ReportSectionType;
+  section_title?: string;
   section_order: number;
-  title: string;
+  title?: string;
   content: string;
   is_ai_generated: boolean;
   is_user_modified: boolean;
   metadata?: Record<string, any>;
+  ai_prompt_used?: string | null;
+  section_status?: string;
+  word_count?: number;
+  generated_at?: string;
+  last_modified_at?: string;
+  last_modified_by?: string;
   created_at: string;
   updated_at: string;
 }
@@ -38,6 +52,8 @@ export interface ReportVersion {
   project_id: string;
   project_name?: string;
   version_number: number;
+  report_type?: string;
+  language?: 'zh' | 'en' | 'ja' | string;
   report_status: ReportStatus;
   generated_by: string;
   generated_at: string;
@@ -45,6 +61,10 @@ export interface ReportVersion {
   error_message?: string;
   total_sections: number;
   completed_sections: number;
+  ai_generated_sections?: number;
+  user_modified_sections?: number;
+  last_modified_at?: string;
+  last_modified_by?: string;
   metadata?: Record<string, any>;
   created_at: string;
   updated_at: string;

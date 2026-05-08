@@ -8,6 +8,7 @@ import ErrorState from '../../../components/base/ErrorState';
 import StatusBadge from '../../../components/base/StatusBadge';
 import { getOrganizations } from '../../../services/organizationService';
 import type { Organization } from '../../../types/organization';
+import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 
 export default function OrganizationListPage() {
   const { t } = useTranslation();
@@ -80,6 +81,12 @@ export default function OrganizationListPage() {
             />
           </div>
         </div>
+
+        {/* Workspace semantic notice */}
+        <GovernanceBanner
+          variant="internal"
+          message={t('organizations.workspaceNoticeDesc', '目前此處管理的是工作空間與成員/訂閱；盤查法人與據點將於下一階段獨立管理。')}
+        />
 
         {/* Content — 依狀態顯示 */}
         {loading ? (

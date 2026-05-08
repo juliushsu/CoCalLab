@@ -167,7 +167,7 @@ export default function UploadedDocumentListPage() {
       {isReadonly && (
         <ReadonlyBanner
           onRenew={() => navigate('/admin/subscription')}
-          onContact={() => window.open('mailto:support@cacalab.com', '_blank')}
+          onContact={() => window.open('mailto:support@cocallab.com', '_blank')}
         />
       )}
 

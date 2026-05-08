@@ -89,7 +89,7 @@ export async function fetchAnalyticsEmissions(
 ): Promise<AnalyticsEmissionsResponse | null> {
   const response = await EdgeFunctionService.invoke<AnalyticsEmissionsResponse>({
     functionName: 'analytics-emissions',
-    payload: params,
+    payload: { ...params },
   });
 
   if (!response.success || !response.data) {

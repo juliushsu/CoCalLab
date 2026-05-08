@@ -2,10 +2,15 @@ import { createContext, useEffect, useState, type ReactNode } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { getSupabaseClient } from '../lib/supabase';
 
+/** Mock role for governance-aware navigation — to be replaced by real auth system */
+type MockRole = 'viewer' | 'editor' | 'owner' | 'platform_admin';
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  /** Mock role for sidebar governance — NOT real auth. Replace with real roles API. */
+  role: MockRole | null;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -20,6 +25,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  /** Mock role — hardcoded to 'owner' for closed beta. No real auth system yet. */
+  const [role] = useState<MockRole>('owner');
 
   useEffect(() => {
     const supabase = getSupabaseClient();
@@ -62,6 +69,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     session,
     loading,
+    role,
     signIn,
     signOut,
   };

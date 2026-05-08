@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
 import { IS_STAGING, withTestPrefix } from '../../../utils/staging';
 import { getSupabaseClient } from '../../../lib/supabase';
+import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 
 interface FormData {
   legal_name: string;
@@ -165,6 +166,12 @@ export default function CreateOrganizationPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-6">
+          {/* Workspace semantic notice */}
+          <GovernanceBanner
+            variant="internal"
+            message={t('organizations.workspaceNoticeDesc', '此處建立的「組織」目前等同工作空間（Workspace），用於訂閱計費與成員管理。盤查法人（Legal Entity）與據點（Site）將於下一階段獨立管理。')}
+          />
+
           <div className="space-y-6">
             {/* Legal Name */}
             <div>

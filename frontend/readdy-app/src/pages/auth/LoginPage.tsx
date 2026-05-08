@@ -5,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 /**
  * 封測測試帳號快速入口
- * 角色對應 CaCalLab organization_members.role (member_role enum)：
+ * 角色對應 CoCalLab organization_members.role (member_role enum)：
  *   owner | admin | editor | viewer
  * 來源：DB pg_enum 查詢確認，2026-03-18
  * 密碼由 infra 統一管理，前端僅作快速填入用途。
@@ -14,28 +14,28 @@ const TEST_ACCOUNTS = [
   {
     role: 'owner',
     label: 'Owner',
-    email: 'stg-owner@cacalab-test.com',
+    email: 'stg-owner@cocallab-test.com',
     password: 'StgTest2024!',
     color: 'bg-rose-50 text-rose-700 border-rose-200',
   },
   {
     role: 'admin',
     label: 'Admin',
-    email: 'stg-admin@cacalab-test.com',
+    email: 'stg-admin@cocallab-test.com',
     password: 'StgTest2024!',
     color: 'bg-orange-50 text-orange-700 border-orange-200',
   },
   {
     role: 'editor',
     label: 'Editor',
-    email: 'stg-editor@cacalab-test.com',
+    email: 'stg-editor@cocallab-test.com',
     password: 'StgTest2024!',
     color: 'bg-teal-50 text-teal-700 border-teal-200',
   },
   {
     role: 'viewer',
     label: 'Viewer',
-    email: 'stg-viewer@cacalab-test.com',
+    email: 'stg-viewer@cocallab-test.com',
     password: 'StgTest2024!',
     color: 'bg-slate-50 text-slate-700 border-slate-200',
   },
@@ -98,7 +98,7 @@ export default function LoginPage() {
 
           {/* Logo / Title */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">CaCalLab</h1>
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">CoCalLab</h1>
             <p className="text-sm text-slate-600">{t('auth.login', '登入系統')}</p>
           </div>
 
@@ -216,7 +216,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-xs text-slate-400 mt-6">
-          CaCalLab Carbon Accounting Platform &mdash; Staging Build
+          CoCalLab Carbon Accounting Platform &mdash; Staging Build
         </p>
       </div>
     </div>

@@ -5,6 +5,7 @@ import AdminLayout from '../../../components/layout/AdminLayout';
 import LoadingState from '../../../components/base/LoadingState';
 import ErrorState from '../../../components/base/ErrorState';
 import type { Organization, UpdateOrganizationInput } from '../../../types/organization';
+import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 
 export default function EditOrganizationPage() {
   const { t } = useTranslation();
@@ -152,6 +153,12 @@ export default function EditOrganizationPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          {/* Workspace semantic notice */}
+          <GovernanceBanner
+            variant="internal"
+            message={t('organizations.workspaceNoticeDesc', '此處編輯的是工作空間層級資訊。盤查法人（Legal Entity）與據點（Site）將於下一階段獨立管理。')}
+          />
+
           <div className="space-y-6">
             {/* Organization Name */}
             <div>

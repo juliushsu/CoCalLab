@@ -4,7 +4,7 @@ import { getIsTest, getEnv } from '../utils/staging';
 
 function mapOrg(item: Record<string, unknown>): Organization {
   return {
-    ...(item as Organization),
+    ...(item as unknown as Organization),
     // DB 無 name 欄位，用 display_name 作為 name 別名供舊有 UI 使用
     name: (item.display_name as string) || (item.legal_name as string),
   };
