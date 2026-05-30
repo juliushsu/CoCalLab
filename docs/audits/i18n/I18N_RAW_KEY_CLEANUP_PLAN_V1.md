@@ -10,21 +10,23 @@ Baseline:
 
 ## Summary
 
-Static scan after P1 Batch 1:
+Static scan after P1 Batch 2:
 
 | Metric | Count |
 | --- | ---: |
 | Static `t('...')` usages | 1,095 |
 | Unique static i18n keys used | 786 |
-| Missing / partial keys remaining | 106 |
-| Missing in all three locales | 106 |
+| Missing / partial keys remaining | 51 |
+| Missing in all three locales | 51 |
 | Partial locale gaps | 0 |
-| Missing / partial keys without default fallback | 78 |
+| Known object/string structure conflicts | 1 |
 
 Previous round intentionally fixed one small P1 report-flow key:
 - `reports.generateProgress`
 
 P1 Batch 1 fixed the most common user-visible Documents and Activities value-chain keys without changing UI logic.
+
+P1 Batch 2 fixed the user-visible Reports and Projects keys most likely to appear in report preview/history, report generation, project overview, and project create/edit flows. The batch also added generic top-level status labels required by those screens.
 
 ## Severity Rules
 
@@ -38,22 +40,22 @@ P1 Batch 1 fixed the most common user-visible Documents and Activities value-cha
 
 | Module | Remaining Keys | P0 | P1 | P2 | User Visible? | Must Fix Before Closed Beta? | Notes |
 | --- | ---: | ---: | ---: | ---: | --- | --- | --- |
-| Reports | 27 | 0 | 26 | 1 | Yes | Partial | Report Preview still has many visible keys missing; fix in a focused report pass. |
+| Reports | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 2 added report preview/history/generation/export and audit confidence labels. |
 | Activities | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 1 added camelCase aliases for Activity Detail fields/actions/dialogs. |
-| Documents | 1 | 0 | 1 | 0 | Yes | No for happy path | Only `common.actions` remains, due to a key/object structure conflict. |
-| Organizations | 36 | 0 | 30 | 6 | Yes | Partial | Workspace/member copy affects tester comprehension. |
-| Projects | 25 | 0 | 20 | 5 | Yes | Partial | Project overview/create placeholders need a focused pass. |
+| Documents | 0 (+1 structural conflict) | 0 | 1 structural | 0 | Yes | No for happy path | `common.actions` remains a known object/string structure conflict, not a missing locale key. |
+| Organizations | 33 | 0 | 27 | 6 | Yes | Partial | Workspace/member copy affects tester comprehension. |
+| Projects | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 2 added project create/edit/overview and generic status labels. |
 | Navigation | 0 | 0 | 0 | 0 | Yes | No | No missing static navigation keys found in this scan. |
-| Misc | 17 | 0 | 8 | 9 | Mixed | No | Includes common/status/auth/audit/subscription leftovers. |
+| Misc | 18 | 0 | 8 | 10 | Mixed | No | Includes auth/error/subscription leftovers. |
 
 ## Reports
 
 Current status:
-- Remaining missing / partial keys: 27
-- Most are visible in `ReportPreviewPage.tsx`.
-- `reports.generateProgress` was fixed in this patch.
+- Remaining missing / partial keys: 0
+- P1 Batch 2 fixed the visible report preview/history/generation/export keys.
+- `reports.generateProgress` was fixed in the previous small P1 report-flow patch.
 
-Deferred visible report keys:
+Fixed in P1 Batch 2:
 
 | Key | Severity | User Visible? | Must Fix Before Closed Beta? | Notes |
 | --- | --- | --- | --- | --- |
@@ -80,10 +82,9 @@ Deferred visible report keys:
 | `reports.betaReportWarningDesc` | P1 | Yes | No | Has code fallback, but should move into dictionaries. |
 | `audit.confidence_score` | P2 | Yes | No | AI audit/preflight detail. |
 
-Recommended next report batch:
-1. Fix Report Preview header/metadata/statistics/export keys.
-2. Fix generation error/progress/warning keys.
-3. Fix no-content and section badge/action keys only if section UI remains visible.
+Recommended action:
+- No remaining static report raw keys were found after Batch 2.
+- Keep report compliance wording and staging-only preview status tracked separately; this i18n batch does not change report behavior.
 
 ## Activities
 
@@ -110,7 +111,7 @@ Recommended action:
 ## Documents
 
 Current status:
-- Remaining missing / partial keys: 1
+- Remaining missing / partial keys: 0
 - P1 Batch 1 fixed upload, list, draft review, duplicate warning, processing status, and readonly message keys.
 
 Fixed examples:
@@ -126,7 +127,7 @@ Fixed examples:
 - `subscription.readonlyBanner.message`
 
 Classification:
-- Remaining `common.actions` is P1 because it is user-visible in table headers, but it is a structure conflict: `common.actions` is already an object containing nested action labels.
+- Remaining `common.actions` is P1 because it is user-visible in table headers, but it is a structure conflict rather than a missing locale key: `common.actions` is already an object containing nested action labels.
 
 Recommended action:
 - Do not convert `common.actions` to a string without refactoring callers; use `common.table_actions` in UI in a separate UI cleanup if needed.
@@ -134,7 +135,7 @@ Recommended action:
 ## Organizations
 
 Current status:
-- Remaining missing / partial keys: 36
+- Remaining missing / partial keys: 33
 - User-visible in workspace/member management.
 
 Examples:
@@ -152,21 +153,23 @@ Recommended action:
 ## Projects
 
 Current status:
-- Remaining missing / partial keys: 25
+- Remaining missing / partial keys: 0
 - `projects.types.undefined` was already fixed in canonical patch `81dc81b`.
 
-Examples:
+Fixed in P1 Batch 2:
 - `projects.workspaceOrgNote`
 - `projects.fields.siteFacility`
 - `projects.siteFacilityNote`
 - `projects.betaNoticeDesc`
+- `projects.overview.*`
+- `projects.fields.project_type`
+- `status.*` labels used by project overview/create/edit screens.
 
 Classification:
-- P1 for project creation/overview copy.
-- P2 for disabled placeholder details if not in primary test script.
+- No remaining static project raw keys in this scan.
 
 Recommended action:
-- Fix project creation/overview helper copy in one small batch after Documents.
+- Keep legal entity/site placeholder behavior tracked under feature gating; this i18n batch only adds copy.
 
 ## Navigation
 
@@ -179,14 +182,12 @@ Recommendation:
 ## Misc
 
 Current status:
-- Remaining missing / partial keys: 17.
+- Remaining missing / partial keys: 18.
 
 Examples:
-- `common.*`
-- `status.*`
+- `errors.notFound`
 - `auth.*`
 - `subscription.*`
-- `audit.*`
 
 Classification:
 - P1 if shown in core error/status paths.
@@ -201,12 +202,10 @@ Recommendation:
 | --- | --- | --- | --- |
 | Batch 1 | `reports.generateProgress` | P1 | Done |
 | Batch 1A | Documents + Activities value-chain visible keys | P1 | Done |
-| Batch 2 | Report Preview visible metadata/export/error/progress keys | P1 | Yes |
-| Batch 3 | Documents upload/list/draft happy path keys | P0/P1 | Yes |
-| Batch 4 | Activity Detail keys or Activity Detail beta-gating | P0 | Yes if route remains reachable |
-| Batch 5 | Organizations member/workspace labels | P1 | Partial |
-| Batch 6 | Project helper/placeholders and disabled legal entity/site copy | P1/P2 | Partial |
-| Batch 7 | Misc status/auth/subscription/audit leftovers | P2 | No |
+| Batch 2 | Reports + Projects visible preview/history/overview/create/edit keys | P1 | Done |
+| Batch 3 | Organizations member/workspace labels | P1 | Partial |
+| Batch 4 | Misc auth/error/subscription leftovers | P1/P2 | No |
+| Separate UI cleanup | `common.actions` object/string conflict | P1 | No for happy path |
 
 ## Guardrails
 
