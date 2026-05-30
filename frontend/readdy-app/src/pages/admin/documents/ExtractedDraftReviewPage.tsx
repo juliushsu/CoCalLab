@@ -11,6 +11,7 @@ import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
 import { getExtractedDrafts } from '../../../services/documentService';
 import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ExtractedDocumentDraft } from '../../../types/document';
+import DraftAIExplanationPanel from './components/DraftAIExplanationPanel';
 
 export default function ExtractedDraftReviewPage() {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ export default function ExtractedDraftReviewPage() {
   const [editNote, setEditNote] = useState('');
   const [editScope, setEditScope] = useState('');
   const [editCategory, setEditCategory] = useState('');
+  const [expandedExplanationDrafts, setExpandedExplanationDrafts] = useState<Set<string>>(new Set());
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -223,6 +225,18 @@ export default function ExtractedDraftReviewPage() {
         newSet.add(draftId);
       }
       return newSet;
+    });
+  };
+
+  const toggleExplanation = (draftId: string) => {
+    setExpandedExplanationDrafts(prev => {
+      const next = new Set(prev);
+      if (next.has(draftId)) {
+        next.delete(draftId);
+      } else {
+        next.add(draftId);
+      }
+      return next;
     });
   };
 
@@ -425,7 +439,7 @@ export default function ExtractedDraftReviewPage() {
                         )}
                       </div>
                     )}
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => openConfirmDialog(draft.id)}
                         disabled={isReadonly || isProcessing}
@@ -442,7 +456,26 @@ export default function ExtractedDraftReviewPage() {
                         <i className="ri-close-line mr-1"></i>
                         {t('drafts.reject_button')}
                       </button>
+                      <button
+                        onClick={() => toggleExplanation(draft.id)}
+                        className={`px-3 py-1.5 text-sm font-medium border rounded-lg whitespace-nowrap cursor-pointer ${
+                          expandedExplanationDrafts.has(draft.id)
+                            ? 'bg-amber-50 border-amber-300 text-amber-700'
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700'
+                        }`}
+                      >
+                        <i className="ri-robot-line mr-1"></i>
+                        {t('aiExplanation.toggle')}
+                      </button>
                     </div>
+                    {expandedExplanationDrafts.has(draft.id) && (
+                      <div className="mt-3">
+                        <DraftAIExplanationPanel
+                          draft={draft}
+                          onClose={() => toggleExplanation(draft.id)}
+                        />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
