@@ -574,6 +574,7 @@ export const cocal = {
     preview_title: 'Report Preview',
     generate_button: 'Generate Report',
     generate: 'Generate Report',
+    generateProgress: '{{completed}} of {{total}} sections completed',
     download_button: 'Download Report',
     regenerate_button: 'Regenerate',
     download_pending: 'Report download feature is under development',

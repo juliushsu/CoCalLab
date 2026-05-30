@@ -561,6 +561,7 @@ export const cocal = {
     preview_title: '報告預覽',
     generate_button: '產生報告',
     generate: '產生報告',
+    generateProgress: '已完成 {{completed}} / {{total}} 個章節',
     download_button: '下載報告',
     regenerate_button: '重新產生',
     download_pending: '報告下載功能開發中',

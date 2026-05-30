@@ -581,6 +581,7 @@ export const cocal = {
     preview_title: 'レポートプレビュー',
     generate_button: 'レポートを生成',
     generate: 'レポートを生成',
+    generateProgress: '{{completed}} / {{total}} セクション完了',
     download_button: 'レポートをダウンロード',
     regenerate_button: '再生成',
     download_pending: 'レポートダウンロード機能は開発中です',
