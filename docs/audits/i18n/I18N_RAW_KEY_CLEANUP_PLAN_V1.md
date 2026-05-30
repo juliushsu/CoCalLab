@@ -10,21 +10,21 @@ Baseline:
 
 ## Summary
 
-Static scan after this patch:
+Static scan after P1 Batch 1:
 
 | Metric | Count |
 | --- | ---: |
 | Static `t('...')` usages | 1,095 |
 | Unique static i18n keys used | 786 |
-| Missing / partial keys remaining | 200 |
-| Missing in all three locales | 146 |
-| Partial locale gaps | 54 |
-| Missing / partial keys without default fallback | 161 |
+| Missing / partial keys remaining | 106 |
+| Missing in all three locales | 106 |
+| Partial locale gaps | 0 |
+| Missing / partial keys without default fallback | 78 |
 
-This round intentionally fixes only one small P1 report-flow key:
+Previous round intentionally fixed one small P1 report-flow key:
 - `reports.generateProgress`
 
-All other report-flow raw keys are tracked below but deferred to avoid broad UI/i18n churn.
+P1 Batch 1 fixed the most common user-visible Documents and Activities value-chain keys without changing UI logic.
 
 ## Severity Rules
 
@@ -38,9 +38,9 @@ All other report-flow raw keys are tracked below but deferred to avoid broad UI/
 
 | Module | Remaining Keys | P0 | P1 | P2 | User Visible? | Must Fix Before Closed Beta? | Notes |
 | --- | ---: | ---: | ---: | ---: | --- | --- | --- |
-| Reports | 28 | 0 | 27 | 1 | Yes | Partial | Report Preview still has many visible keys missing; fix in a focused report pass. |
-| Activities | 39 | 36 | 3 | 0 | Yes | Yes if Activity Detail remains reachable | Activity Detail is the highest raw-key risk. |
-| Documents | 55 | 15 | 40 | 0 | Yes | Yes for upload/list/draft happy path | Many keys are partial locale gaps, especially upload/list status. |
+| Reports | 27 | 0 | 26 | 1 | Yes | Partial | Report Preview still has many visible keys missing; fix in a focused report pass. |
+| Activities | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 1 added camelCase aliases for Activity Detail fields/actions/dialogs. |
+| Documents | 1 | 0 | 1 | 0 | Yes | No for happy path | Only `common.actions` remains, due to a key/object structure conflict. |
 | Organizations | 36 | 0 | 30 | 6 | Yes | Partial | Workspace/member copy affects tester comprehension. |
 | Projects | 25 | 0 | 20 | 5 | Yes | Partial | Project overview/create placeholders need a focused pass. |
 | Navigation | 0 | 0 | 0 | 0 | Yes | No | No missing static navigation keys found in this scan. |
@@ -49,7 +49,7 @@ All other report-flow raw keys are tracked below but deferred to avoid broad UI/
 ## Reports
 
 Current status:
-- Remaining missing / partial keys: 28
+- Remaining missing / partial keys: 27
 - Most are visible in `ReportPreviewPage.tsx`.
 - `reports.generateProgress` was fixed in this patch.
 
@@ -88,11 +88,10 @@ Recommended next report batch:
 ## Activities
 
 Current status:
-- Remaining missing / partial keys: 39
-- 38 are missing in all locales.
-- Most are in `EmissionActivityDetailPage.tsx`.
+- Remaining missing / partial keys: 0
+- P1 Batch 1 added user-visible aliases for `EmissionActivityDetailPage.tsx`.
 
-Examples:
+Fixed examples:
 - `activities.verifySuccess`
 - `activities.detailPage.verifyButton`
 - `activities.detailPage.recalculateButton`
@@ -103,19 +102,18 @@ Examples:
 - `activities.verifyDialog.*`
 
 Classification:
-- P0 if Activity Detail remains reachable.
-- P1 if Activity Detail is hidden or mock-gated.
+- No remaining static raw keys in Activities.
 
 Recommended action:
-- Either hide/mock-gate Activity Detail for beta, or fix all Activity Detail labels in one focused batch.
+- Keep Activity Detail mock/reality status tracked separately; this i18n batch does not change backend or mock behavior.
 
 ## Documents
 
 Current status:
-- Remaining missing / partial keys: 55
-- Most are user-visible in upload, list, and draft review flows.
+- Remaining missing / partial keys: 1
+- P1 Batch 1 fixed upload, list, draft review, duplicate warning, processing status, and readonly message keys.
 
-Examples:
+Fixed examples:
 - `documents.orgNotFound`
 - `documents.selectProject`
 - `documents.steps.uploading`
@@ -124,15 +122,14 @@ Examples:
 - `documents.steps.completed`
 - `documents.processingStatus.pending`
 - `documents.processingStatus.completed`
-- `drafts.*`
+- `drafts.*` happy-path review/confirm/reject keys
+- `subscription.readonlyBanner.message`
 
 Classification:
-- P0: upload progress/status keys on the guided path.
-- P1: duplicate warnings, list filters, draft labels.
+- Remaining `common.actions` is P1 because it is user-visible in table headers, but it is a structure conflict: `common.actions` is already an object containing nested action labels.
 
 Recommended action:
-- Fix document upload/list status keys before closed beta.
-- Fix draft review labels in the next batch.
+- Do not convert `common.actions` to a string without refactoring callers; use `common.table_actions` in UI in a separate UI cleanup if needed.
 
 ## Organizations
 
@@ -202,7 +199,8 @@ Recommendation:
 
 | Batch | Scope | Priority | Beta Required? |
 | --- | --- | --- | --- |
-| Batch 1 | `reports.generateProgress` | P1 | Done in this patch |
+| Batch 1 | `reports.generateProgress` | P1 | Done |
+| Batch 1A | Documents + Activities value-chain visible keys | P1 | Done |
 | Batch 2 | Report Preview visible metadata/export/error/progress keys | P1 | Yes |
 | Batch 3 | Documents upload/list/draft happy path keys | P0/P1 | Yes |
 | Batch 4 | Activity Detail keys or Activity Detail beta-gating | P0 | Yes if route remains reachable |
