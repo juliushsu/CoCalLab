@@ -10,14 +10,14 @@ Baseline:
 
 ## Summary
 
-Static scan after P1 Batch 2:
+Static scan after P1 Batch 3:
 
 | Metric | Count |
 | --- | ---: |
 | Static `t('...')` usages | 1,095 |
 | Unique static i18n keys used | 786 |
-| Missing / partial keys remaining | 51 |
-| Missing in all three locales | 51 |
+| Missing / partial keys remaining | 0 |
+| Missing in all three locales | 0 |
 | Partial locale gaps | 0 |
 | Known object/string structure conflicts | 1 |
 
@@ -27,6 +27,8 @@ Previous round intentionally fixed one small P1 report-flow key:
 P1 Batch 1 fixed the most common user-visible Documents and Activities value-chain keys without changing UI logic.
 
 P1 Batch 2 fixed the user-visible Reports and Projects keys most likely to appear in report preview/history, report generation, project overview, and project create/edit flows. The batch also added generic top-level status labels required by those screens.
+
+P1 Batch 3 fixed the remaining user-visible Organizations and Misc keys used by workspace creation/editing, login, subscription, and generic not-found/error states.
 
 ## Severity Rules
 
@@ -43,10 +45,10 @@ P1 Batch 2 fixed the user-visible Reports and Projects keys most likely to appea
 | Reports | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 2 added report preview/history/generation/export and audit confidence labels. |
 | Activities | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 1 added camelCase aliases for Activity Detail fields/actions/dialogs. |
 | Documents | 0 (+1 structural conflict) | 0 | 1 structural | 0 | Yes | No for happy path | `common.actions` remains a known object/string structure conflict, not a missing locale key. |
-| Organizations | 33 | 0 | 27 | 6 | Yes | Partial | Workspace/member copy affects tester comprehension. |
+| Organizations | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 3 added organization create/edit validation, field, message, and workspace notice labels. |
 | Projects | 0 | 0 | 0 | 0 | Yes | No remaining static raw keys | P1 Batch 2 added project create/edit/overview and generic status labels. |
 | Navigation | 0 | 0 | 0 | 0 | Yes | No | No missing static navigation keys found in this scan. |
-| Misc | 18 | 0 | 8 | 10 | Mixed | No | Includes auth/error/subscription leftovers. |
+| Misc | 0 | 0 | 0 | 0 | Mixed | No remaining static raw keys | P1 Batch 3 added login, subscription camelCase aliases, and `errors.notFound`. |
 
 ## Reports
 
@@ -135,20 +137,23 @@ Recommended action:
 ## Organizations
 
 Current status:
-- Remaining missing / partial keys: 33
-- User-visible in workspace/member management.
+- Remaining missing / partial keys: 0
+- P1 Batch 3 fixed user-visible workspace create/edit labels, validation messages, and workspace clarification copy.
 
-Examples:
-- `organizations.members.*`
+Fixed in P1 Batch 3:
 - `organizations.workspaceNoticeDesc`
-- member role/status/testability labels.
+- `organizations.edit`
+- `organizations.validation.*`
+- `organizations.messages.sessionExpired`
+- `organizations.messages.createFailed`
+- `organizations.messages.updateFailed`
+- `organizations.fields.*` camelCase labels and placeholders used by create/edit pages.
 
 Classification:
-- P1 for guided tester workspace/member visibility.
-- P2 for lower-frequency edit/remove flows.
+- No remaining static organization raw keys in this scan.
 
 Recommended action:
-- Prioritize member visibility, role labels, invitation/testability state, and workspace clarification copy.
+- Keep workspace/legal_entity/site wording tracked under canonical governance; this i18n batch only adds copy.
 
 ## Projects
 
@@ -182,19 +187,18 @@ Recommendation:
 ## Misc
 
 Current status:
-- Remaining missing / partial keys: 18.
+- Remaining missing / partial keys: 0.
 
-Examples:
+Fixed in P1 Batch 3:
 - `errors.notFound`
 - `auth.*`
 - `subscription.*`
 
 Classification:
-- P1 if shown in core error/status paths.
-- P2 otherwise.
+- No remaining static misc raw keys in this scan.
 
 Recommendation:
-- Fix opportunistically after module-specific batches.
+- No further missing-key cleanup is required before closed beta. Keep `common.actions` as a separate UI cleanup because it is an object/string structure conflict.
 
 ## Batch Plan
 
@@ -203,8 +207,7 @@ Recommendation:
 | Batch 1 | `reports.generateProgress` | P1 | Done |
 | Batch 1A | Documents + Activities value-chain visible keys | P1 | Done |
 | Batch 2 | Reports + Projects visible preview/history/overview/create/edit keys | P1 | Done |
-| Batch 3 | Organizations member/workspace labels | P1 | Partial |
-| Batch 4 | Misc auth/error/subscription leftovers | P1/P2 | No |
+| Batch 3 | Organizations + Misc visible workspace/login/subscription/error keys | P1/P2 | Done |
 | Separate UI cleanup | `common.actions` object/string conflict | P1 | No for happy path |
 
 ## Guardrails
