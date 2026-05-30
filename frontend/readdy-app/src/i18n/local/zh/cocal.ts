@@ -215,6 +215,7 @@ export const cocal = {
       event: '活動型盤查',
       product: '產品型盤查',
       project: '專案型盤查',
+      undefined: '未指定',
     },
     status: {
       draft: '草稿',

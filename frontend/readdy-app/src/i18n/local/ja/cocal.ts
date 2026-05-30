@@ -216,6 +216,7 @@ export const cocal = {
       event: 'イベント型インベントリ',
       product: '製品型インベントリ',
       project: 'プロジェクト型インベントリ',
+      undefined: '未指定',
     },
     status: {
       draft: '下書き',

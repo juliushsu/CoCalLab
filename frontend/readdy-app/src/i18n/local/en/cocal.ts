@@ -214,6 +214,7 @@ export const cocal = {
       event: 'Event Inventory',
       product: 'Product Inventory',
       project: 'Project Inventory',
+      undefined: 'Unspecified',
     },
     status: {
       draft: 'Draft',

@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 
 const HomePage = lazy(() => import('../pages/home/page'));
@@ -29,7 +30,6 @@ const EmissionActivityDetailPage = lazy(() => import('../pages/admin/activities/
 const ReportPreviewPage = lazy(() => import('../pages/admin/reports/ReportPreviewPage'));
 const ReportGenerationHistoryPage = lazy(() => import('../pages/admin/reports/ReportGenerationHistoryPage'));
 const ReportCenterPage = lazy(() => import('../pages/admin/reports/ReportCenterPage'));
-const ProductCarbonPage = lazy(() => import('../pages/admin/product-carbon/ProductCarbonPage'));
 
 // Admin - Emission Factors
 const EmissionFactorsPage = lazy(() => import('../pages/admin/emission-factors/EmissionFactorsPage'));
@@ -39,7 +39,6 @@ const FactorSourcesPage = lazy(() => import('../pages/admin/emission-factors/Fac
 const EmissionsAnalyticsPage = lazy(() => import('../pages/admin/analytics/EmissionsAnalyticsPage'));
 
 // Admin - AI Governance
-const AIGovernancePage = lazy(() => import('../pages/admin/ai-governance/AIGovernancePage'));
 
 // Admin - Carbon Adjustments
 const CarbonAdjustmentsPage = lazy(() => import('../pages/admin/carbon-adjustments/CarbonAdjustmentsPage'));
@@ -91,6 +90,10 @@ const routes: RouteObject[] = [
     element: <ProtectedRoute><EditProjectPage /></ProtectedRoute>,
   },
   {
+    path: '/admin/documents',
+    element: <Navigate to="/admin/documents/upload" replace />,
+  },
+  {
     path: '/admin/documents/upload',
     element: <ProtectedRoute><DocumentUploadPage /></ProtectedRoute>,
   },
@@ -136,7 +139,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '/admin/product-carbon',
-    element: <ProtectedRoute><ProductCarbonPage /></ProtectedRoute>,
+    element: <NotFoundPage />,
   },
   {
     path: '/admin/emission-factors/list',
@@ -152,7 +155,7 @@ const routes: RouteObject[] = [
   },
   {
     path: '/admin/ai-governance',
-    element: <ProtectedRoute><AIGovernancePage /></ProtectedRoute>,
+    element: <NotFoundPage />,
   },
   {
     path: '/admin/carbon-adjustments',
