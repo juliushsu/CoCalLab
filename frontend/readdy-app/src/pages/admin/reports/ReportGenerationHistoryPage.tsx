@@ -18,6 +18,7 @@ interface Project {
   id: string;
   name: string;
   project_code: string;
+  organization_id: string;
 }
 
 interface ReportGeneration {
@@ -88,11 +89,27 @@ function StatusBadge({ status }: { status: ReportGeneration['status'] }) {
 
 interface GenerateDialogProps {
   projects: Project[];
+  reports: ReportGeneration[];
   onClose: () => void;
   onSuccess: () => void;
 }
 
-function GenerateDialog({ projects, onClose, onSuccess }: GenerateDialogProps) {
+function getNextReportVersion(projectId: string, reports: ReportGeneration[]): number {
+  const latestVersion = reports
+    .filter(report => report.project_id === projectId)
+    .reduce((max, report) => Math.max(max, Number(report.report_version) || 0), 0);
+
+  // Staging-safe UI allocation: backend/RPC should eventually allocate this atomically.
+  return latestVersion + 1 || 1;
+}
+
+function createRequestId(): string {
+  return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `report-${Date.now()}`;
+}
+
+function GenerateDialog({ projects, reports, onClose, onSuccess }: GenerateDialogProps) {
   const { t } = useTranslation();
   const [selectedProjectId, setSelectedProjectId] = useState('');
   const [reportLanguage, setReportLanguage] = useState('zh');
@@ -104,18 +121,37 @@ function GenerateDialog({ projects, onClose, onSuccess }: GenerateDialogProps) {
       setError(t('reports.generate_dialog.selectProjectError'));
       return;
     }
+    const selectedProject = projects.find(project => project.id === selectedProjectId);
+    if (!selectedProject?.id || !selectedProject.organization_id) {
+      setError(t('reports.generate_dialog.missingContextError'));
+      return;
+    }
+
+    const reportVersion = getNextReportVersion(selectedProject.id, reports);
+    const requestId = createRequestId();
+
     setGenerating(true);
     setError(null);
     try {
       const response = await EdgeFunctionService.invoke({
         functionName: 'generate-report',
         payload: {
-          project_id: selectedProjectId,
+          organization_id: selectedProject.organization_id,
+          project_id: selectedProject.id,
+          report_version: reportVersion,
           language: reportLanguage,
-          report_type: 'annual',
+          claim_purpose: 'internal_management',
+          request_id: requestId,
         },
       });
       if (!response.success) {
+        const details = response.error?.details || {};
+        console.error('[ReportGenerationHistory] generate-report failed', {
+          functionName: 'generate-report',
+          httpStatus: details.httpStatus,
+          backendValidationMessage: response.error?.message,
+          requestId: response.meta?.request_id || details.requestId || requestId,
+        });
         throw new Error(response.error?.message || t('errors.generic'));
       }
       onSuccess();
@@ -426,7 +462,7 @@ export default function ReportGenerationHistoryPage() {
             .order('created_at', { ascending: false }),
           supabase
             .from('projects')
-            .select('id, name, project_code')
+            .select('id, name, project_code, organization_id')
             .order('name'),
         ]);
 
@@ -750,6 +786,7 @@ export default function ReportGenerationHistoryPage() {
       {showGenerateDialog && (
         <GenerateDialog
           projects={projects}
+          reports={reports}
           onClose={() => setShowGenerateDialog(false)}
           onSuccess={() => {
             setGenerateSuccess(true);

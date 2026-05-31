@@ -1,6 +1,53 @@
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import type { ApiResponse, EdgeFunctionOptions } from './types';
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+async function readResponseBody(response: Response): Promise<unknown> {
+  const clone = response.clone();
+  try {
+    return await clone.json();
+  } catch {
+    try {
+      return await response.clone().text();
+    } catch {
+      return null;
+    }
+  }
+}
+
+async function extractFunctionErrorDetails(functionName: string, error: unknown): Promise<Record<string, unknown>> {
+  const details: Record<string, unknown> = { functionName };
+  if (!isRecord(error)) return details;
+
+  if (typeof error.name === 'string') details.originalErrorName = error.name;
+  if (typeof error.message === 'string') details.originalErrorMessage = error.message;
+
+  const context = error.context;
+  if (context instanceof Response) {
+    details.httpStatus = context.status;
+    const responseBody = await readResponseBody(context);
+
+    if (isRecord(responseBody)) {
+      const backendError = responseBody.error;
+      const meta = responseBody.meta;
+      if (isRecord(backendError)) {
+        if (typeof backendError.code === 'string') details.backendCode = backendError.code;
+        if (typeof backendError.message === 'string') details.backendMessage = backendError.message;
+      }
+      if (isRecord(meta) && typeof meta.request_id === 'string') {
+        details.requestId = meta.request_id;
+      }
+    } else if (typeof responseBody === 'string') {
+      details.responseText = responseBody.slice(0, 500);
+    }
+  }
+
+  return details;
+}
+
 /**
  * Edge Function Service Layer
  * 統一處理所有 Edge Function 呼叫
@@ -39,13 +86,28 @@ export class EdgeFunctionService {
 
       // 處理 Edge Function 錯誤
       if (error) {
+        const details = await extractFunctionErrorDetails(functionName, error);
+        const backendCode = typeof details.backendCode === 'string' ? details.backendCode : undefined;
+        const backendMessage = typeof details.backendMessage === 'string' ? details.backendMessage : undefined;
+        const requestId = typeof details.requestId === 'string' ? details.requestId : undefined;
+        const httpStatus = typeof details.httpStatus === 'number' ? details.httpStatus : undefined;
+
+        console.error('[EdgeFunctionService] Edge Function invocation failed', {
+          functionName,
+          httpStatus,
+          backendCode,
+          backendMessage,
+          requestId,
+        });
+
         return {
           success: false,
           error: {
-            code: error.name || 'EDGE_FUNCTION_ERROR',
-            message: error.message || 'Edge Function invocation failed',
-            details: { originalError: error },
+            code: backendCode || error.name || 'EDGE_FUNCTION_ERROR',
+            message: backendMessage || error.message || 'Edge Function invocation failed',
+            details,
           },
+          meta: requestId ? { request_id: requestId } : undefined,
         };
       }
 

@@ -740,6 +740,7 @@ export const cocal = {
       description: 'レポートを生成するプロジェクトを選択してください',
       language: 'レポート言語',
       selectProjectError: 'プロジェクトを選択してください',
+      missingContextError: 'ワークスペース/プロジェクト情報が不足しているため、レポートを生成できません。',
       payloadHashError: 'レポートパラメータエラー、必須フィールドを確認してください',
       generating: '生成中',
       success: 'レポートが正常に生成されました。結果を表示するには更新してください',

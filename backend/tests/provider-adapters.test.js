@@ -94,3 +94,19 @@ test('generate-report contract should validate claim_purpose enum', () => {
     });
   }, /claim_purpose is invalid/);
 });
+
+test('generate-report contract should accept Report Center payload shape', () => {
+  const valid = validateGenerateReportInput({
+    organization_id: '11111111-1111-4111-8111-111111111111',
+    project_id: '51111111-1111-4111-8111-111111111111',
+    report_version: 3,
+    language: 'zh',
+    claim_purpose: 'internal_management',
+    request_id: 'report-center-test',
+  });
+
+  assert.equal(valid.organization_id, '11111111-1111-4111-8111-111111111111');
+  assert.equal(valid.project_id, '51111111-1111-4111-8111-111111111111');
+  assert.equal(valid.report_version, 3);
+  assert.equal(valid.claim_purpose, 'internal_management');
+});

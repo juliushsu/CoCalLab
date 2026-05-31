@@ -742,6 +742,7 @@ export const cocal = {
       description: 'Please select a project to generate report',
       language: 'Report Language',
       selectProjectError: 'Please select a project',
+      missingContextError: 'Missing workspace/project information. Report cannot be generated.',
       payloadHashError: 'Report parameter error, please check required fields',
       generating: 'Generating',
       success: 'Report generated successfully, please refresh to view results',

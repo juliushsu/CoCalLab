@@ -743,6 +743,7 @@ export const cocal = {
       description: '請先選擇要產生報告的專案',
       language: '報告語言',
       selectProjectError: '請選擇專案',
+      missingContextError: '缺少工作空間/專案資訊，無法產生報告。',
       payloadHashError: '報告參數錯誤，請檢查必要欄位',
       generating: '產生中',
       success: '報告產生成功，請稍後刷新查看結果',

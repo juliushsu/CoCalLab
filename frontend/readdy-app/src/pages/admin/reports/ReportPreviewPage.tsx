@@ -45,6 +45,12 @@ interface RegenerateSectionResponse {
   message: string;
 }
 
+function createReportRequestId(): string {
+  return typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : `report-${Date.now()}`;
+}
+
 export default function ReportPreviewPage() {
   const { t } = useTranslation();
   const { reportId } = useParams<{ reportId: string }>();
@@ -150,6 +156,10 @@ export default function ReportPreviewPage() {
       setGenerateError(t('subscription.readonlyBanner.message'));
       return;
     }
+    if (!projectId || !organizationId) {
+      setGenerateError(t('reports.generate_dialog.missingContextError'));
+      return;
+    }
 
     setIsGenerating(true);
     setGenerateError(null);
@@ -157,20 +167,33 @@ export default function ReportPreviewPage() {
     setGenerateProgress({ completed: 0, total: 10 });
 
     try {
+      const currentVersion = Number(report?.version_number || 0);
+      // Staging-safe UI allocation for this preview-only path; backend/RPC should eventually allocate atomically.
+      const reportVersion = Number.isFinite(currentVersion) && currentVersion > 0 ? currentVersion + 1 : 1;
+      const requestId = createReportRequestId();
+
       // 呼叫 generate-report Edge Function
       const response: ApiResponse<GenerateReportResponse> = await EdgeFunctionService.invoke({
         functionName: 'generate-report',
         payload: {
+          organization_id: organizationId,
           project_id: projectId,
-          report_type: 'full', // full | summary | custom
-          include_statistics: true,
-          include_charts: true,
+          report_version: reportVersion,
           language: 'zh-TW',
+          claim_purpose: 'internal_management',
+          request_id: requestId,
         },
       });
 
       // 處理錯誤
       if (!response.success || response.error) {
+        const details = response.error?.details || {};
+        console.error('[ReportPreviewPage] generate-report failed', {
+          functionName: 'generate-report',
+          httpStatus: details.httpStatus,
+          backendValidationMessage: response.error?.message,
+          requestId: response.meta?.request_id || details.requestId || requestId,
+        });
         setGenerateError(response.error?.message || t('reports.generateError'));
         return;
       }
