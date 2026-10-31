@@ -69,8 +69,9 @@ export async function signOutWithPersistence(
   let remoteRevoked = false;
   if (accessToken) {
     // This public SDK logout API accepts the current user's JWT, not an admin key.
-    // Capture it before clearing local state. A late response cannot restore tokens.
-    try { remoteRevoked = !(await auth.admin.signOut(accessToken,'global')).error; }
+    // Revoke only the captured old session. A delayed global logout could also
+    // revoke a newer login for the same account. Other device sessions stay intact.
+    try { remoteRevoked = !(await auth.admin.signOut(accessToken,'local')).error; }
     catch { remoteRevoked = false; }
   }
   return {localCleared,remoteRevoked};

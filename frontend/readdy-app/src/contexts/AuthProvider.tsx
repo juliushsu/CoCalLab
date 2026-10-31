@@ -103,7 +103,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     sessionGate.current.signOut();
     authVersion.current += 1;
     setSession(null); setUser(null); setLoading(false);
-    setAuthNotice('已停止此頁面的登入狀態，正在確認本機登出與伺服器撤銷。');
+    setAuthNotice('已停止此頁面的登入狀態，正在確認本機登出與本次工作階段撤銷。');
     let result: {localCleared:boolean;remoteRevoked:boolean};
     try { result = await signOutWithPersistence(getSupabaseClient().auth,getAuthStorage(),accessToken); }
     catch { result = {localCleared:false,remoteRevoked:false}; }
@@ -111,8 +111,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const notice = !result.localCleared
       ? '無法保證本機持久登出；目前頁面已封鎖登入狀態，請檢查瀏覽器儲存權限後重試。'
       : !result.remoteRevoked
-        ? '已登出此瀏覽器；伺服器與其他裝置的工作階段撤銷尚未確認。'
-        : '已登出此瀏覽器，伺服器已接受撤銷請求；既有存取權杖仍可能有效至到期。';
+        ? '已登出此瀏覽器；伺服器尚未確認撤銷本次舊工作階段，其他裝置的登入不受本操作影響。'
+        : '已登出此瀏覽器，伺服器已接受本次舊工作階段的撤銷請求；既有存取權杖仍可能有效至到期，其他裝置的登入不受影響。';
     setAuthNotice(notice);
     if (!result.localCleared || !result.remoteRevoked) throw new Error(notice);
   };
