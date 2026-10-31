@@ -93,3 +93,67 @@ the Supabase-managed Storage schema; it does **not** establish a source SQL defe
 or a live-environment mismatch. Later migrations were not attempted, so no full
 migration-chain PASS is claimed. The fixture seeds ran only inside the disposable
 synthetic database, not against any existing database or cloud resource.
+
+## Internal atomic RPC execution boundary
+
+```sh
+PGLITE_RUNTIME_ROOT=/tmp/cocallab-sql-runtime node --test backend/tests/integration/atomic-rpc-privilege-rls.test.js
+```
+
+The suite applies the final source definitions of six internal `SECURITY DEFINER`
+RPCs (`confirm_draft_atomic`, `process_document_atomic`,
+`recalculate_project_atomic`, `generate_report_atomic`, `run_ai_audit_atomic`,
+`classify_document_atomic`), plus the minimal core/staging/member definitions listed
+in the test. It first verifies their pre-fix effective PUBLIC privileges and
+reproduces an anonymous, membership-free/subscription-free call that writes an
+audit record through the recalculate RPC. No application table grants are given to
+that caller: the definer execution itself crosses the intended Edge boundary.
+
+`202610310003_atomic_rpc_service_role_only.sql` then revokes execution from PUBLIC,
+`anon`, and `authenticated` for exactly those signatures and grants `service_role`.
+The six Edge handlers use service-role clients after JWT/member checks and separate
+subscription enforcement. Source locations include `_shared/authz.ts`,
+`_shared/supabase-client.ts`, and each named handler's `index.ts`. This ACL change
+does not modify those checks, RPC bodies, or legitimate frontend organization/member
+RPC grants.
+
+Executed on 2026-10-31, PostgreSQL 18.6 / PGlite 0.5.13: **17 subtests passed**
+(Node parent included: 18/18). All twelve anonymous/authenticated direct calls
+failed at function ACL with `42501`; effective grants retained service execution;
+a real service recalculate call remained usable; authenticated create-org/member
+RPC execution grants remained intact. This confirms the source-derived isolated
+boundary, not current live grants, PostgREST exposure, or deployed Edge E2E.
+
+A separate source/isolated check confirmed an existing helper followup in
+`202605080001_phase1_boundary_governance_staging.sql`: the three `get_project_*`
+UUID lookup helpers are definer functions with PUBLIC execution retained. An
+anonymous synthetic caller whose normal project SELECT returned no RLS-visible row
+could retrieve the workspace UUID through `get_project_workspace_id`. Helpers for
+legal entity/site use the same unguarded lookup pattern. The new navigation service
+uses ordinary user-JWT/RLS table reads, not these helpers. Helper remediation is
+outside the six-RPC ACL migration; live exposure remains unverified.
+
+## Separate project UUID-lookup ACL remediation
+
+```sh
+PGLITE_RUNTIME_ROOT=/tmp/cocallab-sql-runtime node --test backend/tests/integration/project-lookup-privilege-rls.test.js
+```
+
+`202610310005_project_lookup_acl.sql` addresses the confirmed lookup followup
+separately: only `get_project_workspace_id(uuid)`,
+`get_project_legal_entity_id(uuid)`, and `get_project_site_id(uuid)` become
+service-role-only. Repository call-site inspection found no current frontend
+direct consumer and no membership-aware RLS helper that calls these three lookup
+functions. The membership-aware `can_access_project`, `is_workspace_member`,
+`can_access_legal_entity`, and `can_access_site` functions keep their existing
+privileges and bodies.
+
+The test loads the original core schema and boundary-governance migration, first
+reproduces the anonymous disclosure, then applies the new ACL. Executed on
+2026-10-31 with PostgreSQL 18.6 / PGlite 0.5.13: **10 subtests passed** (Node parent
+included: 11/11). All three direct lookup calls reject anonymous/authenticated
+roles with function-permission `42501`; maintenance service calls still return the
+correct synthetic UUIDs. Positive/negative membership-aware access decisions and
+ordinary project/entity/site/security-invoker-view RLS reads remain intact. This
+checks source-derived database behavior only; live grants and API exposure were
+not queried or changed.
