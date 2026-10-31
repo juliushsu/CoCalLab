@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
-import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
+import { getSupabaseClient, isSupabaseConnected, getAuthStorage } from '../lib/supabase';
 import { AuthContext } from './authContextValue';
 import { currentSession as sessionIsCurrent } from '../services/navigationScope';
 import { createAuthSessionGate } from '../services/authSessionGate';
+import { signOutWithPersistence } from '../services/authPersistence';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -13,7 +14,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authNotice, setAuthNotice] = useState('');
   const authVersion = useRef(0);
+  const authAction = useRef(0);
   const sessionGate = useRef(createAuthSessionGate<Session>());
 
   useEffect(() => {
@@ -72,6 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signIn = async (email: string, password: string) => {
     if (!isSupabaseConnected()) throw new Error('Authentication service is not configured.');
     const supabase = getSupabaseClient();
+    authAction.current += 1;
     const attempt = sessionGate.current.beginSignIn();
     authVersion.current += 1;
     try {
@@ -79,8 +83,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const accepted = sessionGate.current.finishSignIn(attempt, error ? null : data.session);
       if (error) throw error;
       if (!accepted) throw new Error('Sign-in was superseded or returned an invalid session.');
+      try { getAuthStorage().acceptLogin(accepted); }
+      catch (error) {
+        sessionGate.current.signOut();
+        setSession(null); setUser(null);
+        throw error;
+      }
       authVersion.current += 1;
-      setSession(accepted); setUser(accepted.user); setLoading(false);
+      setSession(accepted); setUser(accepted.user); setLoading(false); setAuthNotice('');
     } catch (error) {
       sessionGate.current.finishSignIn(attempt, null);
       throw error;
@@ -88,12 +98,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
   };
 
   const signOut = async () => {
+    const action = ++authAction.current;
+    const accessToken = session?.access_token ?? null;
     sessionGate.current.signOut();
     authVersion.current += 1;
     setSession(null); setUser(null); setLoading(false);
-    const supabase = getSupabaseClient();
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    setAuthNotice('已停止此頁面的登入狀態，正在確認本機登出與伺服器撤銷。');
+    let result: {localCleared:boolean;remoteRevoked:boolean};
+    try { result = await signOutWithPersistence(getSupabaseClient().auth,getAuthStorage(),accessToken); }
+    catch { result = {localCleared:false,remoteRevoked:false}; }
+    if (authAction.current !== action) throw new Error('Logout was superseded by a new authentication action.');
+    const notice = !result.localCleared
+      ? '無法保證本機持久登出；目前頁面已封鎖登入狀態，請檢查瀏覽器儲存權限後重試。'
+      : !result.remoteRevoked
+        ? '已登出此瀏覽器；伺服器與其他裝置的工作階段撤銷尚未確認。'
+        : '已登出此瀏覽器，伺服器已接受撤銷請求；既有存取權杖仍可能有效至到期。';
+    setAuthNotice(notice);
+    if (!result.localCleared || !result.remoteRevoked) throw new Error(notice);
   };
 
   const value = {
@@ -104,5 +125,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signOut,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>
+    {children}
+    {authNotice && <div role="alert" className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-3xl rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 shadow-lg">{authNotice}</div>}
+  </AuthContext.Provider>;
 }

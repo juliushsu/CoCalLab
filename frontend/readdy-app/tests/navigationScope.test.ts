@@ -4,6 +4,8 @@ import {activeMembershipRole,currentSession,matchingNavigationMembership,navigat
 const orgA = '00000000-0000-0000-0000-00000000000a';
 const orgB = '00000000-0000-0000-0000-00000000000b';
 const project = '00000000-0000-0000-0000-000000000001';
+const userA = '00000000-0000-0000-0000-00000000000c';
+const userB = '00000000-0000-0000-0000-00000000000d';
 test('no scope does not infer a first organization or role', () => {
   assert.equal(resolveNavigationScope('/admin/projects','').kind,'none');
   assert.equal(resolveNavigationScope('/admin/projects/create','').kind,'none');
@@ -33,10 +35,10 @@ test('organization and project detail/edit routes are scoped, conflicts reject',
   assert.equal(resolveNavigationScope(`/admin/projects/${project}`,`?projectId=${orgA}`).kind,'invalid');
 });
 test('membership must match active user and original organization exactly; platform role never accepted', () => {
-  const member = {organization_id:orgA,user_id:'user-a',status:'active',role:'admin'};
-  assert.equal(activeMembershipRole(member,orgA,'user-a'),'admin');
-  for (const patch of [{organization_id:orgB},{user_id:'user-b'},{status:'inactive'},{status:'invited'},{role:'platform_admin'}]) {
-    assert.equal(activeMembershipRole({...member,...patch},orgA,'user-a'),null);
+  const member = {organization_id:orgA,user_id:userA,status:'active',role:'admin'};
+  assert.equal(activeMembershipRole(member,orgA,userA),'admin');
+  for (const patch of [{organization_id:orgB},{user_id:userB},{status:'inactive'},{status:'invited'},{role:'platform_admin'}]) {
+    assert.equal(activeMembershipRole({...member,...patch},orgA,userA),null);
   }
 });
 test('unknown role retains selection entries only; tenant admin cannot see platform navigation', () => {
@@ -76,4 +78,15 @@ test('A to B to A visit requires fresh membership even when session and URL matc
   assert.equal(firstA.key,secondA.key);
   assert.equal(matchingNavigationMembership(result,session,secondA),null);
   assert.equal(matchingNavigationMembership({...result,scope:secondA,membership:null},session,secondA),null);
+});
+
+test('uppercase UUIDs in routes, aliases and membership share canonical identity without relaxing mismatches', () => {
+  const scope = resolveNavigationScope(`/admin/organizations/${orgA.toUpperCase()}/edit`,`?organization_id=${orgA}&organizationId=${orgA.toUpperCase()}`);
+  assert.equal(scope.kind,'organization');
+  if (scope.kind === 'organization') assert.equal(scope.organizationId,orgA);
+  const projectScope = resolveNavigationScope(`/admin/projects/${project.toUpperCase()}`,`?projectId=${project.toUpperCase()}&organizationId=${orgA.toUpperCase()}`);
+  if (projectScope.kind === 'project') { assert.equal(projectScope.projectId,project); assert.equal(projectScope.organizationId,orgA); }
+  else assert.fail('project scope expected');
+  assert.equal(activeMembershipRole({organization_id:orgA,user_id:userA,status:'active',role:'admin'},orgA.toUpperCase(),userA.toUpperCase()),'admin');
+  assert.equal(activeMembershipRole({organization_id:orgB,user_id:userA,status:'active',role:'admin'},orgA.toUpperCase(),userA.toUpperCase()),null);
 });
