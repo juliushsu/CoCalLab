@@ -1,10 +1,11 @@
 # PC Agent execution plan — public edition
-日期：2026-10-31。本計畫不擴張 H0 授權。H0 僅唯讀稽核與文件 PR；後續修復、schema 或部署須依 owner 授權，不從舊文件中的操作指令推論許可。
+日期：2026-10-31。H0 稽核交付維持文件範圍。owner 最新要求先備妥 PC 啟動任務，PC 尚未正式指派。正式接手請先讀 [PC_AGENT_START_HERE.md](PC_AGENT_START_HERE.md)：採漸進抽離 Readdy、優先實作及最小必要審閱。該文件的啟動節奏優先於以下階段表；本文件不表示 PC 已啟動。
 
 ## Intake
 Clone 既有 juliushsu/CoCalLab，讀 handover branch/PR，核對 base main `0a90b7b9b499ae382c17293b7dd674b09b0ef020` 與 PR head，確認只改 docs/handover。先讀七份文件與 evidence index，再由 owner 私下交接完整本機／即時環境／安全 packet。不要將 secret 或非公開環境資料貼進 public PR。
 
 ## Execution order
+以下為依賴索引，不是所有任務必須依序通過的全域關卡。需求、資源與 owner 決策只阻擋依賴它們的工作；無歧義的本機修復可持續。PC 首次基線只做一次，後續依變更範圍驗證。
 | Phase | Work / dependency | Exit evidence |
 | --- | --- | --- |
 | H0 intake | PC fresh clone、npm ci、test/type/build/lint；受限 source/export 比對 | PC runtime log、owner canonical-source 決策、保留既有工作 |
