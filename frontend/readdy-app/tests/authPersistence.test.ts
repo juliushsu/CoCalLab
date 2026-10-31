@@ -88,3 +88,43 @@ test('storage failures report unverified persistent logout and block current-cli
   const inaccessibleSDK = client(inaccessible,failedRemote);
   assert.equal((await signOutWithPersistence(inaccessibleSDK,inaccessible,null)).localCleared,false);
 });
+
+test('actual SDK deferred logout targets captured old session and cannot clear a newer login locally', {timeout:5000}, async () => {
+  const {raw} = memoryStorage();
+  const oldSession = fixtureSession();
+  const newSession = {...fixtureSession(),access_token:'offline-fixture-new-access',refresh_token:'offline-fixture-new-refresh'};
+  raw.setItem(key,JSON.stringify(oldSession));
+  const storage = createLogoutSafeStorage(raw,key);
+  let requestStarted!: () => void;
+  const started = new Promise<void>(resolve => { requestStarted = resolve; });
+  let finishRemote!: (response:Response) => void;
+  const remoteResponse = new Promise<Response>(resolve => { finishRemote = resolve; });
+  let logoutRequests = 0;
+  const sdk = client(storage,async (input,options) => {
+    const url = new URL(String(input));
+    if (url.pathname.endsWith('/logout')) {
+      logoutRequests += 1;
+      assert.equal(url.searchParams.get('scope'),'local');
+      assert.equal(new Headers(options?.headers).get('Authorization'),`Bearer ${oldSession.access_token}`);
+      requestStarted();
+      return remoteResponse;
+    }
+    assert.equal(url.pathname.endsWith('/token'),true);
+    return new Response(JSON.stringify(newSession),{status:200,headers:{'Content-Type':'application/json'}});
+  });
+  await sdk.getSession();
+  const pendingLogout = signOutWithPersistence(sdk,storage,oldSession.access_token);
+  await started;
+  const {data,error} = await sdk.signInWithPassword({email:'offline@example.invalid',password:'new-valid-fixture'});
+  assert.equal(error,null);
+  assert.equal(data.session?.user.id,oldSession.user.id); // Same account, new session.
+  storage.acceptLogin(data.session!);
+  assert.equal(JSON.parse(raw.getItem(key)!).access_token,newSession.access_token);
+  finishRemote(new Response(null,{status:204}));
+  assert.deepEqual(await pendingLogout,{localCleared:true,remoteRevoked:true});
+  assert.equal(logoutRequests,1);
+  assert.equal((await sdk.getSession()).data.session?.access_token,newSession.access_token);
+  assert.equal((await client(createLogoutSafeStorage(raw,key),failedRemote).getSession()).data.session?.access_token,newSession.access_token);
+  // This proves SDK request scope/ordering and local persistence under deferred
+  // fixture responses, not the behavior of a live Auth server's token revocation.
+});
