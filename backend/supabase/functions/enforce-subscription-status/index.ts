@@ -1,3 +1,4 @@
+import { serveWithCors } from '../_shared/cors.ts';
 import {
   parseJson,
   successEnvelope,
@@ -8,7 +9,7 @@ import { createServiceRoleClient } from '../_shared/supabase-client.ts';
 import { validateEnforceSubscriptionInput } from '../../../src/contracts/contracts.js';
 import { enforce_subscription_readonly } from '../../../src/services/enforce-subscription-readonly.js';
 
-Deno.serve(async (request: Request) => {
+serveWithCors(async (request: Request) => {
   if (request.method !== 'POST') {
     return methodNotAllowed(request);
   }
@@ -79,4 +80,4 @@ Deno.serve(async (request: Request) => {
       httpStatus: 400,
     });
   }
-});
+}, { allowedMethods: ['POST'] });

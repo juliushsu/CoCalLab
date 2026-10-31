@@ -1,3 +1,4 @@
+import { serveWithCors } from '../_shared/cors.ts';
 import {
   methodNotAllowed,
   successEnvelope,
@@ -8,7 +9,7 @@ import { AuthzError, requireOrganizationReadAccess } from '../_shared/authz.ts';
 
 const DIMENSIONS = new Set(['ghg_scope', 'iso_category']);
 
-Deno.serve(async (request: Request) => {
+serveWithCors(async (request: Request) => {
   if (request.method !== 'GET') {
     return methodNotAllowed(request);
   }
@@ -77,4 +78,4 @@ Deno.serve(async (request: Request) => {
       httpStatus: 400,
     });
   }
-});
+}, { allowedMethods: ['GET'] });

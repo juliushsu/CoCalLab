@@ -1,39 +1,9 @@
-/**
- * Analytics Service — read path adapter
- * Connects to Codex `analytics-emissions` edge function.
- *
- * Contract (Codex canonical):
- *   POST /functions/v1/analytics-emissions
- *   Body: { project_id?, org_id?, dimension: 'ghg_scope' | 'iso_category', period? }
- *   Response envelope: { success, data: AnalyticsEmissionsResponse }
- *
- * Fallback: if edge function unavailable, returns null → caller shows mock.
- */
-
+/** GET analytics adapter. Wire quantities are kgCO2e; UI quantities are tCO2e. */
 import { EdgeFunctionService } from './edgeFunction';
 import type { ChartDataPoint, TrendDataPoint } from '@/types/analytics';
-
-// ─── Codex canonical response shape ──────────────────────────────────────────
-export interface AnalyticsEmissionsItem {
-  classification_code: string;   // e.g. 'scope_1', 'category_1'
-  classification_label?: string; // optional human label from backend
-  value_tco2e: number;
-  percentage: number;
-}
-
-export interface AnalyticsTrendItem {
-  period: string;
-  value_tco2e: number;
-}
-
-export interface AnalyticsEmissionsResponse {
-  dimension: string;
-  items: AnalyticsEmissionsItem[];
-  trend?: AnalyticsTrendItem[];
-  total_tco2e: number;
-  generated_at: string | null;
-  is_mock?: boolean;
-}
+import { analyticsQuery, parseAnalyticsResponse } from './analyticsContract';
+import type { AnalyticsEmissionsItem, AnalyticsTrendItem, AnalyticsEmissionsResponse, FetchAnalyticsParams } from './analyticsContract';
+export type { AnalyticsEmissionsItem, AnalyticsTrendItem, AnalyticsEmissionsResponse, FetchAnalyticsParams } from './analyticsContract';
 
 // ─── GHG Scope code → color map ──────────────────────────────────────────────
 const GHG_SCOPE_COLORS: Record<string, string> = {
@@ -76,25 +46,14 @@ export function adaptToTrendDataPoints(trend: AnalyticsTrendItem[]): TrendDataPo
   }));
 }
 
-// ─── Service call ─────────────────────────────────────────────────────────────
-export interface FetchAnalyticsParams {
-  dimension: 'ghg_scope' | 'iso_category';
-  project_id?: string;
-  org_id?: string;
-  period?: string;
-}
-
-export async function fetchAnalyticsEmissions(
-  params: FetchAnalyticsParams
-): Promise<AnalyticsEmissionsResponse | null> {
-  const response = await EdgeFunctionService.invoke<AnalyticsEmissionsResponse>({
+export async function fetchAnalyticsEmissions(params: FetchAnalyticsParams): Promise<AnalyticsEmissionsResponse> {
+  const response = await EdgeFunctionService.invoke<unknown>({
     functionName: 'analytics-emissions',
-    payload: { ...params },
+    method: 'GET',
+    query: analyticsQuery(params),
   });
-
   if (!response.success || !response.data) {
-    return null;
+    throw new Error(response.error?.message || 'Analytics request failed.');
   }
-
-  return response.data;
+  return parseAnalyticsResponse(response.data, params.dimension);
 }

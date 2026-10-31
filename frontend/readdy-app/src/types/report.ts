@@ -76,10 +76,11 @@ export interface ReportStatistics {
   scope1_emissions: number;
   scope2_emissions: number;
   scope3_emissions: number;
+  unclassified_emissions?: number;
   total_activities: number;
   included_activities: number;
   excluded_activities: number;
-  verified_activities: number;
+  verified_activities: number | null;
   emission_by_category: Array<{
     category: string;
     emissions: number;

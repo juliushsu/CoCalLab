@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import type { CarbonAdjustmentDTO, AdjustmentTypeCode, AdjustmentStatusCode } from '@/types/carbonAdjustment';
 
 const TYPE_ICONS: Record<AdjustmentTypeCode, string> = {
+  regulatory_deduction: 'ri-file-list-line',
   offset_credit: 'ri-leaf-line',
   renewable_electricity: 'ri-flashlight-line',
   carbon_removal: 'ri-recycle-line',
   carbon_storage: 'ri-archive-line',
 };
 const TYPE_COLORS: Record<AdjustmentTypeCode, string> = {
+  regulatory_deduction: 'bg-slate-50 text-slate-600',
   offset_credit: 'bg-green-50 text-green-600',
   renewable_electricity: 'bg-yellow-50 text-yellow-600',
   carbon_removal: 'bg-teal-50 text-teal-600',
@@ -27,8 +29,8 @@ export default function ItemsTab({ adjustments, onSelect, isReal = false }: Prop
   const [filterStatus, setFilterStatus] = useState<AdjustmentStatusCode | 'all'>('all');
   const [search, setSearch] = useState('');
 
-  const allTypes: AdjustmentTypeCode[] = ['offset_credit', 'renewable_electricity', 'carbon_removal', 'carbon_storage'];
-  const allStatuses: AdjustmentStatusCode[] = ['draft', 'pending_review', 'approved', 'rejected', 'expired'];
+  const allTypes: AdjustmentTypeCode[] = ['offset_credit', 'renewable_electricity', 'carbon_removal', 'carbon_storage', 'regulatory_deduction'];
+  const allStatuses: AdjustmentStatusCode[] = ['draft', 'pending_review', 'approved', 'rejected', 'expired', 'inactive', 'revoked'];
 
   const filtered = useMemo(() => adjustments.filter((a) => {
     if (filterType !== 'all' && a.adjustment_type !== filterType) return false;
@@ -55,38 +57,9 @@ export default function ItemsTab({ adjustments, onSelect, isReal = false }: Prop
 
   return (
     <div className="space-y-4">
-      {/* Block-level data origin banner */}
-      {isReal ? (
-        <div className="flex items-start gap-3 px-4 py-3 bg-green-50 rounded-xl border border-green-200">
-          <i className="ri-checkbox-circle-fill text-green-500 text-base mt-0.5 flex-shrink-0"></i>
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className="text-sm font-semibold text-green-800">真實資料 · 調整項目列表</p>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
-                Real · carbon_adjustment_items · canonical seed v2026.04.07
-              </span>
-            </div>
-            <p className="text-xs text-green-600 mt-0.5">
-              資料來自 Supabase <code className="font-mono bg-green-100 px-1 rounded">carbon_adjustment_items</code> table（stg_core_closed_beta seed）。
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 rounded-xl border border-amber-200">
-          <i className="ri-error-warning-line text-amber-500 text-base mt-0.5 flex-shrink-0"></i>
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className="text-sm font-semibold text-amber-800">Fallback Mock · 調整項目列表</p>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">
-                Mock · carbon_adjustment_items 篩選無結果
-              </span>
-            </div>
-            <p className="text-xs text-amber-600 mt-0.5">
-              DB table 已存在但目前篩選條件無資料，顯示 fixture fallback。請確認 org/project 參數是否正確。
-            </p>
-          </div>
-        </div>
-      )}
+      <div className="rounded-xl border bg-sky-50 p-4 text-sm text-sky-800">
+        {isReal ? '已讀取所選組織資料。測試資料不代表正式核准或可用扣抵。' : '未連接資料。'}
+      </div>
 
       {/* Gross immutable notice */}
       <div className="flex items-start gap-2 px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">

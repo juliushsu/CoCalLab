@@ -1,3 +1,4 @@
+import { serveWithCors } from '../_shared/cors.ts';
 import {
   parseJson,
   successEnvelope,
@@ -30,7 +31,7 @@ function round10(value: number): number {
   return Number(value.toFixed(10));
 }
 
-Deno.serve(async (request: Request) => {
+serveWithCors(async (request: Request) => {
   if (request.method !== 'POST') {
     return methodNotAllowed(request);
   }
@@ -308,4 +309,4 @@ Deno.serve(async (request: Request) => {
       httpStatus: 400,
     });
   }
-});
+}, { allowedMethods: ['POST'] });

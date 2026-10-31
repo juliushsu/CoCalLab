@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -88,11 +88,7 @@ export default function SubscriptionManagementPage() {
   const [usage, setUsage] = useState<UsageStatistics | null>(null);
   const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
 
-  useEffect(() => {
-    loadSubscriptionData();
-  }, []);
-
-  const loadSubscriptionData = async () => {
+  const loadSubscriptionData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -183,7 +179,11 @@ export default function SubscriptionManagementPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [t]);
+
+  useEffect(() => {
+    void loadSubscriptionData();
+  }, [loadSubscriptionData]);
 
   const handleUpgrade = () => setUpgradeDialogOpen(true);
   const handleRenew = () => console.log('Renew subscription');

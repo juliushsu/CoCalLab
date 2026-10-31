@@ -2,44 +2,55 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RuleResultDTO, CarbonAdjustmentDTO } from '@/types/carbonAdjustment';
 import { fetchAdjustmentRuleResults } from '@/services/adjustmentService';
-import { mockRuleResults } from '@/mocks/carbonAdjustments.fixture';
+import { adjustmentClaimPurposes, type EvaluationClaimPurpose } from '@/services/adjustmentContract';
 
 interface Props {
-  ruleResults: RuleResultDTO[];   // mock fallback passed from parent
   adjustments: CarbonAdjustmentDTO[];
   projectId?: string;
+  orgId?: string;
 }
 
-export default function RuleResultTab({ ruleResults: mockFallback, adjustments, projectId }: Props) {
+export default function RuleResultTab({ adjustments, projectId, orgId }: Props) {
   const { t } = useTranslation();
 
-  const [results, setResults] = useState<RuleResultDTO[]>(mockFallback);
+  const [results, setResults] = useState<RuleResultDTO[]>([]);
   const [isReal, setIsReal] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const adjMap = Object.fromEntries(adjustments.map((a) => [a.id, a]));
 
-  // ── Fetch from real API ────────────────────────────────────────────────────
+  // Evaluate only complete, real item inputs. Never guess a claim purpose or substitute fixtures.
   useEffect(() => {
+    let active = true;
+    setLoading(false);
+    setResults([]);
+    setIsReal(false);
+    setError(null);
+    if (!orgId) {
+      setError('請先選擇組織，再查詢調整資格。');
+      return;
+    }
+    const candidates = adjustments.filter((item) => item.org_id === orgId &&
+      adjustmentClaimPurposes.includes(item.claim_purpose as EvaluationClaimPurpose) &&
+      item.quantity_tco2e > 0);
+    if (!candidates.length) return;
     setLoading(true);
-    fetchAdjustmentRuleResults({ project_id: projectId })
-      .then((res) => {
-        if (res?.results?.length) {
-          setResults(res.results);
-          setIsReal(!res.is_mock && res.rule_engine_applied);
-        } else {
-          // API unavailable or returned empty — use mock fallback
-          setResults(mockFallback.length ? mockFallback : mockRuleResults);
-          setIsReal(false);
-        }
-      })
-      .catch(() => {
-        setResults(mockFallback.length ? mockFallback : mockRuleResults);
-        setIsReal(false);
-      })
-      .finally(() => setLoading(false));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId]);
+    Promise.all(candidates.map((item) => fetchAdjustmentRuleResults({
+      organization_id: orgId,
+      project_id: projectId,
+      adjustment_item_id: item.id,
+      claim_purpose: item.claim_purpose as EvaluationClaimPurpose,
+      requested_quantity_tco2e: item.quantity_tco2e,
+    }))).then((responses) => {
+      if (!active) return;
+      setResults(responses.flatMap((response) => response.results));
+      setIsReal(true);
+    }).catch(() => {
+      if (active) setError('調整資格查詢失敗；未套用任何調整，請稍後再試。');
+    }).finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [projectId, orgId, adjustments]);
 
   if (loading) {
     return (
@@ -54,30 +65,9 @@ export default function RuleResultTab({ ruleResults: mockFallback, adjustments, 
 
   return (
     <div className="space-y-4">
-      {/* Banners — only show when NOT real */}
-      {!isReal && (
-        <div className="space-y-2">
-          <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 rounded-xl border border-amber-200">
-            <i className="ri-error-warning-line text-amber-500 text-base mt-0.5 flex-shrink-0"></i>
-            <div>
-              <p className="text-sm font-semibold text-amber-800">{t('carbonAdjustments.ruleResult.mockBanner')}</p>
-              <p className="text-xs text-amber-600 mt-0.5">{t('carbonAdjustments.ruleResult.eligibilityBanner')}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2 px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">
-            <i className="ri-information-line text-gray-400 text-sm mt-0.5 flex-shrink-0"></i>
-            <p className="text-xs text-gray-500">{t('carbonAdjustments.ruleResult.notAppliedBanner')}</p>
-          </div>
-        </div>
-      )}
-
-      {/* Real data badge */}
-      {isReal && (
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-green-50 rounded-xl border border-green-200">
-          <i className="ri-checkbox-circle-line text-green-600 text-sm flex-shrink-0"></i>
-          <p className="text-xs text-green-700">{t('carbonAdjustments.ruleResult.realDataConnected')}</p>
-        </div>
-      )}
+      {error && <p role="alert" className="rounded-lg bg-red-50 p-4 text-sm text-red-700">{error}</p>}
+      {!error && results.length === 0 && <p className="p-4 text-sm text-gray-500">尚無可評估的調整項目。</p>}
+      {isReal && <p className="rounded-lg bg-sky-50 p-4 text-sm text-sky-800">資格試算結果；此查詢不會核准、保留或扣抵額度。</p>}
 
       {/* Rule result cards */}
       <div className="space-y-3">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -25,11 +25,7 @@ export default function ProjectOverviewPage() {
   const organizationId = searchParams.get('organization_id') || undefined;
   const { status, isReadonly, reason, loading: statusLoading } = useSubscriptionStatus(organizationId);
 
-  useEffect(() => {
-    loadProjectData();
-  }, [id]);
-
-  const loadProjectData = async () => {
+  const loadProjectData = useCallback(async () => {
     if (!id) {
       setError(t('errors.loadFailed'));
       setIsLoading(false);
@@ -57,7 +53,11 @@ export default function ProjectOverviewPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, t]);
+
+  useEffect(() => {
+    void loadProjectData();
+  }, [loadProjectData]);
 
   const handleEditProject = () => {
     if (isReadonly) {

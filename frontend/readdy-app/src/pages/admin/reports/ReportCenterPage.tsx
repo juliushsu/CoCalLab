@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AdminLayout from '@/components/layout/AdminLayout';
 import type { ReportTypeCode, CapabilityGateStatus } from '@/types/capability';
-import { mockEmissionsSummary } from '@/mocks/carbonAdjustments.fixture';
 import GovernanceBanner from '@/components/feature/GovernanceBanner';
 
 // ─── Feature-flag adapter ─────────────────────────────────────────────────────
@@ -199,73 +198,12 @@ export default function ReportCenterPage() {
           ))}
         </div>
 
-        {/* Adjustment / Claim result disclaimer banner */}
-        <div className="flex items-start gap-3 px-4 py-3 bg-amber-50 rounded-xl border border-amber-200">
-          <i className="ri-error-warning-line text-amber-500 text-base mt-0.5 flex-shrink-0"></i>
-          <div>
-            <p className="text-sm font-semibold text-amber-800">{t('carbonAdjustments.ruleResult.mockBanner')}</p>
-            <p className="text-xs text-amber-600 mt-0.5">{t('carbonAdjustments.ruleResult.notAppliedBanner')}</p>
-          </div>
-        </div>
-
-        {/* Emissions Summary — Gross / Adjustments / Claimable Result */}
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <div>
-              <h2 className="text-base font-semibold text-gray-900">{t('carbonAdjustments.summary.title')}</h2>
-              <p className="text-xs text-gray-400 mt-0.5">{mockEmissionsSummary.period}</p>
-            </div>
-            <button
-              onClick={() => navigate('/admin/carbon-adjustments')}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-teal-700 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              <i className="ri-arrow-right-line"></i>
-              {t('carbonAdjustments.title')}
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
-            {/* Gross */}
-            <div className="px-6 py-5">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-gray-400"></div>
-                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('carbonAdjustments.summary.grossEmissions')}</span>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">{mockEmissionsSummary.gross_emissions_tco2e.toLocaleString()}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{t('carbonAdjustments.summary.unit')}</p>
-              <p className="text-xs text-gray-400 mt-2">{t('carbonAdjustments.summary.grossDesc')}</p>
-            </div>
-            {/* Adjustments */}
-            <div className="px-6 py-5">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-teal-400"></div>
-                <span className="text-xs font-semibold text-teal-600 uppercase tracking-wide">{t('carbonAdjustments.summary.adjustments')}</span>
-              </div>
-              <p className="text-2xl font-bold text-teal-700">-{mockEmissionsSummary.total_adjustments_tco2e.toLocaleString()}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{t('carbonAdjustments.summary.unit')}</p>
-              <p className="text-xs text-gray-400 mt-2">{t('carbonAdjustments.summary.adjustmentsDesc')}</p>
-            </div>
-            {/* Claimable */}
-            <div className="px-6 py-5 bg-teal-50/40">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-teal-600"></div>
-                <span className="text-xs font-semibold text-teal-700 uppercase tracking-wide">{t('carbonAdjustments.summary.claimableResult')}</span>
-              </div>
-              <p className="text-2xl font-bold text-teal-800">{mockEmissionsSummary.claimable_result_tco2e.toLocaleString()}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{t('carbonAdjustments.summary.unit')}</p>
-              {mockEmissionsSummary.has_pending_adjustments && (
-                <p className="text-xs text-amber-600 mt-2 flex items-center gap-1">
-                  <i className="ri-time-line text-xs"></i>
-                  {t('carbonAdjustments.summary.pendingNote')}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="px-6 py-2.5 bg-gray-50 border-t border-gray-100">
-            <p className="text-xs text-gray-400 flex items-center gap-1.5">
-              <i className="ri-error-warning-line"></i>
-              {t('carbonAdjustments.notAppliedNotice')}
-            </p>
-          </div>
+        <div className="mb-6 rounded-xl border border-gray-200 bg-white p-5">
+          <h2 className="text-base font-semibold text-gray-900">{t('carbonAdjustments.summary.title')}</h2>
+          <p className="mt-2 text-sm text-gray-500">{t('reports.snapshot.centerNotice', '請至報告歷史選擇專案，查看該專案已完成報告的保存快照。')}</p>
+          <button onClick={() => navigate('/admin/reports/history')} className="mt-3 text-sm text-teal-700 hover:underline">
+            {t('reports.history_page.view_report')} &rarr;
+          </button>
         </div>
 
         {/* Quick access — carbon inventory history */}

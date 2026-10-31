@@ -1,9 +1,11 @@
+import { serveWithCors } from '../_shared/cors.ts';
 import {
   methodNotAllowed,
   successEnvelope,
   toErrorEnvelope,
 } from '../_shared/http.ts';
 import { createServiceRoleClient } from '../_shared/supabase-client.ts';
+import { normalizeAdjustmentEvaluationResult } from '../../../src/services/adjustment-result.js';
 import { AuthzError, requireOrganizationReadAccess } from '../_shared/authz.ts';
 
 const CLAIM_PURPOSES = new Set([
@@ -14,7 +16,7 @@ const CLAIM_PURPOSES = new Set([
   'internal_management',
 ]);
 
-Deno.serve(async (request: Request) => {
+serveWithCors(async (request: Request) => {
   if (request.method !== 'GET') {
     return methodNotAllowed(request);
   }
@@ -58,7 +60,7 @@ Deno.serve(async (request: Request) => {
       });
     }
 
-    const result = Array.isArray(rows) ? rows[0] : rows;
+    const result = normalizeAdjustmentEvaluationResult(Array.isArray(rows) ? rows[0] : rows);
 
     return successEnvelope(request, {
       organization_id: organizationId,
@@ -66,9 +68,9 @@ Deno.serve(async (request: Request) => {
       adjustment_item_id: adjustmentItemId,
       report_generation_id: reportGenerationId,
       claim_purpose: result?.claim_purpose || claimPurpose,
-      requested: Number(result?.requested || requestedQuantity),
-      eligible: Number(result?.eligible || 0),
-      disallowed: Number(result?.disallowed || requestedQuantity),
+      requested: result.requested,
+      eligible: result.eligible,
+      disallowed: result.disallowed,
       disallow_reasons: result?.disallow_reasons || [],
       inventory_impact_mode: result?.inventory_impact_mode || 'claim_only',
     }, {
@@ -89,4 +91,4 @@ Deno.serve(async (request: Request) => {
       httpStatus: 400,
     });
   }
-});
+}, { allowedMethods: ['GET'] });

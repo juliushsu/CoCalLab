@@ -44,6 +44,8 @@ export interface ApiWarning {
  */
 export interface EdgeFunctionOptions {
   functionName: string;
+  method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+  query?: Record<string, string | number | boolean | undefined>;
   payload?: Record<string, unknown>;
   headers?: Record<string, string>;
 }

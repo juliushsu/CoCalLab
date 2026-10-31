@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { mockEmissionsSummary } from '@/mocks/carbonAdjustments.fixture';
 import AdminLayout from '@/components/layout/AdminLayout';
-import { fetchLatestGlobalSnapshot } from '@/services/reportSnapshotService';
+import { fetchLatestReportSnapshot } from '@/services/reportSnapshotService';
 import type { EmissionsSummaryDTO } from '@/types/carbonAdjustment';
 import { getSupabaseClient, isSupabaseConnected } from '@/lib/supabase';
 import { EdgeFunctionService } from '@/services/edgeFunction';
@@ -438,8 +437,10 @@ export default function ReportGenerationHistoryPage() {
   const [auditError, setAuditError] = useState<string | null>(null);
 
   // ── Three-layer snapshot state ──────────────────────────────────────────────
-  const [snapshotSummary, setSnapshotSummary] = useState<EmissionsSummaryDTO>(mockEmissionsSummary);
-  const [snapshotIsReal, setSnapshotIsReal] = useState(false);
+  const [snapshotSummary, setSnapshotSummary] = useState<EmissionsSummaryDTO | null>(null);
+  const [snapshotProjectId, setSnapshotProjectId] = useState('');
+  const [snapshotLoading, setSnapshotLoading] = useState(false);
+  const [snapshotError, setSnapshotError] = useState<string | null>(null);
 
   // ── Fetch data ──────────────────────────────────────────────────────────────
 
@@ -487,15 +488,22 @@ export default function ReportGenerationHistoryPage() {
     fetchData();
   }, [fetchData]);
 
-  // ── Fetch snapshot ──────────────────────────────────────────────────────────
+  // Load only an explicitly selected project, including after report generation.
   useEffect(() => {
-    fetchLatestGlobalSnapshot().then((res) => {
-      if (res) {
-        setSnapshotSummary(res.summary);
-        setSnapshotIsReal(res.isReal);
-      }
-    });
-  }, []);
+    let cancelled = false;
+    setSnapshotSummary(null);
+    setSnapshotError(null);
+    const project = projects.find((item) => item.id === snapshotProjectId);
+    if (!project) { setSnapshotLoading(false); return; }
+    setSnapshotLoading(true);
+    fetchLatestReportSnapshot(project.organization_id, project.id)
+      .then((result) => { if (!cancelled) setSnapshotSummary(result?.summary ?? null); })
+      .catch((err: unknown) => {
+        if (!cancelled) setSnapshotError(err instanceof Error ? err.message : t('common.errors.load_failed'));
+      })
+      .finally(() => { if (!cancelled) setSnapshotLoading(false); });
+    return () => { cancelled = true; };
+  }, [snapshotProjectId, projects, reports, t]);
 
   // ── Run AI Audit ────────────────────────────────────────────────────────────
 
@@ -552,79 +560,42 @@ export default function ReportGenerationHistoryPage() {
           message={t('reports.betaReportWarningDesc', '目前生成報告僅供測試與內部盤查流程驗證，正式申報/查驗前需人工審核。盤查法人與據點資訊將於下一階段完整顯示。')}
         />
 
-        {/* Three-layer emissions summary panel */}
-        <div className="mb-6 bg-white border border-gray-200 rounded-xl p-5">
+        <section className="mb-6 bg-white border border-gray-200 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-gray-900">{t('carbonAdjustments.reportSummary.title')}</h2>
-              {snapshotIsReal ? (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                  <i className="ri-checkbox-circle-line text-xs"></i>
-                  {t('carbonAdjustments.reportSummary.realData')}
-                </span>
-              ) : (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                  {t('carbonAdjustments.reportSummary.mockData')}
-                </span>
-              )}
-            </div>
-            <Link to="/admin/carbon-adjustments" className="text-xs text-teal-600 hover:underline whitespace-nowrap">
+            <h2 className="text-sm font-semibold text-gray-900">{t('carbonAdjustments.reportSummary.title')}</h2>
+            <Link to="/admin/carbon-adjustments" className="text-xs text-teal-600 hover:underline">
               {t('carbonAdjustments.reportSummary.viewAdjustments')} &rarr;
             </Link>
           </div>
-          {/* Rule engine warning — always show until rule engine is connected */}
-          {!snapshotIsReal && (
-            <div className="flex items-start gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg mb-4">
-              <i className="ri-error-warning-line text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
-              <p className="text-xs text-amber-700">{t('carbonAdjustments.reportSummary.ruleEngineNotice')}</p>
-            </div>
-          )}
-          <div className="grid grid-cols-3 gap-4">
-            {/* Gross */}
-            <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-              <div className="flex items-center gap-1.5 mb-1">
-                <i className="ri-lock-line text-gray-400 text-xs w-3 h-3 flex items-center justify-center"></i>
-                <span className="text-xs text-gray-500 font-medium">{t('carbonAdjustments.reportSummary.grossLabel')}</span>
-              </div>
-              <div className="text-xl font-bold text-gray-800">{snapshotSummary.gross_emissions_tco2e.toLocaleString()}</div>
-              <div className="text-xs text-gray-400 mt-0.5">{t('carbonAdjustments.summary.unit')}</div>
-              <p className="text-[10px] text-gray-400 mt-1">{t('carbonAdjustments.notices.grossImmutable')}</p>
-            </div>
-            {/* Adjustments */}
-            <div className="bg-teal-50 rounded-lg p-4 border border-teal-100">
-              <div className="flex items-center gap-1.5 mb-1">
-                <i className="ri-subtract-line text-teal-500 text-xs w-3 h-3 flex items-center justify-center"></i>
-                <span className="text-xs text-teal-600 font-medium">{t('carbonAdjustments.reportSummary.adjustmentsLabel')}</span>
-              </div>
-              <div className="text-xl font-bold text-teal-700">-{snapshotSummary.total_adjustments_tco2e.toLocaleString()}</div>
-              <div className="text-xs text-teal-500 mt-0.5">{t('carbonAdjustments.summary.unit')}</div>
-              {snapshotSummary.has_pending_adjustments && (
-                <p className="text-[10px] text-amber-600 mt-1">{t('carbonAdjustments.summary.pendingNote')}</p>
-              )}
-            </div>
-            {/* Claim result */}
-            <div className="bg-teal-700 rounded-lg p-4">
-              <div className="flex items-center gap-1.5 mb-1">
-                <i className="ri-flag-line text-teal-200 text-xs w-3 h-3 flex items-center justify-center"></i>
-                <span className="text-xs text-teal-200 font-medium">{t('carbonAdjustments.reportSummary.claimLabel')}</span>
-              </div>
-              <div className="text-xl font-bold text-white">{snapshotSummary.claimable_result_tco2e.toLocaleString()}</div>
-              <div className="text-xs text-teal-300 mt-0.5">{t('carbonAdjustments.summary.unit')}</div>
-              {snapshotSummary.claim_purpose_label && (
-                <p className="text-[10px] text-teal-200 mt-1">
-                  {t('carbonAdjustments.reportSummary.claimPurposeLabel')}：{snapshotSummary.claim_purpose_label}
-                </p>
-              )}
-              {!snapshotIsReal && (
-                <p className="text-[10px] text-teal-300 mt-1">{t('carbonAdjustments.reportSummary.previewNotice')}</p>
-              )}
-            </div>
-          </div>
-          {/* Period label */}
-          {snapshotSummary.period && (
-            <p className="text-[10px] text-gray-400 mt-3 text-right">{snapshotSummary.period}</p>
-          )}
-        </div>
+          <label className="block text-sm text-gray-700 mb-2" htmlFor="snapshot-project">{t('projects.fields.name')}</label>
+          <select id="snapshot-project" value={snapshotProjectId}
+            onChange={(event) => {
+              setSnapshotSummary(null);
+              setSnapshotError(null);
+              setSnapshotProjectId(event.target.value);
+            }}
+            className="w-full border border-gray-300 rounded-lg p-2 mb-4 text-sm">
+            <option value="">{t('reports.snapshot.selectProject', '請先選擇專案以查看報告快照')}</option>
+            {projects.map((project) => <option key={project.id} value={project.id}>{project.name} ({project.project_code})</option>)}
+          </select>
+          {snapshotLoading ? <p role="status">{t('common.loading')}</p>
+            : snapshotError ? <p role="alert" className="text-sm text-red-700">{snapshotError}</p>
+            : !snapshotSummary ? <p className="text-sm text-gray-500">{
+              snapshotProjectId ? t('reports.snapshot.empty', '此專案尚無已完成的報告快照。')
+                : t('reports.snapshot.selectProject', '請先選擇專案以查看報告快照')
+            }</p> : <>
+              <p className="text-xs text-gray-500 mb-3">{snapshotSummary.period || t('reports.snapshot.noPeriod', '報告未提供盤查期間')}</p>
+              <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div><dt className="text-xs text-gray-500">{t('carbonAdjustments.reportSummary.grossLabel')}</dt>
+                  <dd className="text-xl font-bold">{snapshotSummary.gross_emissions_tco2e.toLocaleString()} tCO₂e</dd></div>
+                <div><dt className="text-xs text-gray-500">{t('carbonAdjustments.reportSummary.adjustmentsLabel')}</dt>
+                  <dd className="text-xl font-bold">{snapshotSummary.total_adjustments_tco2e.toLocaleString()} tCO₂e</dd></div>
+                <div><dt className="text-xs text-gray-500">{t('carbonAdjustments.reportSummary.claimLabel')}</dt>
+                  <dd className="text-xl font-bold">{snapshotSummary.claimable_result_tco2e.toLocaleString()} tCO₂e</dd></div>
+              </dl>
+              <p className="text-xs text-amber-700 mt-3">{t('reports.snapshot.notice', '以上為報告生成時保存的數值，僅包含當時已核准／套用的調整；不代表目前可用額度、正式申報核准或重新執行規則驗證。')}</p>
+            </>}
+        </section>
 
         {/* Success banner */}
         {generateSuccess && (

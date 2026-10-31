@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -16,22 +16,8 @@ import { getReportData } from '../../../services/reportService';
 
 // Generate Report Response Type
 interface GenerateReportResponse {
-  report_version_id: string;
-  project_id: string;
-  version_number: number;
-  total_sections: number;
-  completed_sections: number;
-  report_status: 'generating' | 'completed' | 'failed';
-  sections: Array<{
-    section_id: string;
-    section_type: string;
-    section_order: number;
-    title: string;
-    content: string;
-    is_ai_generated: boolean;
-  }>;
-  statistics?: ReportStatistics;
-  message: string;
+  report_generation_id: string;
+  status: 'generating' | 'completed' | 'failed';
 }
 
 // Regenerate Section Response Type
@@ -69,11 +55,6 @@ export default function ReportPreviewPage() {
   // Generate Report States
   const [isGenerating, setIsGenerating] = useState(false);
   const [generateError, setGenerateError] = useState<string | null>(null);
-  const [generateProgress, setGenerateProgress] = useState<{
-    completed: number;
-    total: number;
-    currentSection?: string;
-  } | null>(null);
   const [generateWarnings, setGenerateWarnings] = useState<string[]>([]);
 
   // Regenerate Section States
@@ -84,28 +65,33 @@ export default function ReportPreviewPage() {
   const organizationId = searchParams.get('organization_id') || undefined;
   const { status, isReadonly, reason, loading: statusLoading } = useSubscriptionStatus(organizationId);
 
-  useEffect(() => {
-    loadReportData();
-  }, [reportId]);
-
-  const loadReportData = async () => {
+  const loadSequence = useRef(0);
+  const loadReportData = useCallback(async () => {
+    const sequence = ++loadSequence.current;
     try {
       setLoading(true);
       setError(null);
+      setReport(null); setSections([]); setStatistics(null);
       
       // 使用 reportService 取得資料（會自動處理 Supabase 連線狀態）
       const { report, sections, statistics } = await getReportData(reportId || '');
       
+      if (sequence !== loadSequence.current) return;
       setReport(report);
       setSections(sections);
       setStatistics(statistics);
     } catch (err) {
       console.error('Failed to load report:', err);
-      setError(t('errors.loadFailed'));
+      if (sequence === loadSequence.current) setError(t('errors.loadFailed'));
     } finally {
-      setLoading(false);
+      if (sequence === loadSequence.current) setLoading(false);
     }
-  };
+  }, [reportId, t]);
+
+  useEffect(() => {
+    void loadReportData();
+    return () => { loadSequence.current += 1; };
+  }, [loadReportData]);
 
   const handleEditSection = (section: ReportSection) => {
     if (isReadonly) {
@@ -164,7 +150,6 @@ export default function ReportPreviewPage() {
     setIsGenerating(true);
     setGenerateError(null);
     setGenerateWarnings([]);
-    setGenerateProgress({ completed: 0, total: 10 });
 
     try {
       const currentVersion = Number(report?.version_number || 0);
@@ -198,57 +183,15 @@ export default function ReportPreviewPage() {
         return;
       }
 
-      // 處理成功
       const result = response.data;
-      
-      // 更新報告資料
-      setReport({
-        id: result.report_version_id,
-        project_id: result.project_id,
-        project_name: report?.project_name || '',
-        version_number: result.version_number,
-        report_status: result.report_status,
-        generated_by: 'current-user',
-        generated_at: new Date().toISOString(),
-        completed_at: result.report_status === 'completed' ? new Date().toISOString() : undefined,
-        total_sections: result.total_sections,
-        completed_sections: result.completed_sections,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
-
-      // 更新章節資料
-      setSections(result.sections.map(s => ({
-        id: s.section_id,
-        report_version_id: result.report_version_id,
-        section_type: s.section_type as any,
-        section_order: s.section_order,
-        title: s.title,
-        content: s.content,
-        is_ai_generated: s.is_ai_generated,
-        is_user_modified: false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })));
-
-      // 更新統計資料
-      if (result.statistics) {
-        setStatistics(result.statistics);
+      if (!result || typeof result.report_generation_id !== 'string' || !result.report_generation_id) {
+        throw new Error(t('errors.loadFailed'));
       }
-
-      // 更新進度
-      setGenerateProgress({
-        completed: result.completed_sections,
-        total: result.total_sections,
-      });
-
-      // 處理 warnings
-      if (response.meta?.warnings && response.meta.warnings.length > 0) {
+      if (response.meta?.warnings?.length) {
         setGenerateWarnings(response.meta.warnings.map(w => w.message));
       }
-
-      // 顯示成功訊息
-      console.log('Report generated successfully:', result.message);
+      // Read the persisted report through the route; generation does not return chapters.
+      navigate(`/admin/reports/${encodeURIComponent(result.report_generation_id)}?organization_id=${encodeURIComponent(organizationId)}`);
 
     } catch (err) {
       console.error('Failed to generate report:', err);
@@ -350,13 +293,15 @@ export default function ReportPreviewPage() {
     );
   }
 
-  if (error || !report) {
+  if (error) {
     return (
       <AdminLayout>
-        <ErrorState message={error || t('errors.loadFailed')} onRetry={loadReportData} />
+        <ErrorState message={error} onRetry={loadReportData} />
       </AdminLayout>
     );
   }
+
+  if (!report) return <AdminLayout><EmptyState title={t('reports.previewSection.noContent')} description={t('reports.snapshot.notFound', '找不到可存取的報告。')} /></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -430,36 +375,7 @@ export default function ReportPreviewPage() {
           </div>
         )}
 
-        {/* Generate Progress */}
-        {isGenerating && generateProgress && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-center">
-              <i className="ri-loader-4-line text-blue-600 text-xl mr-3 animate-spin"></i>
-              <div className="flex-1">
-                <h3 className="text-sm font-medium text-blue-800">{t('reports.generating')}</h3>
-                <p className="text-sm text-gray-900">
-                  {t('reports.generateProgress', {
-                    completed: generateProgress.completed,
-                    total: generateProgress.total,
-                  })}
-                </p>
-                {generateProgress.currentSection && (
-                  <p className="text-xs text-blue-600 mt-1">
-                    {t('reports.currentSection')}: {generateProgress.currentSection}
-                  </p>
-                )}
-                <div className="mt-2 w-full bg-blue-200 rounded-full h-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${(generateProgress.completed / generateProgress.total) * 100}%`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {isGenerating && <p role="status" className="rounded-lg bg-blue-50 p-4 text-blue-700">{t('reports.generating')}</p>}
 
         {/* Regenerate Error */}
         {regenerateError && (
@@ -496,7 +412,7 @@ export default function ReportPreviewPage() {
             <div>
               <span className="text-sm text-gray-600">{t('reports.previewPage.sections')}</span>
               <p className="text-lg font-semibold text-gray-900 mt-1">
-                {report.completed_sections} / {report.total_sections}
+                {report.total_sections > 0 ? `${report.completed_sections} / ${report.total_sections}` : t('reports.previewSection.noContent')}
               </p>
             </div>
           </div>
@@ -514,32 +430,38 @@ export default function ReportPreviewPage() {
                 <p className="text-2xl font-bold text-gray-900 mt-2">
                   {statistics.total_emissions.toFixed(2)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">{t('reports.statistics.unit')}</p>
+                <p className="text-xs text-gray-500 mt-1">tCO₂e</p>
               </div>
               <div className="text-center p-4 bg-red-50 rounded-lg">
                 <p className="text-sm text-gray-600">{t('reports.statistics.scope1Emissions')}</p>
                 <p className="text-2xl font-bold text-red-700 mt-2">
                   {statistics.scope1_emissions.toFixed(2)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">{t('reports.statistics.unit')}</p>
+                <p className="text-xs text-gray-500 mt-1">tCO₂e</p>
               </div>
               <div className="text-center p-4 bg-orange-50 rounded-lg">
                 <p className="text-sm text-gray-600">{t('reports.statistics.scope2Emissions')}</p>
                 <p className="text-2xl font-bold text-orange-700 mt-2">
                   {statistics.scope2_emissions.toFixed(2)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">{t('reports.statistics.unit')}</p>
+                <p className="text-xs text-gray-500 mt-1">tCO₂e</p>
               </div>
               <div className="text-center p-4 bg-blue-50 rounded-lg">
                 <p className="text-sm text-gray-600">{t('reports.statistics.scope3Emissions')}</p>
                 <p className="text-2xl font-bold text-blue-700 mt-2">
                   {statistics.scope3_emissions.toFixed(2)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">{t('reports.statistics.unit')}</p>
+                <p className="text-xs text-gray-500 mt-1">tCO₂e</p>
               </div>
             </div>
+            {(statistics.unclassified_emissions ?? 0) > 0 && <p className="mt-4 text-sm text-amber-700">
+              {t('reports.snapshot.unclassified', '總排放量包含未分類排放，尚未分配至 Scope 1–3：')}{' '}
+              {statistics.unclassified_emissions.toLocaleString(undefined, { maximumFractionDigits: 6 })} tCO₂e
+            </p>}
           </div>
         )}
+
+        {!statistics && <p className="text-sm text-gray-500">{t('reports.snapshot.statisticsUnknown', '此報告未提供完整排放統計，無法顯示總量。')}</p>}
 
         {/* Sections */}
         <div className="space-y-4">
