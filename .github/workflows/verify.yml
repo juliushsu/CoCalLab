@@ -19,8 +19,8 @@ jobs:
         working-directory: backend
       - name: Install isolated PostgreSQL test runtime
         run: npm install --prefix "$RUNNER_TEMP/cocallab-sql-runtime" @electric-sql/pglite@0.5.13 --ignore-scripts --no-audit --no-fund
-      - name: Verify organization policy in isolated PostgreSQL
-        run: PGLITE_RUNTIME_ROOT="$RUNNER_TEMP/cocallab-sql-runtime" node --test backend/tests/integration/organization-profile-rls.test.js
+      - name: Verify tenant policies in isolated PostgreSQL
+        run: PGLITE_RUNTIME_ROOT="$RUNNER_TEMP/cocallab-sql-runtime" node --test backend/tests/integration/*-rls.test.js
       - run: npm ci --ignore-scripts --no-audit --no-fund
         working-directory: frontend/readdy-app
       - run: npm test

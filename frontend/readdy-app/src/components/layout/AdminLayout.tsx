@@ -2,6 +2,8 @@ import { ReactNode, useEffect, useMemo, useState, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
+import { useTenantNavigation } from '../../hooks/useTenantNavigation';
+import { navigationItemAllowed, type TenantRole } from '../../services/navigationScope';
 import StagingBanner from '../feature/StagingBanner';
 import IdleWarningModal from '../feature/IdleWarningModal';
 import { IS_STAGING } from '../../utils/staging';
@@ -27,25 +29,11 @@ interface MenuSection {
   headerIcon: string;
   items: MenuItem[];
   /** Which roles can see this section? Empty = visible to all */
-  visibleFor?: UserRole[];
+  visibleFor?: string[];
   /** Collapsed by default? */
   defaultCollapsed?: boolean;
   /** Visual accent — 'amber' for Platform, undefined for normal */
   accent?: 'amber';
-}
-
-/** Mock role for governance-aware navigation */
-type UserRole = 'viewer' | 'editor' | 'owner' | 'platform_admin';
-
-const ROLE_HIERARCHY: Record<UserRole, number> = {
-  viewer: 1,
-  editor: 2,
-  owner: 3,
-  platform_admin: 4,
-};
-
-function hasRole(current: UserRole, required: UserRole): boolean {
-  return ROLE_HIERARCHY[current] >= ROLE_HIERARCHY[required];
 }
 
 function useSidebarState() {
@@ -95,7 +83,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const { user, signOut, role } = useAuth();
+  const { user, signOut } = useAuth();
+  const { role, organizationId, status: navigationStatus } = useTenantNavigation();
   const [isSigningOut, setIsSigningOut] = useState(false);
   const { mobileOpen, setMobileOpen, toggleSection, isSectionExpanded } = useSidebarState();
 
@@ -105,10 +94,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       header: t('navigation.sections.workspace', 'Workspace'),
       headerIcon: 'ri-briefcase-line',
       defaultCollapsed: false,
-      visibleFor: ['owner', 'platform_admin'],
+      visibleFor: ['owner', 'admin'],
       items: [
         { label: t('navigation.workspace.overview', 'Workspace'), path: '/admin/organizations', icon: 'ri-building-line' },
-        { label: t('navigation.workspace.members', 'Members'), path: '/admin/organizations', icon: 'ri-team-line', badge: t('navigation.internal', 'Internal') },
+        { label: t('navigation.workspace.members', 'Members'), path: organizationId ? `/admin/organizations/${organizationId}/members` : '#', icon: 'ri-team-line', badge: t('navigation.internal', 'Internal') },
         { label: t('navigation.workspace.subscription', 'Subscription'), path: '/admin/subscription', icon: 'ri-vip-crown-line' },
       ],
     },
@@ -120,7 +109,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         { label: t('navigation.carbonInventory.projects', 'Projects'), path: '/admin/projects', icon: 'ri-folder-line' },
         {
           label: t('navigation.carbonInventory.documents', 'Documents'),
-          path: '/admin/documents',
+          path: '/admin/documents/list',
           icon: 'ri-file-text-line',
         },
         { label: t('navigation.carbonInventory.drafts', 'Drafts'), path: '/admin/documents/drafts', icon: 'ri-draft-line' },
@@ -172,16 +161,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         { label: t('navigation.platform.environment', 'Environment'), path: '#', icon: 'ri-terminal-line', comingSoon: true },
       ],
     },
-  ], [t]);
+  ], [t, organizationId]);
 
-  // ── Role-based filtering ─────────────────────────────────────────────────
-  const visibleSections = useMemo(() => {
-    const effectiveRole = (role ?? 'owner') as UserRole;
-    return menuSections.filter(sec => {
-      if (!sec.visibleFor || sec.visibleFor.length === 0) return true;
-      return sec.visibleFor.some(r => hasRole(effectiveRole, r));
-    });
-  }, [menuSections, role]);
+  // Unknown/failed scope keeps only organization/project selection entries.
+  const visibleSections = useMemo(() => menuSections.map(section => ({
+    ...section,
+    items: section.items.filter(item => navigationItemAllowed(item.path, role, section.visibleFor)),
+  })).filter(section => section.items.length > 0), [menuSections, role]);
+
+  const scopedPath = (path: string) => {
+    if (!organizationId || path === '#') return path;
+    const query = new URLSearchParams({ organization_id: organizationId, organizationId });
+    return `${path}?${query}`;
+  };
 
   // ── Initialize default expansions on first mount ────────────────────────
   useEffect(() => {
@@ -251,7 +243,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         ) : (
           <Link
-            to={item.path}
+            to={scopedPath(item.path)}
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer whitespace-nowrap transition-colors ${
               isActive
@@ -320,23 +312,21 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     );
   };
 
-  // ── Role badge for current user ────────────────────────────────────────
+  // A tenant admin is never a platform admin. Unknown roles are not "Viewer".
   const roleBadge = useMemo(() => {
-    const effectiveRole = (role ?? 'owner') as UserRole;
-    const labels: Record<UserRole, string> = {
+    const labels: Record<TenantRole, string> = {
       viewer: t('navigation.roles.viewer', 'Viewer'),
       editor: t('navigation.roles.editor', 'Editor'),
+      admin: t('navigation.roles.admin', 'Tenant Admin'),
       owner: t('navigation.roles.owner', 'Owner'),
-      platform_admin: t('navigation.roles.platformAdmin', 'Platform Admin'),
     };
-    const colors: Record<UserRole, string> = {
-      viewer: 'bg-sky-100 text-sky-700',
-      editor: 'bg-teal-100 text-teal-700',
-      owner: 'bg-violet-100 text-violet-700',
-      platform_admin: 'bg-amber-100 text-amber-700',
+    const colors: Record<TenantRole, string> = {
+      viewer: 'bg-sky-100 text-sky-700', editor: 'bg-teal-100 text-teal-700',
+      admin: 'bg-violet-100 text-violet-700', owner: 'bg-violet-100 text-violet-700',
     };
-    return { label: labels[effectiveRole], color: colors[effectiveRole] };
-  }, [role, t]);
+    return role ? { label: labels[role], color: colors[role] }
+      : { label: navigationStatus === 'loading' ? '確認組織權限中' : '未確認組織角色', color: 'bg-gray-100 text-gray-600' };
+  }, [role, navigationStatus, t]);
 
   return (
     <div className="min-h-screen bg-gray-50">
