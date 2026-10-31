@@ -279,7 +279,7 @@ export default function AdjustmentDetailDrawer({ adjustment, onClose }: Props) {
           {/* Codex note */}
           <div className="flex items-start gap-2 px-3 py-2 bg-teal-50 rounded-lg border border-teal-100">
             <i className="ri-code-box-line text-teal-500 text-sm mt-0.5 flex-shrink-0"></i>
-            <p className="text-xs text-teal-700">{t('carbonAdjustments.codexNote')}</p>
+            <p className="text-xs text-teal-700">唯讀檢視；新增、核准、保留及套用調整的操作尚未提供。</p>
           </div>
         </div>
       </div>

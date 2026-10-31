@@ -52,8 +52,17 @@ export interface CreateProjectInput {
   site_id?: string | null;
 }
 
-export interface UpdateProjectInput extends Partial<CreateProjectInput> {
+/** organization_id is the original tenant filter, never part of the UPDATE payload. */
+export interface UpdateProjectInput {
   id: string;
+  organization_id: string;
+  project_code: string;
+  name: string;
+  description?: string | null;
+  reporting_start_date: string;
+  reporting_end_date: string;
+  boundary_type: BoundaryType;
+  base_currency: string;
 }
 
 export interface ProjectStatistics {

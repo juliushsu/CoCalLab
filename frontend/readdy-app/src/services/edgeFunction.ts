@@ -1,5 +1,6 @@
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import type { ApiResponse, EdgeFunctionOptions } from './types';
+import { buildFunctionRequest } from './functionRequest';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -59,7 +60,7 @@ export class EdgeFunctionService {
   static async invoke<T = unknown>(
     options: EdgeFunctionOptions
   ): Promise<ApiResponse<T>> {
-    const { functionName, payload = {}, headers = {} } = options;
+    const { functionName, headers = {} } = options;
 
     // 檢查 Supabase 連接狀態
     if (!isSupabaseConnected()) {
@@ -76,10 +77,11 @@ export class EdgeFunctionService {
       const supabase = getSupabaseClient();
 
       // 呼叫 Edge Function
-      const { data, error } = await supabase.functions.invoke(functionName, {
-        body: payload,
+      const request = buildFunctionRequest(options);
+      const { data, error } = await supabase.functions.invoke(request.functionPath, {
+        method: request.method,
+        ...(request.body === undefined ? {} : { body: request.body }),
         headers: {
-          'Content-Type': 'application/json',
           ...headers,
         },
       });

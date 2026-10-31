@@ -5,8 +5,10 @@
  */
 
 import { getSupabaseClient } from '@/lib/supabase';
+import { fetchAnalyticsEmissions } from './analyticsService';
 import { EdgeFunctionService } from './edgeFunction';
 import type { RuleResultDTO } from '@/types/carbonAdjustment';
+import { buildAdjustmentQuery, mapAdjustmentResult, type AdjustmentEvaluationParams } from './adjustmentContract';
 
 // ─── Codex canonical response shape ──────────────────────────────────────────
 export interface AdjustmentRuleResultResponse {
@@ -20,7 +22,7 @@ export interface AdjustmentRuleResultResponse {
 // ─── Gross Emissions from calculation_results ─────────────────────────────────
 export interface GrossEmissionsResult {
   gross_tco2e: number;
-  activity_count: number;
+  activity_count: number | null;
   project_id: string | null;
   is_real: boolean;
 }
@@ -29,62 +31,45 @@ export async function fetchGrossEmissions(params: {
   project_id?: string;
   org_id?: string;
 }): Promise<GrossEmissionsResult | null> {
-  try {
-    const supabase = getSupabaseClient();
-
-    let query = supabase
-      .from('calculation_results')
-      .select('co2e_kg, project_id, emission_activity_id')
-      .eq('is_latest', true)
-      .eq('status', 'success');
-
-    if (params.project_id) {
-      query = query.eq('project_id', params.project_id);
-    }
-    if (params.org_id) {
-      query = query.eq('organization_id', params.org_id);
-    }
-
-    const { data, error } = await query;
-
-    if (error || !data || data.length === 0) {
-      return null;
-    }
-
-    const totalKg = data.reduce((sum, row) => sum + (Number(row.co2e_kg) || 0), 0);
-    const gross_tco2e = Math.round(totalKg / 1000 * 100) / 100;
-
-    return {
-      gross_tco2e,
-      activity_count: data.length,
-      project_id: params.project_id ?? null,
-      is_real: true,
-    };
-  } catch {
-    return null;
-  }
+  if (!params.org_id) throw new Error('Select an organization before loading adjustments');
+  // Share the server-side included/active activity aggregation with analytics.
+  // Avoid client-side table limits and a second, inconsistent definition of gross.
+  const result = await fetchAnalyticsEmissions({
+    organization_id: params.org_id,
+    project_id: params.project_id,
+    dimension: 'ghg_scope',
+  });
+  return {
+    gross_tco2e: result.total_tco2e,
+    activity_count: null,
+    project_id: params.project_id ?? null,
+    is_real: true,
+  };
 }
 
 // ─── Rule Result ──────────────────────────────────────────────────────────────
-export interface FetchRuleResultParams {
-  adjustment_id?: string;
-  project_id?: string;
-  org_id?: string;
-}
+export type FetchRuleResultParams = AdjustmentEvaluationParams;
 
+/** Read-only eligibility preview. Does not approve, reserve or apply an adjustment. */
 export async function fetchAdjustmentRuleResults(
   params: FetchRuleResultParams
-): Promise<AdjustmentRuleResultResponse | null> {
-  const response = await EdgeFunctionService.invoke<AdjustmentRuleResultResponse>({
+): Promise<AdjustmentRuleResultResponse> {
+  const query = buildAdjustmentQuery(params);
+  const response = await EdgeFunctionService.invoke<unknown>({
     functionName: 'adjustment-rule-result',
-    payload: { ...params },
+    method: 'GET',
+    query,
   });
-
   if (!response.success || !response.data) {
-    return null;
+    throw new Error(response.error?.message || 'Adjustment evaluation failed');
   }
-
-  return response.data;
+  return {
+    results: [mapAdjustmentResult(response.data)],
+    rule_engine_version: null,
+    evaluated_at: null,
+    is_mock: false,
+    rule_engine_applied: true,
+  };
 }
 
 // ─── Real DB: carbon_adjustment_items ─────────────────────────────────────────
@@ -194,7 +179,7 @@ export async function fetchAdjustmentItems(params: {
   project_id?: string;
   org_id?: string;
 }): Promise<FetchAdjustmentItemsResult> {
-  try {
+    if (!params.org_id) throw new Error('Select an organization before loading adjustments');
     const supabase = getSupabaseClient();
     let query = supabase
       .from('carbon_adjustment_items')
@@ -209,18 +194,16 @@ export async function fetchAdjustmentItems(params: {
     }
 
     const { data, error } = await query;
-    if (error || !data) return { items: [], isReal: false };
-    return { items: data as AdjustmentItemRow[], isReal: data.length > 0 };
-  } catch {
-    return { items: [], isReal: false };
-  }
+    if (error) throw new Error(error.message);
+    if (!data) throw new Error('Missing adjustment data');
+    return { items: data as AdjustmentItemRow[], isReal: true };
 }
 
 export async function fetchAdjustmentCertificates(params: {
   project_id?: string;
   org_id?: string;
 }): Promise<FetchCertificatesResult> {
-  try {
+    if (!params.org_id) throw new Error('Select an organization before loading adjustments');
     const supabase = getSupabaseClient();
     let query = supabase
       .from('adjustment_certificates')
@@ -235,18 +218,16 @@ export async function fetchAdjustmentCertificates(params: {
     }
 
     const { data, error } = await query;
-    if (error || !data) return { certificates: [], isReal: false };
-    return { certificates: data as AdjustmentCertificateRow[], isReal: data.length > 0 };
-  } catch {
-    return { certificates: [], isReal: false };
-  }
+    if (error) throw new Error(error.message);
+    if (!data) throw new Error('Missing adjustment data');
+    return { certificates: data as AdjustmentCertificateRow[], isReal: true };
 }
 
 export async function fetchAdjustmentApplications(params: {
   project_id?: string;
   org_id?: string;
 }): Promise<FetchApplicationsResult> {
-  try {
+    if (!params.org_id) throw new Error('Select an organization before loading adjustments');
     const supabase = getSupabaseClient();
     let query = supabase
       .from('adjustment_applications')
@@ -261,9 +242,7 @@ export async function fetchAdjustmentApplications(params: {
     }
 
     const { data, error } = await query;
-    if (error || !data) return { applications: [], isReal: false };
-    return { applications: data as AdjustmentApplicationRow[], isReal: data.length > 0 };
-  } catch {
-    return { applications: [], isReal: false };
-  }
+    if (error) throw new Error(error.message);
+    if (!data) throw new Error('Missing adjustment data');
+    return { applications: data as AdjustmentApplicationRow[], isReal: true };
 }

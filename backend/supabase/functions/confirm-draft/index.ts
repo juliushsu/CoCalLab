@@ -1,3 +1,4 @@
+import { serveWithCors } from '../_shared/cors.ts';
 import {
   parseJson,
   successEnvelope,
@@ -18,7 +19,7 @@ function buildActivityCode(index: number): string {
   return `STG-EA-${String(index).padStart(6, '0')}`;
 }
 
-Deno.serve(async (request: Request) => {
+serveWithCors(async (request: Request) => {
   if (request.method !== 'POST') {
     return methodNotAllowed(request);
   }
@@ -173,4 +174,4 @@ Deno.serve(async (request: Request) => {
       httpStatus: 400,
     });
   }
-});
+}, { allowedMethods: ['POST'] });

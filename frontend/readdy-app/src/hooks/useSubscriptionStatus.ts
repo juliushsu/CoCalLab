@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { EdgeFunctionService } from '../services/edgeFunction';
 import { getSubscriptionStatus, isReadonly, getReadonlyReason } from '../utils/subscription';
 import type { SubscriptionStatus } from '../utils/subscription';
@@ -28,7 +28,7 @@ export function useSubscriptionStatus(
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchStatus = async () => {
+  const fetchStatus = useCallback(async () => {
     if (!organizationId) {
       setStatus('active');
       setReason(undefined);
@@ -65,11 +65,11 @@ export function useSubscriptionStatus(
     } finally {
       setLoading(false);
     }
-  };
+  }, [organizationId]);
 
   useEffect(() => {
     fetchStatus();
-  }, [organizationId]);
+  }, [fetchStatus]);
 
   return {
     status,

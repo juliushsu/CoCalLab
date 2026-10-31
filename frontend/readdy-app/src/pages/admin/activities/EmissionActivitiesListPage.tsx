@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -38,11 +38,7 @@ export default function EmissionActivitiesListPage() {
     searchParams.get('create') === 'true'
   );
 
-  useEffect(() => {
-    loadData();
-  }, [projectId]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -53,7 +49,11 @@ export default function EmissionActivitiesListPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [projectId, t]);
+
+  useEffect(() => {
+    void loadData();
+  }, [loadData]);
 
   const handleOpenCreate = () => {
     if (isReadonly) return;

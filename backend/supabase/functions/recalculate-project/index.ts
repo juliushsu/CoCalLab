@@ -1,3 +1,4 @@
+import { serveWithCors } from '../_shared/cors.ts';
 import {
   parseJson,
   successEnvelope,
@@ -13,7 +14,7 @@ import { AuthzError, requireOrganizationWriteAccess } from '../_shared/authz.ts'
 import { externalActionsBlockedInCurrentEnv } from '../_shared/staging-guard.ts';
 import { insertActionLog } from '../_shared/action-log.ts';
 
-Deno.serve(async (request: Request) => {
+serveWithCors(async (request: Request) => {
   if (request.method !== 'POST') {
     return methodNotAllowed(request);
   }
@@ -141,4 +142,4 @@ Deno.serve(async (request: Request) => {
       httpStatus: 400,
     });
   }
-});
+}, { allowedMethods: ['POST'] });

@@ -144,6 +144,7 @@ export default function DocumentUploadPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const organizationIdParam = searchParams.get('organization_id') || null;
 
   const [selectedProject, setSelectedProject] = useState<string>(
     searchParams.get('project_id') || ''
@@ -168,7 +169,7 @@ export default function DocumentUploadPage() {
   } | null>(null);
 
   const [resolvedOrgId, setResolvedOrgId] = useState<string | null>(
-    searchParams.get('organization_id') || null
+    organizationIdParam
   );
 
   const { isReadonly } = useSubscriptionStatus(resolvedOrgId || undefined);
@@ -179,12 +180,10 @@ export default function DocumentUploadPage() {
         setIsLoadingProjects(true);
         const [data, orgId] = await Promise.all([
           getProjects(),
-          resolvedOrgId ? Promise.resolve(resolvedOrgId) : getCurrentUserOrganizationId(),
+          organizationIdParam ? Promise.resolve(organizationIdParam) : getCurrentUserOrganizationId(),
         ]);
         setProjects(data);
-        if (!resolvedOrgId && orgId) {
-          setResolvedOrgId(orgId);
-        }
+        setResolvedOrgId(orgId);
       } catch (error) {
         console.error('Failed to init upload page:', error);
       } finally {
@@ -192,7 +191,7 @@ export default function DocumentUploadPage() {
       }
     }
     init();
-  }, []);
+  }, [organizationIdParam]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -204,24 +203,7 @@ export default function DocumentUploadPage() {
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    addFiles(Array.from(e.dataTransfer.files));
-  }, []);
-
-  // 三種上傳入口的 ref
-  const cameraInputRef = useRef<HTMLInputElement>(null);
-  const galleryInputRef = useRef<HTMLInputElement>(null);
-  const pdfInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) addFiles(Array.from(e.target.files));
-    // reset value so same file can be re-selected
-    e.target.value = '';
-  }, []);
-
-  const addFiles = (files: File[]) => {
+  const addFiles = useCallback((files: File[]) => {
     const validFiles = files.filter(file => {
       const validTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
       const maxSize = 10 * 1024 * 1024;
@@ -245,7 +227,24 @@ export default function DocumentUploadPage() {
         status: 'pending' as const,
       })),
     ]);
-  };
+  }, [t]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    addFiles(Array.from(e.dataTransfer.files));
+  }, [addFiles]);
+
+  // 三種上傳入口的 ref
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const pdfInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) addFiles(Array.from(e.target.files));
+    // reset value so same file can be re-selected
+    e.target.value = '';
+  }, [addFiles]);
 
   const removeFile = (id: string) => {
     setUploadFiles(prev => prev.filter(f => f.id !== id));

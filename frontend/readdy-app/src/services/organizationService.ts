@@ -1,5 +1,6 @@
+import { organizationUpdatePayload, requireUpdatedRow } from './entityUpdateContract';
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
-import type { Organization, OrganizationMember, AddMemberInput, UpdateMemberRoleInput } from '../types/organization';
+import type { Organization, OrganizationMember, AddMemberInput, UpdateMemberRoleInput, UpdateOrganizationInput } from '../types/organization';
 import { getIsTest, getEnv } from '../utils/staging';
 
 function mapOrg(item: Record<string, unknown>): Organization {
@@ -220,4 +221,13 @@ export async function removeMember(memberId: string, organizationId: string): Pr
     console.error('deactivate_organization_member RPC error:', error);
     throw error;
   }
+}
+
+/** User JWT + RLS only. A denied/zero-row UPDATE is a failure, never a fake success. */
+export async function updateOrganization(input: UpdateOrganizationInput): Promise<Organization> {
+  const payload = organizationUpdatePayload(input);
+  if (!isSupabaseConnected()) throw new Error('Supabase not connected');
+  const { data, error } = await getSupabaseClient().from('organizations')
+    .update(payload).eq('id', input.id).select('*').single();
+  return mapOrg(requireUpdatedRow({ data, error }) as Record<string, unknown>);
 }

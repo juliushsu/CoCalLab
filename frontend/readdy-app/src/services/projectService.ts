@@ -1,5 +1,6 @@
+import { projectUpdatePayload, requireUpdatedRow } from './entityUpdateContract';
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
-import type { Project, ProjectStatistics, CreateProjectInput } from '../types/project';
+import type { Project, ProjectStatistics, CreateProjectInput, UpdateProjectInput } from '../types/project';
 import { IS_STAGING } from '../utils/staging';
 
 /**
@@ -188,6 +189,23 @@ export async function createProject(input: CreateProjectInput): Promise<Project>
   return {
     ...data,
     organization_name: (data as any).organization?.display_name,
+    code: data.project_code,
+    start_date: data.reporting_start_date,
+    end_date: data.reporting_end_date,
+  } as Project;
+}
+
+/** The original tenant is an UPDATE filter, never an editable assignment. */
+export async function updateProject(input: UpdateProjectInput): Promise<Project> {
+  const payload = projectUpdatePayload(input);
+  if (!isSupabaseConnected()) throw new Error('Supabase not connected');
+  const result = await getSupabaseClient().from('projects')
+    .update(payload).eq('id', input.id).eq('organization_id', input.organization_id)
+    .select('*, organization:organizations(display_name)').single();
+  const data = requireUpdatedRow(result);
+  return {
+    ...data,
+    organization_name: (data as { organization?: { display_name?: string } }).organization?.display_name,
     code: data.project_code,
     start_date: data.reporting_start_date,
     end_date: data.reporting_end_date,

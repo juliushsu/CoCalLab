@@ -34,16 +34,14 @@ export interface CreateOrganizationInput {
   timezone?: string;
 }
 
-export interface UpdateOrganizationInput extends Partial<CreateOrganizationInput> {
+/** Only persisted workspace profile fields; identity and lifecycle are immutable here. */
+export interface UpdateOrganizationInput {
   id: string;
-  name?: string;
-  contact_person?: string;
-  contact_email?: string;
-  contact_phone?: string;
-  industry?: string;
-  address?: string;
-  description?: string;
-  status?: OrganizationStatus;
+  legal_name: string;
+  display_name: string;
+  tax_id?: string | null;
+  country_code: string;
+  timezone: string;
 }
 
 // ── Member types ───────────────────────────────────────────────

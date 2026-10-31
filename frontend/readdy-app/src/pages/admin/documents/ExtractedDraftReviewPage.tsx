@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -44,11 +44,7 @@ export default function ExtractedDraftReviewPage() {
   const { isReadonly } = useSubscriptionStatus(organizationId);
 
   // 當 projectId URL 參數變化時重新載入
-  useEffect(() => {
-    loadDrafts();
-  }, [projectIdParam]);
-
-  const loadDrafts = async () => {
+  const loadDrafts = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -60,7 +56,11 @@ export default function ExtractedDraftReviewPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [projectIdParam, t]);
+
+  useEffect(() => {
+    void loadDrafts();
+  }, [loadDrafts]);
 
   const showError = (message: string) => {
     setErrorToastMessage(message);

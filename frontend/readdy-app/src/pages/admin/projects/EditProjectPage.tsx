@@ -1,369 +1,100 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
 import LoadingState from '../../../components/base/LoadingState';
 import ErrorState from '../../../components/base/ErrorState';
-import type { UpdateProjectInput, ProjectType } from '../../../types/project';
-import type { Organization } from '../../../types/organization';
+import { getProjectById, updateProject } from '../../../services/projectService';
+import { isSupabaseConnected } from '../../../lib/supabase';
+import type { Project, UpdateProjectInput, BoundaryType } from '../../../types/project';
 
 export default function EditProjectPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [error, setError] = useState<string | null>(null);
-  
-  const [formData, setFormData] = useState<UpdateProjectInput>({
-    id: id || '',
-    name: '',
-    code: '',
-    organization_id: '',
-    project_type: 'corporate',
-    start_date: '',
-    end_date: '',
-    description: '',
-    status: 'draft',
-    baseline_year: undefined,
-    reduction_target: undefined,
-  });
-
-  useEffect(() => {
-    loadData();
+  const [project, setProject] = useState<Project | null>(null);
+  const [form, setForm] = useState<UpdateProjectInput | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [saveError, setSaveError] = useState('');
+  const [retry, setRetry] = useState(0);
+  const saveGeneration = useRef(0);
+  // Invalidate pending saves before a new route paints and on unmount.
+  useLayoutEffect(() => {
+    saveGeneration.current += 1;
+    setSaving(false);
+    return () => { saveGeneration.current += 1; };
   }, [id]);
 
-  const loadData = async () => {
-    try {
-      setIsLoading(true);
-      
-      // TODO: Replace with actual Supabase queries
-      // Load project data
-      // const { data: projectData, error: projectError } = await supabase
-      //   .from('projects')
-      //   .select('*')
-      //   .eq('id', id)
-      //   .single();
-      // if (projectError) throw projectError;
-      
-      // Load organizations
-      // const { data: orgsData, error: orgsError } = await supabase
-      //   .from('organizations')
-      //   .select('*')
-      //   .eq('status', 'active');
-      // if (orgsError) throw orgsError;
-      
-      // setFormData(projectData);
-      // setOrganizations(orgsData || []);
-    } catch (err) {
-      console.error('Failed to load project:', err);
-      setError(t('errors.loadFailed'));
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.name?.trim()) {
-      newErrors.name = t('errors.required');
-    }
-
-    if (!formData.organization_id) {
-      newErrors.organization_id = t('errors.required');
-    }
-
-    if (!formData.start_date) {
-      newErrors.start_date = t('errors.required');
-    }
-
-    if (!formData.end_date) {
-      newErrors.end_date = t('errors.required');
-    }
-
-    if (formData.start_date && formData.end_date) {
-      const startDate = new Date(formData.start_date);
-      const endDate = new Date(formData.end_date);
-      if (startDate > endDate) {
-        newErrors.end_date = t('errors.startDateAfterEndDate');
+  useEffect(() => {
+    let active = true;
+    setLoading(true); setLoadError(''); setForm(null); setSaveError('');
+    const load = async () => {
+      if (!id) throw new Error('缺少專案識別碼。');
+      if (!isSupabaseConnected()) throw new Error('尚未設定服務連線。');
+      const row = await getProjectById(id);
+      if (!row) throw new Error('找不到專案，或您沒有存取權限。');
+      if (active) {
+        setProject(row);
+        setForm({id:row.id,organization_id:row.organization_id,name:row.name,project_code:row.project_code,description:row.description || '',reporting_start_date:row.reporting_start_date,reporting_end_date:row.reporting_end_date,boundary_type:row.boundary_type,base_currency:row.base_currency});
       }
-    }
+    };
+    load().catch((error: unknown) => {
+      if (active) setLoadError(error instanceof Error ? error.message : '無法載入專案。');
+    }).finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [id, retry]);
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!form || form.id !== id || !project || saving) return;
+    const generation = saveGeneration.current;
+    setSaving(true); setSaveError('');
     try {
-      setIsSaving(true);
-      
-      // TODO: Implement Supabase update
-      // const { error: updateError } = await supabase
-      //   .from('projects')
-      //   .update(formData)
-      //   .eq('id', id);
-      // if (updateError) throw updateError;
-      
-      navigate('/admin/projects');
-    } catch (err) {
-      console.error('Failed to update project:', err);
-      setErrors({ submit: t('errors.saveFailed') });
-    } finally {
-      setIsSaving(false);
-    }
+      // Always use the original loaded tenant, even if form state changes.
+      await updateProject({...form,organization_id:project.organization_id});
+      if (generation === saveGeneration.current) navigate(`/admin/projects/${form.id}`);
+    } catch (error: unknown) {
+      if (generation === saveGeneration.current) setSaveError(error instanceof Error ? error.message : '儲存失敗。請確認您具備編輯權限，且組織可寫入。');
+    } finally { if (generation === saveGeneration.current) setSaving(false); }
   };
-
-  const handleChange = (field: keyof UpdateProjectInput, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
-      });
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <AdminLayout>
-        <LoadingState />
-      </AdminLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <AdminLayout>
-        <ErrorState message={error} onRetry={loadData} />
-      </AdminLayout>
-    );
-  }
-
-  return (
-    <AdminLayout>
-      <div className="w-full max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <button
-            onClick={() => navigate('/admin/projects')}
-            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-4 transition-colors"
-          >
-            <i className="ri-arrow-left-line"></i>
-            {t('common.back')}
-          </button>
-          <h1 className="text-2xl font-semibold text-gray-900">{t('projects.edit')}</h1>
-          <p className="text-sm text-gray-600 mt-1">{t('projects.detail')}</p>
+  const fields = [
+    {key:'name' as const,label:t('projects.fields.name'),type:'text'},
+    {key:'project_code' as const,label:t('projects.fields.code'),type:'text'},
+    {key:'reporting_start_date' as const,label:t('projects.fields.startDate'),type:'date'},
+    {key:'reporting_end_date' as const,label:t('projects.fields.endDate'),type:'date'},
+    {key:'base_currency' as const,label:'基準貨幣（三碼）',type:'text'},
+  ];
+  return <AdminLayout><div className="max-w-3xl mx-auto">
+    {loading || (form && form.id !== id) ? <LoadingState /> : loadError ? <ErrorState message={loadError} onRetry={() => setRetry(value => value + 1)} /> : form && <>
+      <h1 className="text-2xl font-semibold mb-6">{t('projects.edit')}</h1>
+      <form onSubmit={handleSubmit} className="bg-white border rounded-lg p-6 space-y-6">
+        <p className="text-sm text-gray-500">組織：{project?.organization_name || project?.organization_id} · 狀態：{project?.status}（唯讀）</p>
+        <fieldset disabled={saving} className="space-y-5 disabled:opacity-60">
+          {fields.map(field => <label key={field.key} className="block text-sm font-medium text-gray-700">
+            {field.label} *
+            <input className="mt-2 w-full px-4 py-2 border rounded-lg" type={field.type} required value={form[field.key]}
+              maxLength={field.key === 'base_currency' ? 3 : undefined}
+              min={field.key === 'reporting_end_date' ? form.reporting_start_date : undefined}
+              onChange={event => setForm(current => current ? {...current,[field.key]:event.target.value} : current)} />
+          </label>)}
+          <label className="block text-sm font-medium text-gray-700">組織邊界
+            <select className="mt-2 w-full px-4 py-2 border rounded-lg" value={form.boundary_type} onChange={event => setForm(current => current ? {...current,boundary_type:event.target.value as BoundaryType} : current)}>
+              <option value="operational_control">營運控制權</option><option value="financial_control">財務控制權</option><option value="equity_share">股權比例</option>
+            </select>
+          </label>
+          <label className="block text-sm font-medium text-gray-700">{t('projects.fields.description')}
+            <textarea className="mt-2 w-full px-4 py-2 border rounded-lg" rows={4} value={form.description || ''} onChange={event => setForm(current => current ? {...current,description:event.target.value} : current)} />
+          </label>
+        </fieldset>
+        {saveError && <p role="alert" className="p-4 bg-red-50 text-red-700 rounded-lg">{saveError}</p>}
+        <div className="flex justify-end gap-3">
+          <button type="button" className="px-4 py-2 border rounded-lg" disabled={saving} onClick={() => navigate('/admin/projects')}>{t('common.cancel')}</button>
+          <button type="submit" className="px-4 py-2 bg-teal-600 text-white rounded-lg disabled:opacity-50" disabled={saving}>{saving ? t('common.loading') : t('common.save')}</button>
         </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-6">
-          <div className="space-y-6">
-            {/* Project Name */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('projects.fields.name')} <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-                placeholder={t('projects.placeholders.name')}
-                className={`w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                  errors.name ? 'border-red-500' : 'border-gray-300'
-                }`}
-              />
-              {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
-            </div>
-
-            {/* Project Code */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('projects.fields.code')}
-              </label>
-              <input
-                type="text"
-                value={formData.code}
-                onChange={(e) => handleChange('code', e.target.value)}
-                placeholder={t('projects.placeholders.code')}
-                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              />
-            </div>
-
-            {/* Organization */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('projects.fields.organization')} <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={formData.organization_id}
-                onChange={(e) => handleChange('organization_id', e.target.value)}
-                className={`w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                  errors.organization_id ? 'border-red-500' : 'border-gray-300'
-                }`}
-              >
-                <option value="">{t('projects.selectOrganization')}</option>
-                {organizations.map((org) => (
-                  <option key={org.id} value={org.id}>
-                    {org.name}
-                  </option>
-                ))}
-              </select>
-              {errors.organization_id && <p className="text-xs text-red-500 mt-1">{errors.organization_id}</p>}
-            </div>
-
-            {/* Project Type */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('projects.fields.projectType')} <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={formData.project_type}
-                onChange={(e) => handleChange('project_type', e.target.value as ProjectType)}
-                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              >
-                <option value="corporate">{t('projects.types.corporate')}</option>
-                <option value="event">{t('projects.types.event')}</option>
-                <option value="product">{t('projects.types.product')}</option>
-                <option value="project">{t('projects.types.project')}</option>
-              </select>
-            </div>
-
-            {/* Status */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('projects.fields.status')} <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={formData.status}
-                onChange={(e) => handleChange('status', e.target.value)}
-                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-              >
-                <option value="draft">{t('status.draft')}</option>
-                <option value="in_progress">{t('status.in_progress')}</option>
-                <option value="completed">{t('status.completed')}</option>
-                <option value="archived">{t('status.archived')}</option>
-              </select>
-            </div>
-
-            {/* Date Range */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('projects.fields.startDate')} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={formData.start_date}
-                  onChange={(e) => handleChange('start_date', e.target.value)}
-                  className={`w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                    errors.start_date ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.start_date && <p className="text-xs text-red-500 mt-1">{errors.start_date}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('projects.fields.endDate')} <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="date"
-                  value={formData.end_date}
-                  onChange={(e) => handleChange('end_date', e.target.value)}
-                  className={`w-full px-4 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-                    errors.end_date ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                {errors.end_date && <p className="text-xs text-red-500 mt-1">{errors.end_date}</p>}
-              </div>
-            </div>
-
-            {/* Baseline Year & Reduction Target */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('projects.fields.baseline')}
-                </label>
-                <input
-                  type="number"
-                  value={formData.baseline_year || ''}
-                  onChange={(e) => handleChange('baseline_year', e.target.value ? parseInt(e.target.value) : undefined)}
-                  placeholder="2023"
-                  min="2000"
-                  max="2100"
-                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('projects.fields.target')}
-                </label>
-                <input
-                  type="number"
-                  value={formData.reduction_target || ''}
-                  onChange={(e) => handleChange('reduction_target', e.target.value ? parseFloat(e.target.value) : undefined)}
-                  placeholder="10"
-                  min="0"
-                  max="100"
-                  step="0.1"
-                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
-            </div>
-
-            {/* Description */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('projects.fields.description')}
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => handleChange('description', e.target.value)}
-                placeholder={t('projects.placeholders.description')}
-                rows={4}
-                className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
-              />
-            </div>
-
-            {/* Submit Error */}
-            {errors.submit && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{errors.submit}</p>
-              </div>
-            )}
-
-            {/* Actions */}
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
-              <button
-                type="button"
-                onClick={() => navigate('/admin/projects')}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors whitespace-nowrap"
-              >
-                {t('common.cancel')}
-              </button>
-              <button
-                type="submit"
-                disabled={isSaving}
-                className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-              >
-                {isSaving ? t('common.loading') : t('common.save')}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </AdminLayout>
-  );
+      </form>
+    </>}
+  </div></AdminLayout>;
 }

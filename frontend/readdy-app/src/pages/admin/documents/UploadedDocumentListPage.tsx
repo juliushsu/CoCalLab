@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -57,11 +57,7 @@ export default function UploadedDocumentListPage() {
     }
   }, [projectIdParam]);
 
-  useEffect(() => {
-    loadData();
-  }, [projectIdParam]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -77,7 +73,11 @@ export default function UploadedDocumentListPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [projectIdParam, t]);
+
+  useEffect(() => {
+    void loadData();
+  }, [loadData]);
 
   const handleDelete = async () => {
     if (!documentToDelete) return;

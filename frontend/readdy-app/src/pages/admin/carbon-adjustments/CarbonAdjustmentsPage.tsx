@@ -2,384 +2,143 @@ import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import AdminLayout from '@/components/layout/AdminLayout';
-import type { AdjustmentTypeCode } from '@/types/carbonAdjustment';
+import { getOrganizations } from '@/services/organizationService';
+import { getProjects } from '@/services/projectService';
+import { isSupabaseConnected } from '@/lib/supabase';
+import type { Organization } from '@/types/organization';
+import type { Project } from '@/types/project';
+import type { CarbonAdjustmentDTO } from '@/types/carbonAdjustment';
 import {
-  mockCarbonAdjustments,
-  mockEmissionsSummary,
-  mockApplications,
-  mockRuleResults,
-} from '@/mocks/carbonAdjustments.fixture';
-import {
-  fetchAdjustmentItems,
-  fetchAdjustmentCertificates,
-  fetchAdjustmentApplications,
-  type AdjustmentItemRow,
-  type AdjustmentCertificateRow,
-  type AdjustmentApplicationRow,
+  fetchAdjustmentItems, fetchAdjustmentCertificates, fetchAdjustmentApplications, fetchGrossEmissions,
+  type AdjustmentItemRow, type AdjustmentCertificateRow, type AdjustmentApplicationRow,
 } from '@/services/adjustmentService';
 import AdjustmentDetailDrawer from './components/AdjustmentDetailDrawer';
-import EmissionsSummaryPanel from './components/EmissionsSummaryPanel';
 import ItemsTab from './components/ItemsTab';
-import CertificatesTab from './components/CertificatesTab';
-import ApplicationsTab from './components/ApplicationsTab';
 import RuleResultTab from './components/RuleResultTab';
+import { mapAdjustmentItem } from '@/services/adjustmentItemAdapter';
 
 type TabKey = 'items' | 'certificates' | 'applications' | 'ruleResult';
 
-const TYPE_COLORS: Record<AdjustmentTypeCode, string> = {
-  offset_credit: 'bg-green-50 text-green-600',
-  renewable_electricity: 'bg-yellow-50 text-yellow-600',
-  carbon_removal: 'bg-teal-50 text-teal-600',
-  carbon_storage: 'bg-slate-50 text-slate-600',
-};
-const TYPE_ICONS: Record<AdjustmentTypeCode, string> = {
-  offset_credit: 'ri-leaf-line',
-  renewable_electricity: 'ri-flashlight-line',
-  carbon_removal: 'ri-recycle-line',
-  carbon_storage: 'ri-archive-line',
-};
-
-// ── Data origin badge ─────────────────────────────────────────────────────────
-function DataBadge({ isReal, realLabel, mockLabel }: { isReal: boolean; realLabel: string; mockLabel: string }) {
-  if (isReal) {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
-        <i className="ri-checkbox-circle-line text-xs"></i>
-        {realLabel}
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-      <i className="ri-error-warning-line text-xs"></i>
-      {mockLabel}
-    </span>
-  );
-}
-
-function TypeSummaryCard({ type, count, total, isReal }: { type: AdjustmentTypeCode; count: number; total: number; isReal: boolean }) {
-  const { t } = useTranslation();
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 flex items-center gap-3">
-      <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${TYPE_COLORS[type]}`}>
-        <i className={`${TYPE_ICONS[type]} text-base`}></i>
-      </div>
-      <div className="min-w-0">
-        <p className="text-xs text-gray-400 truncate">{t(`carbonAdjustments.adjustmentTypes.${type}`)}</p>
-        <p className="text-base font-bold text-gray-900">{count} <span className="text-xs font-normal text-gray-400">items</span></p>
-        <p className="text-xs text-teal-600 font-medium">{total.toLocaleString()} tCO₂e</p>
-        {!isReal && (
-          <span className="text-[10px] text-amber-500">Mock</span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ── Map DB row → legacy DTO shape for ItemsTab (which still uses CarbonAdjustmentDTO) ──
-function mapItemRowToDTO(row: AdjustmentItemRow) {
-  return {
-    id: row.id,
-    project_id: row.project_id,
-    org_id: row.organization_id,
-    adjustment_type: (row.adjustment_type === 'renewable_electricity_attribute'
-      ? 'renewable_electricity'
-      : row.adjustment_type) as AdjustmentTypeCode,
-    status: (row.status === 'active' ? 'approved' : row.status) as any,
-    target_type: row.target_type as any,
-    target_label: row.name,
-    certificate_number: null,
-    registry_program: null,
-    vintage_year: row.vintage_year,
-    issue_date: row.effective_from,
-    retirement_date: row.effective_to,
-    quantity_tco2e: Number(row.quantity_total_tco2e),
-    quantity_available_tco2e: Number(row.quantity_available_tco2e),
-    unit: 'tCO₂e',
-    verification_status: row.certificate_verification_status as any,
-    verifier_name: null,
-    verification_date: null,
-    approval_status: row.approval_status as any,
-    proof_document_status: row.proof_document_status as any,
-    jurisdiction: row.jurisdiction_code,
-    eligible_use: row.claim_purpose as any,
-    claim_purpose: row.claim_purpose as any,
-    double_counting_check: (row.double_counting_status === 'clear' ? 'clear' : row.double_counting_status === 'flagged' ? 'flagged' : 'unknown') as any,
-    notes: row.description,
-    created_at: row.created_at,
-    updated_at: row.updated_at,
-    is_test: row.is_test,
-  };
-}
-
 export default function CarbonAdjustmentsPage() {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const projectId = searchParams.get('projectId') || undefined;
   const orgId = searchParams.get('organizationId') || undefined;
-
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [scopeError, setScopeError] = useState<string | null>(null);
+  const [scopeLoading, setScopeLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabKey>('items');
-  const [selectedAdjustment, setSelectedAdjustment] = useState<any | null>(null);
-
-  // ── Real DB state ─────────────────────────────────────────────────────────
-  const [realItems, setRealItems] = useState<AdjustmentItemRow[]>([]);
-  const [realCerts, setRealCerts] = useState<AdjustmentCertificateRow[]>([]);
-  const [realApps, setRealApps] = useState<AdjustmentApplicationRow[]>([]);
-  const [itemsIsReal, setItemsIsReal] = useState(false);
-  const [certsIsReal, setCertsIsReal] = useState(false);
-  const [appsIsReal, setAppsIsReal] = useState(false);
-  const [loading, setLoading] = useState(true);
-
+  const [selectedAdjustment, setSelectedAdjustment] = useState<CarbonAdjustmentDTO | null>(null);
+  const [items, setItems] = useState<AdjustmentItemRow[]>([]);
+  const [certificates, setCertificates] = useState<AdjustmentCertificateRow[]>([]);
+  const [applications, setApplications] = useState<AdjustmentApplicationRow[]>([]);
+  const [gross, setGross] = useState<number | null>(null);
+  const scopeKey = `${orgId || ''}:${projectId || ''}`;
+  const [loadedScope, setLoadedScope] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    const params = { project_id: projectId, org_id: orgId };
-    setLoading(true);
-    Promise.all([
-      fetchAdjustmentItems(params),
-      fetchAdjustmentCertificates(params),
-      fetchAdjustmentApplications(params),
-    ]).then(([itemsRes, certsRes, appsRes]) => {
-      setRealItems(itemsRes.items);
-      setItemsIsReal(itemsRes.isReal);
-      setRealCerts(certsRes.certificates);
-      setCertsIsReal(certsRes.isReal);
-      setRealApps(appsRes.applications);
-      setAppsIsReal(appsRes.isReal);
-    }).finally(() => setLoading(false));
-  }, [projectId, orgId]);
-
-  // ── Decide which data to show: real DB or fallback mock ──────────────────
-  const adjustmentDTOs = useMemo(() => {
-    if (itemsIsReal && realItems.length > 0) {
-      return realItems.map(mapItemRowToDTO);
+    let active = true;
+    if (!isSupabaseConnected()) {
+      setScopeError('尚未連接資料服務，請聯絡管理員。'); setScopeLoading(false); return;
     }
-    return mockCarbonAdjustments;
-  }, [realItems, itemsIsReal]);
-
-  const summary = mockEmissionsSummary;
-  const ruleResults = mockRuleResults;
-
-  const typeSummaries = useMemo(() => {
-    const types: AdjustmentTypeCode[] = ['offset_credit', 'renewable_electricity', 'carbon_removal', 'carbon_storage'];
-    return types.map((type) => {
-      const items = adjustmentDTOs.filter((a) => a.adjustment_type === type);
-      const approvedTotal = items
-        .filter((a) => a.status === 'approved')
-        .reduce((sum, a) => sum + a.quantity_tco2e, 0);
-      return { type, count: items.length, total: approvedTotal };
-    });
-  }, [adjustmentDTOs]);
-
-  const tabs: { key: TabKey; label: string; icon: string; count?: number; isReal: boolean }[] = [
-    { key: 'items', label: t('carbonAdjustments.tabs.items'), icon: 'ri-list-check-2', count: adjustmentDTOs.length, isReal: itemsIsReal },
-    { key: 'certificates', label: t('carbonAdjustments.tabs.certificates'), icon: 'ri-file-shield-2-line', count: certsIsReal ? realCerts.length : adjustmentDTOs.filter(a => a.certificate_number).length, isReal: certsIsReal },
-    { key: 'applications', label: t('carbonAdjustments.tabs.applications'), icon: 'ri-send-plane-line', count: appsIsReal ? realApps.length : mockApplications.length, isReal: appsIsReal },
-    { key: 'ruleResult', label: t('carbonAdjustments.tabs.ruleResult'), icon: 'ri-scales-3-line', count: ruleResults.length, isReal: false },
+    Promise.all([getOrganizations(), getProjects()]).then(([orgs, projectRows]) => {
+      if (active) { setOrganizations(orgs); setProjects(projectRows); }
+    }).catch(() => { if (active) setScopeError('組織與專案載入失敗。'); })
+      .finally(() => { if (active) setScopeLoading(false); });
+    return () => { active = false; };
+  }, []);
+  const selectedOrg = organizations.find((org) => org.id === orgId);
+  const selectedProject = projects.find((project) => project.id === projectId && project.organization_id === orgId);
+  const validScope = Boolean(selectedOrg && (!projectId || selectedProject));
+  useEffect(() => {
+    let active = true;
+    setLoadedScope(null);
+    setItems([]); setCertificates([]); setApplications([]); setGross(null); setSelectedAdjustment(null); setError(null);
+    if (!validScope || !orgId) { setLoading(false); return; }
+    setLoading(true);
+    const params = { project_id: projectId, org_id: orgId };
+    Promise.all([fetchAdjustmentItems(params), fetchAdjustmentCertificates(params), fetchAdjustmentApplications(params), fetchGrossEmissions(params)])
+      .then(([itemResult, certificateResult, applicationResult, grossResult]) => {
+        if (!active) return;
+        itemResult.items.forEach(mapAdjustmentItem);
+        setItems(itemResult.items); setCertificates(certificateResult.certificates);
+        setApplications(applicationResult.applications); setGross(grossResult?.gross_tco2e ?? null);
+        setLoadedScope(scopeKey);
+      }).catch(() => { if (active) setError('調整資料載入失敗，請稍後再試。'); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [projectId, orgId, validScope, scopeKey]);
+  const adjustments = useMemo(() => items.map(mapAdjustmentItem), [items]);
+  const tabs: { key: TabKey; count?: number }[] = [
+    { key: 'items', count: items.length }, { key: 'certificates', count: certificates.length },
+    { key: 'applications', count: applications.length }, { key: 'ruleResult' },
   ];
-
   return (
     <AdminLayout>
       <div className="max-w-6xl mx-auto space-y-5">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{t('carbonAdjustments.title')}</h1>
-            <p className="text-sm text-gray-500 mt-1">{t('carbonAdjustments.subtitle')}</p>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap">
-              <i className="ri-upload-line"></i>
-              {t('carbonAdjustments.uploadCertificate')}
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 cursor-pointer whitespace-nowrap">
-              <i className="ri-add-line"></i>
-              {t('carbonAdjustments.addAdjustment')}
-            </button>
-          </div>
+        <div><h1 className="text-2xl font-bold text-gray-900">{t('carbonAdjustments.title')}</h1>
+          <p className="text-sm text-gray-500 mt-1">{t('carbonAdjustments.subtitle')}</p></div>
+        <div className="flex flex-wrap gap-4 rounded-xl border bg-white p-4">
+          <label className="text-sm">組織
+            <select aria-label="組織" value={orgId || ''} className="ml-2 rounded border p-2" onChange={(event) => {
+              const next = new URLSearchParams(searchParams); next.delete('projectId');
+              if (event.target.value) next.set('organizationId', event.target.value); else next.delete('organizationId');
+              setSearchParams(next);
+            }}><option value="">請選擇組織</option>{organizations.map((org) => <option key={org.id} value={org.id}>{org.display_name || org.legal_name}</option>)}</select>
+          </label>
+          <label className="text-sm">專案
+            <select aria-label="專案" disabled={!selectedOrg} value={projectId || ''} className="ml-2 rounded border p-2" onChange={(event) => {
+              const next = new URLSearchParams(searchParams);
+              if (event.target.value) next.set('projectId', event.target.value); else next.delete('projectId');
+              setSearchParams(next);
+            }}><option value="">所有專案</option>{projects.filter((project) => project.organization_id === orgId).map((project) => <option key={project.id} value={project.id}>{project.name}</option>)}</select>
+          </label>
         </div>
-
-        {/* ── Page-level data status overview ─────────────────────────────── */}
-        <div className="bg-white rounded-xl border border-gray-200 p-4">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">資料來源狀態 · Canonical Seed v2026.04.07</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="flex flex-col gap-1.5 p-3 bg-gray-50 rounded-lg">
-              <span className="text-xs text-gray-500 font-medium">總排放量（Gross）</span>
-              <DataBadge isReal={true} realLabel="Real · calculation_results" mockLabel="Mock" />
-              <span className="text-xs text-gray-400">從 Supabase 聚合真實計算結果</span>
+        {scopeLoading && <p role="status">{t('common.loading')}</p>}
+        {scopeError && <p role="alert" className="text-red-700">{scopeError}</p>}
+        {orgId && !scopeLoading && !validScope && <p role="alert">無法存取所選組織或專案，請重新選擇。</p>}
+        {!orgId && <p className="rounded-xl border bg-amber-50 p-4">請先從組織或專案選擇頁面進入。</p>}
+        {error && <p role="alert" className="rounded-xl border bg-red-50 p-4 text-red-700">{error}</p>}
+        {loading && <p role="status">{t('common.loading')}</p>}
+        {validScope && loadedScope === scopeKey && !loading && !error && <>
+          <div className="rounded-xl border bg-white p-5">
+            <p className="text-sm text-gray-500">{t('carbonAdjustments.summary.grossEmissions')}</p>
+            <p className="mt-2 text-2xl font-bold">{gross === null ? '—' : gross.toLocaleString()} <span className="text-sm font-normal">tCO₂e</span></p>
+            <p className="mt-2 text-sm text-gray-500">資格試算不代表已核准扣抵；此處不推算可宣稱淨排放量。</p>
+          </div>
+          <div className="rounded-2xl border bg-white overflow-hidden">
+            <div className="flex border-b overflow-x-auto">
+              {tabs.map((tab) => <button key={tab.key} onClick={() => setActiveTab(tab.key)}
+                className={`px-5 py-4 whitespace-nowrap text-sm ${activeTab === tab.key ? 'bg-teal-50 text-teal-700 border-b-2 border-teal-500' : 'text-gray-500'}`}>
+                {t(`carbonAdjustments.tabs.${tab.key}`)}{tab.count === undefined ? '' : ` (${tab.count})`}
+              </button>)}
             </div>
-            <div className="flex flex-col gap-1.5 p-3 bg-gray-50 rounded-lg">
-              <span className="text-xs text-gray-500 font-medium">調整項目 / 憑證</span>
-              <DataBadge
-                isReal={itemsIsReal}
-                realLabel="Real · carbon_adjustment_items"
-                mockLabel={loading ? '載入中...' : 'Mock · fallback fixture'}
-              />
-              <span className="text-xs text-gray-400">
-                {itemsIsReal ? `${realItems.length} 筆 canonical seed 資料` : 'DB 無資料，顯示 fixture fallback'}
-              </span>
-            </div>
-            <div className="flex flex-col gap-1.5 p-3 bg-gray-50 rounded-lg">
-              <span className="text-xs text-gray-500 font-medium">申請狀態</span>
-              <DataBadge
-                isReal={appsIsReal}
-                realLabel="Real · adjustment_applications"
-                mockLabel={loading ? '載入中...' : 'Mock · fallback fixture'}
-              />
-              <span className="text-xs text-gray-400">
-                {appsIsReal ? `${realApps.length} 筆 canonical seed 資料` : 'DB 無資料，顯示 fixture fallback'}
-              </span>
-            </div>
-            <div className="flex flex-col gap-1.5 p-3 bg-gray-50 rounded-lg">
-              <span className="text-xs text-gray-500 font-medium">規則引擎結果</span>
-              <DataBadge isReal={false} realLabel="Real" mockLabel="Mock · 待 adjustment-rule-result" />
-              <span className="text-xs text-gray-400">edge function 尚未部署</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Emissions Summary Panel */}
-        <EmissionsSummaryPanel summary={summary} />
-
-        {/* Type summary cards */}
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">調整類型摘要</p>
-            {!itemsIsReal && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
-                <i className="ri-error-warning-line text-xs"></i>
-                Fallback Mock
-              </span>
-            )}
-            {itemsIsReal && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
-                <i className="ri-checkbox-circle-line text-xs"></i>
-                Real · canonical seed
-              </span>
-            )}
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {typeSummaries.map((s) => (
-              <TypeSummaryCard key={s.type} type={s.type} count={s.count} total={s.total} isReal={itemsIsReal} />
-            ))}
-          </div>
-        </div>
-
-        {/* 4-Tab section */}
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-          {/* Tab bar */}
-          <div className="flex border-b border-gray-100 overflow-x-auto">
-            {tabs.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-5 py-3.5 text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border-b-2 ${
-                  activeTab === tab.key
-                    ? 'border-teal-500 text-teal-700 bg-teal-50/50'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
-                }`}
-              >
-                <i className={`${tab.icon} text-base`}></i>
-                {tab.label}
-                {tab.count !== undefined && (
-                  <span className={`px-1.5 py-0.5 rounded-full text-xs font-semibold ${
-                    activeTab === tab.key ? 'bg-teal-100 text-teal-700' : 'bg-gray-100 text-gray-500'
-                  }`}>
-                    {tab.count}
-                  </span>
-                )}
-                {/* Per-tab data origin indicator */}
-                {tab.isReal ? (
-                  <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-green-50 text-green-600 border border-green-100">
-                    Real
-                  </span>
-                ) : (
-                  <span className="px-1.5 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">
-                    Mock
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-
-          {/* Tab content */}
-          <div className="p-5">
-            {activeTab === 'items' && (
-              <ItemsTab
-                adjustments={adjustmentDTOs}
-                onSelect={setSelectedAdjustment}
-                isReal={itemsIsReal}
-              />
-            )}
-            {activeTab === 'certificates' && (
-              <CertificatesTab
-                adjustments={adjustmentDTOs}
-                realCertificates={certsIsReal ? realCerts : null}
-                isReal={certsIsReal}
-              />
-            )}
-            {activeTab === 'applications' && (
-              <ApplicationsTab
-                applications={mockApplications}
-                realApplications={appsIsReal ? realApps : null}
-                isReal={appsIsReal}
-              />
-            )}
-            {activeTab === 'ruleResult' && (
-              <RuleResultTab ruleResults={ruleResults} adjustments={adjustmentDTOs} />
-            )}
-          </div>
-        </div>
-
-        {/* Codex pending note — only show if still using mock */}
-        {(!itemsIsReal || !certsIsReal || !appsIsReal) && (
-          <div className="bg-white rounded-xl border border-gray-200 p-4 space-y-2">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">仍在 Fallback Mock 的區塊</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {!itemsIsReal && (
-                <div className="flex items-start gap-2 p-2.5 bg-amber-50 rounded-lg border border-amber-100">
-                  <i className="ri-error-warning-line text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
-                  <div>
-                    <p className="text-xs font-medium text-gray-700">Items tab</p>
-                    <p className="text-xs text-gray-400 mt-0.5">carbon_adjustment_items 有資料但 org/project 篩選無結果，顯示 fixture fallback</p>
-                  </div>
-                </div>
-              )}
-              {!certsIsReal && (
-                <div className="flex items-start gap-2 p-2.5 bg-amber-50 rounded-lg border border-amber-100">
-                  <i className="ri-error-warning-line text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
-                  <div>
-                    <p className="text-xs font-medium text-gray-700">Certificates tab</p>
-                    <p className="text-xs text-gray-400 mt-0.5">adjustment_certificates 有資料但篩選無結果</p>
-                  </div>
-                </div>
-              )}
-              {!appsIsReal && (
-                <div className="flex items-start gap-2 p-2.5 bg-amber-50 rounded-lg border border-amber-100">
-                  <i className="ri-error-warning-line text-amber-500 text-sm mt-0.5 flex-shrink-0"></i>
-                  <div>
-                    <p className="text-xs font-medium text-gray-700">Applications tab</p>
-                    <p className="text-xs text-gray-400 mt-0.5">adjustment_applications 有資料但篩選無結果</p>
-                  </div>
-                </div>
-              )}
-              <div className="flex items-start gap-2 p-2.5 bg-gray-50 rounded-lg">
-                <i className="ri-code-box-line text-teal-500 text-sm mt-0.5 flex-shrink-0"></i>
-                <div>
-                  <p className="text-xs font-medium text-gray-700 font-mono">adjustment-rule-result edge function</p>
-                  <p className="text-xs text-gray-400 mt-0.5">規則引擎 API，目前 fallback mock</p>
-                </div>
-              </div>
+            <div className="p-5">
+              {activeTab === 'items' && <ItemsTab adjustments={adjustments} onSelect={setSelectedAdjustment} isReal />}
+              {activeTab === 'certificates' && (certificates.length === 0 ? <p>尚無憑證資料。</p> :
+                <div className="overflow-auto"><table className="w-full text-sm"><thead><tr className="text-left border-b">
+                  <th className="p-3">憑證編號</th><th className="p-3">核證計畫</th><th className="p-3">可用量 tCO₂e</th><th className="p-3">審核狀態</th>
+                </tr></thead><tbody>{certificates.map((row) => <tr key={row.id} className="border-b">
+                  <td className="p-3">{row.certificate_number}</td><td className="p-3">{row.program}</td>
+                  <td className="p-3">{Number(row.retired_quantity_available_tco2e).toLocaleString()}</td>
+                  <td className="p-3">{t(`carbonAdjustments.approvalStatus.${row.approval_status}`, { defaultValue: '待確認' })}</td>
+                </tr>)}</tbody></table></div>)}
+              {activeTab === 'applications' && (applications.length === 0 ? <p>尚無申請資料。</p> :
+                <div className="overflow-auto"><table className="w-full text-sm"><thead><tr className="text-left border-b">
+                  <th className="p-3">申請用途</th><th className="p-3">申請量 tCO₂e</th><th className="p-3">合格量 tCO₂e</th><th className="p-3">狀態</th>
+                </tr></thead><tbody>{applications.map((row) => <tr key={row.id} className="border-b">
+                  <td className="p-3">{t(`carbonAdjustments.claimPurpose.${row.claim_purpose}`, { defaultValue: '待確認用途' })}</td>
+                  <td className="p-3">{Number(row.requested_quantity_tco2e).toLocaleString()}</td><td className="p-3">{Number(row.eligible_quantity_tco2e).toLocaleString()}</td>
+                  <td className="p-3">{t(`carbonAdjustments.applicationStatus.${row.status}`, { defaultValue: '待確認' })}</td>
+                </tr>)}</tbody></table></div>)}
+              {activeTab === 'ruleResult' && <RuleResultTab adjustments={adjustments} projectId={projectId} orgId={orgId} />}
             </div>
           </div>
-        )}
+        </>}
       </div>
-
-      {/* Detail Drawer */}
-      {selectedAdjustment && (
-        <AdjustmentDetailDrawer
-          adjustment={selectedAdjustment}
-          onClose={() => setSelectedAdjustment(null)}
-        />
-      )}
+      {loadedScope === scopeKey && selectedAdjustment && <AdjustmentDetailDrawer adjustment={selectedAdjustment} onClose={() => setSelectedAdjustment(null)} />}
     </AdminLayout>
   );
 }

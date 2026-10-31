@@ -12,11 +12,17 @@ export type AdjustmentTypeCode =
   | 'offset_credit'         // 碳權 / 減量額度
   | 'renewable_electricity' // 綠電 / 再生能源屬性憑證
   | 'carbon_removal'        // 碳移除
-  | 'carbon_storage';       // 碳儲存
+  | 'carbon_storage'
+  | 'regulatory_deduction';       // 碳儲存
 
 // ─── Claim purpose codes ──────────────────────────────────────────────────────
 // Codex canonical — never display raw code, always use i18n mapping.
 export type ClaimPurposeCode =
+  | 'taiwan_carbon_fee'
+  | 'voluntary_claim'
+  | 'ifrs_s2_note'
+  | 'esg_note'
+  | 'internal_management'
   | 'scope2_market_based'
   | 'voluntary_offset'
   | 'compliance_offset'
@@ -70,6 +76,8 @@ export type ProofDocumentStatus = 'not_uploaded' | 'uploaded' | 'verified' | 're
 
 // ─── Legacy status (kept for backward compat) ─────────────────────────────────
 export type AdjustmentStatusCode =
+  | 'inactive'
+  | 'revoked'
   | 'draft'
   | 'pending_review'
   | 'approved'
