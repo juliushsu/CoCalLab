@@ -1,0 +1,177 @@
+▶ review defects: direct-role metadata, canonical write path, deployment drift
+  ✖ P2-S3 rejects object/receipt size mismatch with 42501 (24.2629ms)
+  ✖ P2-S3 rejects object/receipt MIME mismatch with 42501 (7.9398ms)
+  ✖ P2-S3 rejects missing object metadata with 42501 (7.2086ms)
+  ✖ P3-a uppercase project INSERT is rejected before an object catalog row exists (2.3998ms)
+  ✖ P3-f readiness rejects same-name restrictive policy weakened to true (8.6172ms)
+  ✖ P3-f readiness rejects trigger recreated AFTER UPDATE only (5.1464ms)
+  ✖ P3-f readiness rejects helper body replaced (5.608ms)
+  ✖ P3-f readiness rejects helper search_path changed (5.6247ms)
+  ✖ P3-f readiness rejects helper execute ACL expanded (4.2986ms)
+✖ review defects: direct-role metadata, canonical write path, deployment drift (2263.5634ms)
+ℹ RED mode: original 001 only; no corrective migration loaded
+ℹ tests 10
+ℹ suites 0
+ℹ pass 0
+ℹ fail 10
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2405.1788
+
+✖ failing tests:
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:56:13
+✖ P2-S3 rejects object/receipt size mismatch with 42501 (24.2629ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:56:129)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:56:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:57:13
+✖ P2-S3 rejects object/receipt MIME mismatch with 42501 (7.9398ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:57:160)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:57:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:58:13
+✖ P2-S3 rejects missing object metadata with 42501 (7.2086ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:58:129)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:58:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:59:13
+✖ P3-a uppercase project INSERT is rejected before an object catalog row exists (2.3998ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:59:180)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:59:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:66:15
+✖ P3-f readiness rejects same-name restrictive policy weakened to true (8.6172ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:116)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:66:15
+✖ P3-f readiness rejects trigger recreated AFTER UPDATE only (5.1464ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:116)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:66:15
+✖ P3-f readiness rejects helper body replaced (5.608ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:116)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:66:15
+✖ P3-f readiness rejects helper search_path changed (5.6247ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:116)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at backend\tests\integration\storage-receipt-review-fixes.test.js:66:15
+✖ P3-f readiness rejects helper execute ACL expanded (4.2986ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  true !== false
+
+      at TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:116)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async TestContext.<anonymous> (<REPO>/backend/tests/integration/storage-receipt-review-fixes.test.js:66:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

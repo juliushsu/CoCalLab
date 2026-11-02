@@ -5,6 +5,8 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  authEpoch: number;
+  isAuthenticationCurrent: (epoch:number,userId:string)=>boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
 }

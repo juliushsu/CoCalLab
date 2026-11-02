@@ -1,0 +1,55 @@
+Browser tab: 1290544802, Title: "SYNTHETIC TEST ONLY — upload intake", URL: "http://127.0.0.1:4189/?case=project-switch-mid-upload".
+1 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=project-switch-mid-upload
+	2 container
+		3 heading SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls, Value: 1
+			4 text SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls
+		59 text fixture=project-switch-mid-upload; object writes=1; row writes=0; row saved=false
+		6 button Use generated SYNTHETIC PDF (no file system), ID: use-fixture
+		7 button Commit previously rejected synthetic row, ID: commit-fixture
+		8 button Allow receipt INSERT retry (does not create row), ID: allow-retry
+		9 container root
+			10 button Switch project route and release delayed synthetic upload
+			60 heading Upload Document, Value: 1
+				61 text Upload Document
+			62 button Document List
+			63 text This operation only saves the original file and its intake record. It does not run OCR or classification, or create drafts, calculations or reports.
+			64 text The current configured target is staging. Its services, permissions and availability have not been verified.
+			65 container
+				66 text Project
+				67 pop up button (collapsed, settable) Description: Project, Value: Synthetic second project (TEST-2), Secondary Actions: Expand
+					68 menu
+						69 Please select a project
+						70 Synthetic tenant A project (TEST-ONLY)
+						71 (selected) Synthetic second project (TEST-2)
+			72 container
+				73 text Document Type
+				74 pop up button (collapsed, settable) Description: Document Type, Value: Receipt, Secondary Actions: Expand
+					75 menu
+						76 (selected) Receipt
+						77 Invoice
+						78 Bill
+						79 Contract
+						80 Report
+						81 Other
+			82 container
+				83 text Select or drop files to save
+				84 button Select or drop files to save
+			85 container
+				86 text Take Photo
+				87 button Take Photo
+			88 container
+				89 text Choose from Gallery
+				90 button Choose from Gallery
+			91 text PDF, JPEG and PNG only; each file must be larger than 0 bytes and no larger than 10MB. File signatures, MIME types and extensions are checked for consistency.
+			92 button Manual Entry
+			93 container
+				94 text Excel / CSV Import  —  Coming Soon
+			95 text No files selected.
+	53 container
+		54 button logo icon
+			55 image logo icon
+			56 image
+		57 container
+			58 button
+
+The focused UI element is 10 button Switch project route and release delayed synthetic upload

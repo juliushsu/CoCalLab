@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import type { User, Session } from '@supabase/supabase-js';
 import { getSupabaseClient, isSupabaseConnected, getAuthStorage } from '../lib/supabase';
 import { AuthContext } from './authContextValue';
 import { currentSession as sessionIsCurrent } from '../services/navigationScope';
 import { createAuthSessionGate } from '../services/authSessionGate';
 import { signOutWithPersistence } from '../services/authPersistence';
+import { createAuthContinuity } from '../services/authContinuity';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -18,13 +19,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const authVersion = useRef(0);
   const authAction = useRef(0);
   const sessionGate = useRef(createAuthSessionGate<Session>());
+  const continuity=useRef(createAuthContinuity<Session>());
+  const [authEpoch,setAuthEpoch]=useState(0);
+  const isAuthenticationCurrent=useCallback((epoch:number,userId:string)=>continuity.current.isCurrent(epoch,userId),[]);
 
   useEffect(() => {
     let active = true;
     let unsubscribe: (() => void) | undefined;
-    const applySession = (currentSession: Session | null) => {
+    const applySession = (currentSession: Session | null,event='INITIAL_SESSION') => {
       if (!active) return;
       const valid = sessionGate.current.acceptEvent(currentSession);
+      setAuthEpoch(continuity.current.accept(event,valid));
       setSession(valid);
       setUser(valid?.user ?? null);
       setLoading(false);
@@ -37,9 +42,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     try {
       const supabase = getSupabaseClient();
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, currentSession) => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
         authVersion.current += 1;
-        applySession(currentSession);
+        applySession(currentSession,event);
       });
       unsubscribe = () => subscription.unsubscribe();
       const initialVersion = authVersion.current;
@@ -64,8 +69,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (!session) return;
     const expiry = session.expires_at! * 1000;
     const timer = setTimeout(() => {
-      if (!sessionIsCurrent(session)) {
+      if (continuity.current.latest()===session&&!sessionIsCurrent(session)) {
         authVersion.current += 1;
+        setAuthEpoch(continuity.current.invalidate());
         setSession(null); setUser(null);
       }
     }, Math.min(Math.max(expiry - Date.now(), 0), 2147483647));
@@ -77,6 +83,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const supabase = getSupabaseClient();
     authAction.current += 1;
     const attempt = sessionGate.current.beginSignIn();
+    setAuthEpoch(continuity.current.invalidate());
     authVersion.current += 1;
     try {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -86,10 +93,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       try { getAuthStorage().acceptLogin(accepted); }
       catch (error) {
         sessionGate.current.signOut();
+        setAuthEpoch(continuity.current.invalidate());
         setSession(null); setUser(null);
         throw error;
       }
       authVersion.current += 1;
+      setAuthEpoch(continuity.current.accept('EXPLICIT_SIGN_IN',accepted));
       setSession(accepted); setUser(accepted.user); setLoading(false); setAuthNotice('');
     } catch (error) {
       sessionGate.current.finishSignIn(attempt, null);
@@ -101,6 +110,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const action = ++authAction.current;
     const accessToken = session?.access_token ?? null;
     sessionGate.current.signOut();
+    setAuthEpoch(continuity.current.invalidate());
     authVersion.current += 1;
     setSession(null); setUser(null); setLoading(false);
     setAuthNotice('已停止此頁面的登入狀態，正在確認本機登出與本次工作階段撤銷。');
@@ -121,6 +131,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     user,
     session,
     loading,
+    authEpoch,
+    isAuthenticationCurrent,
     signIn,
     signOut,
   };

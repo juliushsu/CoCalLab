@@ -1,0 +1,53 @@
+Browser tab: 1290544802, Title: "SYNTHETIC TEST ONLY — upload intake", URL: "http://127.0.0.1:4189/?case=user-switch-mid-upload".
+0 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=user-switch-mid-upload
+	1 container
+		2 heading SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls, Value: 1
+			3 text SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls
+		50 text fixture=user-switch-mid-upload; object writes=1; row writes=0; row saved=false
+		5 button Use generated SYNTHETIC PDF (no file system), ID: use-fixture
+		6 button Commit previously rejected synthetic row, ID: commit-fixture
+		7 button Allow receipt INSERT retry (does not create row), ID: allow-retry
+		8 container root
+			51 heading Upload Document, Value: 1
+				52 text Upload Document
+			53 button Document List
+			54 text This operation only saves the original file and its intake record. It does not run OCR or classification, or create drafts, calculations or reports.
+			55 text The current configured target is staging. Its services, permissions and availability have not been verified.
+			56 container
+				57 text Project
+				58 pop up button (collapsed, settable) Description: Project, Value: Synthetic tenant A project (TEST-ONLY), Secondary Actions: Expand
+					59 menu
+						60 Please select a project
+						61 (selected) Synthetic tenant A project (TEST-ONLY)
+			62 container
+				63 text Document Type
+				64 pop up button (collapsed, settable) Description: Document Type, Value: Receipt, Secondary Actions: Expand
+					65 menu
+						66 (selected) Receipt
+						67 Invoice
+						68 Bill
+						69 Contract
+						70 Report
+						71 Other
+			72 container
+				73 text Select or drop files to save
+				74 button Select or drop files to save
+			75 container
+				76 text Take Photo
+				77 button Take Photo
+			78 container
+				79 text Choose from Gallery
+				80 button Choose from Gallery
+			81 text PDF, JPEG and PNG only; each file must be larger than 0 bytes and no larger than 10MB. File signatures, MIME types and extensions are checked for consistency.
+			82 button Manual Entry
+			83 container
+				84 text Excel / CSV Import  —  Coming Soon
+			85 text No files selected.
+	44 container
+		45 button logo icon
+			46 image logo icon
+			47 image
+		48 container
+			49 button
+
+The focused UI element is 0 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=user-switch-mid-upload
