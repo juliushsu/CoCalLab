@@ -6,5 +6,6 @@
 - Chrome synthetic React/SDK tests: normal refresh 1 object/1 receipt; login/logout/user/project changes 1/0; same-ID completion with no byte retransmission; local discard survives reload. Native chooser BLOCKED; live JWT/Storage/migration/restore NOT_RUN.
 - OPEN separately: server byte/hash attestation and forged-hash unique-key poisoning; historical hidden/conflicting rows. Preflight is compatibility only.
 - Next: use `CLAUDE_STORAGE_FIX_REREVIEW_20261102.md` for targeted read-only review of only the fixed diff. No new feature; no cloud migration/bucket creation/real upload/object cleanup without separate Owner authorization. 001 may create a missing documents bucket, so application requires explicit resource approval.
-- Next executable command (repo root): `git diff --check f76368953d4f952632f4356c4d7ccbccd46cd5c2..HEAD`.
+- Fixed repair source: `8cf7525d60755ea8adbdf3ba818fb26635efb8b0`; later commits pin review instructions only. Full original review is at `f763689`; no review verdict has been replaced.
+- Next executable command (repo root, read-only): `git diff f76368953d4f952632f4356c4d7ccbccd46cd5c2..8cf7525d60755ea8adbdf3ba818fb26635efb8b0 -- backend/supabase/migrations/202611020002_storage_receipt_review_fixes.sql frontend/readdy-app/src/services/documentIntake.ts frontend/readdy-app/src/services/authContinuity.ts frontend/readdy-app/src/services/intakeRecovery.ts`.
 - Prior export browser harness stash `pc-export-browser-harness-preserved-20261102` is preserved. Session work is finite; no background continuation claimed.
