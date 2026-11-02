@@ -378,6 +378,14 @@ Project dashboard reads:
 - `emission_activities`: `inclusion_status`, `final_scope`, `category`, `quantity`, `unit`
 - `calculation_results` (`is_latest=true`): `status`, `co2e_kg`, `warnings`
 
+### Activity detail read mapping (2026-11-02 candidate)
+
+- `/admin/activities/:activityId` reads that exact persisted `emission_activities.id` through the existing user-JWT Supabase client and RLS. Supplied `organization_id`/`organizationId` and `project_id`/`projectId` must agree, be UUIDs, constrain the query and match the returned row. No service-role client or fixture fallback is used.
+- The detail shows canonical `status` (`active|voided|archived`), `inclusion_status`, `quantity`/`unit`, `final_scope` and the separately labelled `suggested_scope`. It does not infer manual verification or monetary amounts from an activity. Joined project identity must match the activity's organization and project.
+- The second read selects only `calculation_results.is_latest=true` for the verified activity, organization and project. Calculation state is separate from activity state. Only a latest `calculated` row with valid nonnegative `co2e_kg` supplies emissions; zero remains zero. Missing/error/pending/superseded results remain explicitly unavailable. Displayed tonnes are `co2e_kg / 1000` once. Factor and input details come from the saved `factor_snapshot`/`input_snapshot`, never today's factor record.
+- Missing rows are an empty state; configuration, query, permission and malformed/mismatched-row failures are errors. Activity/scope/session changes clear the visible old request context and ignore late responses. These local source/SDK tests are not proof of live RLS enforcement.
+- Verification, editing and recalculation are not implemented by this read-only feature. Their controls are disabled and labelled unavailable; no local status change, fake user, success notification or database write is performed.
+
 Document review page reads:
 - `uploaded_documents`: `original_filename`, `ocr_status`, `received_date`
 - `extracted_document_drafts`: `status`, `classification_status`, `normalized_payload`, `suggested_category`, `suggested_scope`, `confidence_score`
