@@ -1,0 +1,16 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>CoCalLab synthetic export download test</title>
+<style>body{font:18px system-ui;max-width:800px;margin:40px auto}button{font-size:18px;padding:15px;margin:12px}</style>
+<h1>SYNTHETIC TEST ONLY — 匯出下載測試</h1>
+<p>此頁僅在測試目錄，未接入正式流程，不登入、不存取雲端。測試共用 formatter 與瀏覽器下載程式，不代表正式匯出授權或認證流程驗收。</p>
+<p>預期總量：2250 kgCO₂e／2.25 tCO₂e；JSON 保留 kg。</p>
+<button id="html">下載合成測試 HTML</button><button id="json">下載合成測試 JSON</button><p role="status" id="status">尚未測試</p>
+<script type="module">
+import {buildReportExport,prepareReportExportSnapshot}from'/src/services/reportExport.ts';
+import {saveReportFile}from'/src/services/reportDownload.ts';
+import {reportExportFixture}from'/tests/fixtures/reportExportFixture.ts';
+const row=reportExportFixture();const snapshot=prepareReportExportSnapshot(row,{reportId:row.id,projectId:row.project_id,organizationId:row.organization_id});
+for(const format of ['html','json'])document.getElementById(format).addEventListener('click',()=>{
+ try{const file=buildReportExport(snapshot,format);saveReportFile(file);document.getElementById('status').textContent='已提出 '+file.filename+' 的下載請求，需核對實際檔案。';}
+ catch(error){document.getElementById('status').textContent='下載失敗：'+String(error);}
+});
+</script></html>
