@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -12,7 +12,10 @@ import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
 import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ApiResponse } from '../../../services/types';
 import type { ReportVersion, ReportSection, ReportStatistics } from '../../../types/report';
-import { getReportData } from '../../../services/reportService';
+import { getReportData, getReportExportSnapshot } from '../../../services/reportService';
+import { buildReportExport, sameReportExportIdentity, type ReportExportFormat } from '../../../services/reportExport';
+import { useAuth } from '../../../hooks/useAuth';
+import { currentSession } from '../../../services/navigationScope';
 
 // Generate Report Response Type
 interface GenerateReportResponse {
@@ -51,6 +54,18 @@ export default function ReportPreviewPage() {
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState('');
+  const [exportNotice, setExportNotice] = useState('');
+  const { session } = useAuth();
+  const exportOperation = useRef({generation:0,busy:false});
+  useLayoutEffect(() => {
+    const operation = exportOperation.current;
+    operation.generation += 1;
+    operation.busy = false;
+    setIsExporting(false); setExportDialogOpen(false); setExportError(''); setExportNotice('');
+    return () => { operation.generation += 1; };
+  }, [reportId, searchParams, session]);
 
   // Generate Report States
   const [isGenerating, setIsGenerating] = useState(false);
@@ -265,23 +280,48 @@ export default function ReportPreviewPage() {
     }
   };
 
-  const handleExportReport = async (format: 'pdf' | 'docx' | 'html') => {
-    if (isReadonly) {
-      alert(t('subscription.readonlyBanner.message'));
-      setExportDialogOpen(false);
+  const handleExportReport = async (format: ReportExportFormat) => {
+    if (exportOperation.current.busy) return;
+    if (!currentSession(session) || !report || !sameReportExportIdentity(report.id, reportId) || report.report_status !== 'completed') {
+      setExportError('請先登入並載入已完成的報告。');
       return;
     }
-
+    // Both URL aliases must agree; never borrow another selected organization's snapshot.
+    const canonical = searchParams.getAll('organization_id');
+    const legacy = searchParams.getAll('organizationId');
+    if (canonical.length > 1 || legacy.length > 1 ||
+        (canonical.length && legacy.length && canonical[0].toLowerCase() !== legacy[0].toLowerCase()) ||
+        (canonical.length && !canonical[0]) || (legacy.length && !legacy[0])) {
+      setExportError('組織範圍不明確，請重新選擇組織。');
+      return;
+    }
+    const selectedOrganizationId = canonical[0] || legacy[0] || undefined;
+    const generation = exportOperation.current.generation;
+    exportOperation.current.busy = true;
+    setIsExporting(true); setExportError(''); setExportNotice('');
     try {
-      // TODO: 呼叫 Edge Function 匯出報告（等 Edge Function 部署後啟用）
-      // const { data } = await supabase.functions.invoke('export-report', {
-      //   body: { report_version_id: reportId, format },
-      // });
-      
-      console.log('Exporting report as:', format);
+      const snapshot = await getReportExportSnapshot(reportId, report.project_id, selectedOrganizationId);
+      if (generation !== exportOperation.current.generation || !currentSession(session)) return;
+      const exported = buildReportExport(snapshot, format);
+      const url = URL.createObjectURL(new Blob([exported.content], {type:exported.mimeType}));
+      const link = document.createElement('a');
+      link.href = url; link.download = exported.filename;
+      try {
+        document.body.appendChild(link);
+        link.click();
+      } finally {
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
       setExportDialogOpen(false);
-    } catch (err) {
-      console.error('Failed to export report:', err);
+      setExportNotice(`已建立 ${format.toUpperCase()} 下載，內容為報告 v${snapshot.report_version} 的已保存快照。`);
+    } catch (cause: unknown) {
+      if (generation === exportOperation.current.generation) setExportError(cause instanceof Error ? cause.message : '報告匯出失敗，請重試。');
+    } finally {
+      if (generation === exportOperation.current.generation) {
+        exportOperation.current.busy = false;
+        setIsExporting(false);
+      }
     }
   };
 
@@ -335,8 +375,8 @@ export default function ReportPreviewPage() {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setExportDialogOpen(true)}
-              disabled={isReadonly}
+              onClick={() => { setExportError(''); setExportDialogOpen(true); }}
+              disabled={isExporting || report.report_status !== 'completed'}
               className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
             >
               <i className="ri-download-line mr-2"></i>
@@ -344,6 +384,9 @@ export default function ReportPreviewPage() {
             </button>
           </div>
         </div>
+
+        {exportError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">{exportError}</p>}
+        {exportNotice && <p role="status" className="rounded-lg border border-teal-200 bg-teal-50 p-4 text-teal-800">{exportNotice}</p>}
 
         {/* Generate Error */}
         {generateError && (
@@ -562,36 +605,22 @@ export default function ReportPreviewPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {t('reports.exportDialog.selectFormat')}
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    <button
-                      onClick={() => handleExportReport('pdf')}
-                      disabled={isReadonly}
+                  <p className="mb-3 text-sm text-gray-500">匯出已保存且完成的資料快照。PDF 與 Word 尚未提供；不會生成未建置的章節。</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(['html','json'] as const).map(format => <button
+                      key={format}
+                      onClick={() => void handleExportReport(format)}
+                      disabled={isExporting}
                       className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <i className="ri-file-pdf-line text-2xl text-red-600 mb-1"></i>
-                      <p className="text-sm font-medium text-gray-900">PDF</p>
-                    </button>
-                    <button
-                      onClick={() => handleExportReport('docx')}
-                      disabled={isReadonly}
-                      className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <i className="ri-file-word-line text-2xl text-blue-600 mb-1"></i>
-                      <p className="text-sm font-medium text-gray-900">Word</p>
-                    </button>
-                    <button
-                      onClick={() => handleExportReport('html')}
-                      disabled={isReadonly}
-                      className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <i className="ri-file-code-line text-2xl text-orange-600 mb-1"></i>
-                      <p className="text-sm font-medium text-gray-900">HTML</p>
-                    </button>
+                    >{format.toUpperCase()}</button>)}
                   </div>
+                  {isExporting && <p role="status" className="mt-3 text-sm text-teal-700">正在讀取已保存的報告快照...</p>}
+                  {exportError && <p role="alert" className="mt-3 text-sm text-red-700">{exportError}</p>}
                 </div>
               </div>
               <div className="mt-6 flex justify-end gap-3">
                 <button
+                  disabled={isExporting}
                   onClick={() => setExportDialogOpen(false)}
                   className="px-4 py-2 text-gray-700 text-sm font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors whitespace-nowrap"
                 >
