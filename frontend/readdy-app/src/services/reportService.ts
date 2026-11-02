@@ -1,4 +1,5 @@
-import { REPORT_EXPORT_FIELDS, prepareReportExportSnapshot } from './reportExport';
+import { readPersistedReportSnapshot } from './reportExportRead';
+import { REPORT_EXPORT_AUTHORIZATION_PENDING } from './reportDownload';
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import { adaptReportData, type ReportRow } from './reportAdapter';
 
@@ -17,15 +18,14 @@ export async function getReportData(reportId: string) {
 }
 
 /** Download only an exact persisted completed snapshot through user JWT + RLS. */
-export async function getReportExportSnapshot(reportId:string, projectId:string, organizationId?:string) {
+export async function getReportExportSnapshot(reportId:string, projectId:string, _organizationId?:string): ReturnType<typeof readPersistedReportSnapshot> {
   if (!reportId || !projectId) throw new Error('請先載入要匯出的報告與專案。');
   if (!isSupabaseConnected()) throw new Error('報告資料服務尚未設定，無法匯出。');
-  let query = getSupabaseClient().from('report_generations')
-    .select(REPORT_EXPORT_FIELDS.join(','))
-    .eq('id',reportId).eq('project_id',projectId).eq('status','completed');
-  if (organizationId) query = query.eq('organization_id',organizationId);
-  const {data,error} = await query.maybeSingle();
-  if (error) throw new Error(error.message || '無法讀取報告匯出快照。');
-  if (!data) throw new Error('找不到已完成且可存取的報告快照。');
-  return prepareReportExportSnapshot(data,{reportId,projectId,organizationId});
+  // No server export entitlement exists at this pinned candidate. Do not enable
+  // downloads from ordinary SELECT access or from a client-controlled flag.
+  throw new Error(REPORT_EXPORT_AUTHORIZATION_PENDING);
 }
+
+// Preserve the scoped persisted reader for an eventual CTO-approved export
+// endpoint; it deliberately does not grant download permission.
+export { readPersistedReportSnapshot };

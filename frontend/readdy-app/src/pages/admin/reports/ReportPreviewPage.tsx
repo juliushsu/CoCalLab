@@ -13,7 +13,8 @@ import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ApiResponse } from '../../../services/types';
 import type { ReportVersion, ReportSection, ReportStatistics } from '../../../types/report';
 import { getReportData, getReportExportSnapshot } from '../../../services/reportService';
-import { buildReportExport, sameReportExportIdentity, type ReportExportFormat } from '../../../services/reportExport';
+import { sameReportExportIdentity, type ReportExportFormat } from '../../../services/reportExport';
+import { exportCurrentSnapshot, saveReportFile, reportExportBlockReason } from '../../../services/reportDownload';
 import { useAuth } from '../../../hooks/useAuth';
 import { currentSession } from '../../../services/navigationScope';
 
@@ -78,7 +79,15 @@ export default function ReportPreviewPage() {
 
   // 訂閱狀態檢查
   const organizationId = searchParams.get('organization_id') || undefined;
-  const { status, isReadonly, reason, loading: statusLoading } = useSubscriptionStatus(organizationId);
+  const { status, isReadonly, reason, loading: statusLoading, error: subscriptionError } = useSubscriptionStatus(organizationId);
+  const exportBlockedReason = reportExportBlockReason({ loading: statusLoading, error: subscriptionError, isReadonly });
+  const exportContext = useRef({ statusLoading, subscriptionError, isReadonly });
+  useLayoutEffect(() => {
+    exportContext.current = { statusLoading, subscriptionError, isReadonly };
+    exportOperation.current.generation += 1;
+    exportOperation.current.busy = false;
+    setIsExporting(false);
+  }, [statusLoading, subscriptionError, isReadonly]);
 
   const loadSequence = useRef(0);
   const loadReportData = useCallback(async () => {
@@ -282,6 +291,8 @@ export default function ReportPreviewPage() {
 
   const handleExportReport = async (format: ReportExportFormat) => {
     if (exportOperation.current.busy) return;
+    const blockedReason = reportExportBlockReason({ loading: statusLoading, error: subscriptionError, isReadonly });
+    if (blockedReason) { setExportError(blockedReason); return; }
     if (!currentSession(session) || !report || !sameReportExportIdentity(report.id, reportId) || report.report_status !== 'completed') {
       setExportError('請先登入並載入已完成的報告。');
       return;
@@ -300,21 +311,15 @@ export default function ReportPreviewPage() {
     exportOperation.current.busy = true;
     setIsExporting(true); setExportError(''); setExportNotice('');
     try {
-      const snapshot = await getReportExportSnapshot(reportId, report.project_id, selectedOrganizationId);
-      if (generation !== exportOperation.current.generation || !currentSession(session)) return;
-      const exported = buildReportExport(snapshot, format);
-      const url = URL.createObjectURL(new Blob([exported.content], {type:exported.mimeType}));
-      const link = document.createElement('a');
-      link.href = url; link.download = exported.filename;
-      try {
-        document.body.appendChild(link);
-        link.click();
-      } finally {
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      }
+      const downloaded = await exportCurrentSnapshot(
+        () => getReportExportSnapshot(reportId, report.project_id, selectedOrganizationId), format,
+        () => generation === exportOperation.current.generation && currentSession(session) &&
+          !reportExportBlockReason({loading:exportContext.current.statusLoading,error:exportContext.current.subscriptionError,isReadonly:exportContext.current.isReadonly}),
+        saveReportFile,
+      );
+      if (!downloaded) return;
       setExportDialogOpen(false);
-      setExportNotice(`已建立 ${format.toUpperCase()} 下載，內容為報告 v${snapshot.report_version} 的已保存快照。`);
+      setExportNotice(`已向瀏覽器提出 ${format.toUpperCase()} 下載請求，請確認下載結果。`);
     } catch (cause: unknown) {
       if (generation === exportOperation.current.generation) setExportError(cause instanceof Error ? cause.message : '報告匯出失敗，請重試。');
     } finally {
@@ -376,7 +381,8 @@ export default function ReportPreviewPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => { setExportError(''); setExportDialogOpen(true); }}
-              disabled={isExporting || report.report_status !== 'completed'}
+              disabled={Boolean(exportBlockedReason) || isExporting || report.report_status !== 'completed'}
+              title={exportBlockedReason}
               className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
             >
               <i className="ri-download-line mr-2"></i>
@@ -387,6 +393,7 @@ export default function ReportPreviewPage() {
 
         {exportError && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-800">{exportError}</p>}
         {exportNotice && <p role="status" className="rounded-lg border border-teal-200 bg-teal-50 p-4 text-teal-800">{exportNotice}</p>}
+        {exportBlockedReason && <p role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-amber-900">{exportBlockedReason}</p>}
 
         {/* Generate Error */}
         {generateError && (
@@ -610,7 +617,7 @@ export default function ReportPreviewPage() {
                     {(['html','json'] as const).map(format => <button
                       key={format}
                       onClick={() => void handleExportReport(format)}
-                      disabled={isExporting}
+                      disabled={Boolean(exportBlockedReason) || isExporting}
                       className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >{format.toUpperCase()}</button>)}
                   </div>
