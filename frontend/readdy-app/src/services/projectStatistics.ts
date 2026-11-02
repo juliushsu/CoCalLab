@@ -5,10 +5,10 @@ import { canonicalUuid, resolveNavigationScope } from './navigationScope.ts';
 export interface ProjectSelection {projectId:string;organizationId?:string}
 export interface ProjectOverview {project:Project;statistics:ProjectStatistics}
 /** Keep tiny positive emissions visibly distinct from a true zero. */
-export function formatProjectEmissionTonnes(value:number|null):string {
- if(value===null||!Number.isFinite(value)||value<0)return '未知';
+export function formatProjectEmissionTonnes(value:number|null,locale='zh-TW',unknown='未知'):string {
+ if(value===null||!Number.isFinite(value)||value<0)return unknown;
  if(value>0&&value<0.000001)return value.toExponential(4);
- return value.toLocaleString('zh-TW',{maximumFractionDigits:6});
+ return value.toLocaleString(locale,{maximumFractionDigits:6});
 }
 type Client = Pick<SupabaseClient,'from'>;
 const record=(value:unknown):value is Record<string,unknown> => value!==null&&typeof value==='object'&&!Array.isArray(value);

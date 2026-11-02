@@ -16,7 +16,8 @@ import EmptyState from '../../../components/base/EmptyState';
 import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 
 export default function ProjectOverviewPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale=i18n.resolvedLanguage||i18n.language;
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ export default function ProjectOverviewPage() {
   const [retry,setRetry]=useState(0);
   const search=searchParams.toString();
   const key=useMemo(()=>({id,search,session,retry}),[id,search,session,retry]);
-  type ReadState={status:'success';detail:ProjectOverview|null}|{status:'error';message:string};
+  type ReadState={status:'success';detail:ProjectOverview|null}|{status:'error';reason:'signIn'|'sessionExpired'|'readFailed'|'invalidScope'};
   const [result,setResult]=useState<{key:typeof key;value:ReadState}|null>(null);
   const state=matchingProjectOverviewState(result,key);
   const organizationId=state?.status==='success'?state.detail?.project.organization_id:undefined;
@@ -34,17 +35,17 @@ export default function ProjectOverviewPage() {
     let active=true;
     if(authLoading)return()=>{active=false;};
     if(!currentSession(key.session)){
-      setResult({key,value:{status:'error',message:'請先登入有效的工作階段。'}});
+      setResult({key,value:{status:'error',reason:'signIn'}});
       return()=>{active=false;};
     }
     try{
       const selected=projectOverviewSelection(key.id,key.search);
       void getProjectOverview(selected).then(detail=>{
-        if(active)setResult({key,value:currentSession(key.session)?{status:'success',detail}:{status:'error',message:'工作階段已失效，請重新登入。'}});
-      }).catch(cause=>{
-        if(active)setResult({key,value:{status:'error',message:cause instanceof Error?cause.message:'專案統計讀取失敗。'}});
+        if(active)setResult({key,value:currentSession(key.session)?{status:'success',detail}:{status:'error',reason:'sessionExpired'}});
+      }).catch(()=>{
+        if(active)setResult({key,value:{status:'error',reason:'readFailed'}});
       });
-    }catch(cause){setResult({key,value:{status:'error',message:cause instanceof Error?cause.message:'專案範圍無效。'}});}
+    }catch{setResult({key,value:{status:'error',reason:'invalidScope'}});}
     return()=>{active=false;};
   },[key,authLoading]);
   const reload=()=>setRetry(value=>value+1);
@@ -77,14 +78,14 @@ export default function ProjectOverviewPage() {
   if (authLoading || !state) {
     return (
       <AdminLayout>
-        <div role="status" aria-label="正在讀取專案與統計"><LoadingState /></div>
+        <div role="status" aria-label={t('projects.overview.statistics.loading')}><LoadingState message={t('projects.overview.statistics.loading')} /></div>
       </AdminLayout>
     );
   }
 
-  if(!currentSession(session))return <AdminLayout><ErrorState message="工作階段已失效，請重新登入。" /></AdminLayout>;
-  if(state.status==='error')return <AdminLayout><ErrorState message={state.message} onRetry={reload} /></AdminLayout>;
-  if(!project||!statistics)return <AdminLayout><EmptyState title="找不到可存取的專案" description="專案不存在，或不在目前可存取的組織範圍。" actionLabel="重新讀取" onAction={reload}/></AdminLayout>;
+  if(!currentSession(session))return <AdminLayout><ErrorState message={t('projects.overview.statistics.sessionExpired')} /></AdminLayout>;
+  if(state.status==='error')return <AdminLayout><ErrorState message={t(`projects.overview.statistics.${state.reason}`)} onRetry={reload} /></AdminLayout>;
+  if(!project||!statistics)return <AdminLayout><EmptyState title={t('projects.overview.statistics.emptyTitle')} description={t('projects.overview.statistics.emptyDescription')} actionLabel={t('projects.overview.statistics.retry')} onAction={reload}/></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -136,8 +137,8 @@ export default function ProjectOverviewPage() {
               <p className="text-sm font-medium text-gray-900">{project.organization_name || '-'}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">盤查邊界</p>
-              <p className="text-sm font-medium text-gray-900">{{operational_control:'營運控制',financial_control:'財務控制',equity_share:'股權比例'}[project.boundary_type] ?? '未知'}</p>
+              <p className="text-xs text-gray-500 mb-1">{t('projects.overview.statistics.boundary')}</p>
+              <p className="text-sm font-medium text-gray-900">{['operational_control','financial_control','equity_share'].includes(project.boundary_type)?t(`projects.overview.statistics.boundaryTypes.${project.boundary_type}`):t('projects.overview.statistics.unknown')}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 mb-1">{t('common.status')}</p>
@@ -146,7 +147,7 @@ export default function ProjectOverviewPage() {
             <div>
               <p className="text-xs text-gray-500 mb-1">{t('projects.fields.reporting_period')}</p>
               <p className="text-sm font-medium text-gray-900">
-                {new Date(project.reporting_start_date).toLocaleDateString()} - {new Date(project.reporting_end_date).toLocaleDateString()}
+                {new Date(project.reporting_start_date).toLocaleDateString(locale)} - {new Date(project.reporting_end_date).toLocaleDateString(locale)}
               </p>
             </div>
             {project.baseline_year && (
@@ -163,7 +164,7 @@ export default function ProjectOverviewPage() {
             )}
             <div>
               <p className="text-xs text-gray-500 mb-1">{t('common.created_at')}</p>
-              <p className="text-sm font-medium text-gray-900">{new Date(project.created_at).toLocaleDateString()}</p>
+              <p className="text-sm font-medium text-gray-900">{new Date(project.created_at).toLocaleDateString(locale)}</p>
             </div>
           </div>
           {project.description && (
@@ -206,7 +207,7 @@ export default function ProjectOverviewPage() {
                 <i className="ri-fire-line text-orange-600 text-xl"></i>
               </div>
               <span className="text-2xl font-semibold text-gray-900">
-                {formatProjectEmissionTonnes(statistics.total_emissions)}
+                {formatProjectEmissionTonnes(statistics.total_emissions,locale,t('projects.overview.statistics.unknown'))}
               </span>
             </div>
             <p className="text-sm text-gray-600">{t('projects.overview.total_emissions')}</p>
@@ -222,7 +223,7 @@ export default function ProjectOverviewPage() {
                 {statistics.inclusion_rate === null ? '—' : statistics.inclusion_rate+'%'}
               </span>
             </div>
-            <p className="text-sm text-gray-600">目前使用中活動納入率</p>
+            <p className="text-sm text-gray-600">{t('projects.overview.statistics.inclusionRate')}</p>
             <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-teal-600 h-2 rounded-full transition-all"
@@ -233,11 +234,11 @@ export default function ProjectOverviewPage() {
         </div>
 
         <div role="status" className="mb-6 rounded-lg border border-teal-100 bg-teal-50 p-4 text-sm text-gray-700">
-          <p>僅統計目前帳號可存取的專案資料。排放量採使用中且已納入活動的最新成功快照，不含舊版本、排除與封存活動。</p>
-          <p>使用中 {statistics.active_activities} 筆；已納入 {statistics.included_activities} 筆，其中有效計算 {statistics.calculated_activities} 筆。
-          {statistics.total_emissions_kg === null ? ' 尚未取得完整排放量，不以部分計算或零代替。' : ' 已保存總量 '+statistics.total_emissions_kg+' kgCO₂e，換算一次顯示為 tCO₂e。'}</p>
-          <p>納入率是活動分類比例，不代表盤查、人工確認或商業驗收完成。已完成報告：{statistics.report_generated ? '有' : '尚無可存取記錄'}。</p>
-          <button type="button" onClick={reload} className="mt-2 underline">重新讀取專案與統計</button>
+          <p>{t('projects.overview.statistics.scopeNote')}</p>
+          <p>{t('projects.overview.statistics.counts',{active:statistics.active_activities,included:statistics.included_activities,calculated:statistics.calculated_activities})}{' '}
+          {statistics.total_emissions_kg===null?t('projects.overview.statistics.incompleteTotal'):t('projects.overview.statistics.savedTotal',{kg:statistics.total_emissions_kg.toLocaleString(locale,{maximumSignificantDigits:15})})}</p>
+          <p>{t('projects.overview.statistics.rateNote')}{' '}{t('projects.overview.statistics.reportStatus',{status:t(statistics.report_generated?'projects.overview.statistics.reportAvailable':'projects.overview.statistics.reportUnavailable')})}</p>
+          <button type="button" onClick={reload} className="mt-2 underline">{t('projects.overview.statistics.retry')}</button>
         </div>
 
         {/* Quick Actions */}
@@ -257,7 +258,7 @@ export default function ProjectOverviewPage() {
             </button>
 
             <button
-              onClick={() => navigate(`/admin/activities?project_id=${id}&organization_id=${organizationId}`)}
+              onClick={() => navigate(`/admin/activities?projectId=${id}&organizationId=${organizationId}`)}
               className="p-4 border border-gray-200 rounded-lg hover:border-teal-500 hover:bg-teal-50 transition-all text-left group cursor-pointer"
             >
               <div className="w-10 h-10 flex items-center justify-center bg-teal-50 rounded-lg mb-3 group-hover:bg-teal-100 transition-colors">

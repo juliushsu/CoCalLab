@@ -11,8 +11,10 @@ UAT stays `7dccd5452152f2495d10ad1437d5d03215166065`. No merge/deployment/cloud 
 - Inclusion ratio is explicitly not business completion; canonical boundary_type replaces nonexistent project_type. Action links preserve tenant/project context.
 
 ## Actual checks
-Frontend **78/78 PASS** (14 new statistics cases); full type-check, full ESLint zero warnings, Vite build and diff check PASS.
+Frontend **81/81 PASS** (14 statistics cases plus 3 localization cases); full type-check, full ESLint zero warnings, Vite build and diff check PASS.
 Tests use installed Supabase SDK with intercepted synthetic fetch: JWT/filters/GET/HEAD, exact counts/latest fields, zero/unknown/partial, all-read 403/503/network errors, cross-scope results, capped/changing/repeated pages and stale context. Fixtures remain in tests. Independent source review findings were fixed.
+GitHub's localization P2 is fixed: all new overview labels, loading/error/empty/retry states, boundaries and explanatory text resolve through zh/en/ja resources. Error state stores a reason, so a locale change translates it without refetching; raw service diagnostics are not shown as untranslated product text. Numeric/date presentation follows the selected locale and retains tiny positive values. The activity shortcut also uses the destination's actual legacy parameter names to retain project/tenant scope.
+Localization tests cover every new key in all three languages, interpolation, runtime language changes and unknown/zero/tiny numeric display. Mounted multilingual project UI is still unverified.
 Backend/SQL unchanged; no new backend/SQL count claimed.
 
 Not verified: mounted React/browser, live authenticated RLS, customer data/UAT. REST multi-table/multi-page reads are non-atomic; count/duplicate checks cannot detect all same-count concurrent updates.
