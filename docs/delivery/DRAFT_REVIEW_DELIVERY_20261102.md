@@ -1,6 +1,6 @@
 # Manual draft review delivery — 2026-11-02
 
-Candidate: `codex/draft-review-contract-20261102`, based on PR #12 at `57a76a63a94befcc8a001f5569c1d91e6464e65a`.
+Candidate: `codex/draft-review-contract-20261102`, includes PR #12 at `1d4dbdba8f496ded9d175b5745335005cbffbfb4`.
 UAT remains `7dccd5452152f2495d10ad1437d5d03215166065`; release HOLD. No merge, deployment or cloud writes.
 
 ## Delivered behavior
@@ -14,7 +14,7 @@ UAT remains `7dccd5452152f2495d10ad1437d5d03215166065`; release HOLD. No merge, 
 
 ## Actual verification
 
-Frontend **96/96 PASS**, including 18 draft-review cases; full app type-check, full ESLint with zero warnings, Vite build and `git diff --check` PASS. The follow-up destination-contract regression checks the exact legacy activity-list parameters as well as canonical upload parameters.
+Combined frontend **99/99 PASS**, including 18 draft-review cases and PR #12's 3 localization cases; full app type-check, full ESLint with zero warnings, Vite build and `git diff --check` PASS. The follow-up destination-contract regression checks the exact legacy activity-list parameters as well as canonical upload parameters.
 
 Commands from `frontend/readdy-app`:
 
