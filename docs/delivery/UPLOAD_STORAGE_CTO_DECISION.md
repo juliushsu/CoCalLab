@@ -1,6 +1,7 @@
 # 安全上傳與收件紀錄：CTO 核對文件
 
 日期：2026-11-02。來源基準：`be23b32654c222cb51d7458669cf6d93364fc0fd`。
+下列為 PR #14 的原相容性方案；後續審查修復改用契約 `20261102.2`，具體修正與 OPEN 邊界見 [修復交付](STORAGE_REVIEW_FIX_DELIVERY_20261102.md)。S3／S4 及發布 HOLD 未解除。完整原審查已由使用者公開至固定版本 [f763689](https://github.com/juliushsu/CoCalLab/blob/f76368953d4f952632f4356c4d7ccbccd46cd5c2/docs/delivery/CLAUDE_STORAGE_REVIEW_REPLY_20261102.md)，不需依賴跨主機本機路徑。
 本公開版本只含 repo 來源、通用路徑與工程方案；不含帳戶、專案 ref、企業資料、憑證、JWT、金鑰或付款資料。
 
 ## 授權與驗證邊界

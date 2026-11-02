@@ -363,6 +363,12 @@ export const cocal = {
       reference: '本次收件參考編號',
       saveReference: '下載本次參考回執',
       recheck: '唯讀核對保存結果（不重新送出）',
+      completeRegistration: '補登記收件（不重傳檔案）',
+      discardReference: '放棄本機恢復參考',
+      discardMessage: '這只會清除目前使用者、專案與本次收件的本機恢復參考，不刪除伺服器檔案或資料列，也不能取消已送出的請求。建議先下載並保留參考回執。',
+      discardConfirm: '只放棄此本機參考',
+      quarantined: '{{count}} 筆損壞參考已逐筆隔離保留；其他恢復與新上傳不受這些格式損壞影響。這不代表已清理任何伺服器資料。',
+      alternateReceipt: '已確認另一分頁或既有的相同內容收件。本次未登記物件的本機參考仍保留，伺服器檔案未刪除。',
       working: '正在保存或核對，請稍候',
       states: {
         pending: '等待保存',

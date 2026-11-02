@@ -1,0 +1,20 @@
+Browser tab: 1290544822, Title: "SYNTHETIC ONLY — real AuthProvider + upload", URL: "http://127.0.0.1:4190/?case=expiry".
+0 AXWebArea SYNTHETIC ONLY — real AuthProvider + upload, URL: 127.0.0.1:4190/?case=expiry
+	1 container
+		2 heading SYNTHETIC ONLY — real AuthProvider / SDK; intercepted .invalid requests, Value: 1
+			3 text SYNTHETIC ONLY — real AuthProvider / SDK; intercepted .invalid requests
+		4 text case=expiry; object writes=0; receipt writes=0; saved=false; refreshes=0; stored MIME=none
+		5 button Select browser-memory SYNTHETIC JPEG (image/jpg), ID: use-fixture
+		6 container
+			7 text AuthProvider session= present ; current= false ; operation current= false ; epoch= 4 ;  synthetic login rejected
+			8 button Fail explicit synthetic sign-in
+			9 button Start short-lived synthetic session (12 seconds)
+			10 button Sign out synthetic session
+	11 container
+		12 button logo icon
+			13 image logo icon
+			14 image
+		15 container
+			16 button
+
+The focused UI element is 8 button Fail explicit synthetic sign-in

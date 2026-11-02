@@ -27,6 +27,7 @@ export interface IntakeAttempt extends IntakeScope {
 export interface IntakeReceipt {
     attempt: IntakeAttempt;
     existing: boolean;
+    recoveryReference?:IntakeAttempt;
     record: {
         uploadedByUserId: string | null;
         documentType: string;
@@ -89,7 +90,7 @@ export async function getIntakeAccess(client: SupabaseClient, input: IntakeScope
     const row = contract.data[0];
     if (!record(row) || uuid(row.project_id) !== scope.projectId || uuid(row.organization_id) !== scope.organizationId)
         throw new IntakeError('scope');
-    if (row.contract_version !== '20261102' || typeof row.can_write !== 'boolean')
+    if (row.contract_version !== '20261102.2' || typeof row.can_write !== 'boolean')
         throw new IntakeError('read');
     if (!row.can_write)
         throw new IntakeError('readonly');
@@ -119,7 +120,7 @@ async function verifyOriginal(client: SupabaseClient, receipt: IntakeReceipt, is
     try {
         const original = await client.storage.from(attempt.storageBucket).download(attempt.storagePath);
         current(isCurrent, attempt);
-        if (original.error || !original.data || original.data.size !== attempt.fileSize)
+        if (original.error || !original.data || (original.data.size !== attempt.fileSize || original.data.type !== attempt.mimeType))
             throw new IntakeError('uncertain', attempt, { cause: original.error });
         const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await original.data.arrayBuffer())), byte => byte.toString(16).padStart(2, '0')).join('');
         current(isCurrent, attempt);
@@ -142,119 +143,94 @@ async function fileIdentity(file: File) {
     if (!pdf && !png && !jpg)
         throw new IntakeError('file');
     const sha256Hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), byte => byte.toString(16).padStart(2, '0')).join('');
-    return { sha256Hash, extension: pdf ? 'pdf' : png ? 'png' : 'jpg', mimeType: pdf ? 'application/pdf' : png ? 'image/png' : 'image/jpeg' };
+    const mimeType = pdf ? 'application/pdf' : png ? 'image/png' : 'image/jpeg';
+    // The SDK turns File bodies into FormData, whose part type takes precedence
+    // over contentType. Send the validated bytes with the canonical type while
+    // preserving the original filename and file contents.
+    const uploadFile = new File([bytes], file.name, { type: mimeType, lastModified: file.lastModified });
+    return { sha256Hash, extension: pdf ? 'pdf' : png ? 'png' : 'jpg', mimeType, uploadFile };
 }
-/** Read back an uncertain attempt without retrying an upload, inserting or deleting. */
-export async function reconcileIntake(client: SupabaseClient, attempt: IntakeAttempt, isCurrent = () => true, journal?: IntakeRecovery): Promise<IntakeReceipt | null> {
-    current(isCurrent, attempt);
-    const { data, error } = await client.from('uploaded_documents').select(receiptColumns).eq('id', uuid(attempt.documentId)).eq('organization_id', uuid(attempt.organizationId)).eq('project_id', uuid(attempt.projectId)).maybeSingle();
-    current(isCurrent, attempt);
-    if (error)
-        throw new IntakeError('uncertain', attempt, { cause: error });
-    if (data === null)
-        return null;
-    const receipt = receiptRow(data, attempt, false, true);
-    await verifyOriginal(client, receipt, isCurrent);
-    try {
-        journal?.clear(attempt);
+function clearReference(journal:IntakeRecovery|undefined,attempt:IntakeAttempt) {
+    try{journal?.clear(attempt);}catch{/* Server confirmation remains valid; local reference is retained if cleanup fails. */}
+}
+async function existingByHash(client:SupabaseClient,attempt:IntakeAttempt,isCurrent:()=>boolean):Promise<IntakeReceipt|null> {
+    current(isCurrent,attempt);
+    const response=await client.from('uploaded_documents').select(receiptColumns).eq('organization_id',attempt.organizationId).eq('project_id',attempt.projectId).eq('sha256_hash',attempt.sha256Hash).maybeSingle();
+    current(isCurrent,attempt);
+    if(response.error)throw new IntakeError('read',attempt,{cause:response.error});
+    if(response.data===null)return null;
+    try{const receipt=receiptRow(response.data,attempt,true);await verifyOriginal(client,receipt,isCurrent);return receipt;}
+    catch(cause){if(cause instanceof IntakeError&&cause.code==='context')throw cause;throw new IntakeError('duplicate',attempt,{cause});}
+}
+/** Read-only reconciliation, including another tab's completed same-content row. */
+export async function reconcileIntake(client:SupabaseClient,attempt:IntakeAttempt,isCurrent=()=>true,journal?:IntakeRecovery):Promise<IntakeReceipt|null> {
+    current(isCurrent,attempt);
+    const response=await client.from('uploaded_documents').select(receiptColumns).eq('id',uuid(attempt.documentId)).eq('organization_id',uuid(attempt.organizationId)).eq('project_id',uuid(attempt.projectId)).maybeSingle();
+    current(isCurrent,attempt);
+    if(response.error)throw new IntakeError('uncertain',attempt,{cause:response.error});
+    if(response.data!==null){
+        const receipt=receiptRow(response.data,attempt,false,true);await verifyOriginal(client,receipt,isCurrent);clearReference(journal,attempt);return receipt;
     }
-    catch { /* Verified server receipt remains valid; retain the local reference if cleanup fails. */ }
-    return receipt;
+    const other=await existingByHash(client,attempt,isCurrent);
+    // An alternate receipt resolves this content, but the original object reference
+    // stays available for explicit local abandonment. No server cleanup is implied.
+    return other?{...other,recoveryReference:attempt}:null;
 }
-export async function uploadIntake(client: SupabaseClient, input: {
-    file: File;
-    scope: IntakeScope;
-    documentType: string;
-    staging: boolean;
-    expectedUserId: string;
-}, journal: IntakeRecovery, isCurrent = () => true, onStage: (stage: IntakeStage) => void = () => { }): Promise<IntakeReceipt> {
-    onStage('checking');
-    const scope = validateScope(input.scope);
-    if (!types.includes(input.documentType))
-        throw new IntakeError('file');
-    const file = await fileIdentity(input.file);
-    current(isCurrent);
-    const userId = await getIntakeAccess(client, scope, input.expectedUserId, isCurrent);
-    current(isCurrent);
+function receiptPayload(attempt:IntakeAttempt) {
+    return {id:attempt.documentId,organization_id:attempt.organizationId,project_id:attempt.projectId,uploaded_by_user_id:attempt.userId,storage_bucket:attempt.storageBucket,storage_path:attempt.storagePath,original_filename:attempt.originalFilename,mime_type:attempt.mimeType,file_size_bytes:attempt.fileSize,sha256_hash:attempt.sha256Hash,document_type:attempt.documentType,ocr_status:'pending',status:'active',env:attempt.environment,is_test:attempt.isTest,metadata:{intake_mode:'upload_only'},received_date:new Date().toISOString().slice(0,10)};
+}
+async function registerReceipt(client:SupabaseClient,attempt:IntakeAttempt,journal:IntakeRecovery,isCurrent:()=>boolean,onStage:(stage:IntakeStage)=>void):Promise<IntakeReceipt> {
+    onStage('recording');current(isCurrent,attempt);
+    try {
+        const saved=await client.from('uploaded_documents').insert(receiptPayload(attempt)).select(receiptColumns).single();current(isCurrent,attempt);
+        if(saved.error)throw saved.error;
+        const receipt=receiptRow(saved.data,attempt);clearReference(journal,attempt);return receipt;
+    }catch(cause){
+        current(isCurrent,attempt);onStage('reconciling');
+        try{const recovered=await reconcileIntake(client,attempt,isCurrent,journal);if(recovered)return recovered;}
+        catch(error){if(error instanceof IntakeError&&error.code==='context')throw error;}
+        throw new IntakeError('uncertain',attempt,{cause});
+    }
+}
+/** Explicitly register a verified existing object with its ORIGINAL ID; no byte upload. */
+export async function completeIntakeRegistration(client:SupabaseClient,attempt:IntakeAttempt,expectedUserId:string,journal:IntakeRecovery,isCurrent=()=>true):Promise<IntakeReceipt> {
+    current(isCurrent,attempt);
+    if(uuid(expectedUserId)!==uuid(attempt.userId))throw new IntakeError('auth',attempt);
+    await getIntakeAccess(client,attempt,expectedUserId,isCurrent);current(isCurrent,attempt);
+    const existing=await reconcileIntake(client,attempt,isCurrent,journal);if(existing)return existing;
+    const owned=journal.list(expectedUserId,attempt).find(row=>row.documentId===attempt.documentId);
+    if(!owned||Object.keys(owned).some(key=>owned[key as keyof IntakeAttempt]!==attempt[key as keyof IntakeAttempt]))throw new IntakeError('recovery',attempt);
+    await verifyOriginal(client,{attempt,existing:false,record:{uploadedByUserId:attempt.userId,documentType:attempt.documentType,ocrStatus:'pending'}},isCurrent);
+    return registerReceipt(client,attempt,journal,isCurrent,()=>{});
+}
+/** Export actual persisted fields. The local requesting actor is never labeled uploader. */
+export function intakeReference(attempt:IntakeAttempt,receipt?:IntakeReceipt) {
+    const row=receipt?.attempt??attempt;
+    return {kind:receipt?'verified_receipt':'unconfirmed_attempt',document_id:row.documentId,organization_id:row.organizationId,project_id:row.projectId,storage_bucket:row.storageBucket,storage_path:row.storagePath,original_filename:row.originalFilename,file_size_bytes:row.fileSize,mime_type:row.mimeType,client_sha256:row.sha256Hash,document_type:receipt?.record.documentType??row.documentType,...(receipt?{uploaded_by_user_id:receipt.record.uploadedByUserId,ocr_status:receipt.record.ocrStatus}:{requested_by_user_id:row.userId}),...(receipt?.recoveryReference?{unregistered_object_reference:{document_id:receipt.recoveryReference.documentId,storage_bucket:receipt.recoveryReference.storageBucket,storage_path:receipt.recoveryReference.storagePath}}:{}),ocr_executed_by_this_intake:false};
+}
+export async function uploadIntake(client:SupabaseClient,input:{file:File;scope:IntakeScope;documentType:string;staging:boolean;expectedUserId:string},journal:IntakeRecovery,isCurrent=()=>true,onStage:(stage:IntakeStage)=>void=()=>{}):Promise<IntakeReceipt> {
+    onStage('checking');const scope=validateScope(input.scope);
+    if(!types.includes(input.documentType))throw new IntakeError('file');
+    const file=await fileIdentity(input.file);current(isCurrent);
+    const userId=await getIntakeAccess(client,scope,input.expectedUserId,isCurrent);current(isCurrent);
+    const documentId=crypto.randomUUID();
+    const storageBucket=input.staging?(input.documentType==='receipt'?'staging-receipts':'staging-attachments'):'documents';
+    const storagePath=(input.staging?'staging/':'')+scope.projectId+'/'+documentId+'.'+file.extension;
+    const attempt:IntakeAttempt={...scope,documentId,storageBucket,storagePath,sha256Hash:file.sha256Hash,originalFilename:input.file.name,mimeType:file.mimeType,fileSize:input.file.size,documentType:input.documentType,environment:input.staging?'staging':'production',isTest:input.staging,userId};
+    // A verified server receipt wins over stale local references, including a race
+    // won by another tab. Scope and original-file checks still apply.
+    const duplicate=await existingByHash(client,attempt,isCurrent);if(duplicate)return duplicate;
     let previous;
-    try {
-        previous = journal.list(userId, scope).find(row => row.sha256Hash === file.sha256Hash && row.isTest === input.staging);
-    }
-    catch (cause) {
-        throw new IntakeError('recovery', undefined, { cause });
-    }
-    if (previous) {
-        const recovered = await reconcileIntake(client, previous, isCurrent, journal);
-        if (recovered)
-            return recovered;
-        throw new IntakeError('uncertain', previous);
-    }
-    const documentId = crypto.randomUUID();
-    const storageBucket = input.staging ? (input.documentType === 'receipt' ? 'staging-receipts' : 'staging-attachments') : 'documents';
-    const storagePath = `${input.staging ? 'staging/' : ''}${scope.projectId}/${documentId}.${file.extension}`;
-    const attempt: IntakeAttempt = { ...scope, documentId, storageBucket, storagePath, sha256Hash: file.sha256Hash, originalFilename: input.file.name, mimeType: file.mimeType, fileSize: input.file.size, documentType: input.documentType, environment: input.staging ? 'staging' : 'production', isTest: input.staging, userId };
-    const duplicate = await client.from('uploaded_documents').select(receiptColumns).eq('organization_id', scope.organizationId).eq('project_id', scope.projectId).eq('sha256_hash', attempt.sha256Hash).maybeSingle();
-    current(isCurrent);
-    if (duplicate.error)
-        throw new IntakeError('read', undefined, { cause: duplicate.error });
-    if (duplicate.data !== null) {
-        try {
-            const receipt = receiptRow(duplicate.data, attempt, true);
-            await verifyOriginal(client, receipt, isCurrent);
-            return receipt;
-        }
-        catch (cause) {
-            if (cause instanceof IntakeError && cause.code === 'context')
-                throw cause;
-            throw new IntakeError('duplicate', undefined, { cause });
-        }
-    }
-    try {
-        journal.save(attempt);
-    }
-    catch (cause) {
-        throw new IntakeError('recovery', undefined, { cause });
-    }
-    onStage('uploading');
-    current(isCurrent);
+    try{previous=journal.list(userId,scope).find(row=>row.sha256Hash===file.sha256Hash&&row.isTest===input.staging);}
+    catch(cause){throw new IntakeError('recovery',undefined,{cause});}
+    if(previous){const recovered=await reconcileIntake(client,previous,isCurrent,journal);if(recovered)return recovered;throw new IntakeError('uncertain',previous);}
+    onStage('uploading');current(isCurrent);
+    try{journal.save(attempt);}catch(cause){throw new IntakeError('recovery',undefined,{cause});}
+    try{current(isCurrent,attempt);}catch(cause){clearReference(journal,attempt);throw cause;}
     let uploaded;
-    try {
-        uploaded = await client.storage.from(storageBucket).upload(storagePath, input.file, { upsert: false, contentType: file.mimeType });
-    }
-    catch (cause) {
-        throw new IntakeError('uncertain', attempt, { cause });
-    }
-    current(isCurrent, attempt);
-    // A transport/storage error may follow a committed object. Never overwrite or blindly clean it up.
-    if (uploaded.error || uploaded.data?.path !== storagePath)
-        throw new IntakeError('uncertain', attempt, { cause: uploaded.error });
-    onStage('recording');
-    current(isCurrent, attempt);
-    try {
-        const saved = await client.from('uploaded_documents').insert({ id: documentId, organization_id: scope.organizationId, project_id: scope.projectId, uploaded_by_user_id: userId, storage_bucket: storageBucket, storage_path: storagePath, original_filename: input.file.name, mime_type: file.mimeType, file_size_bytes: input.file.size, sha256_hash: attempt.sha256Hash, document_type: input.documentType, ocr_status: 'pending', status: 'active', env: attempt.environment, is_test: attempt.isTest, metadata: { intake_mode: 'upload_only' }, received_date: new Date().toISOString().slice(0, 10) }).select(receiptColumns).single();
-        current(isCurrent, attempt);
-        if (!saved.error) {
-            const receipt = receiptRow(saved.data, attempt);
-            try {
-                journal.clear(attempt);
-            }
-            catch { /* Retain recovery reference on local cleanup failure. */ }
-            return receipt;
-        }
-        throw saved.error;
-    }
-    catch (cause) {
-        current(isCurrent, attempt);
-        onStage('reconciling');
-        try {
-            const recovered = await reconcileIntake(client, attempt, isCurrent, journal);
-            if (recovered)
-                return recovered;
-        }
-        catch (error) {
-            if (error instanceof IntakeError && error.code === 'context')
-                throw error;
-        }
-        throw new IntakeError('uncertain', attempt, { cause });
-    }
+    try{uploaded=await client.storage.from(storageBucket).upload(storagePath,file.uploadFile,{upsert:false,contentType:file.mimeType});}
+    catch(cause){throw new IntakeError('uncertain',attempt,{cause});}
+    current(isCurrent,attempt);
+    if(uploaded.error||uploaded.data?.path!==storagePath)throw new IntakeError('uncertain',attempt,{cause:uploaded.error});
+    return registerReceipt(client,attempt,journal,isCurrent,onStage);
 }

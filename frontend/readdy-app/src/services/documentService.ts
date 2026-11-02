@@ -2,7 +2,7 @@ import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import { IS_STAGING } from '../utils/staging';
 import type { UploadedDocument, ExtractedDocumentDraft } from '../types/document';
 import { readDraftReviewRows } from './draftReview';
-import { IntakeError, listIntakeProjects, getIntakeAccess, uploadIntake, reconcileIntake, type IntakeScope, type IntakeAttempt, type IntakeReceipt, type IntakeStage } from './documentIntake';
+import { IntakeError, listIntakeProjects, getIntakeAccess, uploadIntake, reconcileIntake, completeIntakeRegistration, type IntakeScope, type IntakeAttempt, type IntakeReceipt, type IntakeStage } from './documentIntake';
 import { browserIntakeRecovery } from './intakeRecovery';
 
 /**
@@ -63,6 +63,9 @@ export function recheckUploadReceipt(attempt:IntakeAttempt,isCurrent=()=>true) {
   return reconcileIntake(intakeClient(),attempt,isCurrent,browserIntakeRecovery());
 }
 export function getIntakeRecovery(userId:string,scope:IntakeScope) {return browserIntakeRecovery().list(userId,scope);}
+export function completeUploadReceipt(attempt:IntakeAttempt,userId:string,isCurrent=()=>true) {return completeIntakeRegistration(intakeClient(),attempt,userId,browserIntakeRecovery(),isCurrent);}
+export function discardUploadReference(userId:string,scope:IntakeScope,documentId:string) {browserIntakeRecovery().discard(userId,scope,documentId);}
+export function intakeQuarantinedCount(userId:string) {return browserIntakeRecovery().quarantinedCount(userId);}
 
 /**
  * 刪除文件

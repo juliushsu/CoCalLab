@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { createIntakeRecovery, type IntakeRecovery } from '../src/services/intakeRecovery.ts';
 import { getIntakeAccess, listIntakeProjects, uploadIntake as uploadIntakeCore, reconcileIntake, IntakeError, type IntakeAttempt } from '../src/services/documentIntake.ts';
+import * as intake from '../src/services/documentIntake.ts';
 import { cocal as zh } from '../src/i18n/local/zh/cocal.ts';
 import { cocal as en } from '../src/i18n/local/en/cocal.ts';
 import { cocal as ja } from '../src/i18n/local/ja/cocal.ts';
@@ -23,7 +24,7 @@ interface Options {
     storageHook?: () => Promise<void>;
     projectBody?: unknown;
     projectCount?: number;
-    download?: 'missing' | 'corrupt';
+    download?: 'missing' | 'corrupt' | 'wrongMime';
     authId?: string;
 }
 function sdk(options: Options = {}) {
@@ -52,7 +53,7 @@ function sdk(options: Options = {}) {
                 if (parsed.pathname === '/rest/v1/rpc/upload_intake_contract') {
                     assert.equal(method, 'POST');
                     assert.deepEqual(JSON.parse(String(init?.body)), { p_project_id: P });
-                    return options.deny === 'contract' ? json({ code: 'PGRST202', message: 'contract not deployed' }, 404) : json(Object.hasOwn(options, 'contract') ? options.contract : [{ project_id: P, organization_id: O, contract_version: '20261102', can_write: true }]);
+                    return options.deny === 'contract' ? json({ code: 'PGRST202', message: 'contract not deployed' }, 404) : json(Object.hasOwn(options, 'contract') ? options.contract : [{ project_id: P, organization_id: O, contract_version: '20261102.2', can_write: true }]);
                 }
                 if (parsed.pathname === '/rest/v1/projects')
                     return json(Object.hasOwn(options, 'projectBody') ? options.projectBody : [{ id: P, organization_id: O, name: 'Synthetic project', project_code: 'TEST' }], 200, { 'Content-Range': `0-0/${options.projectCount ?? 1}` });
@@ -61,7 +62,9 @@ function sdk(options: Options = {}) {
                         if (options.download === 'missing')
                             return json({ message: 'synthetic missing object' }, 404);
                         const blob = options.download === 'corrupt' ? new Blob(['WRONG CONTENT']) : (state.uploaded || file());
-                        return new Response(await blob.arrayBuffer(), { headers: { 'Content-Type': 'application/pdf' } });
+                        // Reflect the multipart file's actual type, as a Storage
+                        // service would, rather than masking image uploads as PDF.
+                        return new Response(await blob.arrayBuffer(), { headers: { 'Content-Type': options.download === 'wrongMime' ? (blob.type === 'image/png' ? 'application/pdf' : 'image/png') : blob.type } });
                     }
                     assert.equal(method, 'POST');
                     assert.equal(new Headers(init?.headers).get('x-upsert'), 'false');
@@ -143,7 +146,7 @@ test('production and staging attachments use the existing prefix and explicitly 
     }
 });
 test('missing/old/foreign/malformed contract and denied JWT stop before bytes or receipt writes', async () => {
-    const configurations: Options[] = [{ deny: 'auth' }, { authId: X }, { deny: 'contract' }, { contract: [] }, { contract: {} }, { contract: [{ project_id: P, organization_id: X, contract_version: '20261102', can_write: true }] }, { contract: [{ project_id: P, organization_id: O, contract_version: 'old', can_write: true }] }, { contract: [{ project_id: P, organization_id: O, contract_version: '20261102', can_write: false }] }];
+    const configurations: Options[] = [{ deny: 'auth' }, { authId: X }, { deny: 'contract' }, { contract: [] }, { contract: {} }, { contract: [{ project_id: P, organization_id: X, contract_version: '20261102.2', can_write: true }] }, { contract: [{ project_id: P, organization_id: O, contract_version: 'old', can_write: true }] }, { contract: [{ project_id: P, organization_id: O, contract_version: '20261102.2', can_write: false }] }];
     for (const config of configurations) {
         const { client, calls } = sdk(config);
         await assert.rejects(runUpload(client, input()), IntakeError);
@@ -166,6 +169,32 @@ test('PNG and JPEG file headers are accepted without trusting an original filena
         await runUpload(client, { ...input(), file: image });
         assert.doesNotMatch(String(state.saved!.storage_path), /\.\./);
         assert.equal(state.saved!.original_filename, image.name);
+    }
+});
+test('Upload-N2: installed SDK multipart canonical MIME preserves original bytes, SHA and filename for every accepted format', async () => {
+    const fixtures = [
+        { original: file(), canonicalMime: 'application/pdf' },
+        { original: new File([new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10, 0])], '測試 image.PNG', { type: 'image/png' }), canonicalMime: 'image/png' },
+        { original: new File([new Uint8Array([255, 216, 255, 0])], '測試 image.jpeg', { type: 'image/jpeg' }), canonicalMime: 'image/jpeg' },
+        { original: new File([new Uint8Array([255, 216, 255, 1])], '測試 alias.JPG', { type: 'image/jpg' }), canonicalMime: 'image/jpeg' },
+    ];
+    for (const { original, canonicalMime } of fixtures) {
+        const instance = sdk();
+        const receipt = await runUpload(instance.client, { ...input(), file: original });
+        const part = instance.state.uploaded;
+        assert.ok(part instanceof File);
+        assert.equal(part.type, canonicalMime, `multipart type for original ${original.type}`);
+        assert.equal(part.name, original.name);
+        assert.equal(part.size, original.size);
+        assert.deepEqual(new Uint8Array(await part.arrayBuffer()), new Uint8Array(await original.arrayBuffer()));
+        const hash = Buffer.from(await crypto.subtle.digest('SHA-256', await original.arrayBuffer())).toString('hex');
+        assert.equal(instance.state.saved!.sha256_hash, hash);
+        assert.equal(instance.state.saved!.original_filename, original.name);
+        assert.equal(instance.state.saved!.mime_type, canonicalMime);
+        const recovered = await reconcileIntake(instance.client, receipt.attempt, () => true, instance.journal);
+        assert.equal(recovered?.attempt.documentId, receipt.attempt.documentId);
+        assert.equal(recovered?.attempt.mimeType, canonicalMime);
+        assert.equal(writes(instance.calls).length, 2); // One original upload and one receipt only.
     }
 });
 test('duplicate lookup failure never means absent and sends no bytes', async () => {
@@ -301,4 +330,128 @@ test('every intake state/error is translated independently in all three supporte
         assert.match(copy.summary, /\{\{total\}\}/);
     }
     assert.notEqual(en.documents.intake.errors.uncertain, zh.documents.intake.errors.uncertain);
+});
+
+test('review S4: explicitly complete the original receipt after file-success/row-failure without another object or ID',async()=>{
+    const options:Options={mode:'reject'};const instance=sdk(options);
+    await assert.rejects(runUpload(instance.client,input()),IntakeError);
+    const attempt=instance.journal.list(U,scope)[0];options.mode=undefined;
+    const receipt=await intake.completeIntakeRegistration(instance.client,attempt,U,instance.journal,()=>true);
+    assert.equal(receipt.attempt.documentId,attempt.documentId);
+    assert.equal(instance.calls.filter(call=>call.method==='POST'&&call.url.pathname.startsWith('/storage/')).length,1);
+    assert.equal(instance.state.saved!.id,attempt.documentId);
+    assert.deepEqual(instance.journal.list(U,scope),[]);
+});
+
+test('review P3-c: another tab completed the same content; a local orphan must not mask the verified receipt',async()=>{
+    const options:Options={mode:'reject'};const instance=sdk(options);
+    await assert.rejects(runUpload(instance.client,input()),IntakeError);
+    options.duplicate={...instance.state.saved,id:D,organization_id:O,project_id:P,uploaded_by_user_id:X,storage_bucket:'staging-receipts',storage_path:`staging/${P}/legacy.pdf`,original_filename:'other.pdf',mime_type:'application/pdf',file_size_bytes:file().size,sha256_hash:instance.journal.list(U,scope)[0].sha256Hash,document_type:'invoice',ocr_status:'pending',status:'active',env:'staging',is_test:true};
+    const receipt=await runUpload(instance.client,input());
+    assert.equal(receipt.existing,true);assert.equal(receipt.attempt.documentId,D);
+    assert.equal(writes(instance.calls).length,2);
+});
+
+test('review P3-b: context change immediately before checkpoint must not leave an unsent reference',async()=>{
+    const instance=sdk();let active=true;
+    await assert.rejects(runUpload(instance.client,input(),()=>active,stage=>{if(stage==='uploading')active=false;}),IntakeError);
+    assert.equal(writes(instance.calls).length,0);assert.deepEqual(instance.journal.list(U,scope),[]);
+});
+
+test('review P3-d: one damaged journal entry is isolated without blocking valid references or new writes',async()=>{
+    const instance=sdk({mode:'reject'});await assert.rejects(runUpload(instance.client,input()),IntakeError);
+    const valid=instance.journal.list(U,scope)[0];
+    instance.memory.set(`cocal-intake-recovery:v1:${U}:${X}`,'{broken');
+    assert.deepEqual(instance.journal.list(U,scope),[valid]);
+    assert.equal(instance.journal.quarantinedCount(U),1);
+});
+
+test('review P3-e: verified reference JSON uses the actual uploader and type, never current form actor as uploader',async()=>{
+    const instance=sdk();const receipt=await runUpload(instance.client,input());
+    receipt.record={...receipt.record,uploadedByUserId:X,documentType:'invoice'};
+    const reference=intake.intakeReference(receipt.attempt,receipt);
+    assert.equal(reference.uploaded_by_user_id,X);assert.equal(reference.document_type,'invoice');
+    assert.equal('attempt' in reference,false);
+});
+
+test('review S4: abandon only the current user/project/attempt reference, never perform a server mutation',async()=>{
+    const instance=sdk({mode:'reject'});await assert.rejects(runUpload(instance.client,input()),IntakeError);
+    const attempt=instance.journal.list(U,scope)[0];const before=instance.calls.length;
+    assert.throws(()=>instance.journal.discard(U,{...scope,projectId:X},attempt.documentId));
+    instance.journal.discard(U,scope,attempt.documentId);
+    assert.deepEqual(instance.journal.list(U,scope),[]);assert.equal(instance.calls.length,before);
+});
+
+test('review S4: completion refuses wrong actor, revoked write access, old deployment and missing or changed original before INSERT', async () => {
+    for (const failure of ['actor', 'viewer', 'oldContract', 'missing', 'corrupt', 'wrongMime', 'missingReference', 'changedReference'] as const) {
+        const options: Options = { mode: 'reject' };
+        const instance = sdk(options);
+        await assert.rejects(runUpload(instance.client, input()), IntakeError);
+        const attempt = instance.journal.list(U, scope)[0];
+        options.mode = undefined;
+        let expectedUser = U;
+        if (failure === 'actor') expectedUser = X;
+        if (failure === 'viewer') options.contract = [{ project_id: P, organization_id: O, contract_version: '20261102.2', can_write: false }];
+        if (failure === 'oldContract') options.contract = [{ project_id: P, organization_id: O, contract_version: '20261102.1', can_write: true }];
+        if (['missing', 'corrupt', 'wrongMime'].includes(failure)) options.download = failure as Options['download'];
+        if (failure === 'missingReference') instance.journal.discard(U, scope, attempt.documentId);
+        if (failure === 'changedReference') attempt.originalFilename = 'tampered-reference.pdf';
+        const before = writes(instance.calls).length;
+        await assert.rejects(intake.completeIntakeRegistration(instance.client, attempt, expectedUser, instance.journal, () => true), IntakeError);
+        assert.equal(writes(instance.calls).length, before, failure);
+        assert.equal(instance.state.saved, undefined);
+    }
+});
+
+test('review S4: already committed receipt is read first and completion lost response never resends bytes or changes ID', async () => {
+    const options: Options = { mode: 'reject' };
+    const instance = sdk(options);
+    await assert.rejects(runUpload(instance.client, input()), IntakeError);
+    const attempt = instance.journal.list(U, scope)[0];
+    options.mode = 'lostSaved';
+    const receipt = await intake.completeIntakeRegistration(instance.client, attempt, U, instance.journal, () => true);
+    assert.equal(receipt.attempt.documentId, attempt.documentId);
+    assert.equal(writes(instance.calls).length, 3); // one object, initial rejected INSERT, successful INSERT with lost response
+    const again = await intake.completeIntakeRegistration(instance.client, attempt, U, instance.journal, () => true);
+    assert.equal(again.attempt.documentId, attempt.documentId);
+    assert.equal(writes(instance.calls).length, 3);
+});
+
+test('review P3-c: receipt completed between first hash lookup and recovery lookup retains the original abandonment reference', async () => {
+    const options: Options = { mode: 'reject' };
+    const instance = sdk(options);
+    await assert.rejects(runUpload(instance.client, input()), IntakeError);
+    const attempt = instance.journal.list(U, scope)[0];
+    const journal = instance.journal;
+    let injected = false;
+    journals.set(instance.client, { ...journal, list(user, target) {
+        if (!injected) {
+            injected = true;
+            options.duplicate = { id: D, organization_id: O, project_id: P, uploaded_by_user_id: X, storage_bucket: 'staging-receipts', storage_path: `staging/${P}/${D}.pdf`, original_filename: 'other.pdf', mime_type: 'application/pdf', file_size_bytes: file().size, sha256_hash: attempt.sha256Hash, document_type: 'invoice', ocr_status: 'pending', status: 'active', env: 'staging', is_test: true };
+        }
+        return journal.list(user, target);
+    } });
+    const result = await runUpload(instance.client, input());
+    assert.equal(result.attempt.documentId, D);
+    assert.equal(result.recoveryReference?.documentId, attempt.documentId);
+    const local = result.recoveryReference ?? result.attempt;
+    journal.discard(U, scope, local.documentId);
+    assert.deepEqual(journal.list(U, scope), []);
+    assert.equal(writes(instance.calls).length, 2);
+});
+
+test('review recovery: failed quarantine preserves the malformed entry and failed local removal cannot claim success', async () => {
+    const instance = sdk({ mode: 'reject' });
+    await assert.rejects(runUpload(instance.client, input()), IntakeError);
+    const attempt = instance.journal.list(U, scope)[0];
+    const badKey = `cocal-intake-recovery:v1:${U}:${X}`;
+    instance.memory.set(badKey, '{broken');
+    const base = recoveryStorage(instance.memory);
+    const quota = createIntakeRecovery({ ...base, get length() { return base.length; }, setItem(key, value) { if (key.startsWith('cocal-intake-quarantine:')) throw new Error('synthetic quota'); base.setItem(key, value); } });
+    assert.deepEqual(quota.list(U, scope), [attempt]);
+    assert.equal(instance.memory.get(badKey), '{broken');
+    assert.equal(quota.quarantinedCount(U), 0);
+    const noRemove = createIntakeRecovery({ ...base, get length() { return base.length; }, removeItem() {} });
+    assert.throws(() => noRemove.discard(U, scope, attempt.documentId), /not removed/);
+    assert.ok(instance.memory.has(`cocal-intake-recovery:v1:${U}:${attempt.documentId}`));
 });

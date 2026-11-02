@@ -362,6 +362,12 @@ export const cocal = {
       reference: 'Intake reference ID',
       saveReference: 'Download this reference receipt',
       recheck: 'Check saved status without resubmitting',
+      completeRegistration: 'Complete intake registration without uploading the file again',
+      discardReference: 'Discard local recovery reference',
+      discardMessage: 'This only clears the local recovery reference for the current user, project and intake attempt. It does not delete server files or database rows, or cancel requests already sent. Download and keep the reference receipt first.',
+      discardConfirm: 'Discard only this local reference',
+      quarantined: '{{count}} damaged references were individually quarantined and retained. Their invalid format does not block other recovery or new uploads. No server data cleanup is implied.',
+      alternateReceipt: 'A matching existing intake or one completed in another tab was confirmed. The local reference for this unregistered object is retained; no server file was deleted.',
       working: 'Saving or checking; please wait',
       states: {
         pending: 'Waiting to save',

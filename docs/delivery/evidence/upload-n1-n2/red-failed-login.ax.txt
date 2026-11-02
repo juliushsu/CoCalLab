@@ -1,0 +1,25 @@
+Browser tab: 1290544822, Title: "SYNTHETIC ONLY — real AuthProvider + upload", URL: "http://127.0.0.1:4190/".
+0 AXWebArea SYNTHETIC ONLY — real AuthProvider + upload, URL: 127.0.0.1:4190/
+	1 container
+		2 heading SYNTHETIC ONLY — real AuthProvider / SDK; intercepted .invalid requests, Value: 1
+			3 text SYNTHETIC ONLY — real AuthProvider / SDK; intercepted .invalid requests
+		4 text case=failed-login; object writes=0; receipt writes=0; saved=false; refreshes=0; stored MIME=none
+		5 button Select browser-memory SYNTHETIC JPEG (image/jpg), ID: use-fixture
+		6 container root
+			7 container
+				8 text AuthProvider session= present ; current= true ; operation current= false ; epoch= 2 ;  synthetic login rejected
+				9 button Fail explicit synthetic sign-in
+				10 button Start short-lived synthetic session (12 seconds)
+				11 button Sign out synthetic session
+			12 heading Failed to load, Value: 3
+				13 text Failed to load
+			14 text Unable to read or verify intake data. Check your connection, sign-in status and project permissions, then reload.
+			15 button Retry
+	16 container
+		17 button logo icon
+			18 image logo icon
+			19 image
+		20 container
+			21 button
+
+The focused UI element is 9 button Fail explicit synthetic sign-in

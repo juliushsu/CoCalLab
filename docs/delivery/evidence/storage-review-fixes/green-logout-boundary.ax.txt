@@ -1,0 +1,21 @@
+Browser tab: 1290544802, Title: "SYNTHETIC TEST ONLY — upload intake", URL: "http://127.0.0.1:4189/?case=logout-mid-upload".
+1 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=logout-mid-upload
+	2 container
+		3 heading SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls, Value: 1
+			4 text SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls
+		57 text fixture=logout-mid-upload; object writes=1; row writes=0; row saved=false
+		6 button Use generated SYNTHETIC PDF (no file system), ID: use-fixture
+		7 button Commit previously rejected synthetic row, ID: commit-fixture
+		8 button Allow receipt INSERT retry (does not create row), ID: allow-retry
+		9 container root
+			58 heading Failed to load, Value: 3
+				59 text Failed to load
+			60 text Your session is invalid or expired. Sign in again, then check the status of this attempt.
+	51 container
+		52 button logo icon
+			53 image logo icon
+			54 image
+		55 container
+			56 button
+
+The focused UI element is 1 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=logout-mid-upload

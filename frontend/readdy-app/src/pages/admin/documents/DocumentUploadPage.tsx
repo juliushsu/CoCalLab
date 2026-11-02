@@ -5,10 +5,11 @@ import AdminLayout from '../../../components/layout/AdminLayout';
 import LoadingState from '../../../components/base/LoadingState';
 import ErrorState from '../../../components/base/ErrorState';
 import EmptyState from '../../../components/base/EmptyState';
+import ConfirmDialog from '../../../components/base/ConfirmDialog';
 import { useAuth } from '../../../hooks/useAuth';
 import { currentSession, resolveNavigationScope } from '../../../services/navigationScope';
-import { getUploadProjects, getUploadAccess, uploadDocument, recheckUploadReceipt, getIntakeRecovery } from '../../../services/documentService';
-import { IntakeError, type IntakeAttempt, type IntakeProject, type IntakeReceipt, type IntakeStage } from '../../../services/documentIntake';
+import { getUploadProjects, getUploadAccess, uploadDocument, recheckUploadReceipt, getIntakeRecovery, completeUploadReceipt, discardUploadReference, intakeQuarantinedCount } from '../../../services/documentService';
+import { IntakeError, intakeReference, type IntakeAttempt, type IntakeProject, type IntakeReceipt, type IntakeStage } from '../../../services/documentIntake';
 import { IS_STAGING } from '../../../utils/staging';
 import type { DocumentType } from '../../../types/document';
 interface QueueFile {
@@ -34,9 +35,10 @@ export default function DocumentUploadPage() {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const [params] = useSearchParams();
-    const { session, loading: authLoading } = useAuth();
+    const { session, loading: authLoading, authEpoch, isAuthenticationCurrent } = useAuth();
+    const userId=session?.user.id??'';
     const search = params.toString();
-    const route = useMemo(() => ({ search, session }), [search, session]);
+    const route = useMemo(() => ({ search, userId, authEpoch }), [search, userId, authEpoch]);
     const [projectId, setProjectId] = useState('');
     const [documentType, setDocumentType] = useState<DocumentType>('receipt');
     const [projects, setProjects] = useState<IntakeProject[]>([]);
@@ -55,6 +57,8 @@ export default function DocumentUploadPage() {
     } | null>(null);
     const [accessRetry, setAccessRetry] = useState(0);
     const [recoveryError, setRecoveryError] = useState(false);
+    const [quarantined,setQuarantined]=useState(0);
+    const [discarding,setDiscarding]=useState<QueueFile|null>(null);
     const project = projects.find(row => row.id === projectId);
     const canUpload = loadedRoute === route && !authLoading && currentSession(session) && access?.view === view && access.allowed && !recoveryError;
     useLayoutEffect(() => {
@@ -63,6 +67,7 @@ export default function DocumentUploadPage() {
         setFiles([]);
         setProcessing(false);
         setRecoveryError(false);
+        setQuarantined(0);setDiscarding(null);
         return () => { if (currentView.current === view)
             currentView.current = null; };
     }, [view]);
@@ -71,7 +76,7 @@ export default function DocumentUploadPage() {
         if (authLoading)
             return () => { active = false; };
         setLoadError(false);
-        if (!currentSession(route.session)) {
+        if (!isAuthenticationCurrent(route.authEpoch,route.userId)) {
             setLoadError(true);
             setLoadedRoute(route);
             return () => { active = false; };
@@ -98,24 +103,25 @@ export default function DocumentUploadPage() {
             setLoadedRoute(route);
         } });
         return () => { active = false; };
-    }, [route, authLoading, retry]);
+    }, [route, authLoading, retry, isAuthenticationCurrent]);
     useEffect(() => {
         let active = true;
-        if (!project || loadedRoute !== route || !currentSession(route.session))
+        if (!project || loadedRoute !== route || !isAuthenticationCurrent(route.authEpoch,route.userId))
             return () => { active = false; };
-        const isCurrent = () => active && currentView.current === view && currentSession(route.session);
-        void getUploadAccess({ projectId: project.id, organizationId: project.organization_id }, route.session!.user.id, isCurrent)
+        const isCurrent = () => active && currentView.current === view && isAuthenticationCurrent(route.authEpoch,route.userId);
+        void getUploadAccess({ projectId: project.id, organizationId: project.organization_id }, route.userId, isCurrent)
             .then(() => { if (isCurrent())
             setAccess({ view, allowed: true }); })
             .catch(cause => { if (isCurrent())
             setAccess({ view, allowed: false, error: cause instanceof IntakeError ? cause.code : 'read' }); });
         return () => { active = false; };
-    }, [project, loadedRoute, route, view, accessRetry]);
+    }, [project, loadedRoute, route, view, accessRetry, isAuthenticationCurrent]);
     useEffect(() => {
-        if (!project || loadedRoute !== route || !currentSession(route.session))
+        if (!project || loadedRoute !== route || !isAuthenticationCurrent(route.authEpoch,route.userId))
             return;
         try {
-            const pending = getIntakeRecovery(route.session!.user.id, { projectId: project.id, organizationId: project.organization_id });
+            const pending = getIntakeRecovery(route.userId, { projectId: project.id, organizationId: project.organization_id });
+            setQuarantined(intakeQuarantinedCount(route.userId));
             if (currentView.current === view)
                 setFiles(rows => [...rows, ...pending.filter(attempt => !rows.some(row => row.attempt?.documentId === attempt.documentId)).map(attempt => ({ id: attempt.documentId, status: 'unknown' as const, attempt, error: 'uncertain' }))]);
         }
@@ -123,7 +129,7 @@ export default function DocumentUploadPage() {
             if (currentView.current === view)
                 setRecoveryError(true);
         }
-    }, [project, loadedRoute, route, view]);
+    }, [project, loadedRoute, route, view, isAuthenticationCurrent]);
     const addFiles = useCallback((incoming: File[]) => {
         if (busy.current)
             return;
@@ -133,7 +139,7 @@ export default function DocumentUploadPage() {
         if (!canUpload || !project || busy.current)
             return;
         const captured = view;
-        const isCurrent = () => currentView.current === captured && currentSession(captured.route.session);
+        const isCurrent = () => currentView.current === captured && isAuthenticationCurrent(captured.route.authEpoch,captured.route.userId);
         busy.current = true;
         setProcessing(true);
         try {
@@ -144,12 +150,12 @@ export default function DocumentUploadPage() {
                 try {
                     if (!item.file)
                         throw new IntakeError('file');
-                    const receipt = await uploadDocument(item.file, project.id, project.organization_id, documentType, captured.route.session!.user.id, isCurrent, stage => {
+                    const receipt = await uploadDocument(item.file, project.id, project.organization_id, documentType, captured.route.userId, isCurrent, stage => {
                         if (isCurrent())
                             setFiles(rows => rows.map(row => row.id === item.id ? { ...row, stage } : row));
                     });
                     if (isCurrent())
-                        setFiles(rows => rows.map(row => row.id === item.id ? { ...row, status: receipt.existing ? 'existing' : 'received', receipt, attempt: receipt.attempt, stage: undefined } : row));
+                        setFiles(rows => rows.map(row => row.id === item.id ? { ...row, status: receipt.existing ? 'existing' : 'received', receipt, attempt: receipt.recoveryReference ?? receipt.attempt, stage: undefined } : row));
                 }
                 catch (cause) {
                     if (!isCurrent())
@@ -166,16 +172,16 @@ export default function DocumentUploadPage() {
             }
         }
     };
-    const recheck = async (item: QueueFile) => {
+    const recheck = async (item: QueueFile,complete=false) => {
         if (!item.attempt || busy.current || !project)
             return;
-        const captured = view, isCurrent = () => currentView.current === captured && currentSession(captured.route.session);
+        const captured = view, isCurrent = () => currentView.current === captured && isAuthenticationCurrent(captured.route.authEpoch,captured.route.userId);
         busy.current = true;
         setProcessing(true);
         try {
-            const receipt = await recheckUploadReceipt(item.attempt, isCurrent);
+            const receipt = complete?await completeUploadReceipt(item.attempt,captured.route.userId,isCurrent):await recheckUploadReceipt(item.attempt, isCurrent);
             if (isCurrent())
-                setFiles(rows => rows.map(row => row.id !== item.id ? row : receipt ? { ...row, status: 'received', receipt, error: undefined } : { ...row, error: 'unconfirmed' }));
+                setFiles(rows => rows.map(row => row.id !== item.id ? row : receipt ? { ...row, status: receipt.existing?'existing':'received', receipt,attempt:receipt.recoveryReference??receipt.attempt, error: undefined } : { ...row, error: 'unconfirmed' }));
         }
         catch (cause) {
             if (isCurrent())
@@ -187,6 +193,13 @@ export default function DocumentUploadPage() {
                 setProcessing(false);
             }
         }
+    };
+    const discard=()=>{
+        if(!discarding?.attempt||!project||busy.current||!isAuthenticationCurrent(route.authEpoch,route.userId))return;
+        try{
+            discardUploadReference(route.userId,{organizationId:project.organization_id,projectId:project.id},discarding.attempt.documentId);
+            setFiles(rows=>rows.filter(row=>row.id!==discarding.id));setDiscarding(null);
+        }catch{setFiles(rows=>rows.map(row=>row.id===discarding.id?{...row,error:'recovery'}:row));setDiscarding(null);}
     };
     const listHref = project ? `/admin/documents/list?${new URLSearchParams({ organization_id: project.organization_id, projectId: project.id })}` : '/admin/documents/list';
     if (authLoading || loadedRoute !== route)
@@ -206,9 +219,10 @@ export default function DocumentUploadPage() {
     <p role="status" className="mb-4 rounded border border-amber-200 bg-amber-50 p-4">{t('documents.intake.uploadOnly')}</p>
     <p className="mb-4 text-sm text-gray-600">{t(IS_STAGING ? 'documents.intake.staging' : 'documents.intake.production')}</p>
     {recoveryError && <p role="alert" className="mb-4 text-red-700">{t('documents.intake.errors.recovery')}</p>}
+    {quarantined>0&&<p role="status" className="mb-4 text-amber-800">{t('documents.intake.quarantined',{count:quarantined})}</p>}
     <div className="mb-6 grid gap-4 rounded border bg-white p-6 md:grid-cols-2">
       <label>{t('documents.fields.project')}
-        <select aria-label={t('documents.fields.project')} value={projectId} onChange={event => setProjectId(event.target.value)} disabled={processing} className="mt-1 block w-full rounded border p-2">
+        <select aria-label={t('documents.fields.project')} value={projectId} onChange={event => {currentView.current=null;setProjectId(event.target.value);}} disabled={processing} className="mt-1 block w-full rounded border p-2">
           <option value="">{t('documents.selectProject')}</option>
           {projects.map(row => <option key={row.id} value={row.id}>{row.name} ({row.project_code})</option>)}
         </select>
@@ -250,14 +264,18 @@ export default function DocumentUploadPage() {
         <p role="status">{t(`documents.intake.states.${item.stage || item.status}`)}</p>
         {item.error && <p role="alert" className="text-red-700">{t(`documents.intake.errors.${item.error}`)}</p>}
         {item.attempt && <div className="mt-2 break-all text-sm">
-          <p>{t('documents.intake.reference')}: {item.attempt.documentId}</p>
-          <p>{item.attempt.storageBucket}/{item.attempt.storagePath}</p>
-          <button type="button" onClick={() => saveReference({ kind: item.receipt ? 'verified_receipt' : 'unconfirmed_attempt', attempt: item.attempt, record: item.receipt?.record, ocr: 'not_run_by_this_intake' }, item.attempt!.documentId)} className="mr-4 underline">{t('documents.intake.saveReference')}</button>
+          <p>{t('documents.intake.reference')}: {(item.receipt?.attempt??item.attempt).documentId}</p>
+          <p>{(item.receipt?.attempt??item.attempt).storageBucket}/{(item.receipt?.attempt??item.attempt).storagePath}</p>
+          {item.receipt?.recoveryReference&&<p>{t('documents.intake.alternateReceipt')}: {item.attempt.documentId} — {item.attempt.storagePath}</p>}
+          <button type="button" onClick={() => saveReference(intakeReference(item.attempt!,item.receipt),item.attempt!.documentId)} className="mr-4 underline">{t('documents.intake.saveReference')}</button>
         </div>}
         {item.status === 'unknown' && <button type="button" onClick={() => void recheck(item)} disabled={processing} className="mt-2 underline disabled:opacity-50">{t('documents.intake.recheck')}</button>}
+        {item.status==='unknown'&&<button type="button" onClick={()=>void recheck(item,true)} disabled={processing||!canUpload} className="ml-4 mt-2 underline disabled:opacity-50">{t('documents.intake.completeRegistration')}</button>}
+        {(item.status==='unknown'||item.receipt?.recoveryReference)&&<button type="button" onClick={()=>setDiscarding(item)} disabled={processing} className="ml-4 mt-2 underline">{t('documents.intake.discardReference')}</button>}
         {['pending', 'failed'].includes(item.status) && <button type="button" onClick={() => setFiles(rows => rows.filter(row => row.id !== item.id))} disabled={processing} className="mt-2 underline">{t('common.cancel')}</button>}
       </li>)}</ul>
       <button type="button" onClick={() => void upload()} disabled={!canUpload || processing || !files.some(row => row.status === 'pending')} className="mt-4 rounded bg-teal-700 px-4 py-2 text-white disabled:bg-gray-400">{processing ? t('documents.intake.working') : t('common.upload')}</button>
     </div>}
+    {discarding&&<ConfirmDialog open title={t('documents.intake.discardReference')} message={t('documents.intake.discardMessage')} confirmLabel={t('documents.intake.discardConfirm')} onConfirm={discard} onCancel={()=>setDiscarding(null)}><button type="button" onClick={()=>discarding.attempt&&saveReference(intakeReference(discarding.attempt,discarding.receipt),discarding.attempt.documentId)} className="underline">{t('documents.intake.saveReference')}</button></ConfirmDialog>}
   </AdminLayout>;
 }

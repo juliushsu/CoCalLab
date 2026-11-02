@@ -1,0 +1,58 @@
+Browser tab: 1290544802, Title: "SYNTHETIC TEST ONLY — upload intake", URL: "http://127.0.0.1:4189/?case=refresh-mid-upload".
+0 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=refresh-mid-upload
+	1 container
+		2 heading SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls, Value: 1
+			3 text SYNTHETIC TEST ONLY — intercepted SDK, no cloud calls
+		54 text fixture=refresh-mid-upload; object writes=1; row writes=0; row saved=false
+		5 button Use generated SYNTHETIC PDF (no file system), ID: use-fixture
+		6 button Commit previously rejected synthetic row, ID: commit-fixture
+		7 container root
+			55 heading Upload Document, Value: 1
+				56 text Upload Document
+			57 button Document List
+			58 text This operation only saves the original file and its intake record. It does not run OCR or classification, or create drafts, calculations or reports.
+			59 text The current configured target is staging. Its services, permissions and availability have not been verified.
+			60 container
+				61 text Project
+				62 pop up button (collapsed, settable) Description: Project, Value: Synthetic tenant A project (TEST-ONLY), Secondary Actions: Expand
+					63 menu
+						64 Please select a project
+						65 (selected) Synthetic tenant A project (TEST-ONLY)
+			66 container
+				67 text Document Type
+				68 pop up button (collapsed, settable) Description: Document Type, Value: Receipt, Secondary Actions: Expand
+					69 menu
+						70 (selected) Receipt
+						71 Invoice
+						72 Bill
+						73 Contract
+						74 Report
+						75 Other
+			76 container
+				77 text Select or drop files to save
+				78 button Select or drop files to save
+			79 container
+				80 text Take Photo
+				81 button Take Photo
+			82 container
+				83 text Choose from Gallery
+				84 button Choose from Gallery
+			85 text PDF, JPEG and PNG only; each file must be larger than 0 bytes and no larger than 10MB. File signatures, MIME types and extensions are checked for consistency.
+			86 button Manual Entry
+			87 container
+				88 text Excel / CSV Import  —  Coming Soon
+			89 text 0 of 1 selected files verified (existing receipts may be reused).
+			90 content list
+				91 container
+					92 text synthetic.pdf  ( 42  bytes) Saved status is unconfirmed; keep the reference receipt and check without resubmitting Saved status is unconfirmed; the server may have saved this attempt. Download and keep the reference receipt, then check without writing. Do not resubmit. Intake reference ID :  40d03565-bd40-4282-8b89-f41e2adbc0c6 staging-receipts / staging/00000000-0000-4000-8000-000000000002/40d03565-bd40-4282-8b89-f41e2adbc0c6.pdf
+					93 button Download this reference receipt
+					94 button Check saved status without resubmitting
+			95 button (disabled) Upload
+	48 container
+		49 button logo icon
+			50 image logo icon
+			51 image
+		52 container
+			53 button
+
+The focused UI element is 0 AXWebArea SYNTHETIC TEST ONLY — upload intake, URL: 127.0.0.1:4189/?case=refresh-mid-upload

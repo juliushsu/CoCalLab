@@ -11,8 +11,11 @@ export interface IntakeRecovery {
     save(attempt: IntakeAttempt): void;
     clear(attempt: IntakeAttempt): void;
     list(userId: string, scope: IntakeScope): IntakeAttempt[];
+    discard(userId:string,scope:IntakeScope,documentId:string):void;
+    quarantinedCount(userId:string):number;
 }
 const prefix = 'cocal-intake-recovery:v1:';
+const quarantinePrefix='cocal-intake-quarantine:v1:';
 function valid(value: unknown, userId: string): value is IntakeAttempt {
     if (!value || typeof value !== 'object' || Array.isArray(value))
         return false;
@@ -43,10 +46,20 @@ export function createIntakeRecovery(storage: RecoveryStorage): IntakeRecovery {
             const text = storage.getItem(key);
             if (text === null)
                 continue; // Concurrently confirmed in another tab.
-            const row: unknown = JSON.parse(text);
-            if (!valid(row, user) || key !== prefix + user + ':' + row.documentId)
-                throw new Error('Invalid recovery records');
-            rows.push(row);
+            try {
+                const row:unknown=JSON.parse(text);
+                if(!valid(row,user)||key!==prefix+user+':'+row.documentId)throw new Error('Invalid recovery record');
+                rows.push(row);
+            }catch{
+                // Preserve the malformed value separately. Never let one damaged
+                // key hide valid attempts or clear another tab's newer value.
+                try{
+                    const quarantine=quarantinePrefix+user+':'+crypto.randomUUID();
+                    const backup=JSON.stringify({sourceKey:key,raw:text});
+                    storage.setItem(quarantine,backup);
+                    if(storage.getItem(quarantine)===backup&&storage.getItem(key)===text)storage.removeItem(key);
+                }catch{/* If backup cannot persist, retain the original and skip only this entry. */}
+            }
         }
         return rows;
     }
@@ -65,10 +78,23 @@ export function createIntakeRecovery(storage: RecoveryStorage): IntakeRecovery {
                 throw new Error('Reconcile existing recovery records before uploading more');
             write(attempt);
         },
-        clear(attempt) { const user = canonicalUuid(attempt.userId), id = canonicalUuid(attempt.documentId); if (!user || !id)
-            throw new Error('Invalid recovery identity'); storage.removeItem(prefix + user + ':' + id); },
+        clear(attempt) {discard(attempt.userId,attempt,attempt.documentId);},
+        discard,
+        quarantinedCount(userId){const user=canonicalUuid(userId);if(!user)throw new Error('Invalid recovery identity');let count=0;for(let i=0;i<storage.length;i++)if(storage.key(i)?.startsWith(quarantinePrefix+user+':'))count++;return count;},
         list(userId, scope) { return read(userId).filter(row => row.organizationId === canonicalUuid(scope.organizationId) && row.projectId === canonicalUuid(scope.projectId)); },
     };
+    function discard(userId:string,scope:IntakeScope,documentId:string) {
+        const user=canonicalUuid(userId),id=canonicalUuid(documentId);
+        if(!user||!id)throw new Error('Invalid recovery identity');
+        const key=prefix+user+':'+id,text=storage.getItem(key);if(text===null)return;
+        const row:unknown=JSON.parse(text);
+        if(!valid(row,user)||row.organizationId!==canonicalUuid(scope.organizationId)||row.projectId!==canonicalUuid(scope.projectId))throw new Error('Recovery scope mismatch');
+        // Local metadata only. No Storage/DB call or change to any other key.
+        if(storage.getItem(key)===text){
+            storage.removeItem(key);
+            if(storage.getItem(key)===text)throw new Error('Recovery reference was not removed');
+        }
+    }
 }
 /** No raw file contents or authentication credentials are stored in this journal. */
 export function browserIntakeRecovery(): IntakeRecovery { return createIntakeRecovery(window.localStorage); }
