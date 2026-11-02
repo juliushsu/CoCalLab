@@ -1,5 +1,12 @@
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import type { EmissionActivity } from '../types/activity';
+import { readActivityDetail, type ActivityDetailSelection } from './activityDetail';
+
+/** Real read-only detail. Configuration/query failures are not an empty record. */
+export async function getEmissionActivityDetail(selection: ActivityDetailSelection) {
+  if (!isSupabaseConnected()) throw new Error('活動資料服務尚未設定，無法讀取。');
+  return readActivityDetail(getSupabaseClient(), selection);
+}
 
 /**
  * 取得排放活動列表
