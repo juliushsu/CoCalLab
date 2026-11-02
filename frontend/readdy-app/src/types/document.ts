@@ -90,8 +90,9 @@ export interface UploadDocumentInput {
 
 // 確認草稿輸入
 export interface ConfirmDraftInput {
+  organization_id: string;
+  project_id: string;
   draft_id: string;
-  review_note?: string;
-  suggested_category?: string;
-  suggested_scope?: number;
+  decision: 'confirmed' | 'rejected';
+  overrides?: {review_note?:string;category?:string;suggested_scope?:number};
 }

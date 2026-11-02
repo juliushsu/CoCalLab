@@ -372,7 +372,7 @@ export default function UploadedDocumentListPage() {
                         )}
                         {doc.ocr_status === 'succeeded' && (
                           <button
-                            onClick={() => navigate(`/admin/documents/drafts?document=${doc.id}`)}
+                            onClick={() => navigate(`/admin/documents/drafts?${new URLSearchParams({document:doc.id,organization_id:doc.organization_id,project_id:doc.project_id})}`)}
                             className="text-teal-600 hover:text-teal-900 cursor-pointer"
                             title={t('documents.draftReview')}
                           >
