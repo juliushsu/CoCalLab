@@ -1,6 +1,7 @@
 # 安全檔案上傳與收件紀錄 — 2026-11-02
 
 候選：PR #14／`codex/secure-upload-receipt-20261102`，基於 PR #13 固定版本 `be23b32654c222cb51d7458669cf6d93364fc0fd`。
+本輪固定來源 commit：`71ffcf47defef31236181f8b938fc005f46dcb71`；之後僅補交接／審查文件。定向指令見 `CLAUDE_STORAGE_TARGETED_REVIEW_20261102.md`，尚未收到外部 Claude 審查結果。
 只有來源與合成隔離測試；未合併、未部署。發布 HOLD，UAT 仍為 `7dccd5452152f2495d10ad1437d5d03215166065`。
 
 ## 可操作行為
