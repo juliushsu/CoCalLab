@@ -10,11 +10,11 @@ UAT remains `7dccd5452152f2495d10ad1437d5d03215166065`; release HOLD. No merge, 
 - The displayed quantity/unit/date come from the same normalized payload used by the backend. Missing/invalid values cannot become a default zero activity; valid zero remains valid. Scope/category/note edits use existing supported fields.
 - Known Mock/fixture/synthetic extraction is labeled and excluded from confirmation; rejection remains available. Missing extraction provenance is explicitly unknown, never described as real OCR. This UI guard is not a server authorization or provenance guarantee.
 - Scope/session changes discard late UI results and stop subsequent batch requests. Already sent requests may still commit. Successful batch entries are removed individually; uncertain entries remain visible, with submission locked until a successful fresh pending/latest read. Refresh also prunes obsolete selection.
-- Existing document-to-review links retain organization/project and exact document identity. Outgoing review links retain tenant/project context. Unscoped lists remain read-only.
+- Existing document-to-review links retain organization/project and exact document identity. Outgoing review links retain tenant/project context using each destination's actual parameter contract (legacy activity-list keys, canonical upload keys). This fixes the P2 reported by GitHub review. Unscoped lists remain read-only.
 
 ## Actual verification
 
-Frontend **95/95 PASS**, including 17 draft-review cases; full app type-check, full ESLint with zero warnings, Vite build and `git diff --check` PASS.
+Frontend **96/96 PASS**, including 18 draft-review cases; full app type-check, full ESLint with zero warnings, Vite build and `git diff --check` PASS. The follow-up destination-contract regression checks the exact legacy activity-list parameters as well as canonical upload parameters.
 
 Commands from `frontend/readdy-app`:
 

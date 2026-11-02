@@ -12,7 +12,7 @@ import { getExtractedDrafts } from '../../../services/documentService';
 import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ExtractedDocumentDraft } from '../../../types/document';
 import DraftAIExplanationPanel from './components/DraftAIExplanationPanel';
-import { draftReviewScope, draftReviewValues, isSyntheticDraft, validateDraftReviewRows, submitDraftDecision, submitDraftBatch, type DraftReviewScope } from '../../../services/draftReview';
+import { draftReviewScope, draftReviewDestination, draftReviewValues, isSyntheticDraft, validateDraftReviewRows, submitDraftDecision, submitDraftBatch, type DraftReviewScope } from '../../../services/draftReview';
 import { useAuth } from '../../../hooks/useAuth';
 import { currentSession } from '../../../services/navigationScope';
 
@@ -29,10 +29,7 @@ export default function ExtractedDraftReviewPage() {
   const selected=useMemo<{scope:DraftReviewScope;error:string|null}>(()=>{try{return {scope:draftReviewScope(search),error:null};}catch(error){return {scope:{},error:error instanceof Error?error.message:'草稿範圍無效。'};}},[search]);
   const organizationId=selected.scope.organizationId;
   const projectIdParam=selected.scope.projectId;
-  const scopedHref=(path:string)=>{
-    const query=new URLSearchParams({...(organizationId?{organization_id:organizationId}:{}),...(projectIdParam?{project_id:projectIdParam}:{})});
-    return query.size?`${path}?${query}`:path;
-  };
+  const scopedHref=(path:'/admin/activities'|'/admin/documents/upload')=>draftReviewDestination(path,selected.scope);
 
   const [drafts, setDrafts] = useState<ExtractedDocumentDraft[]>([]);
   const confirmableDrafts=drafts.filter(draft=>!isSyntheticDraft(draft));

@@ -12,6 +12,14 @@ export interface DraftReviewEdits {
     category?: string;
     scope?: string;
 }
+export function draftReviewDestination(path:'/admin/activities'|'/admin/documents/upload',scope:DraftReviewScope):string {
+    // The activity list still consumes legacy names; upload consumes canonical names.
+    const legacy=path==='/admin/activities';
+    const query=new URLSearchParams();
+    if(scope.organizationId)query.set(legacy?'organizationId':'organization_id',scope.organizationId);
+    if(scope.projectId)query.set(legacy?'projectId':'project_id',scope.projectId);
+    return query.size?`${path}?${query}`:path;
+}
 export type DraftDecision = 'confirmed' | 'rejected';
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 export const isSyntheticDraft = (draft: ExtractedDocumentDraft) => /^(mock|fixture|synthetic)(-|$)/i.test(draft.extraction_provider || '');

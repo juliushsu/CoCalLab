@@ -2,11 +2,22 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createClient } from '@supabase/supabase-js';
 import type { ExtractedDocumentDraft } from '../src/types/document.ts';
-import { draftReviewScope, draftReviewValues, validateDraftReviewRows, readDraftReviewRows, buildDraftDecision, submitDraftDecision, submitDraftBatch } from '../src/services/draftReview.ts';
+import { draftReviewScope, draftReviewDestination, draftReviewValues, validateDraftReviewRows, readDraftReviewRows, buildDraftDecision, submitDraftDecision, submitDraftBatch } from '../src/services/draftReview.ts';
 // Actual backend contract is imported for compatibility; no server or cloud is contacted.
 import { validateConfirmDraftInput } from '../../../backend/src/contracts/contracts.js';
 const O = '00000000-0000-4000-8000-000000000001', P = '00000000-0000-4000-8000-000000000002', D = '00000000-0000-4000-8000-000000000003', A = '00000000-0000-4000-8000-000000000004', B = '00000000-0000-4000-8000-000000000005';
 const scope = { organizationId: O, projectId: P };
+test('review destinations preserve scope using the parameter names actually consumed by each page',()=>{
+    const activity=new URL(draftReviewDestination('/admin/activities',scope),'http://localhost');
+    // EmissionActivitiesListPage currently reads these exact legacy keys.
+    assert.equal(activity.searchParams.get('organizationId'),O);
+    assert.equal(activity.searchParams.get('projectId'),P);
+    assert.equal(activity.searchParams.size,2);
+    const upload=new URL(draftReviewDestination('/admin/documents/upload',scope),'http://localhost');
+    assert.equal(upload.searchParams.get('organization_id'),O);
+    assert.equal(upload.searchParams.get('project_id'),P);
+    assert.equal(draftReviewDestination('/admin/activities',{}),'/admin/activities');
+});
 const fixture = (id = D) => ({ id, organization_id: O, project_id: P, uploaded_document_id:A, status: 'pending_review', is_latest: true, normalized_payload: { quantity: 0, unit: 'kWh', activity_date: '2026-11-02' } } as ExtractedDocumentDraft);
 const saved = (draft_id = D, draft_status = 'confirmed') => ({ success: true, data: { draft_id, draft_status, emission_activity_id: draft_status === 'confirmed' ? A : null } });
 const readClient = (fetch: typeof globalThis.fetch) => createClient('https://synthetic-sdk.invalid', 'test-only-key', {
