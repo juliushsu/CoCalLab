@@ -48,3 +48,38 @@ test('refresh uses latest expiry while an ambiguous new SIGNED_IN without sessio
   assert.equal(refreshed, first);
   assert.notEqual(continuity.accept('SIGNED_IN', { ...noFamily, access_token: 'synthetic-no-family-C' }), refreshed);
 });
+
+test('Upload-N1: failed explicit login restores a retained valid session under a fresh epoch, never reviving the old upload', () => {
+  const continuity = createAuthContinuity<ReturnType<typeof session>>();
+  const retained = session();
+  const old = continuity.accept('INITIAL_SESSION', retained);
+  const pending = continuity.invalidate();
+  assert.equal(continuity.isCurrent(old, user), false);
+  const recovered = continuity.restoreAfterFailedSignIn(pending, retained);
+  assert.notEqual(recovered, null);
+  assert.notEqual(recovered, pending);
+  assert.equal(continuity.latest(), retained);
+  assert.equal(continuity.isCurrent(old, user), false);
+  assert.equal(continuity.isCurrent(recovered!, user), true);
+  assert.equal(continuity.isCurrent(recovered!, user, retained.expires_at * 1000 + 1), false);
+});
+
+test('Upload-N1: failed login cannot restore an expired session or overwrite logout, another login or accepted auth event', () => {
+  const expired = createAuthContinuity<ReturnType<typeof session>>();
+  const pending = expired.invalidate();
+  const epoch = expired.restoreAfterFailedSignIn(pending, { ...session(), expires_at: 1 });
+  assert.notEqual(epoch, null);
+  assert.equal(expired.latest(), null);
+  for (const boundary of ['logout', 'newLogin', 'authEvent'] as const) {
+    const continuity = createAuthContinuity<ReturnType<typeof session>>();
+    const retained = session();
+    continuity.accept('INITIAL_SESSION', retained);
+    const started = continuity.invalidate();
+    if (boundary === 'logout') continuity.accept('SIGNED_OUT', null);
+    if (boundary === 'newLogin') continuity.invalidate();
+    if (boundary === 'authEvent') continuity.accept('SIGNED_IN', session('new-family', 2, 'new-user'));
+    const latest = continuity.latest();
+    assert.equal(continuity.restoreAfterFailedSignIn(started, retained), null, boundary);
+    assert.equal(continuity.latest(), latest);
+  }
+});

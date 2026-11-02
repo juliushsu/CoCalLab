@@ -24,6 +24,13 @@ export function createAuthContinuity<T extends SessionIdentity>() {
       latest=valid;return epoch;
     },
     invalidate(){latest=null;return ++epoch;},
+    /** Resume only this failed explicit intent. A fresh epoch forces subscribers
+     * to reload and never revives an operation captured before sign-in began. */
+    restoreAfterFailedSignIn(expectedEpoch:number,retained:T|null):number|null {
+      if(epoch!==expectedEpoch||latest!==null)return null;
+      latest=currentSession(retained)?retained:null;
+      return ++epoch;
+    },
     isCurrent(expectedEpoch:number,userId:string,now=Date.now()) {return epoch===expectedEpoch&&latest?.user?.id===userId&&currentSession(latest,now);},
     latest(){return latest;},
   };

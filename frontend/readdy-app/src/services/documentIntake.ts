@@ -143,7 +143,12 @@ async function fileIdentity(file: File) {
     if (!pdf && !png && !jpg)
         throw new IntakeError('file');
     const sha256Hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), byte => byte.toString(16).padStart(2, '0')).join('');
-    return { sha256Hash, extension: pdf ? 'pdf' : png ? 'png' : 'jpg', mimeType: pdf ? 'application/pdf' : png ? 'image/png' : 'image/jpeg' };
+    const mimeType = pdf ? 'application/pdf' : png ? 'image/png' : 'image/jpeg';
+    // The SDK turns File bodies into FormData, whose part type takes precedence
+    // over contentType. Send the validated bytes with the canonical type while
+    // preserving the original filename and file contents.
+    const uploadFile = new File([bytes], file.name, { type: mimeType, lastModified: file.lastModified });
+    return { sha256Hash, extension: pdf ? 'pdf' : png ? 'png' : 'jpg', mimeType, uploadFile };
 }
 function clearReference(journal:IntakeRecovery|undefined,attempt:IntakeAttempt) {
     try{journal?.clear(attempt);}catch{/* Server confirmation remains valid; local reference is retained if cleanup fails. */}
@@ -223,7 +228,7 @@ export async function uploadIntake(client:SupabaseClient,input:{file:File;scope:
     try{journal.save(attempt);}catch(cause){throw new IntakeError('recovery',undefined,{cause});}
     try{current(isCurrent,attempt);}catch(cause){clearReference(journal,attempt);throw cause;}
     let uploaded;
-    try{uploaded=await client.storage.from(storageBucket).upload(storagePath,input.file,{upsert:false,contentType:file.mimeType});}
+    try{uploaded=await client.storage.from(storageBucket).upload(storagePath,file.uploadFile,{upsert:false,contentType:file.mimeType});}
     catch(cause){throw new IntakeError('uncertain',attempt,{cause});}
     current(isCurrent,attempt);
     if(uploaded.error||uploaded.data?.path!==storagePath)throw new IntakeError('uncertain',attempt,{cause:uploaded.error});

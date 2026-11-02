@@ -62,7 +62,9 @@ function sdk(options: Options = {}) {
                         if (options.download === 'missing')
                             return json({ message: 'synthetic missing object' }, 404);
                         const blob = options.download === 'corrupt' ? new Blob(['WRONG CONTENT']) : (state.uploaded || file());
-                        return new Response(await blob.arrayBuffer(), { headers: { 'Content-Type': options.download === 'wrongMime' ? 'image/png' : 'application/pdf' } });
+                        // Reflect the multipart file's actual type, as a Storage
+                        // service would, rather than masking image uploads as PDF.
+                        return new Response(await blob.arrayBuffer(), { headers: { 'Content-Type': options.download === 'wrongMime' ? (blob.type === 'image/png' ? 'application/pdf' : 'image/png') : blob.type } });
                     }
                     assert.equal(method, 'POST');
                     assert.equal(new Headers(init?.headers).get('x-upsert'), 'false');
@@ -167,6 +169,32 @@ test('PNG and JPEG file headers are accepted without trusting an original filena
         await runUpload(client, { ...input(), file: image });
         assert.doesNotMatch(String(state.saved!.storage_path), /\.\./);
         assert.equal(state.saved!.original_filename, image.name);
+    }
+});
+test('Upload-N2: installed SDK multipart canonical MIME preserves original bytes, SHA and filename for every accepted format', async () => {
+    const fixtures = [
+        { original: file(), canonicalMime: 'application/pdf' },
+        { original: new File([new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10, 0])], '測試 image.PNG', { type: 'image/png' }), canonicalMime: 'image/png' },
+        { original: new File([new Uint8Array([255, 216, 255, 0])], '測試 image.jpeg', { type: 'image/jpeg' }), canonicalMime: 'image/jpeg' },
+        { original: new File([new Uint8Array([255, 216, 255, 1])], '測試 alias.JPG', { type: 'image/jpg' }), canonicalMime: 'image/jpeg' },
+    ];
+    for (const { original, canonicalMime } of fixtures) {
+        const instance = sdk();
+        const receipt = await runUpload(instance.client, { ...input(), file: original });
+        const part = instance.state.uploaded;
+        assert.ok(part instanceof File);
+        assert.equal(part.type, canonicalMime, `multipart type for original ${original.type}`);
+        assert.equal(part.name, original.name);
+        assert.equal(part.size, original.size);
+        assert.deepEqual(new Uint8Array(await part.arrayBuffer()), new Uint8Array(await original.arrayBuffer()));
+        const hash = Buffer.from(await crypto.subtle.digest('SHA-256', await original.arrayBuffer())).toString('hex');
+        assert.equal(instance.state.saved!.sha256_hash, hash);
+        assert.equal(instance.state.saved!.original_filename, original.name);
+        assert.equal(instance.state.saved!.mime_type, canonicalMime);
+        const recovered = await reconcileIntake(instance.client, receipt.attempt, () => true, instance.journal);
+        assert.equal(recovered?.attempt.documentId, receipt.attempt.documentId);
+        assert.equal(recovered?.attempt.mimeType, canonicalMime);
+        assert.equal(writes(instance.calls).length, 2); // One original upload and one receipt only.
     }
 });
 test('duplicate lookup failure never means absent and sends no bytes', async () => {
