@@ -1,3 +1,4 @@
+import { readProjectOverview, type ProjectSelection } from './projectStatistics';
 import { projectUpdatePayload, requireUpdatedRow } from './entityUpdateContract';
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import type { Project, ProjectStatistics, CreateProjectInput, UpdateProjectInput } from '../types/project';
@@ -66,83 +67,15 @@ export async function getProjectById(id: string): Promise<Project | null> {
   } as Project;
 }
 
-/**
- * 取得專案統計資訊
- * inclusion_status DB enum 值為 'included'（非 'include'）
- */
-export async function getProjectStatistics(projectId: string): Promise<ProjectStatistics> {
-  if (!isSupabaseConnected()) {
-    console.warn('Supabase not connected');
-    return {
-      total_documents: 0,
-      total_activities: 0,
-      total_emissions: 0,
-      completion_rate: 0,
-      documents_uploaded: 0,
-      activities_confirmed: 0,
-      calculation_completed: false,
-      report_generated: false,
-    };
-  }
-
-  const supabase = getSupabaseClient();
-
-  const [
-    { count: documentCount },
-    { count: activityCount },
-    { count: confirmedActivityCount },
-    { data: emissionsData },
-    { count: calculationCount },
-    { count: reportCount },
-  ] = await Promise.all([
-    supabase
-      .from('uploaded_documents')
-      .select('*', { count: 'exact', head: true })
-      .eq('project_id', projectId),
-    supabase
-      .from('emission_activities')
-      .select('*', { count: 'exact', head: true })
-      .eq('project_id', projectId),
-    supabase
-      .from('emission_activities')
-      .select('*', { count: 'exact', head: true })
-      .eq('project_id', projectId)
-      .eq('inclusion_status', 'included'),   // DB enum 值是 'included'
-    supabase
-      .from('calculation_results')
-      .select('co2e_total')
-      .eq('project_id', projectId),
-    supabase
-      .from('calculation_results')
-      .select('*', { count: 'exact', head: true })
-      .eq('project_id', projectId),
-    supabase
-      .from('report_generations')
-      .select('*', { count: 'exact', head: true })
-      .eq('project_id', projectId),
-  ]);
-
-  const totalEmissions =
-    (emissionsData as any[] | null)?.reduce(
-      (sum: number, item: any) => sum + (item.co2e_total || 0),
-      0
-    ) || 0;
-
-  const completionRate =
-    activityCount && activityCount > 0
-      ? Math.round(((confirmedActivityCount || 0) / activityCount) * 100)
-      : 0;
-
-  return {
-    total_documents: documentCount || 0,
-    total_activities: activityCount || 0,
-    total_emissions: totalEmissions,
-    completion_rate: completionRate,
-    documents_uploaded: documentCount || 0,
-    activities_confirmed: confirmedActivityCount || 0,
-    calculation_completed: (calculationCount || 0) > 0,
-    report_generated: (reportCount || 0) > 0,
-  };
+/** Exact read-only project + statistics; configuration failures are never empty success. */
+export async function getProjectOverview(selected:ProjectSelection) {
+  if (!isSupabaseConnected()) throw new Error('專案資料服務尚未設定。');
+  return readProjectOverview(getSupabaseClient(),selected);
+}
+export async function getProjectStatistics(projectId:string, organizationId?:string):Promise<ProjectStatistics> {
+  const result=await getProjectOverview({projectId,organizationId});
+  if (!result) throw new Error('找不到可存取的專案。');
+  return result.statistics;
 }
 
 /**
