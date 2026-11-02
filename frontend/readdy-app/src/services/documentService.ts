@@ -2,6 +2,8 @@ import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import { IS_STAGING } from '../utils/staging';
 import type { UploadedDocument, ExtractedDocumentDraft } from '../types/document';
 import { readDraftReviewRows } from './draftReview';
+import { IntakeError, listIntakeProjects, getIntakeAccess, uploadIntake, reconcileIntake, type IntakeScope, type IntakeAttempt, type IntakeReceipt, type IntakeStage } from './documentIntake';
+import { browserIntakeRecovery } from './intakeRecovery';
 
 /**
  * 取得已上傳文件列表
@@ -42,130 +44,25 @@ export async function getUploadedDocuments(projectId?: string): Promise<Uploaded
   return documents as UploadedDocument[];
 }
 
-/**
- * 重複文件檢查：以 SHA-256 hash 比對同一 project 內是否已存在相同檔案
- * @returns 若已存在則回傳該文件資訊，否則回傳 null
- */
-export async function checkDuplicateDocument(
-  sha256Hash: string,
-  projectId: string
-): Promise<UploadedDocument | null> {
-  if (!isSupabaseConnected()) return null;
-
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase
-    .from('uploaded_documents')
-    .select('*, project:projects(name)')
-    .eq('sha256_hash', sha256Hash)
-    .eq('project_id', projectId)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Failed to check duplicate document:', error);
-    return null;
-  }
-
-  if (!data) return null;
-
-  return {
-    ...data,
-    project_name: (data as any).project?.name,
-  } as UploadedDocument;
+/** Upload-only intake. No OCR/classification invocation or mock fallback. */
+function intakeClient() {
+  if (!isSupabaseConnected()) throw new IntakeError('read');
+  return getSupabaseClient();
 }
-
-/**
- * 上傳文件到 Supabase Storage 並建立記錄
- *
- * Bucket / Path 路由規則：
- *   Production:
- *     bucket: 'documents'
- *     path:   {projectId}/{timestamp}_{original_name}
- *
- *   Staging (IS_STAGING = true):
- *     bucket: 'staging-receipts'   → documentType === 'receipt'
- *             'staging-attachments' → 其他所有類型
- *     path:   staging/{projectId}/TEST_{timestamp}_{original_name}
- *
- * Codex spec aligned: 2026-03-18
- */
-export async function uploadDocument(
-  file: File,
-  projectId: string,
-  organizationId: string,
-  documentType: string
-): Promise<{ documentId: string; storagePath: string }> {
-  if (!isSupabaseConnected()) {
-    throw new Error('Supabase not connected');
-  }
-
-  const supabase = getSupabaseClient();
-
-  const { data: { user } } = await supabase.auth.getUser();
-  const uploadedByUserId = user?.id ?? null;
-
-  const arrayBuffer = await file.arrayBuffer();
-  const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const sha256Hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-  const timestamp = Date.now();
-
-  // ── Bucket & Path resolution ──────────────────────────────────────
-  let storageBucket: string;
-  let storagePath: string;
-
-  if (IS_STAGING) {
-    storageBucket =
-      documentType === 'receipt' ? 'staging-receipts' : 'staging-attachments';
-    const stagingFileName = `TEST_${timestamp}_${file.name}`;
-    storagePath = `staging/${projectId}/${stagingFileName}`;
-  } else {
-    storageBucket = 'documents';
-    storagePath = `${projectId}/${timestamp}_${file.name}`;
-  }
-  // ─────────────────────────────────────────────────────────────────
-
-  const { error: uploadError } = await supabase.storage
-    .from(storageBucket)
-    .upload(storagePath, file);
-
-  if (uploadError) {
-    console.error('Failed to upload file to storage:', uploadError);
-    throw uploadError;
-  }
-
-  const { data, error: insertError } = await supabase
-    .from('uploaded_documents')
-    .insert({
-      organization_id: organizationId,
-      project_id: projectId,
-      uploaded_by_user_id: uploadedByUserId,
-      storage_bucket: storageBucket,
-      storage_path: storagePath,
-      original_filename: file.name,
-      mime_type: file.type,
-      file_size_bytes: file.size,
-      sha256_hash: sha256Hash,
-      document_type: documentType,
-      ocr_status: 'pending',
-      status: 'active',
-      metadata: {},
-      received_date: new Date().toISOString().split('T')[0],
-      ...(IS_STAGING ? { is_test: true, env: 'staging' } : {}),
-    })
-    .select()
-    .maybeSingle();
-
-  if (insertError) {
-    console.error('Failed to create document record:', insertError);
-    throw insertError;
-  }
-
-  return {
-    documentId: data.id,
-    storagePath,
-  };
+export function getUploadProjects(organizationId?:string) {
+  return listIntakeProjects(intakeClient(),organizationId);
 }
+export function getUploadAccess(scope:IntakeScope,userId:string,isCurrent=()=>true) {
+  return getIntakeAccess(intakeClient(),scope,userId,isCurrent);
+}
+export function uploadDocument(file:File,projectId:string,organizationId:string,documentType:string,userId:string,isCurrent=()=>true,onStage:(stage:IntakeStage)=>void=()=>{}):Promise<IntakeReceipt> {
+  let journal;try{journal=browserIntakeRecovery();}catch(cause){throw new IntakeError('recovery',undefined,{cause});}
+  return uploadIntake(intakeClient(),{file,scope:{projectId,organizationId},documentType,staging:IS_STAGING,expectedUserId:userId},journal,isCurrent,onStage);
+}
+export function recheckUploadReceipt(attempt:IntakeAttempt,isCurrent=()=>true) {
+  return reconcileIntake(intakeClient(),attempt,isCurrent,browserIntakeRecovery());
+}
+export function getIntakeRecovery(userId:string,scope:IntakeScope) {return browserIntakeRecovery().list(userId,scope);}
 
 /**
  * 刪除文件
