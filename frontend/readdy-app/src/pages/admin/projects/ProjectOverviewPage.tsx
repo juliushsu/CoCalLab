@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -7,8 +7,12 @@ import ErrorState from '../../../components/base/ErrorState';
 import StatusBadge from '../../../components/base/StatusBadge';
 import ReadonlyBanner from '../../../components/feature/ReadonlyBanner';
 import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
-import { getProjectById, getProjectStatistics } from '../../../services/projectService';
-import type { Project, ProjectStatistics } from '../../../types/project';
+import { getProjectOverview } from '../../../services/projectService';
+import { projectOverviewSelection, matchingProjectOverviewState, formatProjectEmissionTonnes, type ProjectOverview } from '../../../services/projectStatistics';
+import { useAuth } from '../../../hooks/useAuth';
+import { currentSession } from '../../../services/navigationScope';
+import EmptyState from '../../../components/base/EmptyState';
+
 import GovernanceBanner from '../../../components/feature/GovernanceBanner';
 
 export default function ProjectOverviewPage() {
@@ -17,54 +21,41 @@ export default function ProjectOverviewPage() {
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [project, setProject] = useState<Project | null>(null);
-  const [statistics, setStatistics] = useState<ProjectStatistics | null>(null);
-
-  const organizationId = searchParams.get('organization_id') || undefined;
-  const { status, isReadonly, reason, loading: statusLoading } = useSubscriptionStatus(organizationId);
-
-  const loadProjectData = useCallback(async () => {
-    if (!id) {
-      setError(t('errors.loadFailed'));
-      setIsLoading(false);
-      return;
+  const {session,loading:authLoading}=useAuth();
+  const [retry,setRetry]=useState(0);
+  const search=searchParams.toString();
+  const key=useMemo(()=>({id,search,session,retry}),[id,search,session,retry]);
+  type ReadState={status:'success';detail:ProjectOverview|null}|{status:'error';message:string};
+  const [result,setResult]=useState<{key:typeof key;value:ReadState}|null>(null);
+  const state=matchingProjectOverviewState(result,key);
+  const organizationId=state?.status==='success'?state.detail?.project.organization_id:undefined;
+  const {isReadonly}=useSubscriptionStatus(organizationId);
+  useEffect(()=>{
+    let active=true;
+    if(authLoading)return()=>{active=false;};
+    if(!currentSession(key.session)){
+      setResult({key,value:{status:'error',message:'請先登入有效的工作階段。'}});
+      return()=>{active=false;};
     }
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // 使用 projectService 取得專案資料
-      const projectData = await getProjectById(id);
-      if (!projectData) {
-        setError(t('errors.loadFailed'));
-        return;
-      }
-      setProject(projectData);
-
-      // 使用 projectService 取得統計資料
-      const statsData = await getProjectStatistics(id);
-      setStatistics(statsData);
-    } catch (err) {
-      console.error('Failed to load project:', err);
-      setError(t('errors.loadFailed'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id, t]);
-
-  useEffect(() => {
-    void loadProjectData();
-  }, [loadProjectData]);
-
+    try{
+      const selected=projectOverviewSelection(key.id,key.search);
+      void getProjectOverview(selected).then(detail=>{
+        if(active)setResult({key,value:currentSession(key.session)?{status:'success',detail}:{status:'error',message:'工作階段已失效，請重新登入。'}});
+      }).catch(cause=>{
+        if(active)setResult({key,value:{status:'error',message:cause instanceof Error?cause.message:'專案統計讀取失敗。'}});
+      });
+    }catch(cause){setResult({key,value:{status:'error',message:cause instanceof Error?cause.message:'專案範圍無效。'}});}
+    return()=>{active=false;};
+  },[key,authLoading]);
+  const reload=()=>setRetry(value=>value+1);
+  const project=state?.status==='success'?state.detail?.project:null;
+  const statistics=state?.status==='success'?state.detail?.statistics:null;
   const handleEditProject = () => {
     if (isReadonly) {
       alert(t('subscription.readonly_banner_message'));
       return;
     }
-    navigate(`/admin/projects/${id}/edit`);
+    navigate(`/admin/projects/${id}/edit?organization_id=${organizationId}`);
   };
 
   const handleUploadDocuments = () => {
@@ -72,7 +63,7 @@ export default function ProjectOverviewPage() {
       alert(t('subscription.readonly_banner_message'));
       return;
     }
-    navigate(`/admin/documents/upload?project_id=${id}`);
+    navigate(`/admin/documents/upload?project_id=${id}&organization_id=${organizationId}`);
   };
 
   const handleGenerateReport = () => {
@@ -80,24 +71,20 @@ export default function ProjectOverviewPage() {
       alert(t('subscription.readonly_banner_message'));
       return;
     }
-    navigate(`/admin/reports?project_id=${id}`);
+    navigate(`/admin/reports?project_id=${id}&organization_id=${organizationId}`);
   };
 
-  if (isLoading) {
+  if (authLoading || !state) {
     return (
       <AdminLayout>
-        <LoadingState />
+        <div role="status" aria-label="正在讀取專案與統計"><LoadingState /></div>
       </AdminLayout>
     );
   }
 
-  if (error || !project) {
-    return (
-      <AdminLayout>
-        <ErrorState message={error || t('common.errors.load_failed')} onRetry={loadProjectData} />
-      </AdminLayout>
-    );
-  }
+  if(!currentSession(session))return <AdminLayout><ErrorState message="工作階段已失效，請重新登入。" /></AdminLayout>;
+  if(state.status==='error')return <AdminLayout><ErrorState message={state.message} onRetry={reload} /></AdminLayout>;
+  if(!project||!statistics)return <AdminLayout><EmptyState title="找不到可存取的專案" description="專案不存在，或不在目前可存取的組織範圍。" actionLabel="重新讀取" onAction={reload}/></AdminLayout>;
 
   return (
     <AdminLayout>
@@ -149,8 +136,8 @@ export default function ProjectOverviewPage() {
               <p className="text-sm font-medium text-gray-900">{project.organization_name || '-'}</p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">{t('projects.fields.project_type')}</p>
-              <p className="text-sm font-medium text-gray-900">{t(`projects.types.${project.project_type}`)}</p>
+              <p className="text-xs text-gray-500 mb-1">盤查邊界</p>
+              <p className="text-sm font-medium text-gray-900">{{operational_control:'營運控制',financial_control:'財務控制',equity_share:'股權比例'}[project.boundary_type] ?? '未知'}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 mb-1">{t('common.status')}</p>
@@ -195,7 +182,7 @@ export default function ProjectOverviewPage() {
                 <i className="ri-file-text-line text-blue-600 text-xl"></i>
               </div>
               <span className="text-2xl font-semibold text-gray-900">
-                {statistics?.total_documents || 0}
+                {statistics.total_documents}
               </span>
             </div>
             <p className="text-sm text-gray-600">{t('projects.overview.total_documents')}</p>
@@ -207,7 +194,7 @@ export default function ProjectOverviewPage() {
                 <i className="ri-list-check-2 text-green-600 text-xl"></i>
               </div>
               <span className="text-2xl font-semibold text-gray-900">
-                {statistics?.total_activities || 0}
+                {statistics.total_activities}
               </span>
             </div>
             <p className="text-sm text-gray-600">{t('projects.overview.total_activities')}</p>
@@ -219,7 +206,7 @@ export default function ProjectOverviewPage() {
                 <i className="ri-fire-line text-orange-600 text-xl"></i>
               </div>
               <span className="text-2xl font-semibold text-gray-900">
-                {statistics?.total_emissions?.toFixed(2) || '0.00'}
+                {formatProjectEmissionTonnes(statistics.total_emissions)}
               </span>
             </div>
             <p className="text-sm text-gray-600">{t('projects.overview.total_emissions')}</p>
@@ -232,17 +219,25 @@ export default function ProjectOverviewPage() {
                 <i className="ri-pie-chart-line text-teal-600 text-xl"></i>
               </div>
               <span className="text-2xl font-semibold text-gray-900">
-                {statistics?.completion_rate || 0}%
+                {statistics.inclusion_rate === null ? '—' : statistics.inclusion_rate+'%'}
               </span>
             </div>
-            <p className="text-sm text-gray-600">{t('projects.overview.completion_rate')}</p>
+            <p className="text-sm text-gray-600">目前使用中活動納入率</p>
             <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-teal-600 h-2 rounded-full transition-all"
-                style={{ width: `${statistics?.completion_rate || 0}%` }}
+                style={{ width: `${statistics.inclusion_rate ?? 0}%` }}
               ></div>
             </div>
           </div>
+        </div>
+
+        <div role="status" className="mb-6 rounded-lg border border-teal-100 bg-teal-50 p-4 text-sm text-gray-700">
+          <p>僅統計目前帳號可存取的專案資料。排放量採使用中且已納入活動的最新成功快照，不含舊版本、排除與封存活動。</p>
+          <p>使用中 {statistics.active_activities} 筆；已納入 {statistics.included_activities} 筆，其中有效計算 {statistics.calculated_activities} 筆。
+          {statistics.total_emissions_kg === null ? ' 尚未取得完整排放量，不以部分計算或零代替。' : ' 已保存總量 '+statistics.total_emissions_kg+' kgCO₂e，換算一次顯示為 tCO₂e。'}</p>
+          <p>納入率是活動分類比例，不代表盤查、人工確認或商業驗收完成。已完成報告：{statistics.report_generated ? '有' : '尚無可存取記錄'}。</p>
+          <button type="button" onClick={reload} className="mt-2 underline">重新讀取專案與統計</button>
         </div>
 
         {/* Quick Actions */}
@@ -262,7 +257,7 @@ export default function ProjectOverviewPage() {
             </button>
 
             <button
-              onClick={() => navigate(`/admin/activities?project_id=${id}`)}
+              onClick={() => navigate(`/admin/activities?project_id=${id}&organization_id=${organizationId}`)}
               className="p-4 border border-gray-200 rounded-lg hover:border-teal-500 hover:bg-teal-50 transition-all text-left group cursor-pointer"
             >
               <div className="w-10 h-10 flex items-center justify-center bg-teal-50 rounded-lg mb-3 group-hover:bg-teal-100 transition-colors">

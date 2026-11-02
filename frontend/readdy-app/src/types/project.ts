@@ -68,10 +68,13 @@ export interface UpdateProjectInput {
 export interface ProjectStatistics {
   total_documents: number;
   total_activities: number;
-  total_emissions: number;
-  completion_rate: number;
-  documents_uploaded: number;
-  activities_confirmed: number;
+  /** Tonnes, converted once from the complete latest included-active kg total. */
+  total_emissions: number | null;
+  total_emissions_kg: number | null;
+  active_activities: number;
+  included_activities: number;
+  calculated_activities: number;
+  inclusion_rate: number | null;
   calculation_completed: boolean;
   report_generated: boolean;
 }
