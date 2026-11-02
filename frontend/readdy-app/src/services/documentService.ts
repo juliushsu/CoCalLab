@@ -1,6 +1,7 @@
 import { getSupabaseClient, isSupabaseConnected } from '../lib/supabase';
 import { IS_STAGING } from '../utils/staging';
 import type { UploadedDocument, ExtractedDocumentDraft } from '../types/document';
+import { readDraftReviewRows } from './draftReview';
 
 /**
  * 取得已上傳文件列表
@@ -201,29 +202,10 @@ export async function deleteDocument(documentId: string): Promise<void> {
  * 取得待審核的草稿列表
  * @param projectId 若傳入則只回傳該 project 的草稿
  */
-export async function getExtractedDrafts(projectId?: string): Promise<ExtractedDocumentDraft[]> {
+export async function getExtractedDrafts(projectId?: string, organizationId?: string, documentId?: string): Promise<ExtractedDocumentDraft[]> {
   if (!isSupabaseConnected()) {
-    console.warn('Supabase not connected, returning empty array');
-    return [];
+    throw new Error('草稿資料服務尚未設定。');
   }
 
-  const supabase = getSupabaseClient();
-  let query = supabase
-    .from('extracted_document_drafts')
-    .select('*, document:uploaded_documents(original_filename, project:projects(name))')
-    .in('status', ['pending_review', 'needs_clarification'])
-    .order('created_at', { ascending: false });
-
-  if (projectId) {
-    query = query.eq('project_id', projectId);
-  }
-
-  const { data, error } = await query;
-
-  if (error) {
-    console.error('Failed to fetch extracted drafts:', error);
-    throw error;
-  }
-
-  return (data || []) as ExtractedDocumentDraft[];
+  return readDraftReviewRows(getSupabaseClient(), {projectId, organizationId, documentId});
 }

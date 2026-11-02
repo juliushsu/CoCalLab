@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -12,17 +12,30 @@ import { getExtractedDrafts } from '../../../services/documentService';
 import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ExtractedDocumentDraft } from '../../../types/document';
 import DraftAIExplanationPanel from './components/DraftAIExplanationPanel';
+import { draftReviewScope, draftReviewDestination, draftReviewValues, isSyntheticDraft, validateDraftReviewRows, submitDraftDecision, submitDraftBatch, type DraftReviewScope } from '../../../services/draftReview';
+import { useAuth } from '../../../hooks/useAuth';
+import { currentSession } from '../../../services/navigationScope';
 
 export default function ExtractedDraftReviewPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const organizationId = searchParams.get('organization_id') || undefined;
-  const projectIdParam = searchParams.get('projectId') || undefined;
+  const {session,loading:authLoading}=useAuth();
+  const search=searchParams.toString();
+  const context=useMemo(()=>({search,session}),[search,session]);
+  const currentContext=useRef<typeof context|null>(context);
+  const busy=useRef(false);
+  const [loadedContext,setLoadedContext]=useState<typeof context|null>(null);
+  const selected=useMemo<{scope:DraftReviewScope;error:string|null}>(()=>{try{return {scope:draftReviewScope(search),error:null};}catch(error){return {scope:{},error:error instanceof Error?error.message:'草稿範圍無效。'};}},[search]);
+  const organizationId=selected.scope.organizationId;
+  const projectIdParam=selected.scope.projectId;
+  const scopedHref=(path:'/admin/activities'|'/admin/documents/upload')=>draftReviewDestination(path,selected.scope);
 
   const [drafts, setDrafts] = useState<ExtractedDocumentDraft[]>([]);
+  const confirmableDrafts=drafts.filter(draft=>!isSyntheticDraft(draft));
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [needsRefresh,setNeedsRefresh]=useState(false);
 
   const [selectedDrafts, setSelectedDrafts] = useState<Set<string>>(new Set());
   const [activeDraftId, setActiveDraftId] = useState<string | null>(null);
@@ -41,33 +54,38 @@ export default function ExtractedDraftReviewPage() {
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorToastMessage, setErrorToastMessage] = useState('');
 
-  const { isReadonly } = useSubscriptionStatus(organizationId);
-
-  // 當 projectId URL 參數變化時重新載入
-  const loadDrafts = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      const data = await getExtractedDrafts(projectIdParam);
-      setDrafts(data);
-    } catch (err) {
-      console.error('Failed to load drafts:', err);
-      setError(t('common.errors.load_failed'));
-    } finally {
-      setIsLoading(false);
+  const subscription=useSubscriptionStatus(organizationId);
+  const isReadonly=subscription.isReadonly||subscription.loading||Boolean(subscription.error)||!organizationId||!currentSession(session)||needsRefresh;
+  useLayoutEffect(()=>{
+    currentContext.current=context;busy.current=false;
+    setSelectedDrafts(new Set());setActiveDraftId(null);setShowConfirmDialog(false);setShowRejectDialog(false);setShowBatchConfirmDialog(false);
+    setIsProcessing(false);setShowSuccessToast(false);setShowErrorToast(false);setExpandedExplanationDrafts(new Set());
+    return()=>{if(currentContext.current===context)currentContext.current=null;};
+  },[context]);
+  const loadDrafts=useCallback(async()=>{
+    if(authLoading)return;
+    setIsLoading(true);setError(null);
+    try{
+      if(!currentSession(context.session))throw new Error('請先登入有效的工作階段。');
+      if(selected.error)throw new Error(selected.error);
+      const rows=await getExtractedDrafts(projectIdParam,organizationId,selected.scope.documentId);
+      if(currentContext.current!==context)return;
+      if(!currentSession(context.session))throw new Error('工作階段已失效，請重新登入。');
+      const validated=validateDraftReviewRows(rows,selected.scope);
+      setDrafts(validated);setSelectedDrafts(prev=>new Set([...prev].filter(id=>validated.some(row=>row.id===id))));
+      setNeedsRefresh(false);setShowErrorToast(false);setShowSuccessToast(false);
+    }catch(cause){
+      if(currentContext.current===context){setDrafts([]);setError(cause instanceof Error?cause.message:'草稿讀取失敗。');}
+    }finally{
+      if(currentContext.current===context){setIsLoading(false);setLoadedContext(context);}
     }
-  }, [projectIdParam, t]);
-
-  useEffect(() => {
-    void loadDrafts();
-  }, [loadDrafts]);
-
-  const showError = (message: string) => {
-    setErrorToastMessage(message);
-    setShowErrorToast(true);
-    setTimeout(() => setShowErrorToast(false), 5000);
+  },[authLoading,context,selected,projectIdParam,organizationId]);
+  useEffect(()=>{void loadDrafts();},[loadDrafts]);
+  const showError=(message:string)=>{setErrorToastMessage(message);setShowErrorToast(true);};
+  const requireRefresh=(message:string)=>{
+    setNeedsRefresh(true);setShowConfirmDialog(false);setShowRejectDialog(false);setShowBatchConfirmDialog(false);
+    showError(message+' 請先重新讀取草稿再操作；伺服器可能已保存，勿直接重送。');
   };
-
   const getErrorMessage = (error: any): string => {
     if (!error) return t('drafts.confirm_failed');
     const errorMsg = error.message || String(error);
@@ -89,107 +107,39 @@ export default function ExtractedDraftReviewPage() {
     return errorMsg;
   };
 
-  const handleConfirmSingle = async () => {
-    if (!activeDraftId || isReadonly) return;
-    try {
-      setIsProcessing(true);
-      const response = await EdgeFunctionService.invoke({
-        functionName: 'confirm-draft',
-        payload: {
-          draft_id: activeDraftId,
-          review_note: editNote || undefined,
-          suggested_scope: editScope ? parseInt(editScope, 10) : undefined,
-          suggested_category: editCategory || undefined,
-        },
-      });
-      if (!response.success) {
-        throw new Error(response.error?.message || t('drafts.confirm_failed'));
-      }
-      setDrafts(prev => prev.filter(d => d.id !== activeDraftId));
-      setShowConfirmDialog(false);
-      setActiveDraftId(null);
-      setEditNote('');
-      setEditScope('');
-      setEditCategory('');
-      setSuccessMessage(t('drafts.confirm_success'));
-      setShowSuccessToast(true);
-      setTimeout(() => setShowSuccessToast(false), 5000);
-    } catch (error) {
-      console.error('Failed to confirm draft:', error);
-      showError(getErrorMessage(error));
-    } finally {
-      setIsProcessing(false);
-    }
+  const handleSingle=async(decision:'confirmed'|'rejected')=>{
+    if(!activeDraftId||isReadonly||busy.current||loadedContext!==context)return;
+    const captured=context,isCurrent=()=>currentContext.current===captured&&currentSession(captured.session);
+    busy.current=true;setIsProcessing(true);setShowSuccessToast(false);setShowErrorToast(false);
+    try{
+      const draft=drafts.find(row=>row.id===activeDraftId);
+      if(!draft)throw new Error('草稿已不在目前清單，請重新讀取。');
+      await submitDraftDecision(options=>EdgeFunctionService.invoke(options),draft,decision,selected.scope,
+        {reviewNote:editNote,category:editCategory,scope:editScope},isCurrent);
+      if(!isCurrent())return;
+      setDrafts(prev=>prev.filter(row=>row.id!==draft.id));
+      setSelectedDrafts(prev=>{const next=new Set(prev);next.delete(draft.id);return next;});
+      setShowConfirmDialog(false);setShowRejectDialog(false);setActiveDraftId(null);setEditNote('');setEditScope('');setEditCategory('');
+      setSuccessMessage(t(decision==='confirmed'?'drafts.confirm_success':'drafts.reject_success'));setShowSuccessToast(true);
+    }catch(error){if(isCurrent())requireRefresh(getErrorMessage(error));}
+    finally{if(currentContext.current===captured){busy.current=false;setIsProcessing(false);}}
   };
-
-  const handleRejectSingle = async () => {
-    if (!activeDraftId || isReadonly) return;
-    try {
-      setIsProcessing(true);
-      const response = await EdgeFunctionService.invoke({
-        functionName: 'confirm-draft',
-        payload: {
-          draft_id: activeDraftId,
-          status: 'rejected',
-          review_note: editNote || undefined,
-        },
-      });
-      if (!response.success) {
-        throw new Error(response.error?.message || t('drafts.reject_failed'));
-      }
-      setDrafts(prev => prev.filter(d => d.id !== activeDraftId));
-      setShowRejectDialog(false);
-      setActiveDraftId(null);
-      setEditNote('');
-      setSuccessMessage(t('drafts.reject_success'));
-      setShowSuccessToast(true);
-      setTimeout(() => setShowSuccessToast(false), 5000);
-    } catch (error) {
-      console.error('Failed to reject draft:', error);
-      showError(getErrorMessage(error));
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleConfirmBatch = async () => {
-    if (selectedDrafts.size === 0 || isReadonly) return;
-    try {
-      setIsProcessing(true);
-      const draftIds = Array.from(selectedDrafts);
-      const succeeded: string[] = [];
-      const failed: string[] = [];
-      for (const draftId of draftIds) {
-        try {
-          const response = await EdgeFunctionService.invoke({
-            functionName: 'confirm-draft',
-            payload: { draft_id: draftId },
-          });
-          if (response.success) {
-            succeeded.push(draftId);
-          } else {
-            failed.push(draftId);
-          }
-        } catch {
-          failed.push(draftId);
-        }
-      }
-      setDrafts(prev => prev.filter(d => !succeeded.includes(d.id)));
-      setSelectedDrafts(new Set());
-      setShowBatchConfirmDialog(false);
-      if (failed.length > 0) {
-        showError(t('drafts.batch_confirm_partial', { success: succeeded.length, failed: failed.length }));
-      } else {
-        setSuccessMessage(t('drafts.batch_confirm_success', { count: succeeded.length }));
-        setShowSuccessToast(true);
-        setTimeout(() => setShowSuccessToast(false), 5000);
-      }
-    } catch (error) {
-      console.error('Failed to batch confirm:', error);
-      showError(getErrorMessage(error));
-    } finally {
-      setIsProcessing(false);
-    }
+  const handleConfirmSingle=()=>handleSingle('confirmed');
+  const handleRejectSingle=()=>handleSingle('rejected');
+  const handleConfirmBatch=async()=>{
+    if(!selectedDrafts.size||isReadonly||busy.current||loadedContext!==context)return;
+    const captured=context,isCurrent=()=>currentContext.current===captured&&currentSession(captured.session);
+    busy.current=true;setIsProcessing(true);setShowSuccessToast(false);setShowErrorToast(false);
+    try{
+      const rows=drafts.filter(row=>selectedDrafts.has(row.id));
+      if(rows.length!==selectedDrafts.size)throw new Error('選取清單已變更，請重新讀取。');
+      const {succeeded,failed}=await submitDraftBatch(options=>EdgeFunctionService.invoke(options),rows,selected.scope,isCurrent);
+      if(!isCurrent())return;
+      setDrafts(prev=>prev.filter(row=>!succeeded.includes(row.id)));setSelectedDrafts(new Set(failed));setShowBatchConfirmDialog(false);
+      if(failed.length)requireRefresh('已確認保存 '+succeeded.length+' 筆，另有 '+failed.length+' 筆未確認保存；項目仍保留於清單。');
+      else{setSuccessMessage(t('drafts.batch_confirm_success',{count:succeeded.length}));setShowSuccessToast(true);}
+    }catch(error){if(isCurrent())requireRefresh(getErrorMessage(error));}
+    finally{if(currentContext.current===captured){busy.current=false;setIsProcessing(false);}}
   };
 
   const openConfirmDialog = (draftId: string) => {
@@ -209,10 +159,10 @@ export default function ExtractedDraftReviewPage() {
   };
 
   const toggleSelectAll = () => {
-    if (selectedDrafts.size === drafts.length) {
+    if (selectedDrafts.size === confirmableDrafts.length) {
       setSelectedDrafts(new Set());
     } else {
-      setSelectedDrafts(new Set(drafts.map(d => d.id)));
+      setSelectedDrafts(new Set(confirmableDrafts.map(d => d.id)));
     }
   };
 
@@ -240,13 +190,15 @@ export default function ExtractedDraftReviewPage() {
     });
   };
 
-  if (isLoading) {
+  if (authLoading || loadedContext!==context || isLoading) {
     return (
       <AdminLayout>
         <LoadingState message={t('drafts.loading_message')} />
       </AdminLayout>
     );
   }
+
+  if(!currentSession(session))return <AdminLayout><ErrorState message="工作階段已失效，請重新登入。" /></AdminLayout>;
 
   if (error) {
     return (
@@ -258,13 +210,18 @@ export default function ExtractedDraftReviewPage() {
 
   return (
     <AdminLayout>
-      {isReadonly && (
+      {subscription.isReadonly && (
         <ReadonlyBanner
           onRenew={() => navigate('/admin/subscription')}
           onContact={() => window.open('mailto:support@cocallab.com', '_blank')}
         />
       )}
 
+      {needsRefresh&&<p role="alert" className="mb-4 rounded border border-amber-200 bg-amber-50 p-4 text-sm">上次操作結果未確認；請重新讀取草稿，確認伺服器狀態後再提交。</p>}
+      {(!organizationId||subscription.loading||subscription.error)&&<p role="status" className="mb-4 rounded border border-amber-200 bg-amber-50 p-4 text-sm">
+        {!organizationId?'請從目前組織／專案帶入 organization_id 後進行審核；此清單目前唯讀。':subscription.error?'無法確認訂閱寫入狀態；請稍後重試。':'正在確認組織訂閱狀態，暫停審核操作。'}
+      </p>}
+      <button type="button" onClick={()=>void loadDrafts()} disabled={isProcessing} className="mb-4 text-sm underline disabled:opacity-50">重新讀取草稿</button>
       {/* 成功 Toast */}
       {showSuccessToast && (
         <div className="fixed top-4 right-4 z-50 bg-green-50 border border-green-200 rounded-lg p-4 shadow-lg flex items-center gap-3">
@@ -274,7 +231,7 @@ export default function ExtractedDraftReviewPage() {
           <div className="flex-1">
             <p className="text-sm font-medium text-green-900">{successMessage}</p>
             <button
-              onClick={() => navigate('/admin/activities')}
+              onClick={() => navigate(scopedHref('/admin/activities'))}
               className="text-sm text-green-700 underline mt-1 cursor-pointer"
             >
               {t('drafts.go_to_activities')}
@@ -333,7 +290,7 @@ export default function ExtractedDraftReviewPage() {
             </button>
           )}
           <button
-            onClick={() => navigate('/admin/documents/upload')}
+            onClick={() => navigate(scopedHref('/admin/documents/upload'))}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 whitespace-nowrap cursor-pointer"
           >
             <i className="ri-upload-line mr-2"></i>
@@ -347,20 +304,20 @@ export default function ExtractedDraftReviewPage() {
           title={t('drafts.empty_title')}
           description={t('drafts.empty_description')}
           actionLabel={t('documents.uploadPage')}
-          onAction={() => navigate('/admin/documents/upload')}
+          onAction={() => navigate(scopedHref('/admin/documents/upload'))}
         />
       ) : (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="px-6 py-3 border-b border-gray-200 bg-gray-50 flex items-center">
             <input
               type="checkbox"
-              checked={selectedDrafts.size === drafts.length && drafts.length > 0}
+              checked={selectedDrafts.size === confirmableDrafts.length && confirmableDrafts.length > 0}
               onChange={toggleSelectAll}
-              disabled={isReadonly}
+              disabled={isReadonly || isProcessing || !confirmableDrafts.length}
               className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500 cursor-pointer"
             />
             <span className="ml-3 text-sm font-medium text-gray-700">
-              {selectedDrafts.size === drafts.length
+              {selectedDrafts.size === confirmableDrafts.length && confirmableDrafts.length > 0
                 ? t('common.deselect_all')
                 : t('common.select_all')}
             </span>
@@ -374,7 +331,7 @@ export default function ExtractedDraftReviewPage() {
                     type="checkbox"
                     checked={selectedDrafts.has(draft.id)}
                     onChange={() => toggleSelect(draft.id)}
-                    disabled={isReadonly}
+                    disabled={isReadonly || isProcessing || isSyntheticDraft(draft)}
                     className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500 cursor-pointer"
                   />
                   <div className="flex-1 min-w-0">
@@ -395,7 +352,7 @@ export default function ExtractedDraftReviewPage() {
                           {t('drafts.suggested_date')}
                         </label>
                         <p className="text-sm text-gray-900">
-                          {draft.suggested_activity_date || '-'}
+                          {draftReviewValues(draft).activityDate}
                         </p>
                       </div>
                       <div>
@@ -403,7 +360,7 @@ export default function ExtractedDraftReviewPage() {
                           {t('drafts.quantity')}
                         </label>
                         <p className="text-sm text-gray-900">
-                          {draft.parsed_quantity} {draft.parsed_unit}
+                          {draftReviewValues(draft).quantity} {draftReviewValues(draft).unit}
                         </p>
                       </div>
                       <div>
@@ -439,10 +396,12 @@ export default function ExtractedDraftReviewPage() {
                         )}
                       </div>
                     )}
+                    <p className="mb-2 text-xs text-gray-500">擷取來源：{draft.extraction_provider || '未提供（未證實為真實 OCR）'}</p>
+                    {isSyntheticDraft(draft)&&<p className="mb-3 text-sm text-amber-700">Mock／合成測試草稿，不能確認為正式活動；可駁回。</p>}
                     <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={() => openConfirmDialog(draft.id)}
-                        disabled={isReadonly || isProcessing}
+                        disabled={isReadonly || isProcessing || isSyntheticDraft(draft)}
                         className="px-3 py-1.5 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 disabled:bg-gray-300 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
                       >
                         <i className="ri-check-line mr-1"></i>
@@ -487,6 +446,7 @@ export default function ExtractedDraftReviewPage() {
       {/* 確認對話框 */}
       {showConfirmDialog && (
         <ConfirmDialog
+          open
           title={t('drafts.confirm_dialog.title')}
           message={t('drafts.confirm_dialog.message')}
           confirmLabel={t('common.confirm')}
@@ -546,6 +506,7 @@ export default function ExtractedDraftReviewPage() {
       {/* 拒絕對話框 */}
       {showRejectDialog && (
         <ConfirmDialog
+          open
           title={t('drafts.reject_dialog.title')}
           message={t('drafts.reject_dialog.message')}
           confirmLabel={t('drafts.reject_button')}
@@ -577,6 +538,7 @@ export default function ExtractedDraftReviewPage() {
       {/* 批次確認對話框 */}
       {showBatchConfirmDialog && (
         <ConfirmDialog
+          open
           title={t('drafts.batch_confirm')}
           message={t('drafts.confirm_dialog.batch_message', { count: selectedDrafts.size })}
           confirmLabel={t('common.confirm')}

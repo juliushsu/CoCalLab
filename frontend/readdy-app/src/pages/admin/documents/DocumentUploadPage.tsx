@@ -932,7 +932,7 @@ export default function DocumentUploadPage() {
                 {t('common.close')}
               </button>
               <button
-                onClick={() => navigate('/admin/documents/drafts')}
+                onClick={() => navigate(`/admin/documents/drafts?${new URLSearchParams({...(resolvedOrgId?{organization_id:resolvedOrgId}:{}),...(selectedProject?{project_id:selectedProject}:{})})}`)}
                 className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition-colors whitespace-nowrap cursor-pointer"
               >
                 <i className="ri-file-list-3-line mr-2"></i>
