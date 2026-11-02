@@ -1,0 +1,1092 @@
+{
+  "date": "2026-11-02",
+  "scope": "Tracked TS/TSX/JS/SQL scan, excluding env files, locales, mocks, tests, contracts and auth/login content in gap marker output. Markers are candidates, not proof every match is a live mock.",
+  "results": [
+    {
+      "commit": "60677af8726e21033bda6302964a08386a7f46fe",
+      "source_files_scanned": 176,
+      "live_deployed_commit": "UNKNOWN",
+      "binding_matches": [],
+      "hosting_configuration_files": [],
+      "migration_count": 27,
+      "migrations": [
+        {
+          "path": "backend/supabase/migrations/202603160001_v1_core_schema.sql",
+          "sha256": "c57662f2e5c9802ce8a9fd92f4d892600c6c32a9e5d48fa592c871a6dc8c5b0a",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160002_v1_hardening_atomic_rpc.sql",
+          "sha256": "06596af1e83e811cd75cb99985d4466a5391000c174e5eca599ec8aac9d56488",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160003_v1_hardening_document_atomic_rpc.sql",
+          "sha256": "1ce309ac4cee191407633efa1fad61b3f86c7a6601d2eece29775c95f1ed021c",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160004_v1_hardening_recalculate_atomic_rpc.sql",
+          "sha256": "915f42af129caacbf3d303b32044d36563ec48ef09ac856ae7198fe776fe607e",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160005_v1_hardening_generate_report_atomic_rpc.sql",
+          "sha256": "41b9a0152376c091b0c8c8b78fd3eeec988b8466ef925a7a2973695155c75a0a",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160006_v1_hardening_run_ai_audit_atomic_rpc.sql",
+          "sha256": "d6780dc277b9c1b3307cb7b23358128254cf387b6ed7a548b14d9ac79d2fdf07",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160007_v1_hardening_classify_atomic_rpc.sql",
+          "sha256": "c5200592fff450eb779fc28e5027b55a13dc127fc2cb865d679236e6c09ad385",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160008_v1_frontend_fixture_seed.sql",
+          "sha256": "a6c16053bf30f32b2108330cc9e4d8d2447631e7c362989b23ad14b421599539",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160009_v1_p0_process_document_atomic_fix.sql",
+          "sha256": "df2394818e238ddea003375e0957f95ae75adb45ea77e8aeee206386fce79221",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160010_v1_p0_classify_atomic_fix.sql",
+          "sha256": "69c2809fa0b2e7847cd744fe62c9334f04bcc55557637b6c05c2356417e2ad2d",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160011_v1_p0_confirm_atomic_fix.sql",
+          "sha256": "4e0af1ec523f5277ef7cc9747656de058b4031a30479ff1472113860ae7323f6",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180001_v1_staging_hardening_columns.sql",
+          "sha256": "ec09e37e3793c8e59de18550b4150bca5266b95362db5bd6a0c5fdd90e4cc330",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180002_v1_staging_action_logs.sql",
+          "sha256": "8cd370317344589b4f86c99a62498f8e843bfdef8f60f5a2050d01acf76a6eee",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180003_v1_staging_purge_dry_run.sql",
+          "sha256": "0fa12f4bfc4c90f247bd0c5c959724c096f250fd70a044d740dcba9646296e54",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180004_v1_staging_purge_function.sql",
+          "sha256": "5b4cff65fb0700b3285c94444c6d00cc926b792d60f5fe149e50450b9c64e289",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180005_v1_staging_storage_isolation.sql",
+          "sha256": "10fe15af02bb4b7c5430b2ce4b28a3f409cc495e534dd22014dc65eda613ffb8",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180006_v1_staging_hardening_followup.sql",
+          "sha256": "b1d0b6c734e491689be9772c1a7287c181f120327084987418ee71bd8de8531b",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180007_v1_staging_fixture_alignment.sql",
+          "sha256": "0b0cd9bfd9771e8faa2b3504178e89f9c424a789ea025662bba28ead8991e7cf",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180008_v1_p1_org_membership_alignment.sql",
+          "sha256": "f50f7bd2c5f6f4c731e0b7392252e1f858568bcb86d3954925d865d7b0fccec3",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180009_v1_member_management_rpc.sql",
+          "sha256": "3ea6e40fbd1dabddc7e90a5c194a17d9020ab6dee037909b8e837b4852183a44",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070001_v1_org_read_chain_fix.sql",
+          "sha256": "6b850d64b9cb35fbdbe2cd83eb9e34bcf33112de1a2ec6a0128679a59b9ef208",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070002_v1_analytics_classification_backbone.sql",
+          "sha256": "405f6fafff39143cd08444b025ff27f67de94e9574bb11070f7a10130a21efb1",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070003_v1_adjustments_and_report_integration.sql",
+          "sha256": "f3db51ce05d05f3ae9073bd03018c1bdcf0534f19b64efb973201b33ee168567",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070004_v1_adjustment_rule_engine_and_purge_update.sql",
+          "sha256": "deb5f4c611d67f63ebad3c6c1f1f39fdbc655b22b78125c33de24c166b6bb390",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070005_v1_adjustment_fixture_seed.sql",
+          "sha256": "41b9317e0a2a8d4ccaf394751f1c3626df725829be3f34bd6fabbc37e83105f8",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070006_v1_canonical_seed_pack_governance.sql",
+          "sha256": "feecbc41fb8e6984e8b6ae071a1b3678252b0d27413b53555d32d52417421c26",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202605080001_phase1_boundary_governance_staging.sql",
+          "sha256": "320123171cd8a8bce5eea7a31687c82561057f2d8ec6139aa5b23be2d5bb5fa6",
+          "live_applied": "UNKNOWN"
+        }
+      ],
+      "edge_function_count": 10,
+      "edge_functions": [
+        {
+          "path": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "sha256": "d2998c77639f533102842001a7fd77fe2fbe6e742c95aad90ab6e61f66bb538c",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/analytics-emissions/index.ts",
+          "sha256": "4b58f57860a379a1db4d82f61c07e330073c9317601667ebbe8abe4a75040a05",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/classify-document/index.ts",
+          "sha256": "cf4cc829853b0a2677348689944d41eef43659ce0587021f0d5ef5038af6b761",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/confirm-draft/index.ts",
+          "sha256": "f682af246c4a5ca5be8ed95c8e51ce7f08ada2ab13c720517644f82973e08f79",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/create-organization/index.ts",
+          "sha256": "5798f5611facf6d3a880e865de8fb0ec5441a862f87c703b3d22d18e5600d7c1",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "sha256": "0e27f04036e3a997a54b5775d231f7eb6c05dca9df7b9bea56fb0f9b168fe950",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/generate-report/index.ts",
+          "sha256": "35f085cc6c7312b776c3e4435b2bbe45fa04aa577a7754391cbacafa5e275502",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/process-document/index.ts",
+          "sha256": "b3225ed692058c214e7343757bc50e5f032e81c36820c0fba972c4b4b22db372",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/recalculate-project/index.ts",
+          "sha256": "c0c432d5dc304053983116cf2656f55341cc13cf09c264092481a0971d3785ef",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/run-ai-audit/index.ts",
+          "sha256": "c0893de9160a2f706fd3201f9b6c251b350f1aec0609a89fe7c0ebccc07e799a",
+          "live_deployment": "UNKNOWN"
+        }
+      ],
+      "source_gap_markers": [
+        {
+          "path": "backend/src/providers/index.js",
+          "line": 9,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/backend/src/providers/index.js#L9"
+        },
+        {
+          "path": "backend/src/providers/index.js",
+          "line": 17,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/backend/src/providers/index.js#L17"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 24,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L24"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 52,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L52"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 95,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L95"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 104,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L104"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 140,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L140"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 15,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L15"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 21,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L21"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 28,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L28"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 33,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L33"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 40,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L40"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 47,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L47"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 68,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L68"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 160,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L160"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 166,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L166"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 171,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L171"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 172,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L172"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 173,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L173"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 174,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L174"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 230,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L230"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 277,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L277"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 310,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L310"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 315,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L315"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 347,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L347"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 348,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L348"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 349,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L349"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 350,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L350"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 369,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L369"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 373,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L373"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 374,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L374"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 382,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L382"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 385,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L385"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 20,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L20"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 26,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L26"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 35,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L35"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 44,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L44"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 428,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L428"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 511,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L511"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 521,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L521"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 527,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L527"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 659,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L659"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/CarbonAdjustmentsPage.tsx",
+          "line": 249,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/carbon-adjustments/CarbonAdjustmentsPage.tsx#L249"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/CarbonAdjustmentsPage.tsx",
+          "line": 335,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/carbon-adjustments/CarbonAdjustmentsPage.tsx#L335"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/components/ApplicationsTab.tsx",
+          "line": 36,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/carbon-adjustments/components/ApplicationsTab.tsx#L36"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/components/CertificatesTab.tsx",
+          "line": 65,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/carbon-adjustments/components/CertificatesTab.tsx#L65"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/components/ItemsTab.tsx",
+          "line": 79,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/carbon-adjustments/components/ItemsTab.tsx#L79"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx",
+          "line": 7,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx#L7"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx",
+          "line": 152,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx#L152"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx",
+          "line": 15,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx#L15"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx",
+          "line": 703,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx#L703"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/organizations/EditOrganizationPage.tsx",
+          "line": 38,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/organizations/EditOrganizationPage.tsx#L38"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/organizations/EditOrganizationPage.tsx",
+          "line": 86,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/organizations/EditOrganizationPage.tsx#L86"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 8,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L8"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 32,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L32"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 51,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L51"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 359,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L359"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 402,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L402"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 409,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L409"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 437,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L437"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx",
+          "line": 9,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx#L9"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx",
+          "line": 13,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx#L13"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx",
+          "line": 197,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx#L197"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx",
+          "line": 126,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx#L126"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx",
+          "line": 333,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx#L333"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 13,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L13"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 17,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L17"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 37,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L37"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 166,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L166"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 179,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L179"
+        },
+        {
+          "path": "frontend/readdy-app/src/types/dataOrigin.ts",
+          "line": 37,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/types/dataOrigin.ts#L37"
+        },
+        {
+          "path": "frontend/readdy-app/src/types/dataOrigin.ts",
+          "line": 50,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/frontend/readdy-app/src/types/dataOrigin.ts#L50"
+        }
+      ]
+    },
+    {
+      "commit": "7dccd5452152f2495d10ad1437d5d03215166065",
+      "source_files_scanned": 197,
+      "live_deployed_commit": "UNKNOWN",
+      "binding_matches": [],
+      "hosting_configuration_files": [],
+      "migration_count": 32,
+      "migrations": [
+        {
+          "path": "backend/supabase/migrations/202603160001_v1_core_schema.sql",
+          "sha256": "c57662f2e5c9802ce8a9fd92f4d892600c6c32a9e5d48fa592c871a6dc8c5b0a",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160002_v1_hardening_atomic_rpc.sql",
+          "sha256": "06596af1e83e811cd75cb99985d4466a5391000c174e5eca599ec8aac9d56488",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160003_v1_hardening_document_atomic_rpc.sql",
+          "sha256": "1ce309ac4cee191407633efa1fad61b3f86c7a6601d2eece29775c95f1ed021c",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160004_v1_hardening_recalculate_atomic_rpc.sql",
+          "sha256": "915f42af129caacbf3d303b32044d36563ec48ef09ac856ae7198fe776fe607e",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160005_v1_hardening_generate_report_atomic_rpc.sql",
+          "sha256": "41b9a0152376c091b0c8c8b78fd3eeec988b8466ef925a7a2973695155c75a0a",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160006_v1_hardening_run_ai_audit_atomic_rpc.sql",
+          "sha256": "d6780dc277b9c1b3307cb7b23358128254cf387b6ed7a548b14d9ac79d2fdf07",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160007_v1_hardening_classify_atomic_rpc.sql",
+          "sha256": "c5200592fff450eb779fc28e5027b55a13dc127fc2cb865d679236e6c09ad385",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160008_v1_frontend_fixture_seed.sql",
+          "sha256": "a6c16053bf30f32b2108330cc9e4d8d2447631e7c362989b23ad14b421599539",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160009_v1_p0_process_document_atomic_fix.sql",
+          "sha256": "df2394818e238ddea003375e0957f95ae75adb45ea77e8aeee206386fce79221",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160010_v1_p0_classify_atomic_fix.sql",
+          "sha256": "69c2809fa0b2e7847cd744fe62c9334f04bcc55557637b6c05c2356417e2ad2d",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603160011_v1_p0_confirm_atomic_fix.sql",
+          "sha256": "4e0af1ec523f5277ef7cc9747656de058b4031a30479ff1472113860ae7323f6",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180001_v1_staging_hardening_columns.sql",
+          "sha256": "ec09e37e3793c8e59de18550b4150bca5266b95362db5bd6a0c5fdd90e4cc330",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180002_v1_staging_action_logs.sql",
+          "sha256": "8cd370317344589b4f86c99a62498f8e843bfdef8f60f5a2050d01acf76a6eee",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180003_v1_staging_purge_dry_run.sql",
+          "sha256": "0fa12f4bfc4c90f247bd0c5c959724c096f250fd70a044d740dcba9646296e54",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180004_v1_staging_purge_function.sql",
+          "sha256": "5b4cff65fb0700b3285c94444c6d00cc926b792d60f5fe149e50450b9c64e289",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180005_v1_staging_storage_isolation.sql",
+          "sha256": "10fe15af02bb4b7c5430b2ce4b28a3f409cc495e534dd22014dc65eda613ffb8",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180006_v1_staging_hardening_followup.sql",
+          "sha256": "b1d0b6c734e491689be9772c1a7287c181f120327084987418ee71bd8de8531b",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180007_v1_staging_fixture_alignment.sql",
+          "sha256": "0b0cd9bfd9771e8faa2b3504178e89f9c424a789ea025662bba28ead8991e7cf",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180008_v1_p1_org_membership_alignment.sql",
+          "sha256": "f50f7bd2c5f6f4c731e0b7392252e1f858568bcb86d3954925d865d7b0fccec3",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202603180009_v1_member_management_rpc.sql",
+          "sha256": "3ea6e40fbd1dabddc7e90a5c194a17d9020ab6dee037909b8e837b4852183a44",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070001_v1_org_read_chain_fix.sql",
+          "sha256": "6b850d64b9cb35fbdbe2cd83eb9e34bcf33112de1a2ec6a0128679a59b9ef208",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070002_v1_analytics_classification_backbone.sql",
+          "sha256": "405f6fafff39143cd08444b025ff27f67de94e9574bb11070f7a10130a21efb1",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070003_v1_adjustments_and_report_integration.sql",
+          "sha256": "f3db51ce05d05f3ae9073bd03018c1bdcf0534f19b64efb973201b33ee168567",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070004_v1_adjustment_rule_engine_and_purge_update.sql",
+          "sha256": "deb5f4c611d67f63ebad3c6c1f1f39fdbc655b22b78125c33de24c166b6bb390",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070005_v1_adjustment_fixture_seed.sql",
+          "sha256": "41b9317e0a2a8d4ccaf394751f1c3626df725829be3f34bd6fabbc37e83105f8",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202604070006_v1_canonical_seed_pack_governance.sql",
+          "sha256": "feecbc41fb8e6984e8b6ae071a1b3678252b0d27413b53555d32d52417421c26",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202605080001_phase1_boundary_governance_staging.sql",
+          "sha256": "320123171cd8a8bce5eea7a31687c82561057f2d8ec6139aa5b23be2d5bb5fa6",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202610310001_organization_profile_update.sql",
+          "sha256": "44b0e230025d91a905be5f12656ff913d159ec9b208c8c87d5bdbc4ca4f46da3",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202610310002_project_identity_guard.sql",
+          "sha256": "590ed6dad872a16c24dc8e63e74b20273c104073a8bf172bd675d3b4be467db4",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202610310003_atomic_rpc_service_role_only.sql",
+          "sha256": "ef285acba8bbc9dab65c95a55bb294ed6deb01551c55f01f4134db693a6bc482",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202610310004_tenant_relationship_integrity.sql",
+          "sha256": "7345c2c7ea5a22daae7b037aa2f473da0468de9ce270036f9fb1bf057e269ed1",
+          "live_applied": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/migrations/202610310005_project_lookup_acl.sql",
+          "sha256": "b595612111f760a7e9bb8c27f8db6d5b6a52f03c6ed59884f87e33198a98bce5",
+          "live_applied": "UNKNOWN"
+        }
+      ],
+      "edge_function_count": 10,
+      "edge_functions": [
+        {
+          "path": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "sha256": "bea869d71bf86a1e87e4de914cc9469c27bce6b66f2b33c80b7039661fcf5e4e",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/analytics-emissions/index.ts",
+          "sha256": "f0a8c7b4a383e457fc96c95339ae60943284c877d8654c913e4c382cc9761767",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/classify-document/index.ts",
+          "sha256": "8f4297bc121370ac18d0eae1b547d9248bca378c117e598e995118dd7a4fbe03",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/confirm-draft/index.ts",
+          "sha256": "f6e233749685c631a2ee8cbe7316e6d7dd4456e4d0b7a9c0c4ee23f89a5215cb",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/create-organization/index.ts",
+          "sha256": "e6c34896d548b90c3550e8f5f34a7a97e5d178fe09b8b61749c6b2de112ac298",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "sha256": "38a236bf6f90acdf9a34799075ddfcd825258dc83650b2aa9e8084a59d12dbaf",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/generate-report/index.ts",
+          "sha256": "0e0d9905d1a4775acbf7639ba849f6461cba690a4afe63ca9e9721af100e6e3e",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/process-document/index.ts",
+          "sha256": "8d8c89971e7a899ca601b09ed8352be6eecc069efd307d86d779fa4a62d0f417",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/recalculate-project/index.ts",
+          "sha256": "1e4604352b6b5ae53f86673a9b66c60b87ea9d17137d588efb85a16456763324",
+          "live_deployment": "UNKNOWN"
+        },
+        {
+          "path": "backend/supabase/functions/run-ai-audit/index.ts",
+          "sha256": "288f12cdee2a38d214d663c56c58b1ca9bc23ea8b43029a486aa9bc380db7518",
+          "live_deployment": "UNKNOWN"
+        }
+      ],
+      "source_gap_markers": [
+        {
+          "path": "backend/src/providers/index.js",
+          "line": 9,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/backend/src/providers/index.js#L9"
+        },
+        {
+          "path": "backend/src/providers/index.js",
+          "line": 17,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/backend/src/providers/index.js#L17"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 24,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L24"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 52,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L52"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 95,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L95"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 104,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L104"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+          "line": 140,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/activities/EmissionActivityDetailPage.tsx#L140"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 15,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L15"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 21,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L21"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 28,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L28"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 33,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L33"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 40,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L40"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 47,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L47"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 68,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L68"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 160,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L160"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 166,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L166"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 171,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L171"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 172,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L172"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 173,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L173"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 174,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L174"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 230,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L230"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 277,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L277"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 310,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L310"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 315,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L315"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 347,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L347"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 348,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L348"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 349,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L349"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 350,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L350"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 369,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L369"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 373,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L373"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 374,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L374"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 382,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L382"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx",
+          "line": 385,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/ai-governance/AIGovernancePage.tsx#L385"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+          "line": 100,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/analytics/EmissionsAnalyticsPage.tsx#L100"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/components/AdjustmentDetailDrawer.tsx",
+          "line": 282,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/carbon-adjustments/components/AdjustmentDetailDrawer.tsx#L282"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/components/ApplicationsTab.tsx",
+          "line": 36,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/carbon-adjustments/components/ApplicationsTab.tsx#L36"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/carbon-adjustments/components/CertificatesTab.tsx",
+          "line": 65,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/carbon-adjustments/components/CertificatesTab.tsx#L65"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx",
+          "line": 7,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx#L7"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx",
+          "line": 152,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/emission-factors/EmissionFactorsPage.tsx#L152"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx",
+          "line": 15,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx#L15"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx",
+          "line": 703,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/emission-factors/FactorSourcesPage.tsx#L703"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 8,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L8"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 32,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L32"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 51,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L51"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 359,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L359"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 402,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L402"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 409,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L409"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+          "line": 437,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/product-carbon/ProductCarbonPage.tsx#L437"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx",
+          "line": 8,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx#L8"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx",
+          "line": 12,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx#L12"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx",
+          "line": 196,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/reports/ReportCenterPage.tsx#L196"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx",
+          "line": 112,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx#L112"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx",
+          "line": 276,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/reports/ReportPreviewPage.tsx#L276"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 13,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L13"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 17,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L17"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 37,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L37"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 162,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L162"
+        },
+        {
+          "path": "frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+          "line": 175,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/pages/admin/subscription/SubscriptionManagementPage.tsx#L175"
+        },
+        {
+          "path": "frontend/readdy-app/src/types/dataOrigin.ts",
+          "line": 37,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/types/dataOrigin.ts#L37"
+        },
+        {
+          "path": "frontend/readdy-app/src/types/dataOrigin.ts",
+          "line": 50,
+          "evidence_url": "https://github.com/juliushsu/CoCalLab/blob/7dccd5452152f2495d10ad1437d5d03215166065/frontend/readdy-app/src/types/dataOrigin.ts#L50"
+        }
+      ]
+    }
+  ]
+}
+
