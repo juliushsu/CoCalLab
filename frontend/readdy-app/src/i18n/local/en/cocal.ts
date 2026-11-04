@@ -347,6 +347,25 @@ export const cocal = {
   },
 
   documents: {
+    library: {
+      "selectScope": "Select an organization or project",
+      "selectScopeDescription": "Use the project selector or the organization/project entries to choose a unit. No first organization is assumed.",
+      "viewOriginal": "View private original",
+      "downloadOriginal": "Download private original",
+      "loadingOriginal": "Checking the current unit and reading the private original…",
+      "unsupportedPreview": "The original did not pass preview type checks. Use private download to retain its original contents.",
+      "deleteUnconfirmed": "Deletion is unconfirmed. Keep the document ID and check again without reuploading. File and receipt operations may be partially complete.",
+      "errors": {
+        "scope": "Organization, project or document scope is inconsistent or inaccessible. Select it again.",
+        "auth": "The session is invalid or the user changed. Sign in again and check the unit.",
+        "read": "Document read or completeness verification failed. An empty list is not substituted.",
+        "context": "The unit or sign-in state changed. The old operation result was discarded.",
+        "missing": "No accessible receipt was found in the current unit.",
+        "path": "This legacy object path is not supported for safe reading. Keep its ID for administrator review.",
+        "download": "Private original read failed or was denied. No public URL fallback was used.",
+        "integrity": "Original size or its saved hash does not match the receipt. The result was blocked."
+      }
+    },
     intake: {
       loading: 'Loading accessible intake projects',
       empty: 'No accessible intake project',
@@ -512,6 +531,7 @@ export const cocal = {
       failed: 'Failed',
     },
     types: {
+      utility_bill: 'Utility bill',
       receipt: 'Receipt',
       invoice: 'Invoice',
       bill: 'Bill',

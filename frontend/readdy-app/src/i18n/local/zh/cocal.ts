@@ -348,6 +348,25 @@ export const cocal = {
   },
 
   documents: {
+    library: {
+      "selectScope": "請先選擇組織／專案",
+      "selectScopeDescription": "使用上方專案選單，或從組織與專案入口選擇單位；不預設借用第一個組織。",
+      "viewOriginal": "查看私有原檔",
+      "downloadOriginal": "下載私有原檔",
+      "loadingOriginal": "正在核對目前單位與讀取私有原檔…",
+      "unsupportedPreview": "此原檔未通過可預覽類型核對，可使用私有下載保留原始內容。",
+      "deleteUnconfirmed": "刪除結果未確認。請保留文件 ID 並重新核對，不要重傳。檔案與收件紀錄可能有部分完成。",
+      "errors": {
+        "scope": "組織／專案／文件範圍不一致或不可存取，請重新選擇。",
+        "auth": "工作階段無效或已切換使用者，請重新登入並核對單位。",
+        "read": "文件讀取或完整性核對失敗；不以空清單代替錯誤。",
+        "context": "單位或登入狀態已切換，舊操作結果已停止使用。",
+        "missing": "目前單位中找不到可存取的收件紀錄。",
+        "path": "此歷史原檔路徑尚未支援安全讀取；請保留 ID 交管理者核對。",
+        "download": "私有原檔讀取失敗或權限遭拒，未使用公開網址回退。",
+        "integrity": "原檔大小或已保存的雜湊與收件紀錄不符，已停止使用。"
+      }
+    },
     intake: {
       loading: '正在讀取可收件的專案',
       empty: '尚無可存取的收件專案',
@@ -536,6 +555,7 @@ export const cocal = {
       failed: '失敗',
     },
     types: {
+      utility_bill: '公用事業帳單',
       receipt: '收據',
       invoice: '發票',
       bill: '帳單',
