@@ -22,7 +22,7 @@ export interface ApiError {
  * API Meta 資訊
  */
 export interface ApiMeta {
-  status?: 'active' | 'readonly' | 'suspended' | 'expired';
+  status?: 'active' | 'grace_period' | 'readonly' | 'suspended' | 'expired';
   reason?: string;
   warnings?: ApiWarning[];
   timestamp?: string;

@@ -111,7 +111,8 @@ export default function EmissionActivityDetailPage() {
       <h2 className="mb-4 text-lg font-semibold text-gray-900">來源與資料識別</h2>
       <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="活動 ID">{activity.id}</Field><Field label="組織 ID">{activity.organization_id}</Field><Field label="專案 ID">{activity.project_id}</Field>
-        <Field label="來源文件 ID">{activity.source_document_id ?? '未提供'}</Field><Field label="來源草稿 ID">{activity.source_draft_id ?? '未提供'}</Field>
+        <Field label="來源文件 ID">{activity.source_document_id?<button type="button" className="text-teal-700 underline" onClick={()=>navigate('/admin/documents/list?'+new URLSearchParams({organization_id:activity.organization_id,projectId:activity.project_id,document:activity.source_document_id!}))}>{activity.source_document_id} — 查看來源文件</button>:'未提供'}</Field>
+        <Field label="來源草稿 ID">{activity.source_draft_id??'未提供'}{activity.source_draft_id&&<button type="button" className="mt-2 block text-teal-700 underline" onClick={()=>navigate('/admin/documents/drafts?'+new URLSearchParams({organization_id:activity.organization_id,project_id:activity.project_id,...(activity.source_document_id?{document:activity.source_document_id}:{})}))}>開啟待審清單（已確認來源草稿不列於待審）</button>}</Field>
         <Field label="建立時間">{timestamp(activity.created_at)}</Field><Field label="更新時間">{timestamp(activity.updated_at)}</Field>
       </dl>
     </section>

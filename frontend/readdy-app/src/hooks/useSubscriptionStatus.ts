@@ -1,82 +1,48 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { EdgeFunctionService } from '../services/edgeFunction';
-import { getSubscriptionStatus, isReadonly, getReadonlyReason } from '../utils/subscription';
+import { getSubscriptionStatus, isReadonly, getReadonlyReason, verifiedSubscriptionStatus } from '../utils/subscription';
 import type { SubscriptionStatus } from '../utils/subscription';
+import { createSubscriptionFence } from '../services/subscriptionFence';
 import type { ApiMeta } from '../services/types';
 
-/**
- * 訂閱狀態 Hook 返回值
- */
-interface UseSubscriptionStatusReturn {
-  status: SubscriptionStatus;
-  isReadonly: boolean;
-  reason?: string;
-  loading: boolean;
-  error: string | null;
-  refresh: () => Promise<void>;
-}
-
-/**
- * 訂閱狀態 Hook
- * 用於檢查當前組織或專案的訂閱狀態
- */
-export function useSubscriptionStatus(
-  organizationId?: string
-): UseSubscriptionStatusReturn {
-  const [status, setStatus] = useState<SubscriptionStatus>('active');
-  const [reason, setReason] = useState<string | undefined>();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+interface Options { failClosed?: boolean; scopeKey?: unknown }
+interface Result { status: SubscriptionStatus; reason?: string; error: string | null }
+/** Presentation only. Every write still requires server-side permission checks. */
+export function useSubscriptionStatus(organizationId?: string, options: Options = {}) {
+  const {failClosed = false, scopeKey} = options;
+  const scope = useMemo(() => ({organizationId, scopeKey, failClosed}), [organizationId, scopeKey, failClosed]);
+  const fence = useRef(createSubscriptionFence<typeof scope>()).current;
+  fence.select(scope);
+  const [result, setResult] = useState<{scope: typeof scope; value: Result} | null>(null);
+  const [pending, setPending] = useState<typeof scope | null>(null);
   const fetchStatus = useCallback(async () => {
+    const current = fence.begin(scope);
+    if (!current) return;
     if (!organizationId) {
-      setStatus('active');
-      setReason(undefined);
+      if (current()) setResult({scope, value: {status: failClosed ? 'readonly' : 'active', error: null}});
       return;
     }
-
-    setLoading(true);
-    setError(null);
-
+    setPending(scope);
     try {
-      // 呼叫 enforce-subscription-status Edge Function
-      const response = await EdgeFunctionService.invoke<{ meta: ApiMeta }>({
-        functionName: 'enforce-subscription-status',
-        payload: { organization_id: organizationId },
+      const response = await EdgeFunctionService.invoke<{meta: ApiMeta}>({
+        functionName: 'enforce-subscription-status', payload: {organization_id: organizationId},
       });
-
-      if (response.success && response.meta) {
-        const newStatus = getSubscriptionStatus(response.meta);
-        const newReason = getReadonlyReason(response.meta);
-        
-        setStatus(newStatus);
-        setReason(newReason);
-      } else {
-        // Edge Function 回傳錯誤，預設為 active 避免誤鎖
-        console.warn('enforce-subscription-status returned error:', response.error);
-        setError(response.error?.message || '無法取得訂閱狀態');
-        setStatus('active');
+      if (!response.success || !response.meta) {
+        throw new Error(response.error?.message || '無法取得訂閱狀態');
       }
-    } catch (err) {
-      // Edge Function 不存在或網路錯誤，預設為 active 避免誤鎖
-      console.warn('Failed to fetch subscription status (Edge Function may not exist):', err);
-      setError(err instanceof Error ? err.message : '發生未知錯誤');
-      setStatus('active');
+      if (current()) setResult({scope, value: {status: failClosed ? verifiedSubscriptionStatus(response.meta) : getSubscriptionStatus(response.meta), reason: getReadonlyReason(response.meta), error: null}});
+    } catch (cause) {
+      if (current()) setResult({scope, value: {status: failClosed ? 'readonly' : 'active', error: cause instanceof Error ? cause.message : '無法取得訂閱狀態'}});
     } finally {
-      setLoading(false);
+      if (current()) setPending(null);
     }
-  }, [organizationId]);
-
+  }, [scope, organizationId, failClosed, fence]);
+  const cancel = useCallback(() => fence.cancel(scope), [fence, scope]);
   useEffect(() => {
-    fetchStatus();
-  }, [fetchStatus]);
-
-  return {
-    status,
-    isReadonly: isReadonly(status),
-    reason,
-    loading,
-    error,
-    refresh: fetchStatus,
-  };
+    fence.select(scope);
+    void fetchStatus();
+    return cancel;
+  }, [fetchStatus, cancel, fence, scope]);
+  const value = result?.scope === scope ? result.value : {status: failClosed ? 'readonly' as const : 'active' as const, error: null};
+  return {...value, isReadonly: isReadonly(value.status), loading: Boolean(organizationId) && (result?.scope !== scope || pending === scope), refresh: fetchStatus};
 }

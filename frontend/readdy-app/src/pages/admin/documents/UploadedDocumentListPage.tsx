@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import {useState,useEffect,useCallback,useMemo,useRef,useLayoutEffect} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useNavigate,useSearchParams} from 'react-router-dom';
 import AdminLayout from '../../../components/layout/AdminLayout';
 import EmptyState from '../../../components/base/EmptyState';
 import LoadingState from '../../../components/base/LoadingState';
@@ -8,413 +8,107 @@ import ErrorState from '../../../components/base/ErrorState';
 import ConfirmDialog from '../../../components/base/ConfirmDialog';
 import StatusBadge from '../../../components/base/StatusBadge';
 import ReadonlyBanner from '../../../components/feature/ReadonlyBanner';
-import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
-import { getUploadedDocuments, deleteDocument } from '../../../services/documentService';
-import { getProjects } from '../../../services/projectService';
-import type { UploadedDocument, OcrStatus, DocumentType } from '../../../types/document';
-import type { Project } from '../../../types/project';
+import {useSubscriptionStatus} from '../../../hooks/useSubscriptionStatus';
+import {useAuth} from '../../../hooks/useAuth';
+import {useTenantNavigation} from '../../../hooks/useTenantNavigation';
+import {getUploadedDocuments,deleteDocument,getDocumentProjects,getPrivateDocument} from '../../../services/documentService';
+import {parseLibrarySelection,DocumentLibraryError,type LibraryDocument} from '../../../services/documentLibrary';
+import type {IntakeProject} from '../../../services/documentIntake';
+import type {OcrStatus,DocumentType} from '../../../types/document';
 
-type ToastType = 'success' | 'error';
-
-interface Toast {
-  type: ToastType;
-  message: string;
-}
-
-export default function UploadedDocumentListPage() {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const organizationId = searchParams.get('organization_id') || undefined;
-  const projectIdParam = searchParams.get('projectId') || undefined;
-
-  const { isReadonly } = useSubscriptionStatus(organizationId);
-
-  const [documents, setDocuments] = useState<UploadedDocument[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedProject, setSelectedProject] = useState<string>(projectIdParam || '');
-  const [selectedStatus, setSelectedStatus] = useState<OcrStatus | ''>('');
-  const [selectedType, setSelectedType] = useState<DocumentType | ''>('');
-
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [documentToDelete, setDocumentToDelete] = useState<UploadedDocument | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const [toast, setToast] = useState<Toast | null>(null);
-
-  const showToast = (type: ToastType, message: string) => {
-    setToast({ type, message });
-    setTimeout(() => setToast(null), 5000);
+export default function UploadedDocumentListPage(){
+  const {t,i18n}=useTranslation(),navigate=useNavigate(),[params]=useSearchParams();
+  const search=params.toString();
+  const selected=useMemo(()=>{try{return {scope:parseLibrarySelection(search),error:false};}catch{return {scope:{organizationId:undefined,projectId:undefined,documentId:undefined},error:true};}},[search]);
+  const {session,loading:authLoading,authEpoch,isAuthenticationCurrent}=useAuth();
+  const navigation=useTenantNavigation();
+  const [retry,setRetry]=useState(0);
+  const context=useMemo(()=>({search,userId:session?.user.id??'',authEpoch,retry}),[search,session?.user.id,authEpoch,retry]);
+  const current=useRef<typeof context|null>(context);
+  const [loaded,setLoaded]=useState<typeof context|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState<string|null>(null);
+  const [documents,setDocuments]=useState<LibraryDocument[]>([]),[projects,setProjects]=useState<IntakeProject[]>([]);
+  const [organizationId,setOrganizationId]=useState<string|undefined>(),[projectId,setProjectId]=useState('');
+  const subscription=useSubscriptionStatus(loaded===context?organizationId:undefined,{failClosed:true,scopeKey:context});
+  const isReadonly=subscription.isReadonly||subscription.loading||Boolean(subscription.error);
+  const [searchQuery,setSearchQuery]=useState(''),[status,setStatus]=useState<OcrStatus|''>(''),[type,setType]=useState<DocumentType|''>('');
+  const [target,setTarget]=useState<LibraryDocument|null>(null),[deleting,setDeleting]=useState(false);
+  const [toast,setToast]=useState<{type:'success'|'error';message:string}|null>(null);
+  const timer=useRef<ReturnType<typeof setTimeout>|undefined>(undefined),urls=useRef(new Set<string>());
+  const [preview,setPreview]=useState<{url:string;name:string}|null>(null),[originalBusy,setOriginalBusy]=useState<string|null>(null);
+  const isCurrent=useCallback((captured:typeof context)=>current.current===captured&&isAuthenticationCurrent(captured.authEpoch,captured.userId),[isAuthenticationCurrent]);
+  useLayoutEffect(()=>{
+    current.current=context;setTarget(null);setDeleting(false);setPreview(null);setOriginalBusy(null);setToast(null);
+    const capturedUrls=urls.current;
+    return()=>{if(current.current===context)current.current=null;capturedUrls.forEach(url=>URL.revokeObjectURL(url));capturedUrls.clear();clearTimeout(timer.current);};
+  },[context]);
+  const reload=()=>setRetry(value=>value+1);
+  useEffect(()=>{
+    if(authLoading)return;
+    let active=true;setLoading(true);setError(null);
+    void(async()=>{
+      try{
+        if(!isCurrent(context))throw new DocumentLibraryError('auth');
+        if(selected.error)throw new DocumentLibraryError('scope');
+        const options=await getDocumentProjects(selected.scope.organizationId,context.userId,()=>isCurrent(context));
+        let org=selected.scope.organizationId;
+        if(selected.scope.projectId){const project=options.find(row=>row.id===selected.scope.projectId);if(!project)throw new DocumentLibraryError('scope');org=project.organization_id;}
+        const rows=org?await getUploadedDocuments({organizationId:org,projectId:selected.scope.projectId,documentId:selected.scope.documentId},context.userId,()=>isCurrent(context)):[];
+        if(!active||!isCurrent(context))return;
+        setDocuments(rows);setProjects(options);setOrganizationId(org);setProjectId(selected.scope.projectId??'');
+      }catch(cause){if(active&&current.current===context){setDocuments([]);setProjects([]);setOrganizationId(undefined);setError(cause instanceof DocumentLibraryError?cause.code:'read');}}
+      finally{if(active&&current.current===context){setLoading(false);setLoaded(context);}}
+    })();
+    return()=>{active=false;};
+  },[authLoading,context,selected,isCurrent]);
+  const showToast=(kind:'success'|'error',message:string)=>{clearTimeout(timer.current);setToast({type:kind,message});timer.current=setTimeout(()=>setToast(null),5000);};
+  const href=(path:string)=>{const query=new URLSearchParams();if(organizationId)query.set('organization_id',organizationId);if(projectId)query.set('project_id',projectId);return query.size?path+'?'+query:path;};
+  const closePreview=()=>{if(preview){URL.revokeObjectURL(preview.url);urls.current.delete(preview.url);}setPreview(null);};
+  const original=async(doc:LibraryDocument,view:boolean)=>{
+    const captured=context;if(!isCurrent(captured)||originalBusy||deleting)return;setOriginalBusy(doc.id);
+    try{
+      const result=await getPrivateDocument(doc.id,{organizationId:doc.organization_id,projectId:doc.project_id},captured.userId,()=>isCurrent(captured));
+      if(!isCurrent(captured))return;
+      if(view&&!result.previewable){showToast('error',t('documents.library.unsupportedPreview'));return;}
+      const url=URL.createObjectURL(new Blob([result.blob],{type:view?result.previewMime!:'application/octet-stream'}));urls.current.add(url);
+      if(view){closePreview();setPreview({url,name:result.document.original_filename});}
+      else{const anchor=document.createElement('a');anchor.href=url;anchor.download=result.document.original_filename;document.body.appendChild(anchor);anchor.click();anchor.remove();setTimeout(()=>{URL.revokeObjectURL(url);urls.current.delete(url);},1000);}
+    }catch(cause){if(isCurrent(captured))showToast('error',t('documents.library.errors.'+(cause instanceof DocumentLibraryError?cause.code:'read')));}
+    finally{if(isCurrent(captured))setOriginalBusy(null);}
   };
-
-  useEffect(() => {
-    if (projectIdParam) {
-      setSelectedProject(projectIdParam);
-    }
-  }, [projectIdParam]);
-
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const [documentsData, projectsData] = await Promise.all([
-        getUploadedDocuments(projectIdParam),
-        getProjects(),
-      ]);
-      setDocuments(documentsData);
-      setProjects(projectsData);
-    } catch (err) {
-      console.error('Failed to load documents:', err);
-      setError(t('errors.loadFailed'));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [projectIdParam, t]);
-
-  useEffect(() => {
-    void loadData();
-  }, [loadData]);
-
-  const handleDelete = async () => {
-    if (!documentToDelete) return;
-
-    if (isReadonly) {
-      showToast('error', t('subscription.readonlyBanner.message'));
-      setDeleteDialogOpen(false);
-      setDocumentToDelete(null);
-      return;
-    }
-
-    try {
-      setIsDeleting(true);
-      await deleteDocument(documentToDelete.id);
-      setDocuments(prev => prev.filter(d => d.id !== documentToDelete.id));
-      setDeleteDialogOpen(false);
-      setDocumentToDelete(null);
-      showToast('success', t('documents.deleteSuccess'));
-    } catch (err) {
-      console.error('Failed to delete document:', err);
-      showToast('error', t('errors.deleteFailed'));
-    } finally {
-      setIsDeleting(false);
-    }
+  const remove=async()=>{
+    const captured=context,doc=target;if(!doc||!isCurrent(captured)||deleting)return;
+    if(isReadonly||!['owner','admin','editor'].includes(navigation.role??'')){showToast('error',t('subscription.readonlyBanner.message'));return;}
+    setDeleting(true);
+    try{
+      await deleteDocument(doc.id,{organizationId:doc.organization_id,projectId:doc.project_id},captured.userId,()=>isCurrent(captured));
+      if(!isCurrent(captured))return;
+      setDocuments(rows=>rows.filter(row=>row.id!==doc.id));setTarget(null);showToast('success',t('documents.deleteSuccess'));
+    }catch{if(isCurrent(captured))showToast('error',t('documents.library.deleteUnconfirmed'));}
+    finally{if(isCurrent(captured))setDeleting(false);}
   };
-
-  const filteredDocuments = documents.filter(doc => {
-    if (searchQuery && !doc.original_filename.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    if (selectedProject && doc.project_id !== selectedProject) {
-      return false;
-    }
-    if (selectedStatus && doc.ocr_status !== selectedStatus) {
-      return false;
-    }
-    if (selectedType && doc.document_type !== selectedType) {
-      return false;
-    }
-    return true;
-  });
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  };
-
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleString('zh-TW', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
-  const getStatusColor = (status: OcrStatus): string => {
-    switch (status) {
-      case 'pending': return 'gray';
-      case 'processing': return 'blue';
-      case 'succeeded': return 'green';
-      case 'failed': return 'red';
-      default: return 'gray';
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <AdminLayout>
-        <LoadingState />
-      </AdminLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <AdminLayout>
-        <ErrorState message={error} onRetry={loadData} />
-      </AdminLayout>
-    );
-  }
-
-  return (
-    <AdminLayout>
-      {isReadonly && (
-        <ReadonlyBanner
-          onRenew={() => navigate('/admin/subscription')}
-          onContact={() => window.open('mailto:support@cocallab.com', '_blank')}
-        />
-      )}
-
-      {/* Toast 通知 */}
-      {toast && (
-        <div
-          className={`fixed top-4 right-4 z-50 rounded-lg p-4 shadow-lg flex items-center gap-3 border ${
-            toast.type === 'success'
-              ? 'bg-green-50 border-green-200'
-              : 'bg-red-50 border-red-200'
-          }`}
-        >
-          <div
-            className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-              toast.type === 'success' ? 'bg-green-100' : 'bg-red-100'
-            }`}
-          >
-            <i
-              className={`text-xl ${
-                toast.type === 'success'
-                  ? 'ri-check-line text-green-600'
-                  : 'ri-error-warning-line text-red-600'
-              }`}
-            ></i>
-          </div>
-          <p
-            className={`text-sm font-medium flex-1 ${
-              toast.type === 'success' ? 'text-green-900' : 'text-red-900'
-            }`}
-          >
-            {toast.message}
-          </p>
-          <button
-            onClick={() => setToast(null)}
-            className={`cursor-pointer ${
-              toast.type === 'success'
-                ? 'text-green-600 hover:text-green-800'
-                : 'text-red-600 hover:text-red-800'
-            }`}
-          >
-            <i className="ri-close-line text-xl"></i>
-          </button>
-        </div>
-      )}
-
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">{t('documents.listPage')}</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            {t('documents.listDescription')}
-          </p>
-        </div>
-        <button
-          onClick={() => navigate('/admin/documents/upload')}
-          className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 whitespace-nowrap cursor-pointer"
-        >
-          <i className="ri-upload-line mr-2"></i>
-          {t('documents.upload')}
-        </button>
-      </div>
-
-      {/* 搜尋與篩選 */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div>
-            <input
-              type="text"
-              placeholder={t('documents.searchPlaceholder')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
-            />
-          </div>
-          <div>
-            <select
-              value={selectedProject}
-              onChange={(e) => setSelectedProject(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
-            >
-              <option value="">{t('documents.filterByProject')}</option>
-              {projects.map(project => (
-                <option key={project.id} value={project.id}>
-                  {project.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value as OcrStatus | '')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
-            >
-              <option value="">{t('documents.filterByStatus')}</option>
-              <option value="pending">{t('documents.processingStatus.pending')}</option>
-              <option value="processing">{t('documents.processingStatus.processing')}</option>
-              <option value="succeeded">{t('documents.processingStatus.completed')}</option>
-              <option value="failed">{t('documents.processingStatus.failed')}</option>
-            </select>
-          </div>
-          <div>
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value as DocumentType | '')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
-            >
-              <option value="">{t('documents.filterByType')}</option>
-              <option value="receipt">{t('documents.types.receipt')}</option>
-              <option value="invoice">{t('documents.types.invoice')}</option>
-              <option value="bill">{t('documents.types.bill')}</option>
-              <option value="contract">{t('documents.types.contract')}</option>
-              <option value="report">{t('documents.types.report')}</option>
-              <option value="other">{t('documents.types.other')}</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* 文件列表 */}
-      {filteredDocuments.length === 0 ? (
-        <EmptyState
-          icon="ri-file-text-line"
-          title={t('documents.emptyTitle')}
-          description={t('documents.emptyDescription')}
-          actionLabel={t('documents.uploadButton')}
-          onAction={() => navigate('/admin/documents/upload')}
-        />
-      ) : (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('documents.fields.fileName')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('documents.fields.project')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('documents.fields.documentType')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('documents.fields.fileSize')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('documents.fields.processingStatus')}
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('documents.fields.uploadedAt')}
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    {t('common.actions')}
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredDocuments.map((doc) => (
-                  <tr key={doc.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <i className="ri-file-text-line text-xl text-gray-400 mr-3"></i>
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">{doc.original_filename}</div>
-                          <div className="text-xs text-gray-500">{doc.mime_type || '-'}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{doc.project_name || '-'}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
-                        {t(`documents.types.${doc.document_type}`)}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">{formatFileSize(doc.file_size_bytes)}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <StatusBadge
-                        status={doc.ocr_status}
-                        label={t(`documents.processingStatus.${doc.ocr_status}`)}
-                        color={getStatusColor(doc.ocr_status)}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">{formatDate(doc.created_at)}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end space-x-2">
-                        {doc.file_url && (
-                          <a
-                            href={doc.file_url}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="text-teal-600 hover:text-teal-900 cursor-pointer"
-                            title={t('common.view')}
-                          >
-                            <i className="ri-eye-line text-lg"></i>
-                          </a>
-                        )}
-                        {doc.ocr_status === 'succeeded' && (
-                          <button
-                            onClick={() => navigate(`/admin/documents/drafts?${new URLSearchParams({document:doc.id,organization_id:doc.organization_id,project_id:doc.project_id})}`)}
-                            className="text-teal-600 hover:text-teal-900 cursor-pointer"
-                            title={t('documents.draftReview')}
-                          >
-                            <i className="ri-file-list-3-line text-lg"></i>
-                          </button>
-                        )}
-                        <button
-                          onClick={() => {
-                            setDocumentToDelete(doc);
-                            setDeleteDialogOpen(true);
-                          }}
-                          disabled={isReadonly}
-                          className="text-red-600 hover:text-red-900 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                          title={t('common.delete')}
-                        >
-                          <i className="ri-delete-bin-line text-lg"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* 刪除確認對話框 */}
-      <ConfirmDialog
-        isOpen={deleteDialogOpen}
-        title={t('documents.deleteConfirmTitle')}
-        message={t('documents.deleteConfirmMessage')}
-        confirmLabel={t('common.delete')}
-        cancelLabel={t('common.cancel')}
-        onConfirm={handleDelete}
-        onCancel={() => {
-          setDeleteDialogOpen(false);
-          setDocumentToDelete(null);
-        }}
-        isProcessing={isDeleting}
-        type="danger"
-      />
-    </AdminLayout>
-  );
+  if(authLoading||loading||loaded!==context)return <AdminLayout><LoadingState/></AdminLayout>;
+  if(error)return <AdminLayout><ErrorState message={t('documents.library.errors.'+error)} onRetry={reload}/></AdminLayout>;
+  const filtered=documents.filter(doc=>(!searchQuery||doc.original_filename.toLowerCase().includes(searchQuery.toLowerCase()))&&(!status||doc.ocr_status===status)&&(!type||doc.document_type===type));
+  const size=(bytes:number)=>bytes<1024?bytes+' B':bytes<1048576?(bytes/1024).toFixed(1)+' KB':(bytes/1048576).toFixed(1)+' MB';
+  const colors={pending:'gray',processing:'blue',succeeded:'green',failed:'red'};
+  return <AdminLayout>
+    {isReadonly&&<ReadonlyBanner onRenew={()=>navigate(href('/admin/subscription'))} onContact={()=>window.open('mailto:support@cocallab.com','_blank')}/>}
+    {toast&&<div role={toast.type==='error'?'alert':'status'} className={'fixed right-4 top-4 z-50 flex gap-4 rounded border p-4 shadow '+(toast.type==='error'?'bg-red-50 text-red-900':'bg-green-50 text-green-900')}><p>{toast.message}</p><button type="button" onClick={()=>setToast(null)} aria-label={t('common.close')}>×</button></div>}
+    <div className="mb-6 flex items-center justify-between"><div><h1 className="text-2xl font-semibold text-gray-900">{t('documents.listPage')}</h1><p className="mt-1 text-sm text-gray-500">{t('documents.listDescription')}</p></div><div className="flex gap-3"><button type="button" onClick={reload} className="rounded border px-4 py-2">{t('common.retry')}</button><button type="button" onClick={()=>navigate(href('/admin/documents/upload'))} className="rounded bg-teal-600 px-4 py-2 text-white"><i className="ri-upload-line mr-2"/>{t('documents.upload')}</button></div></div>
+    <div className="mb-6 grid gap-4 rounded border bg-white p-4 md:grid-cols-4">
+      <input aria-label={t('documents.searchPlaceholder')} placeholder={t('documents.searchPlaceholder')} value={searchQuery} onChange={event=>setSearchQuery(event.target.value)} className="rounded border p-2"/>
+      <select aria-label={t('documents.filterByProject')} value={projectId} onChange={event=>{const project=projects.find(row=>row.id===event.target.value);const query=new URLSearchParams();if(project){query.set('organization_id',project.organization_id);query.set('projectId',project.id);}else if(organizationId)query.set('organization_id',organizationId);current.current=null;navigate('/admin/documents/list'+(query.size?'?'+query:''));}} className="rounded border p-2"><option value="">{t('documents.filterByProject')}</option>{projects.map(project=><option key={project.id} value={project.id}>{project.name}</option>)}</select>
+      <select aria-label={t('documents.filterByStatus')} value={status} onChange={event=>setStatus(event.target.value as OcrStatus|'')} className="rounded border p-2"><option value="">{t('documents.filterByStatus')}</option>{(['pending','processing','succeeded','failed'] as const).map(state=><option key={state} value={state}>{t('documents.processingStatus.'+(state==='succeeded'?'completed':state))}</option>)}</select>
+      <select aria-label={t('documents.filterByType')} value={type} onChange={event=>setType(event.target.value as DocumentType|'')} className="rounded border p-2"><option value="">{t('documents.filterByType')}</option>{['receipt','invoice','bill','utility_bill','contract','report','other'].map(kind=><option key={kind} value={kind}>{t('documents.types.'+kind)}</option>)}</select>
+    </div>
+    {!organizationId?<EmptyState title={t('documents.library.selectScope')} description={t('documents.library.selectScopeDescription')}/>:!filtered.length?<EmptyState icon="ri-file-text-line" title={t('documents.emptyTitle')} description={t('documents.emptyDescription')} actionLabel={t('documents.uploadButton')} onAction={()=>navigate(href('/admin/documents/upload'))}/>:<div className="overflow-hidden rounded border bg-white shadow-sm"><div className="overflow-x-auto"><table className="w-full"><thead className="border-b bg-gray-50"><tr>{['fileName','project','documentType','fileSize','processingStatus','uploadedAt'].map(field=><th key={field} className="px-6 py-3 text-left text-xs uppercase text-gray-500">{t('documents.fields.'+field)}</th>)}<th className="px-6 py-3 text-right">{t('common.table_actions')}</th></tr></thead><tbody className="divide-y">{filtered.map(doc=><tr key={doc.id} className="hover:bg-gray-50"><td className="px-6 py-4"><div className="font-medium"><i className="ri-file-text-line mr-3"/>{doc.original_filename}</div><div className="text-xs text-gray-500">{doc.mime_type??'-'}</div></td><td className="px-6 py-4">{doc.project_name??'-'}</td><td className="px-6 py-4">{t('documents.types.'+doc.document_type)}</td><td className="px-6 py-4">{size(doc.file_size_bytes)}</td><td className="px-6 py-4"><StatusBadge status={doc.ocr_status} label={t('documents.processingStatus.'+(doc.ocr_status==='succeeded'?'completed':doc.ocr_status))} color={colors[doc.ocr_status]}/></td><td className="px-6 py-4">{new Date(doc.created_at).toLocaleString(i18n.resolvedLanguage||i18n.language)}</td><td className="px-6 py-4"><div className="flex justify-end gap-3">
+      <button type="button" onClick={()=>void original(doc,true)} disabled={!doc.privatePathSupported||Boolean(originalBusy)||deleting} title={t('documents.library.viewOriginal')} aria-label={t('documents.library.viewOriginal')} className="text-teal-600 disabled:opacity-50"><span>{t('documents.library.viewOriginal')}</span></button>
+      <button type="button" onClick={()=>void original(doc,false)} disabled={!doc.privatePathSupported||Boolean(originalBusy)||deleting} title={t('documents.library.downloadOriginal')} aria-label={t('documents.library.downloadOriginal')} className="text-teal-600 disabled:opacity-50"><span>{t('documents.library.downloadOriginal')}</span></button>
+      {doc.ocr_status==='succeeded'&&<button type="button" onClick={()=>navigate('/admin/documents/drafts?'+new URLSearchParams({document:doc.id,organization_id:doc.organization_id,project_id:doc.project_id}))} title={t('documents.draftReview')} aria-label={t('documents.draftReview')} className="text-teal-600"><span>{t('documents.draftReview')}</span></button>}
+      <button type="button" onClick={()=>setTarget(doc)} disabled={isReadonly||!['owner','admin','editor'].includes(navigation.role??'')||Boolean(originalBusy)||deleting} title={t('common.delete')} aria-label={t('common.delete')} className="text-red-600 disabled:opacity-50"><span>{t('common.delete')}</span></button>
+    </div></td></tr>)}</tbody></table></div></div>}
+    {originalBusy&&<p role="status">{t('documents.library.loadingOriginal')}</p>}
+    {preview&&<div role="dialog" aria-modal="true" aria-label={t('documents.library.viewOriginal')} className="fixed inset-0 z-50 flex flex-col bg-white p-4"><div className="mb-3 flex justify-between"><h2>{preview.name}</h2><button type="button" onClick={closePreview} className="rounded border px-4 py-2">{t('common.close')}</button></div><iframe title={preview.name} src={preview.url} className="min-h-0 flex-1 border"/></div>}
+    <ConfirmDialog open={Boolean(target)} title={t('documents.deleteConfirmTitle')} message={t('documents.deleteConfirmMessage')} confirmLabel={t('common.delete')} cancelLabel={t('common.cancel')} onConfirm={()=>void remove()} onCancel={()=>setTarget(null)} isProcessing={deleting} type="danger"/>
+  </AdminLayout>;
 }
