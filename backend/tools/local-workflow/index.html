@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CoCalLab 本機合成完整流程</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#18302c;background:#eff4f2}body{max-width:1100px;margin:30px auto;padding:0 22px}h1{font-size:27px}p{line-height:1.6}.notice{background:#fff4d9;border-left:5px solid #b27816;padding:14px 18px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin:20px 0}.card{background:white;padding:20px;border:1px solid #ccdbd5;border-radius:10px}.card h2{font-size:19px;margin-top:0}button,a.download{background:#176553;color:white;padding:10px 15px;border:0;border-radius:5px;font-size:15px;cursor:pointer;text-decoration:none}button:disabled{opacity:.45;cursor:wait}input{font:inherit;padding:5px;max-width:150px}label{display:block;margin:10px 0}.status{font-weight:650;line-height:1.7}.small{font-size:13px;color:#425a54;overflow-wrap:anywhere}#error{color:#9d2424;white-space:pre-wrap}pre{background:#142e28;color:#dfefdf;padding:18px;overflow:auto;max-height:430px;font-size:13px}summary{cursor:pointer;margin:14px 0}.total{font-size:26px;font-weight:700}footer{margin:25px 0}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+<h1>CoCalLab · 一條本機合成流程</h1>
+<p class="notice"><strong>SYNTHETIC / LOCAL ONLY</strong> — 全新記憶體資料庫；收件、人工確認、計算與快照使用既有程式及 SQL 實際寫入。<br>
+正式「文件 → 非 Mock 草稿」入口仍 <strong>MISSING</strong>：本頁以明示的人工轉錄測試 adapter 接續，OCR 保持 pending。未做真實 Supabase／JWT／Storage 驗收。發布 HOLD。</p>
+<p id="version" class="small">正在初始化本機資料…</p>
+<p id="busy" role="status"></p><p id="error" role="alert"></p>
+<div class="grid">
+<section class="card"><h2>1 · 原始檔與收件</h2><p>保存明示合成 PDF bytes、物件 catalog 與收件列。重按核對原 ID，不再傳第二份 bytes。</p><p id="receipt" class="status">尚未保存</p><button data-action="receive">1 保存合成收件</button></section>
+<section class="card"><h2>2 · 人工轉錄與確認</h2><p>本機人工橋接，不呼叫 OCR／分類。不把未實作的正式入口標成成功。</p><label>用電量 <input id="quantity" type="number" value="100" min="0" max="1000000000" step="any"> kWh</label><label>活動日期 <input id="date" type="date" value="2026-01-15"></label><label><input id="human" type="checkbox"> 我已核對上述人工轉錄，確認納入範疇 2</label><p id="review" class="status">尚未人工確認</p><button data-action="review">2 確認人工資料</button></section>
+<section class="card"><h2>3 · 實際計算</h2><p>只用 SYNTHETIC 自訂係數 <strong>0.5 kgCO₂e/kWh</strong>。不是官方係數；未找到係數時保留 pending_factor／NULL。</p><p id="calculation" class="status">尚未計算</p><button data-action="calculate">3 套用合成係數並計算</button></section>
+<section class="card"><h2>4 · 保存報告快照</h2><p>重新讀取已確認活動及唯一的最新計算；不完整則拒絕。核對原檔與來源 ID 後，才寫入與讀回快照。</p><p id="report" class="status">尚未保存快照</p><p id="total" class="total">未知排放量</p><button data-action="snapshot">4 保存報告快照</button><p><a id="download" class="download" href="/api/report" hidden>下載已保存快照 JSON</a></p></section>
+</div>
+<details><summary>查看實際資料、ID 鏈、版本與 migration 清單</summary><pre id="data"></pre></details>
+<details><summary>已知缺口與本機邊界</summary><ul id="gaps"></ul></details>
+<footer class="small">只監聽 127.0.0.1:4191。停止程序即失去本次資料；下載 JSON 可保留證據。正式 RPC 的跨程序重送與 report RPC→patch 原子性仍需另驗；本頁的序列化／交易 wrapper 只在此本機實驗有效。</footer>
+<script>
+let pending=false;
+const $=id=>document.getElementById(id);
+function render(s){
+ $('version').textContent='checkout SHA：'+s.checkoutSha+(s.checkoutDirty?'（啟動時含未提交差異）':'（啟動時乾淨）')+'　｜　run / project：'+s.scope.projectId;
+ $('receipt').textContent=s.receipt?'已保存 '+s.receipt.id+'；OCR='+s.receipt.ocr_status+'；bytes 寫入 '+s.metrics.objectWrites+' 次':'尚未保存';
+ $('review').textContent=s.draft?'草稿 '+s.draft.id+'；狀態='+s.draft.status+'；活動='+s.activity?.id:'尚未人工確認';
+ const latest=s.calculations.filter(c=>c.is_latest);
+ $('calculation').textContent=latest.length?latest.map(c=>'版本 '+c.calc_version+' / '+c.status+' / '+(c.co2e_kg===null?'NULL（非零）':c.co2e_kg+' kgCO₂e')).join('; '):'尚未計算';
+ $('report').textContent=s.report?(s.reportCurrent?'已寫入並讀回 ':'歷史快照（目前計算已改變） ')+s.report.id+' / '+s.report.status+' / 版本 '+s.report.report_version:'尚未保存快照';
+ const kg=s.report?.gross_emissions_snapshot?.gross_total_co2e_kg;
+ $('total').textContent=typeof kg==='number'&&s.reportCurrent?kg+' kgCO₂e = '+kg/1000+' tCO₂e':'未知目前排放量';
+ $('download').hidden=!s.report;
+ $('data').textContent=JSON.stringify(s,null,2);
+ $('gaps').replaceChildren(...s.gaps.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+}
+async function read(){const r=await fetch('/api/state');if(!r.ok)throw new Error('讀取失敗 '+r.status);render(await r.json());}
+async function act(action){
+ if(pending)return;
+ if(action==='review'&&!$('human').checked){$('error').textContent='請先明確核對人工轉錄與納入範疇。';return;}
+ pending=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);$('busy').textContent='正在執行 '+action+'，等待真正寫入與讀回…';$('error').textContent='';
+ try{
+  const input=action==='review'?{quantity:Number($('quantity').value),unit:'kWh',activityDate:$('date').value,finalScope:2}:{};
+  if(action==='review'&&$('quantity').value==='')throw new Error('請填用電量；空值不是零。');
+  const r=await fetch('/api/action',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,input})});
+  const data=await r.json();if(!r.ok)throw new Error(data.error);render(data);
+ }catch(error){$('error').textContent=error.message;try{await read();}catch(readError){$('error').textContent+='；核對失敗：'+readError.message;}}
+ finally{pending=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);$('busy').textContent='';}
+}
+document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>act(button.dataset.action)));
+read().catch(error=>$('error').textContent=error.message);
+</script></html>
