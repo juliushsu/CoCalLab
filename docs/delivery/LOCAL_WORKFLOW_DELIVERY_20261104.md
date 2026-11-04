@@ -45,3 +45,15 @@ Hash 防偽、正式重送、真實服務驗收、migration／復原仍 OPEN／N
 
 停止程序即結束本次記憶體實驗；不連既有 5432、不重試 Docker／WSL、不清理其他專案。
 回復只需停止本機工具並切回 PR #15 候選，沒有雲端 migration／資料還原。
+
+## 固定版本實測證據
+
+固定程式 **a4d28ed7cd6302bb89f7af7253335228ee3e6801**。CLI 與 Chrome 皆在此 SHA、啟動時 checkoutDirty=false 實測；本節及 evidence/NEXT_ACTION 是後續文件提交，不修改工具程式。
+
+- [CLI 完整四步與資料列](evidence/local-workflow-20261104/cli-run.json)：每步數量、pending_factor／NULL → calculated／50、32 份已載入 migration 及來源 SHA256；三份 fixture seed 排除清單同檔保留。
+- [瀏覽器 run 的 DB 重讀](evidence/local-workflow-20261104/browser-run.json)、[實際保存的 report JSON](evidence/local-workflow-20261104/saved-report.json)。CLI 與瀏覽器是兩個獨立新 run，ID 不同，不混用。
+- 瀏覽器 ID 鏈：receipt 3988a89e-cca3-4cbf-b2c9-f61a6d8bea10 → draft 6c4e735d-e963-4a32-a6ce-133474201bf5 → activity b2ff3cbf-2ba6-4cea-bc6c-01bed62c8682 → report 47ddb83d-8c3b-4799-8d4c-589eae0f2ed5；完整 calculation IDs 在 JSON。全部為合成隨機 ID。
+- [人工確認後 NULL](evidence/local-workflow-20261104/02-manual-pending.ax.txt)、[報告拒絕](evidence/local-workflow-20261104/03-report-blocked.ax.txt)、[四步完成 AX](evidence/local-workflow-20261104/04-complete.ax.txt)、[完成截圖](evidence/local-workflow-20261104/04-complete.png)。Chrome 操作由主代理執行，不算獨立 reviewer 操作。
+- 獨立 reviewer 已把相同來源差異與審閱結論對照至此固定 SHA；實跑 14/14 及 HTTP 拒絕案例，未發現其他本輪可證實 P1／P2／P3。
+
+本輪啟動的 loopback 示範可在執行主機查看；不是遠端／正式網址。停止程序後可依 README 以同一 SHA 重新產生新 run。

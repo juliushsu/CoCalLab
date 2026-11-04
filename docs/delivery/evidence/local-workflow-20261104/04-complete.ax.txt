@@ -1,0 +1,60 @@
+Browser tab: 1290545873, Title: "CoCalLab 本機合成完整流程", URL: "http://127.0.0.1:4191/".
+1 AXWebArea CoCalLab 本機合成完整流程, URL: 127.0.0.1:4191/
+	2 container
+		3 heading CoCalLab · 一條本機合成流程, Value: 1
+			4 text CoCalLab · 一條本機合成流程
+		5 text SYNTHETIC / LOCAL ONLY
+		6 text  — 全新記憶體資料庫；收件、人工確認、計算與快照使用既有程式及 SQL 實際寫入。
+		7 text 正式「文件 → 非 Mock 草稿」入口仍
+		8 text MISSING
+		9 text ：本頁以明示的人工轉錄測試 adapter 接續，OCR 保持 pending。未做真實 Supabase／JWT／Storage 驗收。發布 HOLD。
+		57 text checkout SHA：a4d28ed7cd6302bb89f7af7253335228ee3e6801（啟動時乾淨）　｜　run / project：befd84d5-6dec-40b3-97e5-6617bfcac441
+		11 heading 1 · 原始檔與收件, Value: 2
+			12 text 1 · 原始檔與收件
+		13 text 保存明示合成 PDF bytes、物件 catalog 與收件列。重按核對原 ID，不再傳第二份 bytes。
+		58 text 已保存 3988a89e-cca3-4cbf-b2c9-f61a6d8bea10；OCR=pending；bytes 寫入 1 次
+		15 button 1 保存合成收件
+		16 heading 2 · 人工轉錄與確認, Value: 2
+			17 text 2 · 人工轉錄與確認
+		18 text 本機人工橋接，不呼叫 OCR／分類。不把未實作的正式入口標成成功。
+		19 container
+			20 text 用電量
+			21 stepper (settable, integer) 用電量 kWh, Value: 100, ID: quantity
+			22 text  kWh
+		23 container
+			24 text 活動日期
+			25 date field (settable) 活動日期, Value: 2026-01-15, ID: date
+				26 container
+					27 stepper
+					28 stepper
+					29 stepper
+				30 pop up button 顯示日期選擇器 顯示日期選擇器
+		31 checkbox (settable, integer) Description: 我已核對上述人工轉錄，確認納入範疇 2, Value: 1, ID: human
+		59 text 草稿 6c4e735d-e963-4a32-a6ce-133474201bf5；狀態=confirmed；活動=b2ff3cbf-2ba6-4cea-bc6c-01bed62c8682
+		33 button 2 確認人工資料
+		34 heading 3 · 實際計算, Value: 2
+			35 text 3 · 實際計算
+		36 container
+			37 text 只用 SYNTHETIC 自訂係數  0.5 kgCO₂e/kWh 。不是官方係數；未找到係數時保留 pending_factor／NULL。
+		60 text 版本 2 / calculated / 50.0000000000 kgCO₂e
+		39 button 3 套用合成係數並計算
+		40 heading 4 · 保存報告快照, Value: 2
+			41 text 4 · 保存報告快照
+		42 text 重新讀取已確認活動及唯一的最新計算；不完整則拒絕。核對原檔與來源 ID 後，才寫入與讀回快照。
+		61 text 已寫入並讀回 47ddb83d-8c3b-4799-8d4c-589eae0f2ed5 / completed / 版本 1
+		62 text 50 kgCO₂e = 0.05 tCO₂e
+		45 button 4 保存報告快照
+		63 link Description: 下載已保存快照 JSON, Value: 127.0.0.1:4191/api/report, ID: download
+		46 button (collapsed) 查看實際資料、ID 鏈、版本與 migration 清單, Secondary Actions: Expand
+			47 text 查看實際資料、ID 鏈、版本與 migration 清單
+		48 button (collapsed) 已知缺口與本機邊界, Secondary Actions: Expand
+			49 text 已知缺口與本機邊界
+		50 text 只監聽 127.0.0.1:4191。停止程序即失去本次資料；下載 JSON 可保留證據。正式 RPC 的跨程序重送與 report RPC→patch 原子性仍需另驗；本頁的序列化／交易 wrapper 只在此本機實驗有效。
+	51 container
+		52 button logo icon
+			53 image logo icon
+			54 image
+		55 container
+			56 button
+
+The focused UI element is 1 AXWebArea CoCalLab 本機合成完整流程, URL: 127.0.0.1:4191/
