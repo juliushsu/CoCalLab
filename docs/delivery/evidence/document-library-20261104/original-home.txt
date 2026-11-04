@@ -1,0 +1,229 @@
+- status:
+  - text: 原首頁／登入離線預覽 · 保留真 App／路由；未設定服務，後台受原登入保護。外部裝飾資產已阻擋。
+  - link "首頁":
+    - /url: /
+  - text: ·
+  - link "登入":
+    - /url: /login
+- alert
+- banner:
+  - generic: CaCalLab
+  - navigation:
+    - button "產品功能"
+    - button "方案"
+    - button "使用流程"
+    - button "適用對象"
+  - link "登入":
+    - /url: /login
+  - link "免費試用":
+    - /url: /login
+    - text: 免費試用
+- img "Background"
+- heading "中小企業也能快速完成 碳盤查與 ESG 報告" [level=1]:
+  - text: 中小企業也能快速完成
+  - text: 碳盤查與 ESG 報告
+- paragraph:
+  - text: 集中管理組織、專案、文件、排放活動與報告流程
+  - text: 適合需要快速導入、多人協作、可追蹤版本的企業團隊
+- link "立即開始":
+  - /url: /login
+  - text: 立即開始
+- link "查看功能":
+  - /url: "#features"
+  - text: 查看功能
+- generic: 資料安全保障
+- generic: 免費試用 14 天
+- generic: 專業客服支援
+- heading "傳統碳盤查流程的痛點" [level=2]
+- paragraph: 使用 Excel 和人工作業進行碳盤查，企業常面臨以下挑戰
+- heading "Excel 分散、版本混亂" [level=3]
+- paragraph: 多個檔案散落各處，不知道哪個是最新版本，團隊協作困難
+- heading "文件難追蹤" [level=3]
+- paragraph: 單據、發票、證明文件分散在不同資料夾，找不到原始資料來源
+- heading "活動資料難整合" [level=3]
+- paragraph: 排放活動資料來自不同部門，整合耗時且容易出錯
+- heading "報告整理耗時" [level=3]
+- paragraph: 每次產出報告都要重新整理資料，重複勞動浪費時間
+- heading "多人協作容易出錯" [level=3]
+- paragraph: 缺乏權限控管，不同角色的人都能修改核心數據，風險高
+- heading "無法追蹤變更歷史" [level=3]
+- paragraph: 資料被修改後無法回溯，不知道誰改了什麼、為什麼改
+- generic: 文件智能化
+- heading "自動辨識與分類，大幅降低人工整理成本" [level=2]
+- paragraph: 支援多種文件格式，自動辨識單據內容並建議分類至排放活動，保留人工審核流程確保準確性
+- img "文件智能辨識介面"
+- generic: 辨識準確率
+- generic: 95%+
+- heading "支援多種文件格式" [level=3]
+- paragraph: 支援 PDF、Excel、Word、圖片檔（JPG/PNG）、掃描檔，甚至手機拍照的收據與單據，一鍵上傳即可開始處理
+- heading "自動辨識單據內容" [level=3]
+- paragraph: 運用 OCR 與 AI 技術，自動擷取日期、金額、品項、供應商等關鍵資訊，無需手動輸入，大幅節省時間
+- heading "智能分類建議" [level=3]
+- paragraph: 系統自動建議將文件分類至對應的排放活動類別（如：交通運輸、能源使用、廢棄物處理），並標示信心度供參考
+- heading "保留人工審核流程" [level=3]
+- paragraph: 所有自動辨識結果會進入草稿審核區，由專業人員確認後才正式納入排放活動資料，確保資料準確性與可追溯性
+- heading "降低 70% 人工整理時間" [level=3]
+- paragraph: 相較於傳統 Excel 手動輸入與整理，文件智能化功能可節省大量時間，讓團隊專注於資料分析與改善策略
+- generic: 10+
+- generic: 支援文件格式
+- generic: 95%+
+- generic: 辨識準確率
+- generic: 70%
+- generic: 節省人工時間
+- heading "核心功能特色" [level=2]
+- paragraph: CaCalLab 提供完整的碳盤查與 ESG 報告管理功能
+- img "組織與專案管理"
+- heading "組織與專案管理" [level=3]
+- paragraph: 支援政府標案、結案報告、客戶 ESG 交付需求。可依專案、活動、組織、期間管理資料，整理 Net Zero 活動的 ESG 貢獻，讓一次性專案與持續性碳管理都能被完整記錄與追蹤
+- img "文件上傳與草稿審核"
+- heading "文件上傳與草稿審核" [level=3]
+- paragraph: 上傳單據與證明文件，系統自動辨識並產生草稿，審核後快速轉為正式資料
+- img "排放活動整理"
+- heading "排放活動整理" [level=3]
+- paragraph: 集中管理所有排放活動資料，支援篩選、分類、標記，輕鬆追蹤資料來源
+- img "報告版本管理"
+- heading "報告版本管理" [level=3]
+- paragraph: 產出多版本報告，追蹤每次變更歷史，支援下載與預覽，確保資料可追溯
+- img "權限與多人協作"
+- heading "權限與多人協作" [level=3]
+- paragraph: 支援多角色權限控管，不同成員擁有不同操作權限，確保資料安全
+- img "多語系介面"
+- heading "多語系介面" [level=3]
+- paragraph: 支援繁體中文、英文、日文介面，適合跨國企業與國際團隊使用
+- heading "簡單 4 步開始使用" [level=2]
+- paragraph: 從建立專案到產出報告，CaCalLab 讓碳盤查流程更簡單
+- generic: "01"
+- heading "建立組織與專案" [level=3]
+- paragraph: 設定公司組織架構，建立報告期間與專案，開始碳盤查流程
+- generic: "02"
+- heading "上傳單據與文件" [level=3]
+- paragraph: 上傳發票、單據、證明文件，系統自動辨識並產生草稿資料
+- generic: "03"
+- heading "確認排放活動資料" [level=3]
+- paragraph: 審核草稿資料，確認排放活動分類與數值，建立正式資料記錄
+- generic: "04"
+- heading "產出與管理報告版本" [level=3]
+- paragraph: 產出 ESG 報告，追蹤版本變更，下載與分享給利害關係人
+- heading "適用對象" [level=2]
+- paragraph: CaCalLab 適合各種規模與類型的企業與團隊
+- img "中小企業"
+- heading "中小企業" [level=3]
+- paragraph: 需要快速建立第一版 ESG 報告，但缺乏專業團隊與複雜系統的企業
+- img "顧問與顧問團隊"
+- heading "顧問與顧問團隊" [level=3]
+- paragraph: 協助多家客戶進行碳盤查，需要集中管理不同客戶專案的顧問公司
+- img "需要 ESG 資料管理的公司"
+- heading "需要 ESG 資料管理的公司" [level=3]
+- paragraph: 政府標案、客戶要求或供應鏈要求需提交碳盤查資料的企業
+- img "多據點 / 多部門協作團隊"
+- heading "多據點 / 多部門協作團隊" [level=3]
+- paragraph: 需要跨部門、跨據點協作，統一管理碳盤查資料的大型組織
+- generic: 方案說明
+- heading "選擇適合您的方案" [level=2]
+- paragraph: 無論您是剛起步的中小企業，還是需要管理多個專案的顧問團隊，我們都有適合的方案
+- heading "Starter" [level=3]
+- paragraph: 中小企業起步導入
+- paragraph: 適合剛開始進行碳盤查與 ESG 報告的中小企業
+- generic: 內測中
+- list:
+  - generic: 1 個組織帳號
+  - generic: 最多 3 個專案
+  - generic: 基礎文件上傳與辨識
+  - generic: 排放活動管理
+  - generic: 報告版本管理
+  - generic: 多語系介面
+  - generic: 電子郵件支援
+- button "方案洽詢"
+- generic: 最受歡迎
+- heading "Team" [level=3]
+- paragraph: 顧問團隊 / 多專案管理
+- paragraph: 適合顧問公司或需要管理多個客戶專案的團隊
+- generic: 內測中
+- list:
+  - generic: 最多 5 個組織帳號
+  - generic: 無限專案數量
+  - generic: 進階文件智能辨識
+  - generic: 多人協作與權限管理
+  - generic: 自訂報告範本
+  - generic: API 整合支援
+  - generic: 優先客服支援
+- button "預約示範"
+- heading "Enterprise" [level=3]
+- paragraph: 多據點 / 跨組織管理
+- paragraph: 適合大型企業、多據點或需要跨組織整合的企業集團
+- generic: 內測中
+- list:
+  - generic: 無限組織與專案
+  - generic: 企業級文件處理
+  - generic: 進階 AI 分析與建議
+  - generic: 客製化報告與儀表板
+  - generic: 專屬客戶成功經理
+  - generic: SSO 單一登入
+  - generic: SLA 服務保證
+- button "聯絡我們"
+- paragraph: 所有方案均提供 14 天免費試用，無需信用卡
+- generic: 資料安全保障
+- generic: 專業客服支援
+- generic: 隨時可升級或降級
+- generic: 即將推出
+- heading "AI 驅動的碳管理智能" [level=2]
+- paragraph: 我們正在開發 AI 分析與改善建議功能，讓碳管理不只是資料記錄，更能提供實質減碳洞察與行動方案
+- heading "AI 異常值與缺漏檢查" [level=3]
+- generic: Q2 2025
+- paragraph: 自動偵測資料異常、重複計算與缺漏項目，提升資料品質與報告準確性
+- heading "Scope 1/2/3 智能分析" [level=3]
+- generic: Q3 2025
+- paragraph: 自動分類與追蹤直接排放、能源間接排放與其他間接排放，提供完整碳足跡視圖
+- heading "供應鏈足跡追蹤" [level=3]
+- generic: Q3 2025
+- paragraph: 整合上下游供應鏈資料，追蹤產品生命週期碳足跡，支援 Scope 3 完整揭露
+- heading "減碳改善建議" [level=3]
+- generic: Q4 2025
+- paragraph: AI 分析排放熱點，提供具體減碳方案與成本效益評估，協助制定減碳路徑
+- generic: 想了解更多 AI 功能規劃？
+- button "預約產品示範": 預約產品示範
+- heading "立即開始建立第一個專案" [level=2]
+- paragraph: 加入 300+ 企業的行列，用更簡單的方式完成碳盤查與 ESG 報告
+- button "立即開始": 立即開始
+- button "預約示範": 預約示範
+- paragraph: 免費試用 14 天
+- paragraph: 專業客服支援
+- paragraph: 資料安全保障
+- contentinfo:
+  - heading "CaCalLab" [level=3]
+  - paragraph:
+    - text: 碳計算實驗室 / カコラボ
+    - text: 為台灣 ESG 市場打造的專業碳資料整理平台，協助中小企業快速建立第一版可用報告。
+  - link:
+    - /url: "#"
+  - link:
+    - /url: "#"
+  - link:
+    - /url: "#"
+  - heading "產品" [level=4]
+  - list:
+    - link "功能特色":
+      - /url: "#"
+    - link "使用案例":
+      - /url: "#"
+    - link "價格方案":
+      - /url: "#"
+    - link "更新日誌":
+      - /url: "#"
+  - heading "公司" [level=4]
+  - list:
+    - link "關於我們":
+      - /url: "#"
+    - link "聯絡我們":
+      - /url: "#"
+    - link "部落格":
+      - /url: "#"
+    - link "職涯機會":
+      - /url: "#"
+  - paragraph: © 2025 CaCalLab. All rights reserved.
+  - link "隱私政策":
+    - /url: "#"
+  - link "服務條款":
+    - /url: "#"
+  - link "Cookie 政策":
+    - /url: "#"

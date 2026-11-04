@@ -1,0 +1,52 @@
+vite v7.3.3 building client environment for production...
+transforming...
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 230 modules transformed.
+rendering chunks...
+computing gzip size...
+out/index.html                                        1.91 kB │ gzip:   0.96 kB
+out/assets/index-Dp13CUeC.css                        55.70 kB │ gzip:   8.90 kB
+out/assets/staging-diP2eecp.js                        0.11 kB │ gzip:   0.12 kB │ map:     1.22 kB
+out/assets/NotFound-BydiaTab.js                       0.78 kB │ gzip:   0.44 kB │ map:     1.34 kB
+out/assets/EmptyState-Cnpl9jA8.js                     1.24 kB │ gzip:   0.57 kB │ map:     3.49 kB
+out/assets/ErrorState-DQPnR2si.js                     1.48 kB │ gzip:   0.69 kB │ map:     3.56 kB
+out/assets/analyticsService-Bz6gZYGq.js               1.63 kB │ gzip:   0.83 kB │ map:     7.64 kB
+out/assets/ConfirmDialog-DQ6iuzZM.js                  1.90 kB │ gzip:   0.93 kB │ map:     5.75 kB
+out/assets/entityUpdateContract-D_8HSg68.js           2.25 kB │ gzip:   0.94 kB │ map:     5.93 kB
+out/assets/edgeFunction-DvRepVuA.js                   2.53 kB │ gzip:   1.19 kB │ map:     8.96 kB
+out/assets/GovernanceBanner-Bxntbc5V.js               2.57 kB │ gzip:   0.97 kB │ map:     6.04 kB
+out/assets/organizationService-CrxaAOo-.js            2.67 kB │ gzip:   0.95 kB │ map:    10.84 kB
+out/assets/StatusBadge-BW4t0M7F.js                    2.78 kB │ gzip:   0.78 kB │ map:     6.08 kB
+out/assets/useSubscriptionStatus-CRAStw1g.js          2.93 kB │ gzip:   1.30 kB │ map:    10.81 kB
+out/assets/useTranslation-gC06Jnd8.js                 2.96 kB │ gzip:   1.50 kB │ map:    12.24 kB
+out/assets/LoginPage-sndl547U.js                      3.09 kB │ gzip:   1.26 kB │ map:     7.27 kB
+out/assets/EditOrganizationPage-BcNoBqI0.js           3.40 kB │ gzip:   1.80 kB │ map:     9.38 kB
+out/assets/EditProjectPage-CeA1hxke.js                4.22 kB │ gzip:   1.92 kB │ map:    10.95 kB
+out/assets/EmissionsAnalyticsPage-CmDfQ0DF.js         5.08 kB │ gzip:   2.16 kB │ map:    12.28 kB
+out/assets/OrganizationListPage-DyI5BfTz.js           5.34 kB │ gzip:   1.86 kB │ map:    12.93 kB
+out/assets/activityService-CDq_d4cQ.js                5.46 kB │ gzip:   2.12 kB │ map:    17.14 kB
+out/assets/ReportCenterPage-CTNxABaq.js               5.97 kB │ gzip:   2.11 kB │ map:    14.55 kB
+out/assets/projectService-CvXdyR_U.js                 7.02 kB │ gzip:   2.58 kB │ map:    20.47 kB
+out/assets/ProjectListPage-CwVQtnVB.js                7.54 kB │ gzip:   2.14 kB │ map:    19.37 kB
+out/assets/EmissionActivityDetailPage-4HTtYGhO.js     8.36 kB │ gzip:   3.14 kB │ map:    17.98 kB
+out/assets/CreateOrganizationPage-CemdM18s.js         8.62 kB │ gzip:   3.12 kB │ map:    19.98 kB
+out/assets/UploadedDocumentListPage-_BV26jIR.js      10.93 kB │ gzip:   3.71 kB │ map:    27.63 kB
+out/assets/DocumentUploadPage-Chp5OLml.js            11.39 kB │ gzip:   3.71 kB │ map:    33.50 kB
+out/assets/ProjectOverviewPage-Bi5VWV31.js           11.94 kB │ gzip:   2.93 kB │ map:    24.67 kB
+out/assets/EmissionFactorsPage-rx2_Az2r.js           12.50 kB │ gzip:   3.25 kB │ map:    26.75 kB
+out/assets/CreateProjectPage-BMMpLNMJ.js             12.62 kB │ gzip:   3.15 kB │ map:    29.77 kB
+out/assets/SubscriptionManagementPage-C7MKvQmC.js    14.50 kB │ gzip:   3.42 kB │ map:    35.14 kB
+out/assets/ReportPreviewPage-CKVCxYKP.js             14.91 kB │ gzip:   4.25 kB │ map:    43.46 kB
+out/assets/AdminLayout-BE7aCfAF.js                   17.60 kB │ gzip:   5.58 kB │ map:    50.01 kB
+out/assets/OrganizationMembersPage-BAmT_j-R.js       18.23 kB │ gzip:   4.58 kB │ map:    47.43 kB
+out/assets/ReportGenerationHistoryPage-btgZ3NjY.js   21.35 kB │ gzip:   5.86 kB │ map:    57.32 kB
+out/assets/ExtractedDraftReviewPage-CkkE0NFG.js      23.59 kB │ gzip:   6.56 kB │ map:    62.90 kB
+out/assets/EmissionActivitiesListPage-CPBRQQNN.js    24.16 kB │ gzip:   5.84 kB │ map:    65.28 kB
+out/assets/documentService-Bbbb53WX.js               24.30 kB │ gzip:   7.81 kB │ map:    79.37 kB
+out/assets/FactorSourcesPage-DodRQBuw.js             26.84 kB │ gzip:   5.88 kB │ map:    60.15 kB
+out/assets/CarbonAdjustmentsPage-DM-I_X5R.js         33.01 kB │ gzip:   8.07 kB │ map:    88.15 kB
+out/assets/page-BYJ1iWjI.js                          39.57 kB │ gzip:   9.20 kB │ map:    71.01 kB
+out/assets/index-MO6rVL3I.js                        493.50 kB │ gzip: 155.24 kB │ map: 1,869.51 kB
+✓ built in 4.38s

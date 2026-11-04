@@ -1,0 +1,90 @@
+- status:
+  - text: SYNTHETIC 唯讀後台預覽 · 保留真 App／路由／layout；非真實租戶隔離驗收。帳號 a@preview.invalid、b@preview.invalid、shared@preview.invalid；測試密碼 SYNTHETIC-ONLY。可讀組織／專案／文件及私有原檔；其他未提供端點明確失敗，禁止資源寫入。
+  - link "A 文件":
+    - /url: /admin/documents/list?organization_id=00000000-0000-4000-8000-000000000001&projectId=00000000-0000-4000-8000-000000000011
+  - text: ·
+  - link "B 文件":
+    - /url: /admin/documents/list?organization_id=00000000-0000-4000-8000-000000000002&projectId=00000000-0000-4000-8000-000000000012
+  - text: ·
+  - link "登入／換帳號":
+    - /url: /login
+- alert
+- generic: ⚠ STAGING ENVIRONMENT — Test environment, data will not enter production
+- generic: TEST MODE
+- banner:
+  - generic: CC
+  - heading "CoCalLab" [level=1]
+  - generic: TEST MODE
+  - button "繁中"
+  - button "EN"
+  - button "日本語"
+  - generic: Viewer
+  - button "Sign Out":
+    - generic: Sign Out
+- complementary:
+  - navigation:
+    - generic: "Environment: staging"
+    - generic: Read-Only Mode
+    - button "Workspace":
+      - generic: Workspace
+    - button "Carbon Inventory":
+      - generic: Carbon Inventory
+    - button "Reporting":
+      - generic: Reporting
+    - button "Methodology":
+      - generic: Methodology
+    - button "Product & Supply Chain":
+      - generic: Product & Supply Chain
+- main:
+  - heading "Read-Only Mode" [level=3]
+  - paragraph: Your subscription has expired, currently in read-only mode
+  - button "Renew Now"
+  - button "Contact Support"
+  - heading "Document List" [level=1]
+  - paragraph: View and manage uploaded documents
+  - button "Retry"
+  - button "Upload": Upload
+  - textbox "Search filename"
+  - combobox "Filter by Project":
+    - option "Filter by Project"
+    - option "SYNTHETIC Project B" [selected]
+  - combobox "Filter by Status":
+    - option "Filter by Status" [selected]
+    - option "Pending"
+    - option "Processing"
+    - option "Completed"
+    - option "Failed"
+  - combobox "Filter by Type":
+    - option "Filter by Type" [selected]
+    - option "Receipt"
+    - option "Invoice"
+    - option "Bill"
+    - option "Utility bill"
+    - option "Contract"
+    - option "Report"
+    - option "Other"
+  - table:
+    - rowgroup:
+      - row "Filename Project Document Type File Size Processing Status Uploaded At Actions":
+        - columnheader "Filename"
+        - columnheader "Project"
+        - columnheader "Document Type"
+        - columnheader "File Size"
+        - columnheader "Processing Status"
+        - columnheader "Uploaded At"
+        - columnheader "Actions"
+    - rowgroup:
+      - row "SYNTHETIC-B.png image/png SYNTHETIC Project B Receipt 68 B Pending 11/4/2026, 8:00:00 AM View private original Download private original Delete":
+        - cell "SYNTHETIC-B.png image/png":
+          - generic: SYNTHETIC-B.png
+          - generic: image/png
+        - cell "SYNTHETIC Project B"
+        - cell "Receipt"
+        - cell "68 B"
+        - cell "Pending":
+          - generic: Pending
+        - cell "11/4/2026, 8:00:00 AM"
+        - cell "View private original Download private original Delete":
+          - button "View private original"
+          - button "Download private original"
+          - button "Delete" [disabled]
