@@ -1,6 +1,7 @@
 # Next action
 
 - Release HOLD; fixed UAT `7dccd5452152f2495d10ad1437d5d03215166065`. No merge/main, cloud, deployment or cost authorization.
+- PR #17 (draft): https://github.com/juliushsu/CoCalLab/pull/17; stacked on PR #16, not merged.
 - Current branch `codex/scoped-document-library-20261104`, implementation `6a0f76bafb2864a436209d1b4e9c0d3651f9dffe`, based on PR #16 `e737bc4b9f19cf6ce04bd13fe80e6bf3eeed03f3`. Subsequent commits docs/evidence only; PR #15 N1/N2 preserved.
 - Done: scoped document library, explicit failures, authenticated original byte preview/download, original controls/source navigation retained; indirect reference/path/subscription scope+late refresh/grace-period guards. No schema or broad refactor.
 - Actual: frontend160/160; backend16/16; tsc/lint/build pass. Independent26/26 is a subset of160. Fixed-source Chrome: original home/login, project-only A document scope, private original dialog, A->B selector/role/row replacement. Synthetic transport only. Native download observation timed out; not verified.
