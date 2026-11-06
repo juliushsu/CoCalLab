@@ -1,8 +1,10 @@
 // LOCAL SYNTHETIC PRODUCT ADAPTER ONLY. Production app/build must not import this.
 import { Worker } from 'node:worker_threads';
 
-export async function createProductRuntime({ port = 4194, withFactor = true } = {}) {
-  const worker = new Worker(new URL('./worker.js', import.meta.url), { workerData: { port, withFactor }, execArgv: [] });
+export async function createProductRuntime({ port = 4194, withFactor = true, scenario = 'manual' } = {}) {
+  if(!['manual','showcase'].includes(scenario))throw new Error('Unknown local product scenario');
+  if(!Number.isInteger(port)||port<0||port>65535)throw new Error('Invalid local product port');
+  const worker = new Worker(new URL('./worker.js', import.meta.url), { workerData: { port, withFactor, scenario }, execArgv: [] });
   let sequence = 0, ended = false;
   const pending = new Map();
   let readyResolve, readyReject;
@@ -20,7 +22,7 @@ export async function createProductRuntime({ port = 4194, withFactor = true } = 
   try { info = await ready; } catch (error) { await worker.terminate(); throw error; }
   return {
     scope: info.scope, baseUrl: info.baseUrl, publicKey: info.publicKey, accounts: info.accounts,
-    config: {scope: info.scope,baseUrl: info.baseUrl,publicKey: info.publicKey,accounts: info.accounts},
+    config: info.config,
     async handle(request) {
       const body = ['GET', 'HEAD'].includes(request.method) ? undefined : await request.text();
       const result = await command('request', { url: request.url, method: request.method, headers: [...request.headers], body });
