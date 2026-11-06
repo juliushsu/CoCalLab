@@ -5,6 +5,7 @@ import {getSupabaseClient} from '../../../lib/supabase';
 import {useAuth} from '../../../hooks/useAuth';
 import {useTenantNavigation} from '../../../hooks/useTenantNavigation';
 import {useSubscriptionStatus} from '../../../hooks/useSubscriptionStatus';
+import {attachmentVerificationView} from '../../../services/attachmentVerificationView';
 import {readPrivateOriginal} from '../../../services/documentLibrary';
 import {manualScope,manualFormValues,requireMatchingManualAttempt,readManualAttempt,writeManualAttempt,abandonManualAttempt,readManualDraft,submitManualTranscription,confirmManualTranscription,type ManualAttempt,type ManualValues} from '../../../services/manualTranscription';
 import type {ExtractedDocumentDraft} from '../../../types/document';
@@ -20,7 +21,7 @@ export default function ManualTranscriptionPage(){
  const navigation=useTenantNavigation(),subscription=useSubscriptionStatus(selected.scope?.organizationId,{failClosed:true,scopeKey:search});
  const isCurrent=useCallback(()=>active.current===context&&isAuthenticationCurrent(authEpoch,userId),[context,authEpoch,userId,isAuthenticationCurrent]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[retry,setRetry]=useState(0);
- const [original,setOriginal]=useState<{url:string;name:string;mime:string;hashChecked:boolean}|null>(null),[draft,setDraft]=useState<ExtractedDocumentDraft|null>(null),[attempt,setAttempt]=useState<ManualAttempt|null>(null),[form,setForm]=useState<Record<string,string>>(blank),[reviewNote,setReviewNote]=useState('');
+ const [original,setOriginal]=useState<{url:string;name:string;mime:string;hashChecked:boolean;serverProof:string}|null>(null),[draft,setDraft]=useState<ExtractedDocumentDraft|null>(null),[attempt,setAttempt]=useState<ManualAttempt|null>(null),[form,setForm]=useState<Record<string,string>>(blank),[reviewNote,setReviewNote]=useState('');
  const resource=useRef<string|null>(null);
  useLayoutEffect(()=>{active.current=context;return()=>{if(active.current===context)active.current=null;if(resource.current)URL.revokeObjectURL(resource.current);resource.current=null;};},[context]);
  useEffect(()=>{
@@ -34,7 +35,7 @@ export default function ManualTranscriptionPage(){
    const pending=readManualAttempt(sessionStorage,scope,userId);requireMatchingManualAttempt(pending,saved);if(pending){setAttempt(pending);setForm(formOf(pending.transcription));}
    else{setAttempt(null);setForm(blank);}
    const url=URL.createObjectURL(loaded.blob);if(resource.current)URL.revokeObjectURL(resource.current);resource.current=url;
-   setOriginal({url,name:loaded.document.original_filename,mime:loaded.previewMime||'',hashChecked:/^[a-f0-9]{64}$/.test(loaded.document.sha256_hash)});setDraft(saved);
+   setOriginal({url,name:loaded.document.original_filename,mime:loaded.previewMime||'',hashChecked:/^[a-f0-9]{64}$/.test(loaded.document.sha256_hash),serverProof:attachmentVerificationView(loaded.document).label});setDraft(saved);
    if(saved){const p=saved.raw_payload.manual_transcription;const confirmation=object(p)&&object(p.confirmation)?p.confirmation:null;setReviewNote(pending?.confirmation?.reviewNote||saved.review_note||'');if(confirmation)setNotice('已讀回伺服器確認紀錄；不重建活動。本次尚未重讀計算狀態，請至活動查看，不以缺少警示當作計算完成。');}
   })().catch(e=>{if(current())setError(e instanceof Error?e.message:'讀取失敗，未啟用轉錄。');}).finally(()=>{if(current())setLoading(false);});
   return()=>{cancelled=true;};
@@ -67,11 +68,11 @@ export default function ManualTranscriptionPage(){
  const provenance=draft&&object(draft.raw_payload.manual_transcription)?draft.raw_payload.manual_transcription:null;
  const link=selected.scope?'?'+new URLSearchParams({organization_id:selected.scope.organizationId,projectId:selected.scope.projectId}):'';
  return <AdminLayout><div className="mx-auto max-w-6xl space-y-4"><h1 className="text-2xl font-semibold">人工轉錄與確認（非OCR）</h1>
- <p className="rounded bg-amber-50 p-3">由人核對原件並填值；允許同人轉錄／確認，並非雙人覆核。不自動跨期分攤、不指定係數釘選；來源SHA仍未由伺服器驗真。確認後依既有resolver計算，缺係數／歧義保留未知。</p>
+ <p className="rounded bg-amber-50 p-3">由人核對原件並填值；允許同人轉錄／確認，並非雙人覆核。不自動跨期分攤、不指定係數釘選；hash驗證狀態依收件紀錄顯示，不代表內容真實或合規。確認後依既有resolver計算，缺係數／歧義保留未知。</p>
  {(selected.error||error)&&<p role="alert" className="rounded bg-red-50 p-3">{selected.error||error}</p>}
  <p role="status">{loading?'正在讀取私有原件與既有人工轉錄…':notice||(!canWrite?'目前唯讀或權限／訂閱尚未確認。':'請先核對原件，再保存人工轉錄。')}</p>
  <div className="flex flex-wrap gap-3"><button disabled={busy||loading} onClick={()=>setRetry(n=>n+1)} className="rounded border p-2">重新核對收件／草稿</button><button disabled={busy} onClick={abandon} className="rounded border p-2">放棄本機恢復參考（不刪伺服器資料）</button><Link className="p-2 text-teal-800 underline" to={'/admin/documents/list'+link}>返回文件清單</Link><Link className="p-2 text-teal-800 underline" to={'/admin/activities'+link}>活動／計算與報告</Link></div>
- {original&&<section className="rounded border bg-white p-4"><h2 className="font-semibold">已授權原件：{original.name}</h2><p className="text-sm">本機大小／簽章已核對；hash：{original.hashChecked?'已在本機比對':'未提供有效hash，未比對'}。不是伺服器內容驗真。</p>{original.mime==='application/pdf'?<iframe title="人工轉錄原件" src={original.url} className="mt-3 h-72 w-full border"/>:<img src={original.url} alt="人工轉錄原件" className="max-h-96"/>}</section>}
+ {original&&<section className="rounded border bg-white p-4"><h2 className="font-semibold">已授權原件：{original.name}</h2><p className="text-sm">本機大小／簽章已核對；hash：{original.hashChecked?'已在本機比對':'未提供有效hash，未比對'}。不是原件內容真實性或安全掃描保證。</p><p className="text-sm">{original.serverProof}</p>{original.mime==='application/pdf'?<iframe title="人工轉錄原件" src={original.url} className="mt-3 h-72 w-full border"/>:<img src={original.url} alt="人工轉錄原件" className="max-h-96"/>}</section>}
  {original&&!draft&&<form onSubmit={e=>{e.preventDefault();void create();}} className="grid gap-4 rounded border bg-white p-4 md:grid-cols-2">
  {Object.entries(blank).map(([key])=><label key={key} className="text-sm">{labels[key]}{key==='inclusion_status'||key==='final_scope'?<select aria-label={labels[key]} value={form[key]} disabled={!canWrite||Boolean(attempt)} onChange={e=>setForm({...form,[key]:e.target.value})} className="mt-1 block w-full rounded border p-2">{(key==='inclusion_status'?[['pending','待確認'],['included','納入'],['excluded','排除']]:[['','未指定'],['1','Scope 1'],['2','Scope 2'],['3','Scope 3']]).map(([value,label])=><option key={value} value={value}>{label}</option>)}</select>:<input aria-label={labels[key]} type="text" placeholder={key.includes('date')||key.startsWith('period_')?'YYYY-MM-DD':undefined} value={form[key]} disabled={!canWrite||Boolean(attempt)} onChange={e=>setForm({...form,[key]:e.target.value})} className="mt-1 block w-full rounded border p-2"/>}</label>)}
  <p className="text-sm md:col-span-2">保存後canonical轉錄唯讀；未確認回覆時使用同一ID與原輸入重試，不重傳原件。若需修訂，先走人工釐清，本版不覆寫既有草稿。</p><button disabled={!canWrite} type="submit" className="rounded bg-teal-700 p-3 text-white disabled:opacity-40">{attempt?'以原ID重試保存轉錄':'保存人工轉錄（尚未確認）'}</button></form>}

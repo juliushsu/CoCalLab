@@ -368,6 +368,7 @@ export const cocal = {
       }
     },
     intake: {
+        serverHashVerified: "服務端已讀取原件並保存SHA256驗證；不代表內容真實、安全掃描或合規核准。",
       loading: '正在讀取可收件的專案',
       empty: '尚無可存取的收件專案',
       emptyDescription: '請確認目前組織與專案的存取權限，再重新讀取。',
@@ -402,6 +403,7 @@ export const cocal = {
         reconciling: '正在讀回核對保存結果',
       },
       errors: {
+          legacy: "這是尚未經服務端驗證的歷史收件；不自動改寫或升格。請保留ID交Owner核對，或明確放棄本機參考後以新收件流程處理。",
         auth: '工作階段無效或已過期，請重新登入後核對本次狀態。',
         scope: '組織或專案範圍無效，或無權存取；請重新選擇。',
         read: '無法讀取或核對收件資料。請確認連線、登入與專案權限，再重新讀取。',

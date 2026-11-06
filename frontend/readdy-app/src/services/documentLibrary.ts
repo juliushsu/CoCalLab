@@ -1,4 +1,5 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
+import {attachmentVerificationView} from './attachmentVerificationView.ts';
 import {canonicalUuid,resolveNavigationScope} from './navigationScope.ts';
 import {getIntakeAccess,listIntakeProjects,type IntakeProject,type IntakeScope} from './documentIntake.ts';
 import type {UploadedDocument,DocumentType,OcrStatus,UploadStatus} from '../types/document.ts';
@@ -31,7 +32,7 @@ export function privatePathSupported(bucket:string,path:string,projectId:string)
   return bucket==='documents'?parts.length===2&&canonicalUuid(parts[0])===projectId:
     ['staging-receipts','staging-attachments'].includes(bucket)&&parts.length===3&&parts[0]==='staging'&&canonicalUuid(parts[1])===projectId;
 }
-const columns='id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,metadata,received_date,archived_at,created_at,updated_at';
+const columns='id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,metadata,received_date,archived_at,created_at,updated_at,hash_verification_status,server_verified_at,verified_storage_object_id';
 const object=(v:unknown):v is Record<string,unknown>=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 function documentRow(value:unknown,scope:LibrarySelection,projects?:IntakeProject[]):LibraryDocument{
   if(!object(value))throw new DocumentLibraryError('read');
@@ -43,7 +44,8 @@ function documentRow(value:unknown,scope:LibrarySelection,projects?:IntakeProjec
     typeof value.sha256_hash!=='string'||!['pending','processing','succeeded','failed'].includes(String(value.ocr_status))||
     !['receipt','invoice','bill','utility_bill','contract','report','other'].includes(String(value.document_type))||!['active','archived'].includes(String(value.status))||
     typeof value.created_at!=='string'||typeof value.updated_at!=='string'||!object(value.metadata))throw new DocumentLibraryError('read');
-  return {id,organization_id:org,project_id:project,project_name:projects?.find(p=>p.id===project)?.name,uploaded_by_user_id:value.uploaded_by_user_id===null?null:uuid(value.uploaded_by_user_id),
+  const proof=attachmentVerificationView(value);if(proof.state==='invalid')throw new DocumentLibraryError('integrity');
+  return {hash_verification_status:proof.state,server_verified_at:typeof value.server_verified_at==='string'?value.server_verified_at:null,verified_storage_object_id:typeof value.verified_storage_object_id==='string'?value.verified_storage_object_id:null,id,organization_id:org,project_id:project,project_name:projects?.find(p=>p.id===project)?.name,uploaded_by_user_id:value.uploaded_by_user_id===null?null:uuid(value.uploaded_by_user_id),
     storage_bucket:value.storage_bucket,storage_path:value.storage_path,original_filename:value.original_filename,mime_type:value.mime_type as string|null,file_size_bytes:value.file_size_bytes,
     sha256_hash:value.sha256_hash,document_type:value.document_type as DocumentType,ocr_status:value.ocr_status as OcrStatus,status:value.status as UploadStatus,
     metadata:value.metadata,received_date:typeof value.received_date==='string'?value.received_date:null,archived_at:typeof value.archived_at==='string'?value.archived_at:null,
@@ -101,6 +103,7 @@ export async function readPrivateOriginal(client:SupabaseClient,documentId:strin
 export async function removeScopedDocument(client:SupabaseClient,documentId:string,scope:IntakeScope,userId:string,isCurrent=()=>true){
   const row=await readScopedDocument(client,documentId,scope,userId,isCurrent);
   if(!row.privatePathSupported)throw new DocumentLibraryError('path');
+  if(row.hash_verification_status==='server_verified')throw new Error('已驗證原件須經受控服務端刪除；此入口暫不刪除bytes或收件，下一批接續恢復流程。');
   await getIntakeAccess(client,scope,userId,isCurrent);current(isCurrent);
   const references=await client.from('emission_activities').select('id',{count:'exact',head:true}).eq('organization_id',row.organization_id).eq('source_document_id',row.id);current(isCurrent);
   if(references.error||!Number.isSafeInteger(references.count)||references.count!==0)throw new Error('Document references could not be ruled out; no file was removed.');

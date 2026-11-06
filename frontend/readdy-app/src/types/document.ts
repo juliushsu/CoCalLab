@@ -33,6 +33,9 @@ export interface UploadedDocument {
   mime_type: string | null;
   file_size_bytes: number;
   sha256_hash: string;
+  hash_verification_status?:'legacy_unverified'|'server_verified';
+  server_verified_at?:string|null;
+  verified_storage_object_id?:string|null;
   document_type: DocumentType;
   ocr_status: OcrStatus;
   status: UploadStatus;

@@ -28,6 +28,7 @@ export interface IntakeReceipt {
     attempt: IntakeAttempt;
     existing: boolean;
     recoveryReference?:IntakeAttempt;
+    verification:{contractVersion:'20261106.hash.1';sha256Hash:string;storageObjectId:string;verifiedAt:string};
     record: {
         uploadedByUserId: string | null;
         documentType: string;
@@ -36,7 +37,7 @@ export interface IntakeReceipt {
 }
 export type IntakeStage = 'checking' | 'uploading' | 'recording' | 'reconciling';
 export class IntakeError extends Error {
-    code: 'auth' | 'scope' | 'read' | 'readonly' | 'file' | 'duplicate' | 'upload' | 'uncertain' | 'context' | 'recovery';
+    code: 'auth' | 'scope' | 'read' | 'readonly' | 'file' | 'duplicate' | 'upload' | 'uncertain' | 'context' | 'recovery' | 'legacy';
     attempt?: IntakeAttempt;
     constructor(code: IntakeError['code'], attempt?: IntakeAttempt, options?: ErrorOptions) {
         super(code, options);
@@ -96,6 +97,14 @@ export async function getIntakeAccess(client: SupabaseClient, input: IntakeScope
         throw new IntakeError('readonly');
     return userId;
 }
+/** Compatibility only. Actual hash/receipt authority is the authenticated server endpoint. */
+export async function getVerificationAccess(client:SupabaseClient,scope:IntakeScope,expectedUserId:string,isCurrent=()=>true){
+ const userId=await getIntakeAccess(client,scope,expectedUserId,isCurrent);current(isCurrent);
+ const result=await client.rpc('upload_verification_contract',{p_project_id:uuid(scope.projectId)});current(isCurrent);
+ const row=Array.isArray(result.data)&&result.data.length===1?result.data[0]:null;
+ if(result.error||!record(row)||row.project_id!==scope.projectId||row.organization_id!==scope.organizationId||row.contract_version!=='20261106.hash.1'||row.max_bytes!==10485760||row.client_receipt_insert!==false||typeof row.can_verify!=='boolean')throw new IntakeError('read',undefined,{cause:result.error});
+ if(!row.can_verify)throw new IntakeError('readonly');return userId;
+}
 function compatiblePath(bucket: string, path: string, projectId: string): boolean {
     const parts = path.split('/');
     if (parts.some(part => !part || part === '.' || part === '..' || /[\\%]/.test(part)))
@@ -103,9 +112,9 @@ function compatiblePath(bucket: string, path: string, projectId: string): boolea
     return bucket === 'documents' ? parts.length === 2 && canonicalUuid(parts[0]) === projectId :
         ['staging-receipts', 'staging-attachments'].includes(bucket) && parts.length === 3 && parts[0] === 'staging' && canonicalUuid(parts[1]) === projectId;
 }
-const receiptColumns = 'id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test';
+const receiptColumns = 'id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test,hash_verification_status,server_verified_at,verified_storage_object_id';
 function receiptRow(row: unknown, expected: IntakeAttempt, existing = false, recovered = false): IntakeReceipt {
-    if (!record(row) || uuid(row.organization_id) !== expected.organizationId || uuid(row.project_id) !== expected.projectId ||
+    if (!record(row) || row.hash_verification_status!=='server_verified'||typeof row.server_verified_at!=='string'||!Number.isFinite(Date.parse(row.server_verified_at))||!canonicalUuid(row.verified_storage_object_id)||uuid(row.organization_id) !== expected.organizationId || uuid(row.project_id) !== expected.projectId ||
         row.sha256_hash !== expected.sha256Hash || row.status !== 'active' || row.env !== expected.environment || row.is_test !== expected.isTest ||
         typeof row.storage_bucket !== 'string' || typeof row.storage_path !== 'string' || !compatiblePath(row.storage_bucket, row.storage_path, expected.projectId) ||
         (expected.isTest ? !['staging-receipts', 'staging-attachments'].includes(row.storage_bucket) : row.storage_bucket !== 'documents') ||
@@ -113,9 +122,9 @@ function receiptRow(row: unknown, expected: IntakeAttempt, existing = false, rec
         typeof row.document_type !== 'string' || !types.includes(row.document_type) || !['pending', 'processing', 'succeeded', 'failed'].includes(String(row.ocr_status)) ||
         (!existing && (uuid(row.id) !== expected.documentId || uuid(row.uploaded_by_user_id) !== expected.userId || row.storage_bucket !== expected.storageBucket || row.storage_path !== expected.storagePath || row.mime_type !== expected.mimeType || row.original_filename !== expected.originalFilename || (!recovered && row.ocr_status !== 'pending') || row.document_type !== expected.documentType)))
         throw new IntakeError('uncertain', expected);
-    return { existing, attempt: { ...expected, documentId: uuid(row.id), storageBucket: row.storage_bucket, storagePath: row.storage_path, originalFilename: row.original_filename, mimeType: row.mime_type }, record: { uploadedByUserId: row.uploaded_by_user_id === null ? null : uuid(row.uploaded_by_user_id), documentType: row.document_type, ocrStatus: String(row.ocr_status) } };
+    return { existing, verification:{contractVersion:'20261106.hash.1',sha256Hash:String(row.sha256_hash),storageObjectId:uuid(row.verified_storage_object_id),verifiedAt:row.server_verified_at as string}, attempt: { ...expected, documentId: uuid(row.id), storageBucket: row.storage_bucket, storagePath: row.storage_path, originalFilename: row.original_filename, mimeType: row.mime_type }, record: { uploadedByUserId: row.uploaded_by_user_id === null ? null : uuid(row.uploaded_by_user_id), documentType: row.document_type, ocrStatus: String(row.ocr_status) } };
 }
-async function verifyOriginal(client: SupabaseClient, receipt: IntakeReceipt, isCurrent: () => boolean) {
+async function verifyOriginal(client: SupabaseClient, receipt: Pick<IntakeReceipt,'attempt'>, isCurrent: () => boolean) {
     const attempt = receipt.attempt;
     try {
         const original = await client.storage.from(attempt.storageBucket).download(attempt.storagePath);
@@ -155,7 +164,7 @@ function clearReference(journal:IntakeRecovery|undefined,attempt:IntakeAttempt) 
 }
 async function existingByHash(client:SupabaseClient,attempt:IntakeAttempt,isCurrent:()=>boolean):Promise<IntakeReceipt|null> {
     current(isCurrent,attempt);
-    const response=await client.from('uploaded_documents').select(receiptColumns).eq('organization_id',attempt.organizationId).eq('project_id',attempt.projectId).eq('sha256_hash',attempt.sha256Hash).maybeSingle();
+    const response=await client.from('uploaded_documents').select(receiptColumns).eq('organization_id',attempt.organizationId).eq('project_id',attempt.projectId).eq('sha256_hash',attempt.sha256Hash).eq('hash_verification_status','server_verified').maybeSingle();
     current(isCurrent,attempt);
     if(response.error)throw new IntakeError('read',attempt,{cause:response.error});
     if(response.data===null)return null;
@@ -169,6 +178,7 @@ export async function reconcileIntake(client:SupabaseClient,attempt:IntakeAttemp
     current(isCurrent,attempt);
     if(response.error)throw new IntakeError('uncertain',attempt,{cause:response.error});
     if(response.data!==null){
+        const row=response.data;if(record(row)&&row.id===attempt.documentId&&row.organization_id===attempt.organizationId&&row.project_id===attempt.projectId&&row.hash_verification_status==='legacy_unverified')throw new IntakeError('legacy',attempt);
         const receipt=receiptRow(response.data,attempt,false,true);await verifyOriginal(client,receipt,isCurrent);clearReference(journal,attempt);return receipt;
     }
     const other=await existingByHash(client,attempt,isCurrent);
@@ -176,43 +186,46 @@ export async function reconcileIntake(client:SupabaseClient,attempt:IntakeAttemp
     // stays available for explicit local abandonment. No server cleanup is implied.
     return other?{...other,recoveryReference:attempt}:null;
 }
-function receiptPayload(attempt:IntakeAttempt) {
-    return {id:attempt.documentId,organization_id:attempt.organizationId,project_id:attempt.projectId,uploaded_by_user_id:attempt.userId,storage_bucket:attempt.storageBucket,storage_path:attempt.storagePath,original_filename:attempt.originalFilename,mime_type:attempt.mimeType,file_size_bytes:attempt.fileSize,sha256_hash:attempt.sha256Hash,document_type:attempt.documentType,ocr_status:'pending',status:'active',env:attempt.environment,is_test:attempt.isTest,metadata:{intake_mode:'upload_only'},received_date:new Date().toISOString().slice(0,10)};
-}
 async function registerReceipt(client:SupabaseClient,attempt:IntakeAttempt,journal:IntakeRecovery,isCurrent:()=>boolean,onStage:(stage:IntakeStage)=>void):Promise<IntakeReceipt> {
-    onStage('recording');current(isCurrent,attempt);
-    try {
-        const saved=await client.from('uploaded_documents').insert(receiptPayload(attempt)).select(receiptColumns).single();current(isCurrent,attempt);
-        if(saved.error)throw saved.error;
-        const receipt=receiptRow(saved.data,attempt);clearReference(journal,attempt);return receipt;
-    }catch(cause){
-        current(isCurrent,attempt);onStage('reconciling');
-        try{const recovered=await reconcileIntake(client,attempt,isCurrent,journal);if(recovered)return recovered;}
-        catch(error){if(error instanceof IntakeError&&error.code==='context')throw error;}
-        throw new IntakeError('uncertain',attempt,{cause});
-    }
+ onStage('recording');current(isCurrent,attempt);
+ try{
+  const saved=await client.functions.invoke('verify-upload-receipt',{body:{organization_id:attempt.organizationId,project_id:attempt.projectId,document_id:attempt.documentId,request_id:attempt.documentId,storage_bucket:attempt.storageBucket,storage_path:attempt.storagePath,original_filename:attempt.originalFilename,document_type:attempt.documentType,file_size_bytes:attempt.fileSize,mime_type:attempt.mimeType}});current(isCurrent,attempt);
+  if(saved.error)throw saved.error;
+  const data=saved.data?.data,proof=data?.server_proof;
+  if(saved.data?.success!==true||!record(data)||!['verified','duplicate'].includes(String(data.state))||data.document_id!==attempt.documentId||data.request_id!==attempt.documentId||!record(proof)||proof.contract_version!=='20261106.hash.1'||proof.sha256_hash!==attempt.sha256Hash)throw new IntakeError('uncertain',attempt);
+  const duplicate=data.state==='duplicate';
+  const receipt=receiptRow(data.receipt,attempt,duplicate,true);
+  if(proof.storage_object_id!==receipt.verification.storageObjectId||proof.verified_at!==receipt.verification.verifiedAt||duplicate&&data.duplicate_of_document_id!==receipt.attempt.documentId)throw new IntakeError('uncertain',attempt);
+  if(duplicate)return {...receipt,recoveryReference:attempt};
+  clearReference(journal,attempt);return receipt;
+ }catch(cause){
+  current(isCurrent,attempt);onStage('reconciling');
+  try{const recovered=await reconcileIntake(client,attempt,isCurrent,journal);if(recovered)return recovered;}catch(error){if(error instanceof IntakeError&&(error.code==='context'||error.code==='legacy'))throw error;}
+  throw new IntakeError('uncertain',attempt,{cause});
+ }
 }
+
 /** Explicitly register a verified existing object with its ORIGINAL ID; no byte upload. */
 export async function completeIntakeRegistration(client:SupabaseClient,attempt:IntakeAttempt,expectedUserId:string,journal:IntakeRecovery,isCurrent=()=>true):Promise<IntakeReceipt> {
     current(isCurrent,attempt);
     if(uuid(expectedUserId)!==uuid(attempt.userId))throw new IntakeError('auth',attempt);
-    await getIntakeAccess(client,attempt,expectedUserId,isCurrent);current(isCurrent,attempt);
+    await getVerificationAccess(client,attempt,expectedUserId,isCurrent);current(isCurrent,attempt);
     const existing=await reconcileIntake(client,attempt,isCurrent,journal);if(existing)return existing;
     const owned=journal.list(expectedUserId,attempt).find(row=>row.documentId===attempt.documentId);
     if(!owned||Object.keys(owned).some(key=>owned[key as keyof IntakeAttempt]!==attempt[key as keyof IntakeAttempt]))throw new IntakeError('recovery',attempt);
-    await verifyOriginal(client,{attempt,existing:false,record:{uploadedByUserId:attempt.userId,documentType:attempt.documentType,ocrStatus:'pending'}},isCurrent);
+    await verifyOriginal(client,{attempt},isCurrent);
     return registerReceipt(client,attempt,journal,isCurrent,()=>{});
 }
 /** Export actual persisted fields. The local requesting actor is never labeled uploader. */
 export function intakeReference(attempt:IntakeAttempt,receipt?:IntakeReceipt) {
     const row=receipt?.attempt??attempt;
-    return {kind:receipt?'verified_receipt':'unconfirmed_attempt',document_id:row.documentId,organization_id:row.organizationId,project_id:row.projectId,storage_bucket:row.storageBucket,storage_path:row.storagePath,original_filename:row.originalFilename,file_size_bytes:row.fileSize,mime_type:row.mimeType,client_sha256:row.sha256Hash,document_type:receipt?.record.documentType??row.documentType,...(receipt?{uploaded_by_user_id:receipt.record.uploadedByUserId,ocr_status:receipt.record.ocrStatus}:{requested_by_user_id:row.userId}),...(receipt?.recoveryReference?{unregistered_object_reference:{document_id:receipt.recoveryReference.documentId,storage_bucket:receipt.recoveryReference.storageBucket,storage_path:receipt.recoveryReference.storagePath}}:{}),ocr_executed_by_this_intake:false};
+    return {kind:receipt?'verified_receipt':'unconfirmed_attempt',document_id:row.documentId,organization_id:row.organizationId,project_id:row.projectId,storage_bucket:row.storageBucket,storage_path:row.storagePath,original_filename:row.originalFilename,file_size_bytes:row.fileSize,mime_type:row.mimeType,client_sha256:row.sha256Hash,document_type:receipt?.record.documentType??row.documentType,...(receipt?{server_sha256_verification:receipt.verification,uploaded_by_user_id:receipt.record.uploadedByUserId,ocr_status:receipt.record.ocrStatus}:{requested_by_user_id:row.userId}),...(receipt?.recoveryReference?{unregistered_object_reference:{document_id:receipt.recoveryReference.documentId,storage_bucket:receipt.recoveryReference.storageBucket,storage_path:receipt.recoveryReference.storagePath}}:{}),ocr_executed_by_this_intake:false};
 }
 export async function uploadIntake(client:SupabaseClient,input:{file:File;scope:IntakeScope;documentType:string;staging:boolean;expectedUserId:string},journal:IntakeRecovery,isCurrent=()=>true,onStage:(stage:IntakeStage)=>void=()=>{}):Promise<IntakeReceipt> {
     onStage('checking');const scope=validateScope(input.scope);
     if(!types.includes(input.documentType))throw new IntakeError('file');
     const file=await fileIdentity(input.file);current(isCurrent);
-    const userId=await getIntakeAccess(client,scope,input.expectedUserId,isCurrent);current(isCurrent);
+    const userId=await getVerificationAccess(client,scope,input.expectedUserId,isCurrent);current(isCurrent);
     const documentId=crypto.randomUUID();
     const storageBucket=input.staging?(input.documentType==='receipt'?'staging-receipts':'staging-attachments'):'documents';
     const storagePath=(input.staging?'staging/':'')+scope.projectId+'/'+documentId+'.'+file.extension;

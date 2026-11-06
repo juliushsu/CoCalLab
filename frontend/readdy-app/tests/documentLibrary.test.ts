@@ -367,3 +367,14 @@ test('pending manual transcription blocks original bytes deletion before any Sto
  const h=sdk({mutation:true,drafts:[draft]});await assert.rejects(removeScopedDocument(h.client,D,scope,U),/人工轉錄/);assert.equal(deleteRequests(h).length,0);
  }
 });
+
+
+test('server verified originals cannot fall through the old two-service delete sequence',async()=>{
+ const verified={...document(),hash_verification_status:'server_verified',server_verified_at:'2026-11-06T00:00:00Z',verified_storage_object_id:D2};
+ const h=sdk({documents:[verified],mutation:true});
+ const rows=await readDocumentLibrary(h.client,{...scope},U);assert.equal(rows[0].hash_verification_status,'server_verified');
+ await assert.rejects(removeScopedDocument(h.client,D,scope,U),/受控服務端刪除/);
+ assert.equal(h.requests.filter(r=>r.method==='DELETE').length,0);
+ const corrupt=sdk({documents:[{...verified,verified_storage_object_id:null}]});
+ await assert.rejects(readDocumentLibrary(corrupt.client,{...scope},U),code('integrity'));
+});

@@ -1,0 +1,44 @@
+{
+  "synthetic": true,
+  "api": "http://127.0.0.1:4200",
+  "ui": "http://127.0.0.1:4201",
+  "observed_at": "2026-11-06T10:06:45.887Z",
+  "behavior": "actual installed SDK -> multipart private original -> checked-in server handler -> bounded server SHA -> SQL authority -> same content re-read without second upload",
+  "receipt": {
+    "kind": "verified_receipt",
+    "document_id": "c7071259-73bc-48b3-b526-e2f324c6d4de",
+    "organization_id": "5a4a80d3-f21e-4e9d-968d-dd051ca2f40f",
+    "project_id": "9d37fa2a-5ebb-472e-b17a-f08e5048552e",
+    "storage_bucket": "staging-receipts",
+    "storage_path": "staging/9d37fa2a-5ebb-472e-b17a-f08e5048552e/c7071259-73bc-48b3-b526-e2f324c6d4de.pdf",
+    "original_filename": "SYNTHETIC-LOCAL-HASH.pdf",
+    "file_size_bytes": 741,
+    "mime_type": "application/pdf",
+    "client_sha256": "849f26f1af5502aa1dbd2a75fcac59bd6df5edddb116369c44e91ea88585ef3a",
+    "document_type": "receipt",
+    "server_sha256_verification": {
+      "contractVersion": "20261106.hash.1",
+      "sha256Hash": "849f26f1af5502aa1dbd2a75fcac59bd6df5edddb116369c44e91ea88585ef3a",
+      "storageObjectId": "cbc40a49-cc90-4172-8abb-5ecc629160b8",
+      "verifiedAt": "2026-11-06T10:06:45.849+00:00"
+    },
+    "uploaded_by_user_id": "4cec34ca-84f7-45d3-9c39-71107179b945",
+    "ocr_status": "pending",
+    "ocr_executed_by_this_intake": false
+  },
+  "storage_metrics": {
+    "writes": 1,
+    "reads": 2
+  },
+  "native_file_chooser": "BLOCKED: Chrome extension lacks Allow access to file URLs; no extension permission change",
+  "not_run": [
+    "real Supabase JWT/Storage/Deno",
+    "independent PostgreSQL SQL connection concurrency",
+    "cloud migration/deploy/backup/restore"
+  ],
+  "source_sha": "411a99d597046f65dd54fc134df5dc0d8346c346",
+  "actual_services": {
+    "api": "127.0.0.1:4200 checked-in handler+new in-memory PGlite",
+    "ui": "127.0.0.1:4201 original app+synthetic SDK adapter"
+  }
+}
