@@ -6,8 +6,10 @@
 - 入口M2 http://127.0.0.1:4197/login →本次API4196；M1 4195→4194保留。當前合成帳號／ID見4197/product-api/__synthetic/config。僅自建API exec40362／UI3857可停止，其他專案及5432保留。
 - 使用者最新Readdy ZIP已保留，SHA256 f6e909dc801a6785b7be453a53da24bde38efa20be3b5357cda1a19e2e309325。來源比對：29路由、6群22選單仍在；五階段導覽、十章報告資訊、回饋入口與頁內捷徑確實缺少。見READDY_FINAL_FEATURE_PARITY_20261106.md；未覆蓋工程、執行ZIP、沿用.env或憑證。
 - 第1項SOURCE_DONE：815315b121924f86066220b573284016a30d64eb，branch codex/restore-workflow-navigation-20261106；五階段／捷徑／側欄scope、歷史範圍與直接報告補scope，166前端與tsc/lint/build PASS，Chrome操作截圖見RESTORED_NAVIGATION_20261106.md。
-- 下一RUNNING：第2項十章結構與真保存欄位；其後局部接入PR9/10匯出helpers，最後M4方案A。CTO已核准人工轉錄本機開發與隔離測試；允許同人轉錄／確認，不冒稱OCR／雙人覆核。回饋只做本機編寫／複製，明示尚未送出。
-- WAITING_CTO：18c0894新ledger/RPC定向紅隊問題；Scope規則、回饋真收件服務。其他READY可繼續。Hash防偽、全報告防竄改與跨服務刪除OPEN。
+- 第2項SOURCE_DONE：70b9d738a9bcb011a17124ca35542a5c300b419e，branch codex/restore-report-guidance-20261106；十章真保存欄位/缺件/來源＋本機回饋編寫複製，173前端/tsc/lint/build PASS；Chrome截圖與步驟RESTORED_REPORT_GUIDANCE_20261106.md。
+- 第3項：已核對PR9 1e93fee及PR10 0591626，只沿用純helpers/tests不覆蓋整頁。舊封測矩陣另有下載資格，啟用正式下載WAITING_CTO（具體方案EXPORT_AUTHORIZATION_CTO_DECISION_20261106.md，已提出問題，未因未回覆視為核准）。合成檔案測試可做，其他READY繼續。
+- 第4項RUNNING：M4方案A已核准本機開發與隔離測試；允許同人轉錄／確認、不冒稱OCR／雙人覆核、不跨期自動分攤、不新增係數釘選。使用既有三表，必須服務端actor記錄/去重/交易/競態直接API測試。
+- WAITING_CTO：18c0894新ledger/RPC定向紅隊問題（完整L1–L5指令CLAUDE_REPORT_LEDGER_TARGETED_REVIEW_20261106.md，未通知Claude）；Scope規則、回饋真收件服務。其他READY可繼續。Hash防偽、全報告防竄改與跨服務刪除OPEN。
 - WAITING_OWNER：真實隔離環境／Auth JWT Storage E2E、雲端migration資源資料與費用／發布；均NOT_RUN。PGlite／合成瀏覽器不替代真服務驗收。
 - 下一條命令（repo root，只跑專屬本機測試）：`$env:PGLITE_RUNTIME_ROOT=(Resolve-Path '../tooling/sql-runtime').Path; node --test backend/tests/integration/product-preview-scenarios.test.js`。要預覽先用現有4197，依README只在未啟動時啟動，禁止重複占用或殺其他服務。
 - 保留stash pc-export-browser-harness-preserved-20261102；此為有限session接續點，不宣稱無限背景執行。
