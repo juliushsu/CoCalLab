@@ -60,10 +60,34 @@ async function invoke(client:SupabaseClient,name:string,payload:Record<string,un
  }
  return response.data.data;
 }
-export async function calculateManualProject(client:SupabaseClient,scope:IntakeScope,userId:string,requestId:string,current=()=>true){
- await manualContext(client,scope,userId,current);const result=await invoke(client,'recalculate-project',{organization_id:scope.organizationId,project_id:scope.projectId,actor_user_id:userId,force_recalculate:true,request_id:requestId},current);
- if(result?.project_id!==scope.projectId||['processed_activities','calculated_count','pending_factor_count','excluded_count','error_count'].some(key=>!Number.isSafeInteger(result[key])||result[key]<0))throw new Error('計算回應無效，請重新讀取計算明細。');return result;
+export interface CalculationResult {
+ project_id:string;request_id:string;replayed:boolean;input_matches_current:boolean;results_are_latest:boolean;
+ operation_status:'completed'|'historical'|'not_found'|'pending';calculation_result_ids:string[];
+ processed_activities:number|null;calculated_count:number|null;pending_factor_count:number|null;excluded_count:number|null;error_count:number|null;
 }
+type CompletedCalculation=CalculationResult & {operation_status:'completed';processed_activities:number;calculated_count:number;pending_factor_count:number;excluded_count:number;error_count:number};
+const calculationCounters=['processed_activities','calculated_count','pending_factor_count','excluded_count','error_count'] as const;
+/** New-client compatibility gate; actual authorization/idempotency remains server/SQL owned. */
+async function calculationAccess(client:SupabaseClient,scope:IntakeScope,userId:string,current:()=>boolean){
+ await manualContext(client,scope,userId,current);const probe=await client.rpc('recalculation_contract',{p_project_id:uuid(scope.projectId)});check(current);const rows=probe.data;
+ if(probe.error||!Array.isArray(rows)||rows.length!==1||rows[0]?.project_id!==scope.projectId||rows[0]?.organization_id!==scope.organizationId||rows[0]?.contract_version!=='20261106.recalc.1'||typeof rows[0]?.can_recalculate!=='boolean')throw new Error('冪等重算服務版本尚未確認，未發出計算；不對舊服務重送。');
+ if(!rows[0].can_recalculate)throw new Error('目前權限或訂閱不允許核對／重算。');
+}
+function calculationResult(value:unknown,scope:IntakeScope,requestId:string):CalculationResult {
+ if(!value||typeof value!=='object'||Array.isArray(value))throw new Error('計算回應無效，保留同一請求識別後核對。');const row=value as CalculationResult;
+ if(row.project_id!==scope.projectId||row.request_id!==requestId||typeof row.replayed!=='boolean'||typeof row.input_matches_current!=='boolean'||typeof row.results_are_latest!=='boolean'||!['completed','historical','not_found','pending'].includes(row.operation_status)||!Array.isArray(row.calculation_result_ids)||row.calculation_result_ids.some(id=>!canonicalUuid(id))||new Set(row.calculation_result_ids).size!==row.calculation_result_ids.length)throw new Error('計算回應範圍、操作識別或保存ID無效；尚未確認成功。');
+ if(row.operation_status==='completed'||row.operation_status==='historical'){
+  if(calculationCounters.some(key=>!Number.isSafeInteger(row[key])||row[key]!<0)||row.processed_activities!==row.calculation_result_ids.length||row.processed_activities!==Number(row.calculated_count)+Number(row.pending_factor_count)+Number(row.excluded_count)+Number(row.error_count)||(row.input_matches_current&&row.results_are_latest)!==(row.operation_status==='completed'))throw new Error('計算保存結果不完整或新舊輸入狀態不一致。');
+ }else if((row.operation_status==='not_found'&&row.input_matches_current)||row.results_are_latest||row.calculation_result_ids.length||calculationCounters.some(key=>row[key]!==null))throw new Error('計算尚未完成，不得以零值或舊結果表示成功。');
+ return row;
+}
+async function calculationOperation(client:SupabaseClient,scope:IntakeScope,userId:string,requestId:string,action:'calculate'|'lookup',current:()=>boolean){
+ uuid(requestId);await calculationAccess(client,scope,userId,current);try{const result=await invoke(client,'recalculate-project',{organization_id:scope.organizationId,project_id:scope.projectId,actor_user_id:userId,force_recalculate:true,formula_version:'v1.0.0',request_id:requestId,action},current);return calculationResult(result,scope,requestId);}catch(cause){if(cause instanceof Error&&/RECALCULATION_(INPUT_CHANGED|RESULT_SUPERSEDED|REQUEST_INTENT_CONFLICT)/.test(cause.message))throw new Error('原計算的輸入、操作意圖或保存版本已改變；未重新計算，也未把舊結果當成新成功。請先核對待確認計算，保留原ID後明確放棄本機參考，再以新操作計算。',{cause});throw cause;}
+}
+export async function calculateManualProject(client:SupabaseClient,scope:IntakeScope,userId:string,requestId:string,current=()=>true):Promise<CompletedCalculation>{
+ const result=await calculationOperation(client,scope,userId,requestId,'calculate',current);if(result.operation_status!=='completed'||!result.input_matches_current||!result.results_are_latest)throw new Error('此計算尚未完成或已是歷史輸入；請核對原操作後再建立新計算。');return result as CompletedCalculation;
+}
+export async function lookupManualCalculation(client:SupabaseClient,scope:IntakeScope,userId:string,requestId:string,current=()=>true){return calculationOperation(client,scope,userId,requestId,'lookup',current);}
 export interface ReportAttempt {requestId:string;version:number}
 export async function nextManualReport(client:SupabaseClient,scope:IntakeScope,userId:string,current=()=>true):Promise<ReportAttempt>{
  await manualContext(client,scope,userId,current);const r=await client.from('report_generations').select('report_version').eq('organization_id',uuid(scope.organizationId)).eq('project_id',uuid(scope.projectId)).order('report_version',{ascending:false}).limit(1);check(current);if(r.error||!Array.isArray(r.data))throw new Error('無法核對報告版本。');const version=r.data.length?Number(r.data[0].report_version)+1:1;if(!Number.isSafeInteger(version)||version<1)throw new Error('報告版本無效。');return {requestId:crypto.randomUUID(),version};

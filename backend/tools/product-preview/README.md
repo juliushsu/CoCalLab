@@ -79,6 +79,23 @@ Boundaries and remaining verification:
 
 Publication remains HOLD. These local results do not approve merge, production deployment, or traffic switching.
 
+## Recalculation request recovery (local candidate)
+
+Run `node backend/tools/product-preview/run.js --port=4202` for a fresh dedicated manual fixture; its optional UI wrapper uses 4203. Existing 4194/4196/4198/4200 services are not stopped or reused. Both actions use the actual checked-in `recalculate-project` handler and new `202611060004_recalculation_requests.sql`. Before HTTP requests, clients must read authenticated `recalculation_contract(p_project_id)` and require exact project/organization, version `20261106.recalc.1`, and `can_recalculate=true`. Missing/old capability fails closed; this is compatibility detection, not the authorization boundary.
+
+Body: `{organization_id,project_id,actor_user_id,force_recalculate,request_id,action?,formula_version?}`. `request_id` is a durable nonempty string (maximum 200 characters), action defaults to `calculate` and may be `lookup`; formula defaults to the only implemented `v1.0.0`. JWT actor is authoritative. Same actor/scope/request/force/formula plus unchanged complete current activity/factor inputs returns original IDs/counters without another version or audit. A changed input/intent or superseded/tampered saved result rejects calculation with 409. A new explicit request may calculate a new version.
+
+Both actions return the original flat counters plus `request_id`, `replayed`, `input_matches_current`, `results_are_latest`, `calculation_result_ids`, and `operation_status`. Lookup `not_found`/`pending` returns null counters and empty IDs; pending input equality may be true or false. `historical` preserves saved counters/IDs but is not current success: inputs changed, a later completed request exists (including an empty project), IDs disappeared/were superseded, or their saved row content changed. Lookup creates no ledger entry, calculation, audit, or action log. Service-only prepare binds intent and complete SQL aggregate input arrays before calculation; commit compares fresh inputs and allocates DB max+1 versions in one transaction. Private ledger/saved rows, not mutable audit records or caller counters, establish replay authority.
+
+Commit holds the project lock and short SHARE table locks on activity/factor sources to prevent insert/update phantoms during compare+save. These locks can delay source writes in other projects; throughput and independent SQL-connection lock/wait behavior are **NOT_RUN**. SQL roles/catalog and HTTP Auth/Storage are synthetic local substitutes, not real Supabase UAT. Existing direct calculation-row mutation privileges are not redesigned here; saved full row snapshots detect mutation for recovery/currentness. Trusted service maintenance and old service-only RPC use remain outside this handler's request protocol.
+
+```powershell
+$env:PGLITE_RUNTIME_ROOT='C:/Users/User/OneDrive/文件/ChatGPT/CaCalLab/local-uat/CoCalLab-UAT-LOCAL-01/tooling/sql-runtime'
+node --test --test-concurrency=1 backend/tests/integration/recalculation-idempotency-sql.test.js backend/tests/integration/recalculation-idempotency-http.test.js
+```
+
+Before the new migration/handler, the HTTP regression `same scoped request returns original result IDs without another version or audit` failed with `same request must not allocate another calc_version: 2 !== 1`. RED command: `node --test backend/tests/integration/recalculation-idempotency-http.test.js` against pre-fix source. New cases cover response loss, read-only pending/history lookup, changed quantity/factor/new candidate/intent, latest subscription or membership revocation after prepare, actual SQL rollback, private ledger/RPC ACLs, scope/payload omissions, DB version allocation, 1,101-row input aggregation, saved-row tampering, and installed SDK frontend service recovery.
+
 ## Manual-transcription scenario (M4 local candidate)
 
 Run `node backend/tools/product-preview/run.js --manual-transcription --port=4198` with the existing `PGLITE_RUNTIME_ROOT`. Default M1 4194 and showcase 4196 are unchanged. The separate UI may proxy 4199 to 4198; this tool does not start the UI or stop an existing service. `createProductRuntime({scenario:'manual-transcription',port:0})` creates the same fresh fixture for tests. Config `manifest.fixtures.a/b` provides scoped **SYNTHETIC** original/receipt IDs, readable synthetic PDF bytes, and the existing five synthetic role accounts. It seeds no draft, activity, calculation, or report.

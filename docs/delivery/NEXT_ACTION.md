@@ -1,13 +1,14 @@
 # Integrity / retry / deletion round — 2026-11-06
 
 - Business baseline06bad0818625bd9d4f3b685dff50994157b52757; retained later docs throughbfb51c4. RELEASE HOLD/UAT7dccd545 unchanged; no cloud/main/deploy/cost actions.
-- 1 SOURCE_DONE候選：411a99d597046f65dd54fc134df5dc0d8346c346, branch codex/server-attachment-hash-20261106。server actual bytes SHA、private authority/可信partial unique、legacy不升格不占位、固定ID恢復及跨tenant拒絕；lifecycle/env不相容409。交付SERVER_ATTACHMENT_HASH_DELIVERY_20261106.md。
+- 1 SOURCE_DONE候選：411a99d597046f65dd54fc134df5dc0d8346c346, branch codex/server-attachment-hash-20261106, Draft PR25, docs86ceb011f3599bb438f8657a5ef5592f64c9da64/CI42200533556 success。server actual bytes SHA、private authority/可信partial unique、legacy不升格不占位、固定ID恢復及跨tenant拒絕；lifecycle/env不相容409。交付SERVER_ATTACHMENT_HASH_DELIVERY_20261106.md。
 - 實跑FE197/197、backend27/27、tsc/lint/build PASS；SQL/HTTP回歸245/245，最終附件SQL7+HTTP6=13/13另跑PASS（重疊不可加總）；獨立定向審閱無待修P1/P2。實際SDK合成PDF→server proof、同內容writes=1、Chrome可信收件顯示／截圖。
 - 入口 http://127.0.0.1:4201/login，API4200獨立合成記憶體DB；重啟會換ID。只屬本次API exec62791/UI10632，其他預覽/5432保留。原生chooser因extension file URLs權限BLOCKED，未改權限；不算實際原生選檔通過。
-- 2 NEXT：通用重算冪等性（同intent不增版本、不同輸入拒舊結果、丟回覆查回）；驗證後3受控刪除部分失敗／引用fence／保留稽核。可信原件目前舊delete明確拒，未冒稱跨服務原子。
+- 2 SOURCE_DONE候選：67e546fa6894303ccbff66d829d077b93c5fb8e2, branch codex/recalculation-idempotency-20261106。通用重算冪等性（同intent不增版本、不同輸入拒舊結果、丟回覆查回）；第3項NEXT：受控刪除部分失敗／引用fence／保留稽核。可信原件目前舊delete明確拒，未冒稱跨服務原子。
+- 第2項實跑FE207/207、backend27/27、tsc/lint/build PASS；相關SQL/HTTP27 PASS/1 NOT_RUN及最後新增負例1/1。最終target HTTP8/SQL8；均有重疊不加總。actual SDK同ID重送/lookup維持版本1、50kg，UI4203明細已核對。交付RECALCULATION_IDEMPOTENCY_DELIVERY_20261106.md；新ledger定向CLAUDE_RECALCULATION_TARGETED_REVIEW_20261106.md WAITING_CTO。
 - WAITING_CTO：CLAUDE_ATTACHMENT_HASH_TARGETED_REVIEW_20261106.md固定411a99d597046f65dd54fc134df5dc0d8346c346；尚未通知Claude或推定裁定，不阻一般來源開發。
 - NOT_RUN：真JWT/Storage/Deno、獨立PostgreSQL SQL連線lock-wait並行、雲端migration/真上傳/備份復原。PGlite序列與Promise.all不是獨立SQL證據。舊client版本切換/雲端套用/維護清理需Owner具體授權。
-- 下一條可執行命令（repo root）：node backend/tools/product-preview/upload-demo.js（先確認4200現有專屬服務）。下一開發命令：git switch -c codex/recalculation-idempotency-20261106；先核對工作樹，保留stash。
+- 下一條可執行命令（repo root）：node backend/tools/product-preview/upload-demo.js（先確認4200現有專屬服務）。下一開發命令：git switch -c codex/controlled-document-deletion-20261106（第2項小PR提交後）；核對工作樹，保留stash。
 
 # Next action — 2026-11-06
 

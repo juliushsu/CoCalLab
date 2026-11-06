@@ -10,8 +10,9 @@ import EmptyState from '../../../components/base/EmptyState';
 import ErrorState from '../../../components/base/ErrorState';
 import CreateActivityModal from './components/CreateActivityModal';
 import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
-import {manualProjects,readManualActivities,calculateManualProject,nextManualReport,saveManualReport,type ManualProject,type ReportAttempt} from '../../../services/manualWorkflow';
+import {manualProjects,readManualActivities,calculateManualProject,lookupManualCalculation,nextManualReport,saveManualReport,type ManualProject,type ReportAttempt} from '../../../services/manualWorkflow';
 import {reportReference,saveReportReference,clearManualReference} from '../../../services/manualRecovery';
+import {calculationReference,readCalculationReference,clearCalculationReference,calculationRawReference,abandonCalculationReference} from '../../../services/calculationRecovery';
 import {resolveNavigationScope} from '../../../services/navigationScope';
 import {useAuth} from '../../../hooks/useAuth';
 import {useTenantNavigation} from '../../../hooks/useTenantNavigation';
@@ -40,8 +41,9 @@ export default function EmissionActivitiesListPage() {
   const navigation=useTenantNavigation();
   const isReadonly=subscription.isReadonly||subscription.loading||Boolean(subscription.error)||!['owner','admin','editor'].includes(navigation.role??'');
   const reportAttempt=useRef<ReportAttempt|null>(null);
+  const [pendingCalculation,setPendingCalculation]=useState<string|null>(null);
   const [working,setWorking]=useState(false),[operationMessage,setOperationMessage]=useState(''),[savedReport,setSavedReport]=useState<string|null>(null);
-  useLayoutEffect(()=>{current.current=context;reportAttempt.current=null;setOperationMessage('');setSavedReport(null);setWorking(false);return()=>{if(current.current===context)current.current=null;};},[context]);
+  useLayoutEffect(()=>{current.current=context;reportAttempt.current=null;setPendingCalculation(null);setOperationMessage('');setSavedReport(null);setWorking(false);return()=>{if(current.current===context)current.current=null;};},[context]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activities, setActivities] = useState<EmissionActivity[]>([]);
@@ -68,16 +70,25 @@ export default function EmissionActivitiesListPage() {
     finally {if(isCurrent()){setLoading(false);setLoaded(context);}}
   },[authLoading,context,isCurrent,projectId,selectedOrg,selection,userId,t]);
   useEffect(()=>{void loadData();},[loadData]);
-  const run=async(kind:'calculate'|'report')=>{
+  useEffect(()=>{if(!projectId||!organizationId||loaded!==context)return;try{setPendingCalculation(readCalculationReference(sessionStorage,{projectId,organizationId},userId)?.requestId??null);}catch(cause){setOperationMessage(cause instanceof Error?cause.message:'計算恢復參考不可讀。');}},[projectId,organizationId,loaded,context,userId]);
+  const run=async(kind:'calculate'|'report'|'lookup')=>{
     if(!projectId||!organizationId||!isCurrent()||working||isReadonly)return;
     const scope={projectId,organizationId};setWorking(true);setOperationMessage('');
     try{
       if(kind==='calculate'){
         if(reportReference(sessionStorage,scope,userId))throw new Error('此專案有尚未核對的報告請求；請先按保存報告快照／重試恢復，或明確放棄本機參考，再執行新計算。');
-        const result=await calculateManualProject(getSupabaseClient(),scope,userId,crypto.randomUUID(),isCurrent);
-        if(!isCurrent())return;reportAttempt.current=null;setSavedReport(null);
-        setOperationMessage('計算已保存：'+result.calculated_count+'筆已計算、'+result.pending_factor_count+'筆待補係數、'+result.error_count+'筆錯誤；待補不是零。請查看活動明細確認係數來源與版本。');
+        const attempt=calculationReference(sessionStorage,scope,userId);setPendingCalculation(attempt.requestId);
+        const result=await calculateManualProject(getSupabaseClient(),scope,userId,attempt.requestId,isCurrent);
+        if(!isCurrent())return;clearCalculationReference(sessionStorage,scope,userId,attempt.requestId);setPendingCalculation(readCalculationReference(sessionStorage,scope,userId)?.requestId??null);reportAttempt.current=null;setSavedReport(null);
+        setOperationMessage((result.replayed?'原操作已核對，未新增計算版本：':'計算已保存：')+result.calculated_count+'筆已計算、'+result.pending_factor_count+'筆待補係數、'+result.excluded_count+'筆排除、'+result.error_count+'筆錯誤；待補不是零。操作 '+attempt.requestId+'。請查看活動明細確認係數來源與版本。');
+      }else if(kind==='lookup'){
+        const prior=readCalculationReference(sessionStorage,scope,userId);if(!prior){setOperationMessage('此使用者／專案沒有本機待核對計算參考；未建立新操作。');return;}
+        const result=await lookupManualCalculation(getSupabaseClient(),scope,userId,prior.requestId,isCurrent);if(!isCurrent())return;
+        if(result.operation_status==='completed'&&result.input_matches_current&&result.results_are_latest){clearCalculationReference(sessionStorage,scope,userId,prior.requestId);setPendingCalculation(readCalculationReference(sessionStorage,scope,userId)?.requestId??null);setOperationMessage('原計算已保存並核對，未增加版本；操作 '+prior.requestId+'，'+result.calculated_count+'筆已計算、'+result.pending_factor_count+'筆待補、'+result.excluded_count+'筆排除、'+result.error_count+'筆錯誤。');}
+        else if(result.operation_status==='historical')setOperationMessage('查回的是原操作歷史結果，不能視為目前計算完成。輸入'+(result.input_matches_current?'相同':'已改變')+'；保存版本'+(result.results_are_latest?'仍為latest':'已被取代或缺少')+'。可保留操作 '+prior.requestId+' 後明確放棄本機參考，再以新操作重算。');
+        else setOperationMessage(result.operation_status==='not_found'?'服務端未找到已提交的此操作；這不代表零排放。按計算並保存／重試會沿用同一ID。':result.input_matches_current?'原計算尚未完成；保留同一ID重試，未視為成功。':'原計算尚未完成且輸入已改變；保留原ID供核對。如需計算新輸入，請明確放棄本機參考再建立新操作。');
       }else{
+        if(readCalculationReference(sessionStorage,scope,userId))throw new Error('此專案有待核對計算，請先查回或用同一ID重試；不能將未知計算當作報告已完成。');
         reportAttempt.current??=reportReference(sessionStorage,scope,userId)??await nextManualReport(getSupabaseClient(),scope,userId,isCurrent);
         saveReportReference(sessionStorage,scope,userId,reportAttempt.current);
         const result=await saveManualReport(getSupabaseClient(),scope,userId,reportAttempt.current,isCurrent);
@@ -241,12 +252,15 @@ export default function EmissionActivitiesListPage() {
         </div>
 
         <div className="mb-4 flex flex-wrap gap-3 items-center"><label>目前專案<select aria-label="目前專案" value={projectId??''} onChange={e=>{const project=projects.find(row=>row.id===e.target.value);current.current=null;setShowCreateModal(false);setSearchParams(project?{organization_id:project.organization_id,projectId:project.id}:{});}} className="ml-2 rounded border p-2"><option value="">全部已授權專案（新增／計算需選擇）</option>{projects.map(row=><option key={row.id} value={row.id}>{row.name}（{row.project_code}）</option>)}</select></label>
-        <button type="button" disabled={!projectId||working||isReadonly} onClick={()=>void run('calculate')} className="rounded border p-2 disabled:opacity-50">計算並保存</button>
+        <button type="button" disabled={!projectId||working||isReadonly} onClick={()=>void run('calculate')} className="rounded border p-2 disabled:opacity-50">計算並保存／重試</button>
         <button type="button" disabled={!projectId||working||isReadonly} onClick={()=>void run('report')} className="rounded border p-2 disabled:opacity-50">保存報告快照／重試</button>
         <button type="button" onClick={()=>void loadData()} disabled={working} className="rounded border p-2">重新讀取</button>
         <button type="button" disabled={!projectId||!organizationId||working} onClick={()=>{if(!projectId||!organizationId)return;try{const scope={projectId,organizationId},prior=reportReference(sessionStorage,scope,userId);if(prior)clearManualReference(sessionStorage,scope,userId,'report',prior.requestId);reportAttempt.current=null;setOperationMessage('已放棄此使用者／專案的本機報告恢復參考；不會刪除任何伺服器報告。下次保存會建立新快照。');}catch(cause){setOperationMessage(String(cause));}}} className="rounded border p-2">放棄報告恢復參考（不刪除報告）</button>
+        <button type="button" disabled={!projectId||!organizationId||working||isReadonly} onClick={()=>void run('lookup')} className="rounded border p-2 disabled:opacity-50">核對待確認計算（不新增版本）</button>
+        <button type="button" disabled={!projectId||!organizationId||working} onClick={()=>{if(!projectId||!organizationId||!isCurrent())return;try{const scope={projectId,organizationId},captured=calculationRawReference(sessionStorage,scope,userId);abandonCalculationReference(sessionStorage,scope,userId,captured);setPendingCalculation(readCalculationReference(sessionStorage,scope,userId)?.requestId??null);setOperationMessage('已清除此使用者／專案的本機計算參考（含損壞參考）；不取消或刪除任何伺服器計算。下次按計算會建立新操作。');}catch(cause){setOperationMessage(String(cause));}}} className="rounded border p-2">放棄計算本機參考（不取消伺服器操作）</button>
         {savedReport&&<button type="button" onClick={()=>navigate('/admin/reports/'+savedReport+'?'+new URLSearchParams({organization_id:organizationId??'',project_id:projectId??''}))} className="rounded border p-2">開啟已保存報告</button>}</div>
         {projectId&&<p className="mb-3 text-sm">盤查期間：{projects.find(row=>row.id===projectId)?.reporting_start_date} ～ {projects.find(row=>row.id===projectId)?.reporting_end_date}。數量與單位由人工輸入；係數不使用正式預設測試值。</p>}
+        {pendingCalculation&&<p className="mb-3 text-sm">待核對計算操作：{pendingCalculation}。重試沿用此ID；本機參考不是伺服器完成證明。</p>}
         {working&&<p role="status">處理中，等待伺服器保存／核對結果…</p>}
         {operationMessage&&<p role="status" className="mb-4 border rounded p-3">{operationMessage}</p>}
         {/* Data Origin Legend (staging only) */}
