@@ -1,0 +1,78 @@
+{
+  "synthetic": true,
+  "api": "http://127.0.0.1:4202",
+  "ui": "http://127.0.0.1:4203",
+  "observed_at": "2026-11-06T10:30:52.091Z",
+  "attempt": {
+    "synthetic": true,
+    "organizationId": "d3d622f8-968f-4276-b1cd-5cb6cfbd7f96",
+    "projectId": "eb852bb7-3c30-4e18-add6-87ff354ffac2",
+    "userId": "02856f96-8eef-4083-8e25-9a9d755fd82e",
+    "activityId": "99ca897b-3381-4524-87fd-07680d4fb8e5",
+    "requestId": "6651c25a-2dee-438e-a93f-21a684fa01d5"
+  },
+  "first": {
+    "replayed": false,
+    "project_id": "eb852bb7-3c30-4e18-add6-87ff354ffac2",
+    "request_id": "6651c25a-2dee-438e-a93f-21a684fa01d5",
+    "error_count": 0,
+    "excluded_count": 0,
+    "calculated_count": 1,
+    "operation_status": "completed",
+    "results_are_latest": true,
+    "pending_factor_count": 0,
+    "processed_activities": 1,
+    "input_matches_current": true,
+    "calculation_result_ids": [
+      "ffba7dc9-2e18-43e9-a080-660e9473c87f"
+    ]
+  },
+  "retry": {
+    "replayed": true,
+    "project_id": "eb852bb7-3c30-4e18-add6-87ff354ffac2",
+    "request_id": "6651c25a-2dee-438e-a93f-21a684fa01d5",
+    "error_count": 0,
+    "excluded_count": 0,
+    "calculated_count": 1,
+    "operation_status": "completed",
+    "results_are_latest": true,
+    "pending_factor_count": 0,
+    "processed_activities": 1,
+    "input_matches_current": true,
+    "calculation_result_ids": [
+      "ffba7dc9-2e18-43e9-a080-660e9473c87f"
+    ]
+  },
+  "lookup": {
+    "replayed": true,
+    "project_id": "eb852bb7-3c30-4e18-add6-87ff354ffac2",
+    "request_id": "6651c25a-2dee-438e-a93f-21a684fa01d5",
+    "error_count": 0,
+    "excluded_count": 0,
+    "calculated_count": 1,
+    "operation_status": "completed",
+    "results_are_latest": true,
+    "pending_factor_count": 0,
+    "processed_activities": 1,
+    "input_matches_current": true,
+    "calculation_result_ids": [
+      "ffba7dc9-2e18-43e9-a080-660e9473c87f"
+    ]
+  },
+  "actual_calculation_rows": [
+    {
+      "id": "ffba7dc9-2e18-43e9-a080-660e9473c87f",
+      "calc_version": 1,
+      "is_latest": true,
+      "status": "calculated",
+      "co2e_kg": 50,
+      "emission_activity_id": "99ca897b-3381-4524-87fd-07680d4fb8e5"
+    }
+  ],
+  "not_run": [
+    "real Supabase JWT/Deno",
+    "independent SQL connection lock waits",
+    "cloud migration/deploy/restore"
+  ],
+  "source_sha": "67e546fa6894303ccbff66d829d077b93c5fb8e2"
+}
