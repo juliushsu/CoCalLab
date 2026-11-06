@@ -78,3 +78,23 @@ Boundaries and remaining verification:
 - `enforce-subscription-status` runs its existing handler, including its normal audit/possible subscription writes, only on these dedicated fixtures. Loading it is not a finding that its public production authorization contract has been redesigned.
 
 Publication remains HOLD. These local results do not approve merge, production deployment, or traffic switching.
+
+## Manual-transcription scenario (M4 local candidate)
+
+Run `node backend/tools/product-preview/run.js --manual-transcription --port=4198` with the existing `PGLITE_RUNTIME_ROOT`. Default M1 4194 and showcase 4196 are unchanged. The separate UI may proxy 4199 to 4198; this tool does not start the UI or stop an existing service. `createProductRuntime({scenario:'manual-transcription',port:0})` creates the same fresh fixture for tests. Config `manifest.fixtures.a/b` provides scoped **SYNTHETIC** original/receipt IDs, readable synthetic PDF bytes, and the existing five synthetic role accounts. It seeds no draft, activity, calculation, or report.
+
+The actual `manual-transcription` handler accepts fixed organization/project/document/draft/request IDs plus explicit `transcription` fields; see `backend/src/contracts/manual-transcription.js`. Unknown actor/provider/status inputs are denied. Optional text uses null rather than an empty string; the source locator is mandatory. Quantity is a JSON number matching numeric(20,8), never a default zero; units/dates/Scope/inclusion are explicit. A known source period must fit the project, and no cross-period allocation is attempted. Source period may instead be two nulls.
+
+The incremental `202611060002_manual_transcription_v1.sql` writes only existing tables/JSON: server JWT actor/time and input in protected provenance, provider `MANUAL_TRANSCRIPTION_NO_OCR`, pending/unclassified draft, and audit. OCR remains pending. Same fixed IDs, actor and canonical input replay the saved row; changed intent or an existing document latest conflicts. The normal `confirm-draft` handler routes MANUAL to its service-only V2 transaction, locking source/draft and rechecking tenant/project/active membership/latest subscription/private original. Same-person transcription/review is allowed and recorded. Confirm uses immutable draft input, an explicit review note/request, and the real factor/calculation helpers; equal-ranked candidates remain `pending_factor`/NULL with an ambiguity warning rather than silently choosing one. No factor pinning is introduced.
+
+Authenticated clients cannot directly forge/update/delete MANUAL provenance, including under an additional permissive RLS policy. Two restrictive DELETE guards retain original/catalog and receipt rows once a protected MANUAL draft exists, even while pending with no activity. Trusted service maintenance keeps its prior authority. In this scenario only, the synthetic Storage DELETE endpoint executes actual SQL RLS and removes fixture bytes only for returned catalog rows; showcase remains read-only. This is **not** atomic Storage/database deletion or recovery; concurrent cross-service races remain M3 OPEN. Server byte/hash attestation and hash-unique poisoning also remain OPEN.
+
+Focused commands (fresh in-memory database, source migration chain, synthetic Auth/Storage adapter):
+
+```powershell
+node --test backend/tests/manual-transcription.test.js
+node --test backend/tests/integration/manual-transcription-sql.test.js
+node --test backend/tests/integration/manual-transcription-http.test.js
+```
+
+Evidence scope: contract 4 cases; SQL 8 cases; HTTP 8 cases. Coverage includes create/replay, direct-role forgery with permissive-policy drift, tenant/role denials, canonical conflicts, same-document/concurrent confirmation, committed-response loss recovery, true SQL rollback after activity insertion, stale drafts, latest readonly/suspended/canceled versus old active subscriptions, expired/grace enforcement, pending-factor/ambiguity NULL, and pending source retention plus legitimate unprotected deletion. These are local source tests, not real Auth/JWT/Storage/Deno UAT, historical-data attestation, cloud migration approval, or a production release. No cloud resource or existing database is modified.

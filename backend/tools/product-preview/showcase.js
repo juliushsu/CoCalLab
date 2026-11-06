@@ -1,7 +1,7 @@
 // SYNTHETIC showcase initialization only. Business writes use HTTP/product handlers.
 import {createHash,randomUUID} from 'node:crypto';
 
-function syntheticPdf(label){
+export function syntheticPdf(label){
   const content=`BT /F1 15 Tf 40 760 Td (SYNTHETIC LOCAL SHOWCASE ONLY) Tj 0 -30 Td (${label}) Tj 0 -30 Td (Not an invoice. OCR pending. No real company data.) Tj ET`;
   const objects=['<< /Type /Catalog /Pages 2 0 R >>','<< /Type /Pages /Kids [3 0 R] /Count 1 >>','<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',`<< /Length ${Buffer.byteLength(content)} >>\nstream\n${content}\nendstream`];
   let pdf='%PDF-1.4\n',offsets=[0];for(let i=0;i<objects.length;i++){offsets.push(Buffer.byteLength(pdf));pdf+=`${i+1} 0 obj\n${objects[i]}\nendobj\n`;}

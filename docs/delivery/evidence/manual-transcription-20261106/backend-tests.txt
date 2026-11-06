@@ -1,0 +1,29 @@
+✔ handler SQL response normalization preserves fully eligible zero disallowed (0.8648ms)
+✔ handler SQL response normalization retains partial and fully disallowed outcomes (1.5282ms)
+✔ handler SQL response normalization rejects missing, invalid and inconsistent data (0.3843ms)
+✔ normalize_extracted_document_draft should normalize basic OCR payload (1.6932ms)
+✔ classify_document_draft should classify electricity bill to scope 2 (0.2705ms)
+✔ resolve_emission_factor should resolve best matching factor (0.6352ms)
+✔ calculate_emission_activity should return pending when factor does not exist (0.4097ms)
+✔ recalculate_project should aggregate calculation counters (0.3356ms)
+✔ build_report_payload should include required summary sections (0.8255ms)
+✔ run_ai_audit should produce structured audit output (0.495ms)
+✔ enforce_subscription_readonly should switch to readonly after grace period (0.2903ms)
+✔ manual contract keeps explicit valid zero/unit/date/source and rejects missing/defaulted/actor/provider input (2.8814ms)
+✔ equal-ranked eligible factors stay pending with a clear ambiguity warning and NULL amount (0.7843ms)
+✔ manual contract refuses invalid/partial/crossed periods and unsupported units, included unknown Scope or excluded reason (0.4788ms)
+✔ manual confirmation permits review note but refuses changed canonical fields or forged provider/actor (0.9546ms)
+✔ mock OCR provider should return provider/model/raw payload (1.0809ms)
+✔ mock LLM provider should classify and audit with stable shape (0.7237ms)
+✔ contracts should allow provider-driven requests without raw payload in request body (0.3834ms)
+✔ generate-report contract should validate claim_purpose enum (0.4906ms)
+✔ generate-report contract should accept Report Center payload shape (0.2198ms)
+✔ formal report payload refuses missing/pending/error/duplicate latest and invalid totals rather than manufacturing zero (2.7812ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 129.7916

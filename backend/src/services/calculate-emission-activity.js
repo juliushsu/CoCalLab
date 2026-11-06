@@ -76,7 +76,7 @@ export function calculate_emission_activity({ activity, factors, formula_version
       },
       formula_version,
       warnings,
-      error_code: 'FACTOR_NOT_FOUND',
+      error_code: resolved.error_code || 'FACTOR_NOT_FOUND',
       calculated_at: new Date().toISOString(),
     };
   }
