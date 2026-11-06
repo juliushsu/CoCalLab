@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import {resolveNavigationScope} from '../../../services/navigationScope';
@@ -15,6 +15,10 @@ import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ApiResponse } from '../../../services/types';
 import type { ReportVersion, ReportSection, ReportStatistics } from '../../../types/report';
 import { getReportData } from '../../../services/reportService';
+import {reportExportPreflight,exportCurrentSnapshot,saveReportFile} from '../../../services/reportDownload';
+import {readAuthorizedReportSnapshot} from '../../../services/reportExportRead';
+import {getSupabaseClient} from '../../../lib/supabase';
+import {useAuth} from '../../../hooks/useAuth';
 import ReportOutlinePanel from './components/ReportOutlinePanel';
 
 // Generate Report Response Type
@@ -54,6 +58,8 @@ export default function ReportPreviewPage() {
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [editContent, setEditContent] = useState('');
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [exporting,setExporting]=useState(false),[exportNotice,setExportNotice]=useState('');
+  const {authEpoch,user,isAuthenticationCurrent}=useAuth();
 
   // Generate Report States
   const [isGenerating, setIsGenerating] = useState(false);
@@ -69,8 +75,12 @@ export default function ReportPreviewPage() {
   const organizationId='organizationId' in scope?scope.organizationId:undefined;
   const projectId='projectId' in scope?scope.projectId:undefined;
   const invalidScope=scope.kind==='invalid';
-  const { status, isReadonly, reason, loading: statusLoading } = useSubscriptionStatus(organizationId);
+  const { status, isReadonly, reason, loading: statusLoading, error:subscriptionError } = useSubscriptionStatus(organizationId);
 
+  const exportBlock=reportExportPreflight({loading:statusLoading,error:subscriptionError,isReadonly});
+  const exportContext=useMemo(()=>({authEpoch,user:user?.id,reportId,organizationId,projectId,exportBlock}),[authEpoch,user?.id,reportId,organizationId,projectId,exportBlock]);
+  const currentExport=useRef<typeof exportContext|null>(exportContext);currentExport.current=exportContext;
+  useLayoutEffect(()=>{currentExport.current=exportContext;return()=>{if(currentExport.current===exportContext)currentExport.current=null;};},[exportContext]);
   const loadSequence = useRef(0);
   const loadReportData = useCallback(async () => {
     const sequence = ++loadSequence.current;
@@ -277,24 +287,16 @@ export default function ReportPreviewPage() {
     }
   };
 
-  const handleExportReport = async (format: 'pdf' | 'docx' | 'html') => {
-    if (isReadonly) {
-      alert(t('subscription.readonlyBanner.message'));
-      setExportDialogOpen(false);
-      return;
-    }
-
-    try {
-      // TODO: 呼叫 Edge Function 匯出報告（等 Edge Function 部署後啟用）
-      // const { data } = await supabase.functions.invoke('export-report', {
-      //   body: { report_version_id: reportId, format },
-      // });
-      
-      console.log('Exporting report as:', format);
-      setExportDialogOpen(false);
-    } catch (err) {
-      console.error('Failed to export report:', err);
-    }
+  const handleExportReport = async (format:'html'|'json') => {
+    if(exporting||exportBlock||!reportId||!projectId||!organizationId||!user)return;
+    const captured=exportContext;
+    const isCurrent=()=>currentExport.current===captured&&isAuthenticationCurrent(captured.authEpoch,captured.user||'')&&!captured.exportBlock;
+    setExporting(true);setExportNotice('正在向伺服器確認匯出權限與保存快照…');
+    try{
+      const requested=await exportCurrentSnapshot(()=>readAuthorizedReportSnapshot(getSupabaseClient(),reportId,projectId,organizationId),format,isCurrent,saveReportFile);
+      if(isCurrent()){setExportNotice(requested?'已向瀏覽器提出下載請求；請核對實際檔案，未宣稱作業系統已存檔。':'操作範圍已變更，未下載。');setExportDialogOpen(false);}
+    }catch(error){if(isCurrent())setExportNotice(error instanceof Error?error.message:'匯出失敗，未產生檔案。');}
+    finally{if(isCurrent())setExporting(false);}
   };
 
   if (loading) {
@@ -348,7 +350,7 @@ export default function ReportPreviewPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setExportDialogOpen(true)}
-              disabled={isReadonly}
+              disabled={exporting||Boolean(exportBlock)||!organizationId||!projectId||report.report_status!=='completed'}
               className="px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
             >
               <i className="ri-download-line mr-2"></i>
@@ -475,6 +477,7 @@ export default function ReportPreviewPage() {
 
         {!statistics && <p className="text-sm text-gray-500">{t('reports.snapshot.statisticsUnknown', '此報告未提供完整排放統計，無法顯示總量。')}</p>}
 
+        <p role="status" className="mb-4 rounded bg-amber-50 p-3 text-sm">{exportNotice||exportBlock||'HTML／JSON每次由服務端核對權限並重讀保存快照；PDF／Word尚未提供。'}</p>
         <ReportOutlinePanel snapshot={report.saved_snapshot} />
 
         {/* Sections */}
@@ -576,32 +579,9 @@ export default function ReportPreviewPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     {t('reports.exportDialog.selectFormat')}
                   </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    <button
-                      onClick={() => handleExportReport('pdf')}
-                      disabled={isReadonly}
-                      className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <i className="ri-file-pdf-line text-2xl text-red-600 mb-1"></i>
-                      <p className="text-sm font-medium text-gray-900">PDF</p>
-                    </button>
-                    <button
-                      onClick={() => handleExportReport('docx')}
-                      disabled={isReadonly}
-                      className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <i className="ri-file-word-line text-2xl text-blue-600 mb-1"></i>
-                      <p className="text-sm font-medium text-gray-900">Word</p>
-                    </button>
-                    <button
-                      onClick={() => handleExportReport('html')}
-                      disabled={isReadonly}
-                      className="px-4 py-3 text-center border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                    >
-                      <i className="ri-file-code-line text-2xl text-orange-600 mb-1"></i>
-                      <p className="text-sm font-medium text-gray-900">HTML</p>
-                    </button>
-                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(['html','json'] as const).map(format=><button key={format} onClick={()=>void handleExportReport(format)} disabled={exporting||Boolean(exportBlock)} className="rounded border px-4 py-3 disabled:opacity-50">下載 {format.toUpperCase()}</button>)}
+                  </div><p className="mt-3 text-sm">PDF／Word尚未提供。檔案依保存快照產生，不代表正式查驗報告。</p><p role="status">{exportNotice||exportBlock}</p>
                 </div>
               </div>
               <div className="mt-6 flex justify-end gap-3">

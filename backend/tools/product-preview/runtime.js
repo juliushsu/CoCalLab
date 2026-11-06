@@ -1,10 +1,11 @@
 // LOCAL SYNTHETIC PRODUCT ADAPTER ONLY. Production app/build must not import this.
 import { Worker } from 'node:worker_threads';
 
-export async function createProductRuntime({ port = 4194, withFactor = true, scenario = 'manual' } = {}) {
+export async function createProductRuntime({ port = 4194, withFactor = true, scenario = 'manual', exportPolicy = 'tenant_write_v1' } = {}) {
+  if(exportPolicy!==null&&exportPolicy!=='tenant_write_v1')throw new Error('Unknown synthetic export policy');
   if(!['manual','showcase'].includes(scenario))throw new Error('Unknown local product scenario');
   if(!Number.isInteger(port)||port<0||port>65535)throw new Error('Invalid local product port');
-  const worker = new Worker(new URL('./worker.js', import.meta.url), { workerData: { port, withFactor, scenario }, execArgv: [] });
+  const worker = new Worker(new URL('./worker.js', import.meta.url), { workerData: { port, withFactor, scenario, exportPolicy }, execArgv: [] });
   let sequence = 0, ended = false;
   const pending = new Map();
   let readyResolve, readyReject;
