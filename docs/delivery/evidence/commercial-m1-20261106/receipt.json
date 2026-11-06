@@ -1,0 +1,22 @@
+{
+  "sourceSha": "18c0894cf9da42eb341ce5835ba36fdc3a7bedc9",
+  "environment": "CoCalLab-PRODUCT-LOCAL-01",
+  "ui": "http://127.0.0.1:4195",
+  "api": "http://127.0.0.1:4194",
+  "synthetic": true,
+  "reportUrl": "http://127.0.0.1:4195/admin/reports/151ce24c-efd8-43ad-a14f-68c0bad54e84?organization_id=6849e92b-e850-44c5-b4d2-3b7b085bf517&project_id=71eaa32c-a4a6-49e8-a8fb-fa41273f4f77",
+  "quantity": 100,
+  "unit": "kWh",
+  "factor": 0.5,
+  "factorSource": "SYNTHETIC TEST ONLY",
+  "factorVersion": 1,
+  "resultKg": 50,
+  "resultTonnes": 0.05,
+  "actualActivityDate": "2026-11-06",
+  "notRun": [
+    "real Supabase Auth/JWT/Storage",
+    "native download",
+    "cloud migration/restore",
+    "commercial acceptance"
+  ]
+}

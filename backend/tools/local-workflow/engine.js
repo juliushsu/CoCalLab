@@ -82,6 +82,8 @@ export async function createLocalWorkflow({fault=async()=>{}}={}) {
       const source=await readFile(new URL(file,directory),'utf8');await db.exec(source);migrations.push({file,sha256:hash(source)});
     }
     await db.exec('grant select,insert,update,delete on all tables in schema public,storage to authenticated,anon,service_role');
+    // Test catalog grants must not override the operational ledger migration ACL.
+    await db.exec('revoke all on report_snapshot_requests_v2 from authenticated,anon');
     await insert('organizations',{id:scope.organizationId,slug:'synthetic-local-'+scope.organizationId,legal_name:'SYNTHETIC LOCAL ONLY',display_name:'SYNTHETIC LOCAL ONLY'});
     await insert('organization_members',{organization_id:scope.organizationId,user_id:scope.userId,role:'editor',status:'active'});
     await insert('subscriptions',{organization_id:scope.organizationId,plan_code:'SYNTHETIC',status:'active',period_start:'2020-01-01',period_end:'2099-01-01'});

@@ -17,12 +17,13 @@ jobs:
           cache-dependency-path: frontend/readdy-app/package-lock.json
       - run: npm test
         working-directory: backend
+      # Product HTTP tests use the same installed SDK as the frontend.
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: frontend/readdy-app
       - name: Install isolated PostgreSQL test runtime
         run: npm install --prefix "$RUNNER_TEMP/cocallab-sql-runtime" @electric-sql/pglite@0.5.13 --ignore-scripts --no-audit --no-fund
       - name: Verify tenant policies in isolated PostgreSQL
         run: PGLITE_RUNTIME_ROOT="$RUNNER_TEMP/cocallab-sql-runtime" node --test --test-concurrency=1 backend/tests/integration/*.test.js
-      - run: npm ci --ignore-scripts --no-audit --no-fund
-        working-directory: frontend/readdy-app
       - run: npm test
         working-directory: frontend/readdy-app
       - run: npm run type-check

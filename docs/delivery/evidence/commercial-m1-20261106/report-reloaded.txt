@@ -1,0 +1,66 @@
+- status:
+  - text: SYNTHETIC 本機產品流程 · 原App人工建檔→正式計算／報告handler→隔離SQL保存；不是雲端Supabase驗收。登入owner@product-preview.invalid／測試密碼synthetic-local-only。0.5係數全合成，非正式預設。重啟API會建立全新測試資料庫。
+  - link "人工活動／計算／報告":
+    - /url: /admin/activities
+  - text: ·
+  - link "報告歷史":
+    - /url: /admin/reports/history
+  - text: ·
+  - link "登入":
+    - /url: /login
+- alert
+- generic: ⚠ STAGING ENVIRONMENT — Test environment, data will not enter production
+- generic: TEST MODE
+- banner:
+  - generic: CC
+  - heading "CoCalLab" [level=1]
+  - generic: TEST MODE
+  - button "繁中"
+  - button "EN"
+  - button "日本語"
+  - generic: owner@product-preview.invalid
+  - generic: Owner
+  - button "Sign Out":
+    - generic: Sign Out
+- complementary:
+  - navigation:
+    - generic: "Environment: staging"
+    - button "Workspace":
+      - generic: Workspace
+    - button "Carbon Inventory":
+      - generic: Carbon Inventory
+    - button "Reporting":
+      - generic: Reporting
+    - button "Methodology":
+      - generic: Methodology
+    - button "Product & Supply Chain":
+      - generic: Product & Supply Chain
+- main:
+  - generic: Beta Notice
+  - paragraph: Reports are for internal testing and inventory workflow validation only. Human review is required before official filing or verification. Reporting entity and site details will be displayed in the next phase.
+  - button "Back to report history": Back to report history
+  - heading "Report Preview" [level=1]
+  - paragraph
+  - button "Export Report": Export Report
+  - text: Version
+  - paragraph: v1
+  - text: Status
+  - generic: Completed
+  - text: Generated At
+  - paragraph: 2026/11/6 下午2:58:30
+  - text: Sections
+  - paragraph: This report has no section content yet
+  - heading "Emission Statistics" [level=2]
+  - paragraph: Total Emissions
+  - paragraph: "0.05"
+  - paragraph: tCO₂e
+  - paragraph: Scope 1 Emissions
+  - paragraph: "0.00"
+  - paragraph: tCO₂e
+  - paragraph: Scope 2 Emissions
+  - paragraph: "0.05"
+  - paragraph: tCO₂e
+  - paragraph: Scope 3 Emissions
+  - paragraph: "0.00"
+  - paragraph: tCO₂e
+  - heading "This report has no section content yet" [level=3]

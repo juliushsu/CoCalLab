@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import {saveManualActivity,manualContext,type ManualInput} from '@/services/manualWorkflow';
+import {activityReference,clearManualReference} from '@/services/manualRecovery';
 import { useTranslation } from 'react-i18next';
 import { getSupabaseClient } from '@/lib/supabase';
 import { IS_STAGING } from '@/utils/staging';
@@ -6,11 +8,14 @@ import { getSuggestedScope } from '@/utils/categoryScope';
 
 interface CreateActivityModalProps {
   projectId?: string;
+  organizationId?: string;
+  userId: string;
+  isCurrent: () => boolean;
   onClose: () => void;
   onCreated: () => void;
 }
 
-interface FormData {
+interface FormData extends ManualInput {
   activity_name: string;
   category: string;
   final_scope: string;
@@ -34,11 +39,14 @@ const CATEGORY_OPTIONS = [
   'other',
 ];
 
-export default function CreateActivityModal({ projectId, onClose, onCreated }: CreateActivityModalProps) {
+export default function CreateActivityModal({ projectId, organizationId, userId, isCurrent, onClose, onCreated }: CreateActivityModalProps) {
   const { t } = useTranslation();
 
   const [form, setForm] = useState<FormData>({
     activity_name: '',
+    activity_type: '',
+    inclusion_status: 'pending',
+    exclusion_reason: '',
     category: '',
     final_scope: '',
     quantity: '',
@@ -47,6 +55,23 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
     notes: '',
   });
 
+  const [attemptId,setAttemptId] = useState('');
+  const [restoring,setRestoring] = useState(true);
+  useEffect(()=>{
+    let mounted=true;
+    void(async()=>{try{
+      if(!projectId||!organizationId)throw new Error('請先選擇組織與專案。');
+      const scope={organizationId,projectId},id=activityReference(sessionStorage,scope,userId);
+      await manualContext(getSupabaseClient(),scope,userId,isCurrent);
+      const r=await getSupabaseClient().from('emission_activities').select('*').eq('id',id).eq('organization_id',organizationId).eq('project_id',projectId).maybeSingle();
+      if(!mounted||!isCurrent())return;
+      if(r.error)throw new Error('無法核對先前的建檔識別，未開始新的建檔。');
+      setAttemptId(id);
+      if(r.data){const row=r.data;setForm({activity_name:row.activity_name,category:row.category,activity_type:row.activity_type,quantity:String(row.quantity),unit:row.unit,activity_date:row.activity_date,notes:row.review_note??'',final_scope:row.final_scope===null?'':String(row.final_scope),inclusion_status:row.inclusion_status,exclusion_reason:row.exclusion_reason??''});}
+    }catch(cause){if(mounted&&isCurrent())setError(cause instanceof Error?cause.message:'恢復建檔參考失敗。');}
+    finally{if(mounted&&isCurrent())setRestoring(false);}})();
+    return()=>{mounted=false;};
+  },[projectId,organizationId,userId,isCurrent]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Track whether user has manually overridden the auto-suggested scope
@@ -105,79 +130,16 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
     setError(null);
 
     try {
-      const supabase = getSupabaseClient();
-
-      // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error(t('errors.unauthorized'));
-
-      // Get org id from project if projectId provided
-      let organizationId: string | null = null;
-      if (projectId) {
-        const { data: proj } = await supabase
-          .from('projects')
-          .select('organization_id')
-          .eq('id', projectId)
-          .maybeSingle();
-        organizationId = proj?.organization_id ?? null;
-      }
-
-      if (!organizationId) {
-        // fallback: get first org for user
-        const { data: member } = await supabase
-          .from('organization_members')
-          .select('organization_id')
-          .eq('user_id', user.id)
-          .maybeSingle();
-        organizationId = member?.organization_id ?? null;
-      }
-
-      if (!organizationId) throw new Error(t('documents.orgNotFound'));
-
-      const activityName = IS_STAGING
-        ? `[TEST] ${form.activity_name.trim()}`
-        : form.activity_name.trim();
-
-      const payload: Record<string, any> = {
-        organization_id: organizationId,
-        activity_name: activityName,
-        activity_date: form.activity_date,
-        category: form.category || 'unclassified',
-        activity_type: 'manual',
-        activity_code: `MANUAL-${Date.now()}`,
-        quantity: form.quantity ? Number(form.quantity) : 0,
-        unit: form.unit || '-',
-        data_quality: 'primary',
-        inclusion_status: 'pending',
-        status: 'active',
-        created_by_user_id: user.id,
-      };
-
-      if (form.final_scope) {
-        payload.final_scope = Number(form.final_scope);
-        payload.suggested_scope = Number(form.final_scope);
-      }
-
-      if (form.notes.trim()) {
-        payload.review_note = form.notes.trim();
-      }
-
-      if (projectId) {
-        payload.project_id = projectId;
-      }
-
-      const { error: insertError } = await supabase
-        .from('emission_activities')
-        .insert(payload);
-
-      if (insertError) throw insertError;
-
+      if (!projectId || !organizationId) throw new Error('請先選擇明確組織與專案。');
+      await saveManualActivity(getSupabaseClient(),{organizationId,projectId},userId,attemptId,{...form,activity_name:IS_STAGING&&!form.activity_name.trim().startsWith('[TEST]')?'[TEST] '+form.activity_name.trim():form.activity_name},isCurrent);
+      if (!isCurrent()) return;
+      clearManualReference(sessionStorage,{organizationId,projectId},userId,'activity',attemptId);
       onCreated();
     } catch (err: any) {
       console.error('Create activity failed:', err);
-      setError(err.message || t('errors.generic'));
+      if(isCurrent()) setError(err.message || t('errors.generic'));
     } finally {
-      setSubmitting(false);
+      if(isCurrent()) setSubmitting(false);
     }
   };
 
@@ -210,7 +172,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={onClose} disabled={submitting} aria-label={t('common.close')}
             className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 cursor-pointer"
           >
             <i className="ri-close-line text-lg"></i>
@@ -228,7 +190,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
         {/* Pending write API notice */}
         <div className="mx-6 mt-4 flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
           <i className="ri-information-line text-blue-500 text-sm flex-shrink-0"></i>
-          <p className="text-xs text-blue-700">{t('activities.create.pendingWriteNotice')}</p>
+          <p className="text-xs text-blue-700">人工輸入直接保存為活動；需明確確認納入狀態與 Scope。係數由後端按活動類型、單位與日期解析，來源及版本保存於計算明細。識別：{attemptId}</p>
         </div>
 
         {/* Form */}
@@ -245,7 +207,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
               onChange={e => handleChange('activity_name', e.target.value)}
               placeholder={t('activities.create.placeholders.name')}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              disabled={submitting}
+              disabled={submitting||restoring||!attemptId}
             />
           </div>
 
@@ -259,7 +221,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
                 value={form.category}
                 onChange={e => handleChange('category', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                disabled={submitting}
+                disabled={submitting||restoring||!attemptId}
               >
                 <option value="">{t('activities.create.placeholders.selectCategory')}</option>
                 {CATEGORY_OPTIONS.map(cat => (
@@ -293,7 +255,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
                     ? 'border-orange-300 bg-orange-50/20'
                     : 'border-gray-300'
                 }`}
-                disabled={submitting}
+                disabled={submitting||restoring||!attemptId}
               >
                 <option value="">{t('activities.create.placeholders.selectScope')}</option>
                 {SCOPE_OPTIONS.map(s => (
@@ -318,6 +280,9 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
             </div>
           </div>
 
+          <div><label className="block text-sm">活動類型（係數匹配鍵，例如 electricity）<input aria-label="活動類型" value={form.activity_type} onChange={e=>handleChange('activity_type',e.target.value)} disabled={submitting||restoring||!attemptId} required className="block w-full border rounded p-2"/></label></div>
+          <div><label className="block text-sm">納入狀態<select aria-label="納入狀態" value={form.inclusion_status} onChange={e=>handleChange('inclusion_status',e.target.value)} disabled={submitting||restoring||!attemptId} className="block w-full border rounded p-2"><option value="pending">待確認</option><option value="included">已人工確認納入</option><option value="excluded">排除</option></select></label><p className="text-xs">大類 Scope 建議僅供參考；請依實際活動與邊界明確確認，不能將所有 energy 視為購入電力。</p></div>
+          {form.inclusion_status==='excluded'&&<label className="block text-sm">排除原因<input aria-label="排除原因" required value={form.exclusion_reason} disabled={submitting||restoring||!attemptId} onChange={e=>handleChange('exclusion_reason',e.target.value)} className="block w-full border rounded p-2"/></label>}
           {/* Quantity + Unit row */}
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -332,7 +297,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
                 onChange={e => handleChange('quantity', e.target.value)}
                 placeholder="0"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                disabled={submitting}
+                disabled={submitting||restoring||!attemptId}
               />
             </div>
             <div>
@@ -345,7 +310,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
                 onChange={e => handleChange('unit', e.target.value)}
                 placeholder={t('activities.create.placeholders.unit')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                disabled={submitting}
+                disabled={submitting||restoring||!attemptId}
               />
             </div>
           </div>
@@ -361,7 +326,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
               value={form.activity_date}
               onChange={e => handleChange('activity_date', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-              disabled={submitting}
+              disabled={submitting||restoring||!attemptId}
             />
           </div>
 
@@ -378,11 +343,12 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
               rows={2}
               maxLength={500}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent resize-none"
-              disabled={submitting}
+              disabled={submitting||restoring||!attemptId}
             />
             <p className="text-xs text-gray-400 text-right mt-0.5">{form.notes.length}/500</p>
           </div>
 
+          <p className="text-xs">重新開啟可核對同一使用者／專案的建檔識別。關閉視窗不會撤回已送出的伺服器寫入。{restoring?'正在核對…':''}</p>
           {/* Error */}
           {error && (
             <div className="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg">
@@ -403,7 +369,7 @@ export default function CreateActivityModal({ projectId, onClose, onCreated }: C
             </button>
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting||restoring||!attemptId}
               className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors whitespace-nowrap cursor-pointer disabled:opacity-50 flex items-center gap-2"
             >
               {submitting && <i className="ri-loader-4-line animate-spin"></i>}

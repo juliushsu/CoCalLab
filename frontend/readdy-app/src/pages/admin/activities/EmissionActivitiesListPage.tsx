@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, useLayoutEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AdminLayout from '../../../components/layout/AdminLayout';
@@ -10,7 +10,11 @@ import EmptyState from '../../../components/base/EmptyState';
 import ErrorState from '../../../components/base/ErrorState';
 import CreateActivityModal from './components/CreateActivityModal';
 import { useSubscriptionStatus } from '../../../hooks/useSubscriptionStatus';
-import { getEmissionActivities } from '../../../services/activityService';
+import {manualProjects,readManualActivities,calculateManualProject,nextManualReport,saveManualReport,type ManualProject,type ReportAttempt} from '../../../services/manualWorkflow';
+import {reportReference,saveReportReference,clearManualReference} from '../../../services/manualRecovery';
+import {resolveNavigationScope} from '../../../services/navigationScope';
+import {useAuth} from '../../../hooks/useAuth';
+import {useTenantNavigation} from '../../../hooks/useTenantNavigation';
 import { getSupabaseClient } from '../../../lib/supabase';
 import { IS_STAGING } from '../../../utils/staging';
 import { inferBadgeType } from '../../../types/dataOrigin';
@@ -21,11 +25,23 @@ export default function EmissionActivitiesListPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const projectId = searchParams.get('projectId') || undefined;
-  const organizationId = searchParams.get('organizationId') || undefined;
-
-  const { isReadonly } = useSubscriptionStatus(organizationId);
-
+  const search=searchParams.toString();
+  const selection=useMemo(()=>resolveNavigationScope('/admin/activities','?'+search),[search]);
+  const projectId='projectId' in selection?selection.projectId:undefined;
+  const selectedOrg='organizationId' in selection?selection.organizationId:undefined;
+  const {session,authEpoch,loading:authLoading,isAuthenticationCurrent}=useAuth();
+  const userId=session?.user.id??'';
+  const context=useMemo(()=>({search,userId,authEpoch}),[search,userId,authEpoch]);
+  const current=useRef<typeof context|null>(context);
+  const isCurrent=useCallback(()=>current.current===context&&isAuthenticationCurrent(context.authEpoch,context.userId),[context,isAuthenticationCurrent]);
+  const [projects,setProjects]=useState<ManualProject[]>([]),[organizationId,setOrganizationId]=useState<string|undefined>();
+  const [loaded,setLoaded]=useState<typeof context|null>(null);
+  const subscription=useSubscriptionStatus(loaded===context?organizationId:undefined,{failClosed:true,scopeKey:context});
+  const navigation=useTenantNavigation();
+  const isReadonly=subscription.isReadonly||subscription.loading||Boolean(subscription.error)||!['owner','admin','editor'].includes(navigation.role??'');
+  const reportAttempt=useRef<ReportAttempt|null>(null);
+  const [working,setWorking]=useState(false),[operationMessage,setOperationMessage]=useState(''),[savedReport,setSavedReport]=useState<string|null>(null);
+  useLayoutEffect(()=>{current.current=context;reportAttempt.current=null;setOperationMessage('');setSavedReport(null);setWorking(false);return()=>{if(current.current===context)current.current=null;};},[context]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activities, setActivities] = useState<EmissionActivity[]>([]);
@@ -39,24 +55,40 @@ export default function EmissionActivitiesListPage() {
   );
 
   const loadData = useCallback(async () => {
+    if(authLoading)return;
     try {
-      setLoading(true);
-      setError(null);
-      const data = await getEmissionActivities(projectId);
-      setActivities(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t('common.errors.load_failed'));
-    } finally {
-      setLoading(false);
-    }
-  }, [projectId, t]);
-
-  useEffect(() => {
-    void loadData();
-  }, [loadData]);
-
+      setLoading(true);setError(null);
+      if(selection.kind==='invalid')throw new Error('組織或專案網址不一致。');
+      const options=await manualProjects(getSupabaseClient(),userId,isCurrent,selectedOrg);
+      const project=projectId?options.find(row=>row.id===projectId):undefined;
+      if(projectId&&!project)throw new Error('專案不可存取。');
+      const data=project?await readManualActivities(getSupabaseClient(),{organizationId:project.organization_id,projectId:project.id},userId,isCurrent):(await Promise.all(options.map(row=>readManualActivities(getSupabaseClient(),{organizationId:row.organization_id,projectId:row.id},userId,isCurrent)))).flat();
+      if(!isCurrent())return;setProjects(options);setOrganizationId(project?.organization_id??selectedOrg);setActivities(data);
+    } catch (err) {if(isCurrent()){setActivities([]);setError(err instanceof Error?err.message:t('common.errors.load_failed'));}}
+    finally {if(isCurrent()){setLoading(false);setLoaded(context);}}
+  },[authLoading,context,isCurrent,projectId,selectedOrg,selection,userId,t]);
+  useEffect(()=>{void loadData();},[loadData]);
+  const run=async(kind:'calculate'|'report')=>{
+    if(!projectId||!organizationId||!isCurrent()||working||isReadonly)return;
+    const scope={projectId,organizationId};setWorking(true);setOperationMessage('');
+    try{
+      if(kind==='calculate'){
+        if(reportReference(sessionStorage,scope,userId))throw new Error('此專案有尚未核對的報告請求；請先按保存報告快照／重試恢復，或明確放棄本機參考，再執行新計算。');
+        const result=await calculateManualProject(getSupabaseClient(),scope,userId,crypto.randomUUID(),isCurrent);
+        if(!isCurrent())return;reportAttempt.current=null;setSavedReport(null);
+        setOperationMessage('計算已保存：'+result.calculated_count+'筆已計算、'+result.pending_factor_count+'筆待補係數、'+result.error_count+'筆錯誤；待補不是零。請查看活動明細確認係數來源與版本。');
+      }else{
+        reportAttempt.current??=reportReference(sessionStorage,scope,userId)??await nextManualReport(getSupabaseClient(),scope,userId,isCurrent);
+        saveReportReference(sessionStorage,scope,userId,reportAttempt.current);
+        const result=await saveManualReport(getSupabaseClient(),scope,userId,reportAttempt.current,isCurrent);
+        if(!isCurrent())return;clearManualReference(sessionStorage,scope,userId,'report',reportAttempt.current.requestId);setSavedReport(result.id);reportAttempt.current=null;
+        setOperationMessage('報告快照已保存並重讀核對：'+result.gross_emissions_snapshot.gross_total_co2e_kg+' kgCO₂e = '+(result.gross_emissions_snapshot.gross_total_co2e_kg/1000)+' tCO₂e。');
+      }
+    }catch(cause){if(isCurrent())setOperationMessage(cause instanceof Error?cause.message:'操作未確認，請重讀後核對。');}
+    finally{if(isCurrent())setWorking(false);}
+  };
   const handleOpenCreate = () => {
-    if (isReadonly) return;
+    if (isReadonly || !projectId) return;
     setShowCreateModal(true);
   };
 
@@ -91,29 +123,11 @@ export default function EmissionActivitiesListPage() {
     setFilterInclusion('');
   };
 
-  const handleViewDetail = (id: string) => {
-    navigate(`/admin/activities/${id}`);
+  const handleViewDetail = (activity: EmissionActivity) => {
+    navigate(`/admin/activities/${activity.id}?`+new URLSearchParams({organization_id:activity.organization_id!,project_id:activity.project_id}));
   };
 
-  const handleViewSourceDocument = async (documentId: string) => {
-    try {
-      const supabase = getSupabaseClient();
-      const { data: doc } = await supabase
-        .from('uploaded_documents')
-        .select('original_filename, storage_path, storage_bucket')
-        .eq('id', documentId)
-        .maybeSingle();
-
-      if (doc) {
-        alert(`${t('activities.fields.source_document')}\n\n${t('documents.fields.file_name')}: ${doc.original_filename}\n${t('documents.fields.status')}: ${doc.storage_path ? t('documents.status.completed') : t('documents.status.pending')}`);
-      } else {
-        alert(t('activities.detail_page.no_source_document'));
-      }
-    } catch (err) {
-      console.error('Failed to load source document:', err);
-      alert(t('common.errors.load_failed'));
-    }
-  };
+  const handleViewSourceDocument = (activity:EmissionActivity) => {navigate('/admin/documents/list?'+new URLSearchParams({organization_id:activity.organization_id!,projectId:activity.project_id,document:activity.source_document_id!}));};
 
   /** 從 activity 推導 DataOriginMeta（等 Codex 定義欄位後直接 map） */
   const getActivityOriginMeta = (activity: EmissionActivity): DataOriginMeta | undefined => {
@@ -165,7 +179,7 @@ export default function EmissionActivitiesListPage() {
     return map[status] || 'bg-gray-100 text-gray-800';
   };
 
-  if (loading) {
+  if (loading || loaded!==context) {
     return (
       <AdminLayout>
         <LoadingState message={t('activities.loading_message')} />
@@ -184,15 +198,18 @@ export default function EmissionActivitiesListPage() {
   return (
     <AdminLayout>
       {/* Create Activity Modal */}
-      {showCreateModal && (
+      {showCreateModal && projectId && organizationId && !isReadonly && (
         <CreateActivityModal
           projectId={projectId}
+          organizationId={organizationId}
+          userId={userId}
+          isCurrent={isCurrent}
           onClose={handleCloseCreate}
           onCreated={handleCreated}
         />
       )}
 
-      {isReadonly && <ReadonlyBanner />}
+      {isReadonly && projectId && <ReadonlyBanner />}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
@@ -206,14 +223,14 @@ export default function EmissionActivitiesListPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={handleOpenCreate}
-              disabled={isReadonly}
+              disabled={isReadonly||!projectId||working}
               className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer flex items-center gap-2"
             >
               <i className="ri-add-line"></i>
               {t('activities.create_button')}
             </button>
             <button
-              onClick={() => navigate('/admin/documents/upload')}
+              onClick={() => navigate('/admin/documents/upload?'+new URLSearchParams({organization_id:organizationId??'',project_id:projectId??''}))}
               disabled={isReadonly}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap cursor-pointer"
             >
@@ -223,6 +240,15 @@ export default function EmissionActivitiesListPage() {
           </div>
         </div>
 
+        <div className="mb-4 flex flex-wrap gap-3 items-center"><label>目前專案<select aria-label="目前專案" value={projectId??''} onChange={e=>{const project=projects.find(row=>row.id===e.target.value);current.current=null;setShowCreateModal(false);setSearchParams(project?{organization_id:project.organization_id,projectId:project.id}:{});}} className="ml-2 rounded border p-2"><option value="">全部已授權專案（新增／計算需選擇）</option>{projects.map(row=><option key={row.id} value={row.id}>{row.name}（{row.project_code}）</option>)}</select></label>
+        <button type="button" disabled={!projectId||working||isReadonly} onClick={()=>void run('calculate')} className="rounded border p-2 disabled:opacity-50">計算並保存</button>
+        <button type="button" disabled={!projectId||working||isReadonly} onClick={()=>void run('report')} className="rounded border p-2 disabled:opacity-50">保存報告快照／重試</button>
+        <button type="button" onClick={()=>void loadData()} disabled={working} className="rounded border p-2">重新讀取</button>
+        <button type="button" disabled={!projectId||!organizationId||working} onClick={()=>{if(!projectId||!organizationId)return;try{const scope={projectId,organizationId},prior=reportReference(sessionStorage,scope,userId);if(prior)clearManualReference(sessionStorage,scope,userId,'report',prior.requestId);reportAttempt.current=null;setOperationMessage('已放棄此使用者／專案的本機報告恢復參考；不會刪除任何伺服器報告。下次保存會建立新快照。');}catch(cause){setOperationMessage(String(cause));}}} className="rounded border p-2">放棄報告恢復參考（不刪除報告）</button>
+        {savedReport&&<button type="button" onClick={()=>navigate('/admin/reports/'+savedReport+'?'+new URLSearchParams({organization_id:organizationId??'',project_id:projectId??''}))} className="rounded border p-2">開啟已保存報告</button>}</div>
+        {projectId&&<p className="mb-3 text-sm">盤查期間：{projects.find(row=>row.id===projectId)?.reporting_start_date} ～ {projects.find(row=>row.id===projectId)?.reporting_end_date}。數量與單位由人工輸入；係數不使用正式預設測試值。</p>}
+        {working&&<p role="status">處理中，等待伺服器保存／核對結果…</p>}
+        {operationMessage&&<p role="status" className="mb-4 border rounded p-3">{operationMessage}</p>}
         {/* Data Origin Legend (staging only) */}
         {IS_STAGING && (
           <div className="mb-4">
@@ -292,7 +318,7 @@ export default function EmissionActivitiesListPage() {
             icon="ri-file-list-3-line"
             title={t('activities.empty_title')}
             description={t('activities.empty_description')}
-            actionLabel={t('activities.create_button')}
+            actionLabel={projectId&&!isReadonly?t('activities.create_button'):undefined}
             onAction={handleOpenCreate}
           />
         ) : (
@@ -338,10 +364,11 @@ export default function EmissionActivitiesListPage() {
                             <div>
                               <div className="text-sm font-medium text-gray-900">
                                 {activity.activity_name || t('activities.unclassified')}
+                                <p className="text-xs text-gray-500">{projects.find(row=>row.id===activity.project_id)?.name} · {activity.organization_id?.slice(0,8)}</p>
                               </div>
                               {activity.source_document_id && (
                                 <button
-                                  onClick={() => handleViewSourceDocument(activity.source_document_id!)}
+                                  onClick={() => handleViewSourceDocument(activity)}
                                   className="text-xs text-teal-600 hover:text-teal-800 mt-0.5 cursor-pointer underline"
                                 >
                                   <i className="ri-file-text-line mr-1"></i>
@@ -387,7 +414,7 @@ export default function EmissionActivitiesListPage() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button
-                            onClick={() => handleViewDetail(activity.id)}
+                            onClick={() => handleViewDetail(activity)}
                             className="text-teal-600 hover:text-teal-900 cursor-pointer"
                           >
                             {t('common.view')}
