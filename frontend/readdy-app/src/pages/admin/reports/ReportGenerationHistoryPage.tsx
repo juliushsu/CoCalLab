@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {resolveNavigationScope} from '@/services/navigationScope';
+import {workflowHref} from '@/services/workflowNavigation';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { fetchLatestReportSnapshot } from '@/services/reportSnapshotService';
 import type { EmissionsSummaryDTO } from '@/types/carbonAdjustment';
@@ -21,6 +23,7 @@ interface Project {
 }
 
 interface ReportGeneration {
+  organization_id:string;
   id: string;
   project_id: string;
   project_name?: string;
@@ -421,6 +424,10 @@ function AuditDialog({ result, onClose }: AuditDialogProps) {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function ReportGenerationHistoryPage() {
+  const location=useLocation();
+  const scope=resolveNavigationScope(location.pathname,location.search);
+  const selectedOrg='organizationId' in scope?scope.organizationId:undefined;
+  const selectedProject='projectId' in scope?scope.projectId:undefined;
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -438,7 +445,7 @@ export default function ReportGenerationHistoryPage() {
 
   // ── Three-layer snapshot state ──────────────────────────────────────────────
   const [snapshotSummary, setSnapshotSummary] = useState<EmissionsSummaryDTO | null>(null);
-  const [snapshotProjectId, setSnapshotProjectId] = useState('');
+  const [snapshotProjectId, setSnapshotProjectId] = useState(selectedProject||'');
   const [snapshotLoading, setSnapshotLoading] = useState(false);
   const [snapshotError, setSnapshotError] = useState<string | null>(null);
 
@@ -455,16 +462,14 @@ export default function ReportGenerationHistoryPage() {
     try {
       const supabase = getSupabaseClient();
 
+      if(scope.kind==='invalid')throw new Error('組織／專案範圍不明確，請重新選擇。');
+      let reportQuery=supabase.from('report_generations').select('*, project:projects(name)').order('created_at',{ascending:false});
+      let projectQuery=supabase.from('projects').select('id, name, project_code, organization_id').order('name');
+      if(selectedOrg){reportQuery=reportQuery.eq('organization_id',selectedOrg);projectQuery=projectQuery.eq('organization_id',selectedOrg);}
+      if(selectedProject){reportQuery=reportQuery.eq('project_id',selectedProject);projectQuery=projectQuery.eq('id',selectedProject);}
       const [{ data: reportData, error: reportErr }, { data: projectData, error: projectErr }] =
         await Promise.all([
-          supabase
-            .from('report_generations')
-            .select('*, project:projects(name)')
-            .order('created_at', { ascending: false }),
-          supabase
-            .from('projects')
-            .select('id, name, project_code, organization_id')
-            .order('name'),
+          reportQuery,projectQuery,
         ]);
 
       if (reportErr) throw reportErr;
@@ -482,7 +487,7 @@ export default function ReportGenerationHistoryPage() {
     } finally {
       setLoading(false);
     }
-  }, [t]);
+  }, [t,selectedOrg,selectedProject,scope.kind]);
 
   useEffect(() => {
     fetchData();
@@ -563,7 +568,7 @@ export default function ReportGenerationHistoryPage() {
         <section className="mb-6 bg-white border border-gray-200 rounded-xl p-5">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-semibold text-gray-900">{t('carbonAdjustments.reportSummary.title')}</h2>
-            <Link to="/admin/carbon-adjustments" className="text-xs text-teal-600 hover:underline">
+            <Link to={workflowHref('/admin/carbon-adjustments',location.pathname,location.search,selectedOrg||null)||'/admin/carbon-adjustments'} className="text-xs text-teal-600 hover:underline">
               {t('carbonAdjustments.reportSummary.viewAdjustments')} &rarr;
             </Link>
           </div>
@@ -573,6 +578,7 @@ export default function ReportGenerationHistoryPage() {
               setSnapshotSummary(null);
               setSnapshotError(null);
               setSnapshotProjectId(event.target.value);
+              const chosen=projects.find(p=>p.id===event.target.value);if(chosen)navigate('/admin/reports/history?'+new URLSearchParams({organization_id:chosen.organization_id,projectId:chosen.id}));
             }}
             className="w-full border border-gray-300 rounded-lg p-2 mb-4 text-sm">
             <option value="">{t('reports.snapshot.selectProject', '請先選擇專案以查看報告快照')}</option>
@@ -708,7 +714,7 @@ export default function ReportGenerationHistoryPage() {
                         {/* 檢視報告 */}
                         {report.status === 'completed' && (
                           <button
-                            onClick={() => navigate(`/admin/reports/${report.id}`)}
+                            onClick={() => navigate(`/admin/reports/${report.id}?`+new URLSearchParams({organization_id:report.organization_id,projectId:report.project_id}))}
                             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-teal-700 bg-teal-50 rounded-lg hover:bg-teal-100 transition-colors whitespace-nowrap"
                           >
                             <i className="ri-eye-line w-3.5 h-3.5 flex items-center justify-center"></i>

@@ -1,0 +1,18 @@
+Browser tab: 1290546996, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4197/admin/reports/history?organization_id=25193785-9096-4735-9b92-679a8fbbc7ad&organizationId=25193785-9096-4735-9b92-679a8fbbc7ad&project_id=0f3e190d-018a-46db-a939-e19b4a8743db&projectId=0f3e190d-018a-46db-a939-e19b4a8743db".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++				202 text 2026-01-01 ~ 2026-12-31
++				203 definition list
++					204 container Gross Inventory
++						205 text Gross Inventory
++					206 container
++						207 text 0.05  tCO₂e
++					208 container Eligible Adjustments
++						209 text Eligible Adjustments
++					210 container
++						211 text 0  tCO₂e
++					212 container Claim Result
++						213 text Claim Result
++					214 container
++						215 text 0.05  tCO₂e
++				216 text 以上為報告生成時保存的數值，僅包含當時已核准／套用的調整；不代表目前可用額度、正式申報核准或重新執行規則驗證。
+The focused UI element is 1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4197/admin/reports/history?organization_id=25193785-9096-4735-9b92-679a8fbbc7ad&organizationId=25193785-9096-4735-9b92-679a8fbbc7ad&project_id=0f3e190d-018a-46db-a939-e19b4a8743db&projectId=0f3e190d-018a-46db-a939-e19b4a8743db

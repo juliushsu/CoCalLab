@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {resolveNavigationScope} from '@/services/navigationScope';
 import AdminLayout from '@/components/layout/AdminLayout';
 import { getOrganizations } from '@/services/organizationService';
 import { isSupabaseConnected } from '@/lib/supabase';
@@ -11,8 +12,10 @@ import type { Organization } from '@/types/organization';
 export default function EmissionsAnalyticsPage() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const organizationId = searchParams.get('organization_id') || searchParams.get('organizationId') || '';
-  const projectId = searchParams.get('project_id') || undefined;
+  const scope=resolveNavigationScope('/admin/analytics',searchParams.toString());
+  const invalidScope=scope.kind==='invalid';
+  const organizationId='organizationId' in scope?scope.organizationId||'':'';
+  const projectId='projectId' in scope?scope.projectId:undefined;
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [organizationError, setOrganizationError] = useState('');
   const [dimension, setDimension] = useState<AnalyticsDimension>('ghg_scope');
@@ -59,7 +62,7 @@ export default function EmissionsAnalyticsPage() {
           <label className="text-sm text-gray-700">組織
             <select className="ml-2 border rounded p-2" value={organizationId} onChange={(event) => {
               const next = new URLSearchParams(searchParams);
-              next.delete('organizationId'); next.delete('project_id');
+              next.delete('organizationId'); next.delete('project_id'); next.delete('projectId');
               if (event.target.value) next.set('organization_id', event.target.value);
               else next.delete('organization_id');
               setSearchParams(next);
@@ -77,7 +80,7 @@ export default function EmissionsAnalyticsPage() {
           </label>
         </div>
         {organizationError && <div role="alert" className="p-4 bg-red-50 text-red-800 rounded-xl">{organizationError}</div>}
-        {!organizationId ? <p className="p-6 bg-white rounded-xl">請先選擇組織，以載入該組織的排放分析。</p>
+        {invalidScope?<p role="alert" className="p-6 bg-red-50">組織／專案範圍不明確，請重新選擇。</p>:!organizationId ? <p className="p-6 bg-white rounded-xl">請先選擇組織，以載入該組織的排放分析。</p>
           : error ? <div role="alert" className="p-6 bg-red-50 text-red-800 rounded-xl"><p>分析資料載入失敗：{error}</p><button className="mt-3 underline" onClick={() => setRetry(value => value + 1)}>重試</button></div>
           : loading ? <p role="status" className="p-6 bg-white rounded-xl">正在載入排放資料...</p>
           : data && <>

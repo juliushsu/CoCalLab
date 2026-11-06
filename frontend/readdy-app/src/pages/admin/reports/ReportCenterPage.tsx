@@ -1,5 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import {workflowHref} from '@/services/workflowNavigation';
+import {useTenantNavigation} from '@/hooks/useTenantNavigation';
 import AdminLayout from '@/components/layout/AdminLayout';
 import type { ReportTypeCode, CapabilityGateStatus } from '@/types/capability';
 import GovernanceBanner from '@/components/feature/GovernanceBanner';
@@ -96,13 +98,17 @@ interface ReportTypeCardProps {
 function ReportTypeCard({ config, status }: ReportTypeCardProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location=useLocation();
+  const {organizationId}=useTenantNavigation();
+  const scoped=(path:string)=>workflowHref(path,location.pathname,location.search,organizationId)||(location.search?null:path);
+  const go=(path:string)=>{const to=scoped(path);if(to)navigate(to);};
   const colors = COLOR_MAP[config.color] ?? COLOR_MAP.teal;
   const isAvailable = status === 'available';
   const isComingSoon = status === 'coming_soon';
 
   const handleClick = () => {
     if (isAvailable) {
-      navigate(config.route);
+      go(config.route);
     }
   };
 
@@ -137,7 +143,7 @@ function ReportTypeCard({ config, status }: ReportTypeCardProps) {
       <div className="mt-auto pt-2">
         {isAvailable ? (
           <button
-            onClick={(e) => { e.stopPropagation(); navigate(config.route); }}
+            onClick={(e) => { e.stopPropagation(); go(config.route); }}
             className={`w-full py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${colors.btn}`}
           >
             <i className="ri-arrow-right-line mr-1.5"></i>
@@ -169,6 +175,10 @@ function ReportTypeCard({ config, status }: ReportTypeCardProps) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function ReportCenterPage() {
+  const location=useLocation();
+  const {organizationId}=useTenantNavigation();
+  const scoped=(path:string)=>workflowHref(path,location.pathname,location.search,organizationId)||(location.search?null:path);
+  const go=(path:string)=>{const to=scoped(path);if(to)navigate(to);};
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -201,7 +211,7 @@ export default function ReportCenterPage() {
         <div className="mb-6 rounded-xl border border-gray-200 bg-white p-5">
           <h2 className="text-base font-semibold text-gray-900">{t('carbonAdjustments.summary.title')}</h2>
           <p className="mt-2 text-sm text-gray-500">{t('reports.snapshot.centerNotice', '請至報告歷史選擇專案，查看該專案已完成報告的保存快照。')}</p>
-          <button onClick={() => navigate('/admin/reports/history')} className="mt-3 text-sm text-teal-700 hover:underline">
+          <button onClick={() => go('/admin/reports/history')} className="mt-3 text-sm text-teal-700 hover:underline">
             {t('reports.history_page.view_report')} &rarr;
           </button>
         </div>
@@ -216,7 +226,7 @@ export default function ReportCenterPage() {
               <p className="text-sm text-gray-500 mt-0.5">{t('reportTypes.carbon_inventory')}</p>
             </div>
             <button
-              onClick={() => navigate('/admin/reports/history')}
+              onClick={() => go('/admin/reports/history')}
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-teal-700 bg-teal-50 rounded-xl hover:bg-teal-100 transition-colors whitespace-nowrap"
             >
               <i className="ri-history-line"></i>

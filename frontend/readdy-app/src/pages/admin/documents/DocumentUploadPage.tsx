@@ -222,7 +222,7 @@ export default function DocumentUploadPage() {
     {quarantined>0&&<p role="status" className="mb-4 text-amber-800">{t('documents.intake.quarantined',{count:quarantined})}</p>}
     <div className="mb-6 grid gap-4 rounded border bg-white p-6 md:grid-cols-2">
       <label>{t('documents.fields.project')}
-        <select aria-label={t('documents.fields.project')} value={projectId} onChange={event => {currentView.current=null;setProjectId(event.target.value);}} disabled={processing} className="mt-1 block w-full rounded border p-2">
+        <select aria-label={t('documents.fields.project')} value={projectId} onChange={event => {currentView.current=null;setProjectId(event.target.value);const next=projects.find(row=>row.id===event.target.value);navigate(next?'/admin/documents/upload?'+new URLSearchParams({organization_id:next.organization_id,project_id:next.id}):'/admin/documents/upload');}} disabled={processing} className="mt-1 block w-full rounded border p-2">
           <option value="">{t('documents.selectProject')}</option>
           {projects.map(row => <option key={row.id} value={row.id}>{row.name} ({row.project_code})</option>)}
         </select>

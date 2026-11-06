@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { useTenantNavigation } from '../../hooks/useTenantNavigation';
 import { navigationItemAllowed, type TenantRole } from '../../services/navigationScope';
+import ValueChainProgress from '../feature/ValueChainProgress';
+import {workflowHref} from '../../services/workflowNavigation';
 import StagingBanner from '../feature/StagingBanner';
 import IdleWarningModal from '../feature/IdleWarningModal';
 import { IS_STAGING } from '../../utils/staging';
@@ -171,6 +173,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const scopedPath = (path: string) => {
     if (!organizationId || path === '#') return path;
+    const workflow=workflowHref(path,location.pathname,location.search,organizationId);
+    if(workflow)return workflow;
     const query = new URLSearchParams({ organization_id: organizationId, organizationId });
     return `${path}?${query}`;
   };
@@ -465,6 +469,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Main Content */}
       <main className="lg:ml-64 mt-24 p-6">
+        <ValueChainProgress organizationId={navigationStatus==='ready'?organizationId:null} />
         {children}
       </main>
     </div>
