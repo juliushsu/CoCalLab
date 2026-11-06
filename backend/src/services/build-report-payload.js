@@ -122,6 +122,15 @@ function boundarySnapshot({ project, workspace, legal_entity, site }) {
 }
 
 export function build_report_payload({ project, activities, calculation_results, workspace = null, legal_entity = null, site = null }) {
+  // An included unknown calculation is not a zero-emission saved report.
+  for (const activity of activities.filter(row => row.inclusion_status === 'included')) {
+    const latest = calculation_results.filter(row => row.emission_activity_id === activity.id && row.is_latest !== false);
+    const raw = latest[0]?.co2e_kg;
+    const amount = typeof raw === 'number' ? raw : typeof raw === 'string' && /^\d+(?:\.\d+)?$/.test(raw) ? Number(raw) : NaN;
+    if (latest.length !== 1 || latest[0].status !== 'calculated' || !Number.isFinite(amount) || amount < 0) {
+      throw new Error('REPORT_CALCULATION_INCOMPLETE: included activities require one valid latest calculation; pending or missing is not zero.');
+    }
+  }
   const calculationByActivityId = new Map(
     calculation_results
       .filter((row) => row.is_latest !== false)

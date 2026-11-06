@@ -80,6 +80,13 @@ serveWithCors(async (request: Request) => {
       });
     }
 
+    if(input.request_id){
+      const prior=await supabase.rpc('report_snapshot_request_v2',{p_organization_id:input.organization_id,p_project_id:input.project_id,p_actor_user_id:actor.user_id,p_request_id:input.request_id,p_report_version:input.report_version,p_claim_purpose:input.claim_purpose||DEFAULT_CLAIM_PURPOSE});
+      if(prior.error)return toErrorEnvelope(request,new Error(prior.error.message||'Report request lookup failed'),{code:'REPORT_REQUEST_CONFLICT',httpStatus:409,requestId:input.request_id});
+      const saved=Array.isArray(prior.data)?prior.data[0]:prior.data;
+      if(saved){if(saved.status!=='completed')throw new Error('REPORT_SAVE_NOT_CONFIRMED');return successEnvelope(request,{report_generation_id:saved.id,status:saved.status,claim_purpose:saved.claim_purpose,gross_emissions_snapshot:saved.gross_emissions_snapshot,adjustment_summary:saved.adjustment_summary,claim_results:saved.claim_results,adjustment_manifest:saved.adjustment_manifest,legal_entity_snapshot:saved.legal_entity_snapshot,site_snapshot:saved.site_snapshot,boundary_snapshot:saved.boundary_snapshot,payload:saved.payload,warning_count:saved.warning_count},{status:saved.status,warnings:saved.payload?.data_gaps_and_warnings||[],requestId:input.request_id});}
+    }
+
     const { data: workspace, error: workspaceError } = await supabase
       .from('organizations')
       .select('id, slug, legal_name, display_name, tax_id, country_code, timezone')
@@ -207,7 +214,7 @@ serveWithCors(async (request: Request) => {
 
     const payloadHash = await sha256Hex(JSON.stringify(payload));
 
-    const { data: rpcRows, error: rpcError } = await supabase.rpc('generate_report_atomic', {
+    const { data: rpcRows, error: rpcError } = await supabase.rpc('generate_report_snapshot_atomic_v2', {
       p_organization_id: input.organization_id,
       p_project_id: input.project_id,
       p_generated_by_user_id: actor.user_id,
@@ -224,7 +231,8 @@ serveWithCors(async (request: Request) => {
       p_factor_sources: payload.factor_sources_used,
       p_warning_count: payload.data_gaps_and_warnings.length,
       p_based_on_calculated_at: new Date().toISOString(),
-      p_request_id: input.request_id || null,
+      p_request_id: input.request_id || crypto.randomUUID(),
+      p_snapshot: {claim_purpose:claimPurpose,gross_emissions_snapshot:grossEmissionsSnapshot,adjustment_summary:adjustmentSummary,claim_results:claimResults,adjustment_manifest:adjustmentManifest},
     });
 
     if (rpcError) {
@@ -237,26 +245,9 @@ serveWithCors(async (request: Request) => {
 
     const rpcResult = Array.isArray(rpcRows) ? rpcRows[0] : rpcRows;
 
-    const { error: reportPatchError } = await supabase
-      .from('report_generations')
-      .update({
-        claim_purpose: claimPurpose,
-        gross_emissions_snapshot: grossEmissionsSnapshot,
-        adjustment_summary: adjustmentSummary,
-        claim_results: claimResults,
-        adjustment_manifest: adjustmentManifest,
-        legal_entity_snapshot: payload.legal_entity_snapshot || {},
-        site_snapshot: payload.site_snapshot || {},
-        boundary_snapshot: payload.boundary_snapshot || {},
-      })
-      .eq('id', rpcResult.report_generation_id)
-      .eq('organization_id', input.organization_id)
-      .eq('project_id', input.project_id);
-
-    if (reportPatchError) {
-      throw reportPatchError;
-    }
-
+    const {data:savedReport,error:savedError}=await supabase.from('report_generations').select('*').eq('id',rpcResult.report_generation_id).eq('organization_id',input.organization_id).eq('project_id',input.project_id).single();
+    if(savedError||!savedReport||savedReport.status!=='completed')throw savedError||new Error('REPORT_SAVE_NOT_CONFIRMED');
+    const savedWarnings=savedReport.payload?.data_gaps_and_warnings||[];
     const externalBlocked = externalActionsBlockedInCurrentEnv();
 
     await insertActionLog(supabase, {
@@ -279,21 +270,21 @@ serveWithCors(async (request: Request) => {
     });
 
     return successEnvelope(request, {
-      report_generation_id: rpcResult.report_generation_id,
-      status: rpcResult.status,
-      claim_purpose: claimPurpose,
-      gross_emissions_snapshot: grossEmissionsSnapshot,
-      adjustment_summary: adjustmentSummary,
-      claim_results: claimResults,
-      adjustment_manifest: adjustmentManifest,
-      legal_entity_snapshot: payload.legal_entity_snapshot || {},
-      site_snapshot: payload.site_snapshot || {},
-      boundary_snapshot: payload.boundary_snapshot || {},
-      payload,
-      warning_count: payload.data_gaps_and_warnings.length,
+      report_generation_id: savedReport.id,
+      status: savedReport.status,
+      claim_purpose: savedReport.claim_purpose,
+      gross_emissions_snapshot: savedReport.gross_emissions_snapshot,
+      adjustment_summary: savedReport.adjustment_summary,
+      claim_results: savedReport.claim_results,
+      adjustment_manifest: savedReport.adjustment_manifest,
+      legal_entity_snapshot: savedReport.legal_entity_snapshot,
+      site_snapshot: savedReport.site_snapshot,
+      boundary_snapshot: savedReport.boundary_snapshot,
+      payload: savedReport.payload,
+      warning_count: savedReport.warning_count,
     }, {
-      status: rpcResult.status,
-      warnings: payload.data_gaps_and_warnings,
+      status: savedReport.status,
+      warnings: savedWarnings,
       requestId: input.request_id,
     });
   } catch (error) {
