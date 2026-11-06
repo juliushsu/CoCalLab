@@ -1,6 +1,6 @@
-import type { ReportStatistics, ReportVersion } from '../types/report';
+import type { ReportStatistics, ReportVersion, ReportSavedSnapshot } from '../types/report';
 
-export interface ReportRow {
+export interface ReportRow extends ReportSavedSnapshot {
   id: string; project_id: string; report_version: number;
   status: ReportVersion['report_status']; generated_by_user_id?: string;
   created_at: string; updated_at: string; error_message?: string;
@@ -14,14 +14,19 @@ const nonnegativeNumber = (value: unknown): value is number =>
 
 /** Report totals are stored in kgCO2e and presented in tonnes. Unknown is not zero. */
 export function adaptReportData(row: ReportRow) {
+  const savedFields:(keyof ReportSavedSnapshot)[]=['id','organization_id','project_id','status','report_version','created_at','payload','payload_hash','reporting_period_start','reporting_period_end','included_activity_count','excluded_activity_count','pending_activity_count','scope_totals','category_totals','factor_sources','warning_count','based_on_calculated_at','is_test','env','claim_purpose','legal_entity_snapshot','site_snapshot','boundary_snapshot','gross_emissions_snapshot','adjustment_summary','claim_results','adjustment_manifest'];
+  const saved_snapshot:ReportSavedSnapshot=Object.fromEntries(savedFields.map(field=>[field,row[field]??null]));
+  const payload=row.payload&&typeof row.payload==='object'&&!Array.isArray(row.payload)?row.payload as Record<string,unknown>:{};
+  const projectMetadata=payload.project_metadata&&typeof payload.project_metadata==='object'&&!Array.isArray(payload.project_metadata)?payload.project_metadata as Record<string,unknown>:{};
   const report: ReportVersion = {
-    id: row.id, project_id: row.project_id, project_name: row.project?.name || '',
+    id: row.id, project_id: row.project_id, project_name: typeof projectMetadata.name==='string'&&projectMetadata.name?projectMetadata.name:row.project?.name || '',
     version_number: row.report_version, report_status: row.status,
     generated_by: row.generated_by_user_id || '', generated_at: row.created_at,
     completed_at: row.status === 'completed' ? row.updated_at : undefined,
     error_message: row.error_message,
     // There is no persisted report_sections implementation to count.
     total_sections: 0, completed_sections: 0,
+    saved_snapshot,
     created_at: row.created_at, updated_at: row.updated_at,
   };
   const scopes = ['scope_1', 'scope_2', 'scope_3'].map(key => row.scope_totals?.[key]);

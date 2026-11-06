@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { useTenantNavigation } from '../../hooks/useTenantNavigation';
 import { navigationItemAllowed, type TenantRole } from '../../services/navigationScope';
+import BetaFeedbackButton from '../feature/BetaFeedbackButton';
 import ValueChainProgress from '../feature/ValueChainProgress';
 import {workflowHref} from '../../services/workflowNavigation';
 import StagingBanner from '../feature/StagingBanner';
@@ -471,6 +472,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <main className="lg:ml-64 mt-24 p-6">
         <ValueChainProgress organizationId={navigationStatus==='ready'?organizationId:null} />
         {children}
+        <BetaFeedbackButton />
       </main>
     </div>
   );

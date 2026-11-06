@@ -5,6 +5,7 @@ import {useTenantNavigation} from '@/hooks/useTenantNavigation';
 import AdminLayout from '@/components/layout/AdminLayout';
 import type { ReportTypeCode, CapabilityGateStatus } from '@/types/capability';
 import GovernanceBanner from '@/components/feature/GovernanceBanner';
+import ReportOutlinePanel from './components/ReportOutlinePanel';
 
 // ─── Feature-flag adapter ─────────────────────────────────────────────────────
 // TODO: Replace with real capability gate from Codex subscription API.
@@ -196,6 +197,8 @@ export default function ReportCenterPage() {
           variant="beta"
           message={t('reports.betaReportWarningDesc', '目前生成報告僅供測試與內部盤查流程驗證，正式申報/查驗前需人工審核。盤查法人與據點資訊將於下一階段完整顯示。')}
         />
+
+        <div className="my-6"><ReportOutlinePanel snapshot={null} /></div>
 
         {/* Report type grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-5 mb-10">

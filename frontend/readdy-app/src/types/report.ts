@@ -4,6 +4,18 @@ export type ReportStatus = 'draft' | 'generating' | 'completed' | 'failed';
 // 報告格式
 export type ReportFormat = 'pdf' | 'docx' | 'html';
 
+/** Saved database evidence, not a generated chapter or a live project join. */
+export interface ReportSavedSnapshot {
+  id?:unknown;organization_id?:unknown;project_id?:unknown;status?:unknown;
+  report_version?:unknown;created_at?:unknown;payload?:unknown;payload_hash?:unknown;
+  reporting_period_start?:unknown;reporting_period_end?:unknown;
+  included_activity_count?:unknown;excluded_activity_count?:unknown;pending_activity_count?:unknown;
+  scope_totals?:unknown;category_totals?:unknown;factor_sources?:unknown;warning_count?:unknown;
+  based_on_calculated_at?:unknown;is_test?:unknown;env?:unknown;claim_purpose?:unknown;
+  legal_entity_snapshot?:unknown;site_snapshot?:unknown;boundary_snapshot?:unknown;
+  gross_emissions_snapshot?:unknown;adjustment_summary?:unknown;claim_results?:unknown;adjustment_manifest?:unknown;
+}
+
 // 報告章節類型
 export type ReportSectionType = 
   | 'executive_summary'
@@ -61,6 +73,7 @@ export interface ReportVersion {
   error_message?: string;
   total_sections: number;
   completed_sections: number;
+  saved_snapshot?: ReportSavedSnapshot;
   ai_generated_sections?: number;
   user_modified_sections?: number;
   last_modified_at?: string;

@@ -1,0 +1,58 @@
+十章報告結構與保存資料來源
+
+這是資料導引，並未產生十章正式報告，不計算完成度，也不代表商用、申報或查證通過。
+
+保存資料已標記為測試資料；保存環境：staging。內容依保存資料呈現，不回填示範值。
+
+1. 基本資料保存欄位與缺件（非章節完成狀態）
+報告 ID
+0d80ebea-9390-4aec-9493-21b51729afd8
+來源：report_generations.id
+組織 ID
+25193785-9096-4735-9b92-679a8fbbc7ad
+來源：report_generations.organization_id
+專案 ID
+0f3e190d-018a-46db-a939-e19b4a8743db
+來源：report_generations.project_id
+報告版本
+1
+來源：report_generations.report_version
+保存時間
+2026-11-06T07:23:16.606Z
+來源：report_generations.created_at
+保存狀態
+completed
+來源：report_generations.status
+保存的專案名稱
+SYNTHETIC local workflow
+來源：report_generations.payload.project_metadata.name
+保存的工作區
+{
+  "slug": "synthetic-local-25193785-9096-4735-9b92-679a8fbbc7ad",
+  "workspace_id": "25193785-9096-4735-9b92-679a8fbbc7ad",
+  "workspace_label": "SYNTHETIC LOCAL ONLY"
+}
+來源：report_generations.payload.workspace_snapshot
+盤查法人快照未附列內容
+已保存空物件；未提供內容
+來源：report_generations.legal_entity_snapshot
+據點快照未附列內容
+已保存空物件；未提供內容
+來源：report_generations.site_snapshot
+只顯示保存時的資料；目前專案資料不回填為歷史快照。
+2. 盤查目的保存欄位與缺件（非章節完成狀態）
+3. 盤查邊界保存欄位與缺件（非章節完成狀態）
+4. 盤查期間保存欄位與缺件（非章節完成狀態）
+起日
+2026-01-01
+來源：report_generations.reporting_period_start
+迄日
+2026-12-31
+來源：report_generations.reporting_period_end
+未提供或無效日期保持未知，不以目前專案期間或今日補值。
+5. 排放源鑑別保存欄位與缺件（非章節完成狀態）
+6. 排放量計算方法保存欄位與缺件（非章節完成狀態）
+7. 活動數據來源保存欄位與缺件（非章節完成狀態）
+8. 排放係數來源保存欄位與缺件（非章節完成狀態）
+9. 數據品質管理保存欄位與缺件（非章節完成狀態）
+10. 佐證資料與附件保存欄位與缺件（非章節完成狀態）
