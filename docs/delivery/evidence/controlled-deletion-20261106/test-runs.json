@@ -1,0 +1,73 @@
+{
+  "kind": "recorded actual tool-run summary, not a fabricated raw transcript",
+  "source_sha": "1b1e82913ee593f4255eb33a92744d597c530b2c",
+  "business_baseline": "06bad0818625bd9d4f3b685dff50994157b52757",
+  "observed_at": "2026-11-06T11:28:34.549Z",
+  "runs": [
+    {
+      "command": "node --test tests/*.test.ts",
+      "cwd": "frontend/readdy-app",
+      "passed": 219,
+      "failed": 0,
+      "exit_code": 0
+    },
+    {
+      "command": "node --test backend/tests/*.test.js",
+      "passed": 27,
+      "failed": 0,
+      "exit_code": 0
+    },
+    {
+      "command": "PGLITE_RUNTIME_ROOT=<existing isolated runtime> node --test --test-concurrency=1 backend/tests/integration/*.test.js",
+      "cases": 294,
+      "passed": 292,
+      "failed": 0,
+      "skipped": 2,
+      "duration_ms": 300735.4454,
+      "exit_code": 0
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --project tsconfig.app.json",
+      "cwd": "frontend/readdy-app",
+      "exit_code": 0
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+      "cwd": "frontend/readdy-app",
+      "exit_code": 0
+    },
+    {
+      "command": "node node_modules/vite/bin/vite.js build",
+      "cwd": "frontend/readdy-app",
+      "exit_code": 0,
+      "warning": "main minified chunk 502.20 kB; no commercial load/performance acceptance"
+    },
+    {
+      "command": "node --test tests/documentDeletion.test.ts",
+      "cwd": "frontend/readdy-app",
+      "passed": 15,
+      "failed": 0,
+      "exit_code": 0,
+      "reason": "post-lint control-regex correction; subset already covered above"
+    }
+  ],
+  "independent_review": {
+    "new_sql_http": {
+      "passed": 24,
+      "not_run": 1
+    },
+    "frontend_latest_subset": {
+      "passed": 18
+    },
+    "not_additive": true,
+    "unresolved_proven_P1_P2": 0
+  },
+  "skip_reasons": [
+    "independent SQL-connection recalculation lock-wait/concurrent commit NOT_RUN",
+    "independent SQL-connection controlled deletion concurrency NOT_RUN"
+  ],
+  "environment": "local synthetic Auth/Storage adapter; Node evaluates checked-in Edge handlers against PGlite; NOT actual Supabase/Deno/JWT verification",
+  "no_cloud_operations": true,
+  "no_merge_or_deploy": true,
+  "release": "HOLD"
+}

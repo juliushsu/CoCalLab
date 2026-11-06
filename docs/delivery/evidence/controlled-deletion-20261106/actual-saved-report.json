@@ -1,0 +1,177 @@
+{
+  "export_format_version": "cocallab-report-snapshot-v1",
+  "emissions_unit": "kgCO2e (source snapshot; adjustment fields retain their explicit units)",
+  "snapshot": {
+    "id": "9a9af5e3-0d38-4fad-8a0f-8298d4bf62f8",
+    "organization_id": "ca3c123b-162b-4302-9dfc-84559bb32ef0",
+    "project_id": "816473f0-2850-40f4-814b-6bf1516ee48e",
+    "status": "completed",
+    "report_version": 1,
+    "created_at": "2026-11-06T11:17:31.917Z",
+    "payload": {
+      "scope_totals": {
+        "scope_1": 0,
+        "scope_2": 50,
+        "scope_3": 0,
+        "unknown": 0
+      },
+      "site_snapshot": {},
+      "category_totals": {
+        "energy": 50
+      },
+      "boundary_summary": {
+        "boundary_type": "operational_control",
+        "pending_count": 0,
+        "excluded_count": 0,
+        "included_count": 1
+      },
+      "project_metadata": {
+        "name": "SYNTHETIC local workflow",
+        "status": "draft",
+        "site_id": null,
+        "project_id": "816473f0-2850-40f4-814b-6bf1516ee48e",
+        "project_code": "SYNTHETIC-LOCAL",
+        "workspace_id": "ca3c123b-162b-4302-9dfc-84559bb32ef0",
+        "legal_entity_id": null,
+        "organization_id": "ca3c123b-162b-4302-9dfc-84559bb32ef0"
+      },
+      "reporting_period": {
+        "end_date": "2026-12-31",
+        "start_date": "2026-01-01"
+      },
+      "appendix_mappings": [
+        {
+          "source_draft_id": "da58983d-3448-4e26-b6ee-a06e83c2b014",
+          "source_document_id": "5b201d70-6c40-4b62-9540-3739379e12f6",
+          "emission_activity_id": "eb047be2-5aa6-43bc-b2f9-6d4a7b621a4e",
+          "calculation_result_id": "69381d3e-39ca-4392-ad61-fc347b29f124"
+        }
+      ],
+      "boundary_snapshot": {
+        "site_id": null,
+        "site_label": null,
+        "workspace_id": "ca3c123b-162b-4302-9dfc-84559bb32ef0",
+        "boundary_type": "operational_control",
+        "legal_entity_id": null,
+        "workspace_label": "SYNTHETIC LOCAL ONLY",
+        "reporting_period": {
+          "end_date": "2026-12-31",
+          "start_date": "2026-01-01"
+        },
+        "legal_entity_label": null
+      },
+      "workspace_snapshot": {
+        "slug": "synthetic-local-ca3c123b-162b-4302-9dfc-84559bb32ef0",
+        "workspace_id": "ca3c123b-162b-4302-9dfc-84559bb32ef0",
+        "workspace_label": "SYNTHETIC LOCAL ONLY"
+      },
+      "factor_sources_used": [
+        {
+          "version": 1,
+          "factor_id": "8e1f61cd-6bd6-4dec-bc80-2328e431384b",
+          "factor_key": "SYNTHETIC-0.5",
+          "source_url": null,
+          "factor_name": "SYNTHETIC custom factor",
+          "source_name": "SYNTHETIC TEST ONLY",
+          "quality_tier": "custom",
+          "source_reference": null
+        }
+      ],
+      "legal_entity_snapshot": {},
+      "ai_summary_placeholder": {
+        "en": "AI audit summary pending",
+        "ja": "AI 監査サマリーは未生成です",
+        "zh_tw": "AI 健檢摘要待產生"
+      },
+      "data_gaps_and_warnings": [],
+      "excluded_items_summary": [],
+      "included_activities_summary": [
+        {
+          "co2e_kg": 50,
+          "category": "energy",
+          "final_scope": 2,
+          "subcategory": null,
+          "activity_code": "MANUAL-da58983d-3448-4e26-b6ee-a06e83c2b014",
+          "activity_date": "2026-01-15",
+          "activity_name": "SYNTHETIC source electricity",
+          "emission_activity_id": "eb047be2-5aa6-43bc-b2f9-6d4a7b621a4e"
+        }
+      ]
+    },
+    "payload_hash": "9337faa135d86c3e1b0b5260f462cb05e5e9581c2b334dbeb51576f84bf08e68",
+    "reporting_period_start": "2026-01-01",
+    "reporting_period_end": "2026-12-31",
+    "included_activity_count": 1,
+    "excluded_activity_count": 0,
+    "pending_activity_count": 0,
+    "scope_totals": {
+      "scope_1": 0,
+      "scope_2": 50,
+      "scope_3": 0,
+      "unknown": 0
+    },
+    "category_totals": {
+      "energy": 50
+    },
+    "factor_sources": [
+      {
+        "version": 1,
+        "factor_id": "8e1f61cd-6bd6-4dec-bc80-2328e431384b",
+        "factor_key": "SYNTHETIC-0.5",
+        "source_url": null,
+        "factor_name": "SYNTHETIC custom factor",
+        "source_name": "SYNTHETIC TEST ONLY",
+        "quality_tier": "custom",
+        "source_reference": null
+      }
+    ],
+    "warning_count": 0,
+    "based_on_calculated_at": "2026-11-06T11:17:31.916Z",
+    "is_test": true,
+    "env": "staging",
+    "legal_entity_snapshot": {},
+    "site_snapshot": {},
+    "boundary_snapshot": {
+      "site_id": null,
+      "site_label": null,
+      "workspace_id": "ca3c123b-162b-4302-9dfc-84559bb32ef0",
+      "boundary_type": "operational_control",
+      "legal_entity_id": null,
+      "workspace_label": "SYNTHETIC LOCAL ONLY",
+      "reporting_period": {
+        "end_date": "2026-12-31",
+        "start_date": "2026-01-01"
+      },
+      "legal_entity_label": null
+    },
+    "gross_emissions_snapshot": {
+      "scope_totals": {
+        "scope_1": 0,
+        "scope_2": 50,
+        "scope_3": 0,
+        "unknown": 0
+      },
+      "category_totals": {
+        "energy": 50
+      },
+      "gross_total_co2e_kg": 50
+    },
+    "adjustment_summary": {
+      "claim_purpose": "internal_management",
+      "application_count": 0,
+      "eligible_total_tco2e": 0,
+      "requested_total_tco2e": 0,
+      "disallowed_total_tco2e": 0
+    },
+    "claim_results": {
+      "claim_purpose": "internal_management",
+      "gross_co2e_kg": 50,
+      "claim_net_co2e_kg": 50,
+      "eligible_deduction_kg": 0,
+      "inventory_impact_mode": "claim_only",
+      "eligible_deduction_tco2e": 0
+    },
+    "claim_purpose": "internal_management",
+    "adjustment_manifest": []
+  }
+}
