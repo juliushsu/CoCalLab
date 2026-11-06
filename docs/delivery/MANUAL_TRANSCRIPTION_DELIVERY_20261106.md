@@ -49,7 +49,7 @@ MANUAL草稿已存在時，一般app不能直接刪其原件／收件：新restr
 ## 測試（固定06bad08）
 
 - 前端191/191；backend21/21；SQL/HTTP239/239；type-check/lint/build PASS。
-- [前端完整log](evidence/manual-transcription-20261106/frontend.log)、[backend log](evidence/manual-transcription-20261106/backend.log)、[SQL/HTTP log](evidence/manual-transcription-20261106/sql-http.log)。
+- [前端完整log](evidence/manual-transcription-20261106/frontend-tests.txt)、[backend log](evidence/manual-transcription-20261106/backend-tests.txt)、[SQL/HTTP log](evidence/manual-transcription-20261106/sql-http-tests.txt)。
 - M4目標SQL8、HTTP9、contract4、FE新7均包含於上述總數；獨立reviewer重跑HTTP9、SQL8、contract4、FE29與tsc都是同範圍子集，不能加總。
 - 保留既有正反例。新增直接API/SQL偽actor/provider、client MANUAL寫入/刪除、寬permissive policy下retention仍拒、跨scope/viewer/JWT拒、固定UUID/replay/改intent/並發呼叫、最新訂閱拒、真SQL失敗rollback及回覆遺失恢復。
 - 獨立重現並修正：舊active蓋過新readonly/suspended、pending原件先刪bytes、重送遺失保存警示、舊journal誤套新版本、本機hash敘述不精確。最終定向審閱未發現未解P1/P2；不把此結論當Claude已審、商用或真環境通過。
