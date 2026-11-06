@@ -32,9 +32,9 @@ node node_modules/vite/bin/vite.js --config tools/local-preview/vite.integration
 
 證據：
 
-- [已確認原件／同人actor截圖](evidence/manual-transcription-20261106/confirmed.png)、[DOM](evidence/manual-transcription-20261106/confirmed.txt)。
-- [保存報告與來源活動](evidence/manual-transcription-20261106/saved-report.png)、[DOM](evidence/manual-transcription-20261106/saved-report.txt)。
-- [匯出選項](evidence/manual-transcription-20261106/export-options.png)、[完整報告／下載請求](evidence/manual-transcription-20261106/report-export-request.png)、[DOM](evidence/manual-transcription-20261106/report-export-request.txt)。
+- [已確認原件／同人actor截圖](evidence/manual-transcription-20261106/confirmed.jpg)、[DOM](evidence/manual-transcription-20261106/confirmed.txt)。
+- [保存報告與來源活動](evidence/manual-transcription-20261106/saved-report.jpg)、[DOM](evidence/manual-transcription-20261106/saved-report.txt)。
+- [匯出選項](evidence/manual-transcription-20261106/export-options.jpg)、[完整報告／下載請求](evidence/manual-transcription-20261106/report-export-request.jpg)、[DOM](evidence/manual-transcription-20261106/report-export-request.txt)。
 - [來源與本機receipt](evidence/manual-transcription-20261106/receipt.json)：固定SHA、已載handler、initializer migration清單/雜湊與3份歷史fixture省略、觀察IDs／量／單位／未驗範圍。不是雲端migration收據。
 - [同一實際保存快照HTML](evidence/manual-transcription-20261106/actual-saved-report.html)、[JSON](evidence/manual-transcription-20261106/actual-saved-report.json)：額外以同一server授權讀取＋共用formatter在Node實際寫檔／讀回，hash列receipt；**這兩份不是原生瀏覽器存檔證據**。50kg/.05t、測試標記、MANUAL來源鏈保留。
 
