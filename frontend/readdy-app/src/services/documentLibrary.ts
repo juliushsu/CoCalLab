@@ -106,8 +106,9 @@ export async function removeScopedDocument(client:SupabaseClient,documentId:stri
   if(references.error||!Number.isSafeInteger(references.count)||references.count!==0)throw new Error('Document references could not be ruled out; no file was removed.');
   // A legitimate activity may refer through source_draft_id while leaving
   // source_document_id NULL. Check all visible draft versions, not only latest.
-  const drafts=await client.from('extracted_document_drafts').select('id',{count:'exact'}).eq('organization_id',row.organization_id).eq('uploaded_document_id',row.id);current(isCurrent);
+  const drafts=await client.from('extracted_document_drafts').select('id,extraction_provider,raw_payload',{count:'exact'}).eq('organization_id',row.organization_id).eq('uploaded_document_id',row.id);current(isCurrent);
   if(drafts.error||!Array.isArray(drafts.data)||drafts.count!==drafts.data.length)throw new Error('Draft references could not be ruled out; no file was removed.');
+  if(drafts.data.some(d=>d.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR'||object(d.raw_payload)&&Object.hasOwn(d.raw_payload,'manual_transcription')))throw new Error('文件已有服務端人工轉錄紀錄，未刪除原件或收件；請走管理處理。');
   const draftIds=drafts.data.map(draft=>uuid(draft.id));
   if(new Set(draftIds).size!==draftIds.length)throw new Error('Draft references are incomplete; no file was removed.');
   if(draftIds.length){

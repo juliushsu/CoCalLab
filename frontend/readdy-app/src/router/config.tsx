@@ -19,6 +19,7 @@ const EditProjectPage = lazy(() => import('../pages/admin/projects/EditProjectPa
 const ProjectOverviewPage = lazy(() => import('../pages/admin/projects/ProjectOverviewPage'));
 
 // Admin - Documents
+const ManualTranscriptionPage=lazy(()=>import('../pages/admin/documents/ManualTranscriptionPage'));
 const DocumentUploadPage = lazy(() => import('../pages/admin/documents/DocumentUploadPage'));
 const UploadedDocumentListPage = lazy(() => import('../pages/admin/documents/UploadedDocumentListPage'));
 const ExtractedDraftReviewPage = lazy(() => import('../pages/admin/documents/ExtractedDraftReviewPage'));
@@ -93,6 +94,7 @@ const routes: RouteObject[] = [
     path: '/admin/documents',
     element: <Navigate to="/admin/documents/upload" replace />,
   },
+  {path:'/admin/documents/:documentId/transcribe',element:<ProtectedRoute><ManualTranscriptionPage /></ProtectedRoute>},
   {
     path: '/admin/documents/upload',
     element: <ProtectedRoute><DocumentUploadPage /></ProtectedRoute>,

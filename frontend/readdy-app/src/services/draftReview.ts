@@ -78,6 +78,7 @@ export async function readDraftReviewRows(client: SupabaseClient, scope: DraftRe
 }
 export function buildDraftDecision(draft: ExtractedDocumentDraft, decision: DraftDecision, scope: DraftReviewScope, edits: DraftReviewEdits = {}): ConfirmDraftInput {
     const identity = validateIdentity(draft, scope);
+    if(draft.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR')throw new Error('人工轉錄須使用專用確認入口，保留固定確認請求與唯讀canonical資料。');
     if (decision !== 'confirmed' && decision !== 'rejected')
         throw new Error('草稿決策無效。');
     if (decision === 'confirmed') {

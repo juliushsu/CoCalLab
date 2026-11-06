@@ -32,7 +32,7 @@ export default function ExtractedDraftReviewPage() {
   const scopedHref=(path:'/admin/activities'|'/admin/documents/upload')=>draftReviewDestination(path,selected.scope);
 
   const [drafts, setDrafts] = useState<ExtractedDocumentDraft[]>([]);
-  const confirmableDrafts=drafts.filter(draft=>!isSyntheticDraft(draft));
+  const confirmableDrafts=drafts.filter(draft=>!isSyntheticDraft(draft)&&draft.extraction_provider!=='MANUAL_TRANSCRIPTION_NO_OCR');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [needsRefresh,setNeedsRefresh]=useState(false);
@@ -145,6 +145,7 @@ export default function ExtractedDraftReviewPage() {
   const openConfirmDialog = (draftId: string) => {
     const draft = drafts.find(d => d.id === draftId);
     if (!draft) return;
+    if(draft.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR'){navigate('/admin/documents/'+draft.uploaded_document_id+'/transcribe?'+new URLSearchParams({organization_id:draft.organization_id,projectId:draft.project_id}));return;}
     setActiveDraftId(draftId);
     setEditScope(draft.suggested_scope?.toString() || '');
     setEditCategory(draft.suggested_category || '');
@@ -153,6 +154,7 @@ export default function ExtractedDraftReviewPage() {
   };
 
   const openRejectDialog = (draftId: string) => {
+    const row=drafts.find(d=>d.id===draftId);if(row?.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR'){navigate('/admin/documents/'+row.uploaded_document_id+'/transcribe?'+new URLSearchParams({organization_id:row.organization_id,projectId:row.project_id}));return;}
     setActiveDraftId(draftId);
     setEditNote('');
     setShowRejectDialog(true);
@@ -331,7 +333,7 @@ export default function ExtractedDraftReviewPage() {
                     type="checkbox"
                     checked={selectedDrafts.has(draft.id)}
                     onChange={() => toggleSelect(draft.id)}
-                    disabled={isReadonly || isProcessing || isSyntheticDraft(draft)}
+                    disabled={isReadonly || isProcessing || isSyntheticDraft(draft) || draft.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR'}
                     className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500 cursor-pointer"
                   />
                   <div className="flex-1 min-w-0">
@@ -397,6 +399,7 @@ export default function ExtractedDraftReviewPage() {
                       </div>
                     )}
                     <p className="mb-2 text-xs text-gray-500">擷取來源：{draft.extraction_provider || '未提供（未證實為真實 OCR）'}</p>
+                    {draft.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR'&&<button type="button" onClick={()=>openConfirmDialog(draft.id)} className="mb-3 text-sm text-teal-800 underline">人工轉錄來源（非OCR）：開啟唯讀轉錄與確認</button>}
                     {isSyntheticDraft(draft)&&<p className="mb-3 text-sm text-amber-700">Mock／合成測試草稿，不能確認為正式活動；可駁回。</p>}
                     <div className="flex flex-wrap items-center gap-2">
                       <button

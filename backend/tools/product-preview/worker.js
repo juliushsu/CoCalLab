@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { createLocalWorkflow } from '../local-workflow/engine.js';
 import { seedShowcase } from './showcase.js';
+import { seedManualScenario } from './manual-scenario.js';
 
 const PUBLIC_KEY = 'SYNTHETIC-PRODUCT-PUBLIC-KEY';
 const SERVICE_KEY = 'SYNTHETIC-PRODUCT-SERVICE-KEY';
@@ -23,7 +24,7 @@ registerHooks({ resolve(specifier, context, next) {
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
 const rpcs = new Set(['recalculate_project_atomic','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','upload_intake_contract',
-  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic']);
+  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2']);
 const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
 let registering = '', baseUrl = '', flow, server, fault = null, previewConfig, dbQueue = Promise.resolve();
@@ -135,6 +136,16 @@ async function rpc(request,name) {
   });
 }
 async function storageRead(request,url){
+  if(request.method==='DELETE'&&workerData.scenario==='manual-transcription'){
+    const match=url.pathname.match(/^\/storage\/v1\/object\/([^/]+)$/),body=await request.json();
+    if(!match||!Array.isArray(body.prefixes)||!body.prefixes.length||body.prefixes.length>10||body.prefixes.some(value=>typeof value!=='string'))return json({message:'Unsupported synthetic delete request'},400);
+    const bucket=decodeURIComponent(match[1]);
+    return database(request,async()=>{
+      const removed=(await flow.db.query('delete from storage.objects where bucket_id=$1 and name=any($2::text[]) returning id,bucket_id,name',[bucket,body.prefixes])).rows;
+      for(const row of removed)originals.delete(row.bucket_id+'/'+row.name);
+      return json(removed);
+    });
+  }
   if(request.method!=='GET')return json({message:'Synthetic showcase Storage is read-only; upload/delete are not implemented'},405);
   if(url.pathname.startsWith('/storage/v1/object/public/'))return json({message:'Public originals are not available'},404);
   const match=url.pathname.match(/^\/storage\/v1\/object\/(?:authenticated\/)?([^/]+)\/(.+)$/);
@@ -189,7 +200,7 @@ async function dispatchInner(request) {
 
 try {
   flow=await createLocalWorkflow(); // Initialization only. No lab receive/review/calculate/snapshot is called.
-  const scope={...flow.scope,otherOrganizationId:randomUUID(),otherProjectId:randomUUID(),viewerId:randomUUID(),outsiderId:randomUUID(),otherOwnerId:randomUUID(),...(workerData.scenario==='showcase'?{aOwnerId:randomUUID()}: {})};
+  const scope={...flow.scope,otherOrganizationId:randomUUID(),otherProjectId:randomUUID(),viewerId:randomUUID(),outsiderId:randomUUID(),otherOwnerId:randomUUID(),...(workerData.scenario!=='manual'?{aOwnerId:randomUUID()}: {})};
   await flow.db.query("update organizations set env='staging',is_test=true where id=$1",[scope.organizationId]);
   await flow.db.query("update projects set env='staging',is_test=true where id=$1",[scope.projectId]);
   await flow.db.query("update organization_members set role='owner' where organization_id=$1 and user_id=$2",[scope.organizationId,scope.userId]);
@@ -219,9 +230,10 @@ try {
   const localFetch=globalThis.fetch;
   globalThis.fetch=(input,init)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url);if(target.origin!==baseUrl)throw new Error('Outbound fetch outside this dedicated synthetic API is blocked');return localFetch(input,init);};
   previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario};
-  globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
-  for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot',...(workerData.scenario==='showcase'?['confirm-draft']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
+  globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
+  for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(workerData.scenario==='manual-transcription'?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
   if(workerData.scenario==='showcase')previewConfig.manifest=await seedShowcase({db:flow.db,baseUrl,scope,accounts,originals});
+  if(workerData.scenario==='manual-transcription')previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});
   parentPort.on('message',async message=>{try{
     let value;
     if(message.kind==='request'){const input=message.value,response=await dispatch(new Request(input.url,{method:input.method,headers:input.headers,...(['GET','HEAD'].includes(input.method)?{}:{body:input.body})}));value={status:response.status,headers:[...response.headers],body:response.body?await response.text():null};}

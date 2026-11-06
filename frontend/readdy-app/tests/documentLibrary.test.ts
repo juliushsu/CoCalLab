@@ -361,3 +361,9 @@ test('unsupported path, metadata scope mismatch and context changes stop before 
     assert.equal(deleteRequests(h).length,point==='row-delete'?2:point==='storage-delete'?1:0);
   }
 });
+
+test('pending manual transcription blocks original bytes deletion before any Storage call',async()=>{
+ for(const draft of [{id:DR,extraction_provider:'MANUAL_TRANSCRIPTION_NO_OCR'},{id:DR,raw_payload:{manual_transcription:{user_id:U}}}]){
+ const h=sdk({mutation:true,drafts:[draft]});await assert.rejects(removeScopedDocument(h.client,D,scope,U),/人工轉錄/);assert.equal(deleteRequests(h).length,0);
+ }
+});

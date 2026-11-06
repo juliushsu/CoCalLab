@@ -70,9 +70,13 @@ export function resolve_emission_factor({ activity, factors }) {
     };
   }
 
-  const best = eligible
+  const ranked = eligible
     .map((factor) => ({ factor, score: scoreFactor(activity, factor) }))
-    .sort((a, b) => b.score - a.score)[0].factor;
+    .sort((a, b) => b.score - a.score);
+  if(ranked.length>1&&ranked[0].score===ranked[1].score){
+    return {status:'pending_factor',factor:null,factor_snapshot:null,error_code:'FACTOR_AMBIGUOUS',warning:{zh_tw:'同順位係數不唯一，需人工確認；未任選係數或補零。',en:'Equally ranked factors are ambiguous; manual clarification is required.',ja:'同順位の係数が複数あり、人による確認が必要です。'}};
+  }
+  const best=ranked[0].factor;
 
   return {
     status: 'resolved',
