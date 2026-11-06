@@ -92,7 +92,7 @@ test('product HTTP: real RPC failure retries and committed report lost-response 
   const runtime=await createProductRuntime({port:0});
   try {
     const token=await login(runtime);await insertActivity(runtime,token);
-    await runtime.failNext({path:'/rest/v1/rpc/recalculate_project_atomic'});
+    await runtime.failNext({path:'/rest/v1/rpc/commit_recalculation_v2'});
     const failed=await api(runtime,'/functions/v1/recalculate-project',{method:'POST',token,body:operation(runtime)});
     assert.equal(failed.body.success,false);assert.equal((await rows(runtime,token,'calculation_results')).length,0);
     await calculate(runtime,token);

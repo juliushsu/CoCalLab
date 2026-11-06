@@ -31,7 +31,7 @@ test('showcase manifest uses fresh A/B real-handler results, and A-only/B-only/s
       const calc=await list(r,'calculation_results',token,filter(scope));assert.equal(calc.length,1);assert.equal(calc[0].co2e_kg,kg);assert.equal(calc[0].status,'calculated');assert.equal(calc[0].factor_snapshot.source_name,'SYNTHETIC TEST ONLY');
     }
     assert.deepEqual(await list(r,'report_generations',a,filter(f.b)),[]);
-    const forbidden=await call(r,'/functions/v1/recalculate-project',shared,{organization_id:f.b.organizationId,project_id:f.b.projectId,actor_user_id:r.scope.userId,force_recalculate:true},'POST');assert.equal(forbidden.status,403);
+    const forbidden=await call(r,'/functions/v1/recalculate-project',shared,{organization_id:f.b.organizationId,project_id:f.b.projectId,actor_user_id:r.scope.userId,force_recalculate:true,request_id:randomUUID()},'POST');assert.equal(forbidden.status,403);
   }finally{await r.close();}
 });
 

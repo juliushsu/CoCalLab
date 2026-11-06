@@ -87,12 +87,12 @@ export const CONFIRM_DRAFT_CONTRACT = {
 
 export const RECALCULATE_PROJECT_CONTRACT = {
   input: {
-    required: ['organization_id', 'project_id', 'actor_user_id', 'force_recalculate'],
-    optional: ['request_id'],
+    required: ['organization_id', 'project_id', 'actor_user_id', 'force_recalculate', 'request_id'],
+    optional: ['action', 'formula_version'],
   },
   output: {
-    required: ['project_id', 'processed_activities', 'calculated_count', 'pending_factor_count', 'excluded_count'],
-    optional: ['error_count'],
+    required: ['project_id', 'processed_activities', 'calculated_count', 'pending_factor_count', 'excluded_count', 'error_count', 'request_id', 'replayed', 'input_matches_current', 'results_are_latest', 'calculation_result_ids', 'operation_status'],
+    optional: [],
   },
 };
 
@@ -182,8 +182,12 @@ export function validateRecalculateProjectInput(input) {
   if (typeof input.force_recalculate !== 'boolean') {
     throw new Error('force_recalculate must be boolean');
   }
-  assertOptionalString(input.request_id, 'request_id');
-  return input;
+  if (typeof input.request_id !== 'string' || !input.request_id.trim() || input.request_id.length > 200) {
+    throw new Error('request_id must be a nonempty stable string of at most 200 characters');
+  }
+  if (input.action !== undefined && !['calculate','lookup'].includes(input.action)) throw new Error('action must be calculate or lookup');
+  if (input.formula_version !== undefined && (typeof input.formula_version !== 'string' || !input.formula_version.trim() || input.formula_version.length > 100)) throw new Error('formula_version must be a nonempty string');
+  return {...input,action:input.action || 'calculate',formula_version:input.formula_version || 'v1.0.0'};
 }
 
 export function validateGenerateReportInput(input) {
