@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import {resolveNavigationScope} from '../../../services/navigationScope';
+import {workflowHref} from '../../../services/workflowNavigation';
 import AdminLayout from '../../../components/layout/AdminLayout';
 import LoadingState from '../../../components/base/LoadingState';
 import { ErrorState } from '../../../components/base/ErrorState';
@@ -62,7 +64,10 @@ export default function ReportPreviewPage() {
   const [regenerateError, setRegenerateError] = useState<string | null>(null);
 
   // 訂閱狀態檢查
-  const organizationId = searchParams.get('organization_id') || undefined;
+  const scope=resolveNavigationScope('/admin/reports/'+reportId,searchParams.toString());
+  const organizationId='organizationId' in scope?scope.organizationId:undefined;
+  const projectId='projectId' in scope?scope.projectId:undefined;
+  const invalidScope=scope.kind==='invalid';
   const { status, isReadonly, reason, loading: statusLoading } = useSubscriptionStatus(organizationId);
 
   const loadSequence = useRef(0);
@@ -74,7 +79,13 @@ export default function ReportPreviewPage() {
       setReport(null); setSections([]); setStatistics(null);
       
       // 使用 reportService 取得資料（會自動處理 Supabase 連線狀態）
-      const { report, sections, statistics } = await getReportData(reportId || '');
+      if(invalidScope)throw new Error('組織／專案範圍不明確。');
+      const response = await getReportData(reportId || '',{organizationId,projectId});
+      const {report,sections,statistics}=response;
+      if(sequence!==loadSequence.current)return;
+      if((!organizationId||!projectId)&&'resolvedScope' in response&&response.resolvedScope?.organizationId){
+        navigate('/admin/reports/'+encodeURIComponent(reportId||'')+'?'+new URLSearchParams({organization_id:response.resolvedScope.organizationId,projectId:response.resolvedScope.projectId}),{replace:true});return;
+      }
       
       if (sequence !== loadSequence.current) return;
       setReport(report);
@@ -86,7 +97,7 @@ export default function ReportPreviewPage() {
     } finally {
       if (sequence === loadSequence.current) setLoading(false);
     }
-  }, [reportId, t]);
+  }, [reportId, t,organizationId,projectId,invalidScope,navigate]);
 
   useEffect(() => {
     void loadReportData();
@@ -324,7 +335,7 @@ export default function ReportPreviewPage() {
         <div className="flex items-center justify-between">
           <div>
             <button
-              onClick={() => navigate('/admin/reports/history')}
+              onClick={() => navigate(workflowHref('/admin/reports/history','/admin/reports/'+reportId,searchParams.toString(),organizationId||null)||'/admin/reports/history')}
               className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 mb-2"
             >
               <i className="ri-arrow-left-line"></i>
