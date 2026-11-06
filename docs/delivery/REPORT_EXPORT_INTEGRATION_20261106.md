@@ -19,3 +19,7 @@ CTO已明確回覆「核准方案A（本機開發／隔離測試）」。新expo
 Chrome合成頁已實際按HTML，顯示提出下載請求；download事件仍逾時，指定Downloads檔案不存在。**原生瀏覽器存檔UNVERIFIED**，未將前端提示或Node寫檔當瀏覽器保存成功。沒有反覆重試該橋接能力；保留測試檔案讀回證據與UI觸發的不同範圍。真Supabase/JWT/Storage、Deno、雲端、正式並行/撤權商用驗收NOT_RUN。
 
 發布HOLD、UAT7dccd545不變。這是來源候選，不代表Owner正式業務驗收、main合併或Production部署。M4 A繼續，不再以匯出待裁定阻擋；雲端/費用/外送仍停在授權邊界。
+
+## 補充整合證據（固定06bad08，匯出業務程式a868b2e未改）
+
+新版4199/4198已在原App走完MANUAL到保存報告並實際點HTML及JSON，server核對後UI顯示提出下載請求；截圖/DOM與同一真保存快照Node產檔連結見MANUAL_TRANSCRIPTION_DELIVERY_20261106.md。原生落盤仍UNVERIFIED，沒有把新截圖當已存檔證明。
