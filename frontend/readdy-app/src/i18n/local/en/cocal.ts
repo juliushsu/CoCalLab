@@ -367,6 +367,7 @@ export const cocal = {
       }
     },
     intake: {
+        serverHashVerified: "The server read the original bytes and saved SHA256 verification; this does not attest content truth, malware safety or compliance.",
       loading: 'Loading accessible intake projects',
       empty: 'No accessible intake project',
       emptyDescription: 'Check your organization and project access permissions, then reload.',
@@ -401,6 +402,7 @@ export const cocal = {
         reconciling: 'Reading back to verify saved status',
       },
       errors: {
+          legacy: "This legacy receipt has not been server-verified and will not be rewritten or upgraded automatically. Retain its ID for Owner review, or explicitly abandon the local reference before a new intake.",
         auth: 'Your session is invalid or expired. Sign in again, then check the status of this attempt.',
         scope: 'The organization or project scope is invalid or inaccessible. Please select it again.',
         read: 'Unable to read or verify intake data. Check your connection, sign-in status and project permissions, then reload.',

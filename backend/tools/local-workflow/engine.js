@@ -8,6 +8,7 @@ import {calculate_emission_activity} from '../../src/services/calculate-emission
 import {recalculate_project} from '../../src/services/recalculate-project.js';
 import {build_report_payload} from '../../src/services/build-report-payload.js';
 import {validateConfirmDraftInput} from '../../src/contracts/contracts.js';
+import {verifyStoredFile} from '../../../modules/file-verification/index.js';
 
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 function input(value,keys) {
@@ -96,14 +97,22 @@ export async function createLocalWorkflow({fault=async()=>{}}={}) {
       if(objects.has(path)){if(hash(objects.get(path))!==hash(bytes))throw new Error('ORIGINAL_MISMATCH');}
       else{
         await as('authenticated',()=>transaction(async()=>{
-          const probe=await rows('select * from upload_intake_contract($1)',[scope.projectId]);
-          if(probe[0]?.contract_version!=='20261102.2'||!probe[0]?.can_write)throw new Error('INTAKE_NOT_READY');
+          const probe=await rows('select * from upload_verification_contract($1)',[scope.projectId]);
+          if(probe[0]?.contract_version!=='20261106.hash.1'||!probe[0]?.can_verify)throw new Error('INTAKE_NOT_READY');
           await insert('storage.objects',{bucket_id:bucket,name:path,owner_id:scope.userId,metadata:{size:bytes.length,mimetype:'application/pdf'}});
         }));
         objects.set(path,Buffer.from(bytes));metrics.objectWrites++;
       }
       await fault('receipt-after-object');
-      if(!(await own('uploaded_documents')).length)await as('authenticated',()=>insert('uploaded_documents',{id:scope.documentId,organization_id:scope.organizationId,project_id:scope.projectId,uploaded_by_user_id:scope.userId,storage_bucket:bucket,storage_path:path,original_filename:'SYNTHETIC-LOCAL-ONLY.pdf',mime_type:'application/pdf',file_size_bytes:bytes.length,sha256_hash:hash(bytes),document_type:'receipt',ocr_status:'pending',status:'active',env:'staging',is_test:true,metadata:{intake_mode:'upload_only',synthetic:true}}));
+      if(!(await own('uploaded_documents')).length){
+        // Explicit lab server adapter: hash the actual synthetic in-memory bytes,
+        // then execute the same service-only reservation/completion SQL. No HTTP
+        // or real Storage/Auth verification is implied by this lab operation.
+        const intent={organization_id:scope.organizationId,project_id:scope.projectId,document_id:scope.documentId,request_id:scope.documentId,storage_bucket:bucket,storage_path:path,original_filename:'SYNTHETIC-LOCAL-ONLY.pdf',document_type:'receipt',file_size_bytes:bytes.length,mime_type:'application/pdf'};
+        await as('service_role',()=>rows('select * from begin_upload_verification($1,$2)',[scope.userId,intent]));
+        const actual=await verifyStoredFile({storage:{read:async()=>({body:objects.get(path),mimeType:'application/pdf',contentLength:bytes.length})},reference:{path},expected:{size:bytes.length,mimeType:'application/pdf'}});
+        await as('service_role',()=>rows('select * from complete_upload_verification($1,$2,$3,$4,$5,$6)',[scope.userId,scope.documentId,scope.documentId,actual.sha256,actual.size,actual.mimeType]));
+      }
       return state();
     }),
     review:(value={})=>serial(async()=>{

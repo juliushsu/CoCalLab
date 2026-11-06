@@ -266,6 +266,7 @@ export default function DocumentUploadPage() {
         {item.attempt && <div className="mt-2 break-all text-sm">
           <p>{t('documents.intake.reference')}: {(item.receipt?.attempt??item.attempt).documentId}</p>
           <p>{(item.receipt?.attempt??item.attempt).storageBucket}/{(item.receipt?.attempt??item.attempt).storagePath}</p>
+          {item.receipt?.verification&&<p className="mt-2 text-teal-800">{t('documents.intake.serverHashVerified')}</p>}
           {item.receipt?.recoveryReference&&<p>{t('documents.intake.alternateReceipt')}: {item.attempt.documentId} — {item.attempt.storagePath}</p>}
           <button type="button" onClick={() => saveReference(intakeReference(item.attempt!,item.receipt),item.attempt!.documentId)} className="mr-4 underline">{t('documents.intake.saveReference')}</button>
         </div>}

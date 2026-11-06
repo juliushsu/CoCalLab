@@ -3,7 +3,7 @@ import { Worker } from 'node:worker_threads';
 
 export async function createProductRuntime({ port = 4194, withFactor = true, scenario = 'manual', exportPolicy = 'tenant_write_v1' } = {}) {
   if(exportPolicy!==null&&exportPolicy!=='tenant_write_v1')throw new Error('Unknown synthetic export policy');
-  if(!['manual','showcase','manual-transcription'].includes(scenario))throw new Error('Unknown local product scenario');
+  if(!['manual','showcase','manual-transcription','verified-upload'].includes(scenario))throw new Error('Unknown local product scenario');
   if(!Number.isInteger(port)||port<0||port>65535)throw new Error('Invalid local product port');
   const worker = new Worker(new URL('./worker.js', import.meta.url), { workerData: { port, withFactor, scenario, exportPolicy }, execArgv: [] });
   let sequence = 0, ended = false;
@@ -25,7 +25,7 @@ export async function createProductRuntime({ port = 4194, withFactor = true, sce
     scope: info.scope, baseUrl: info.baseUrl, publicKey: info.publicKey, accounts: info.accounts,
     config: info.config,
     async handle(request) {
-      const body = ['GET', 'HEAD'].includes(request.method) ? undefined : await request.text();
+      const body = ['GET', 'HEAD'].includes(request.method) ? undefined : new Uint8Array(await request.arrayBuffer());
       const result = await command('request', { url: request.url, method: request.method, headers: [...request.headers], body });
       return new Response(result.body, { status: result.status, headers: result.headers });
     },

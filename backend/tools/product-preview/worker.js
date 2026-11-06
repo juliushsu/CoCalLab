@@ -24,9 +24,10 @@ registerHooks({ resolve(specifier, context, next) {
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
 const rpcs = new Set(['recalculate_project_atomic','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','upload_intake_contract',
-  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2']);
+  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification']);
 const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
+const storageMetrics={writes:0,reads:0};
 let registering = '', baseUrl = '', flow, server, fault = null, previewConfig, dbQueue = Promise.resolve();
 const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type':'application/json', ...headers } });
 // PostgreSQL numeric/int8 arrive as strings in PGlite; PostgREST emits JSON numbers.
@@ -136,7 +137,24 @@ async function rpc(request,name) {
   });
 }
 async function storageRead(request,url){
-  if(request.method==='DELETE'&&workerData.scenario==='manual-transcription'){
+  if(['POST','PUT'].includes(request.method)&&workerData.scenario==='verified-upload'){
+    const match=url.pathname.match(/^\/storage\/v1\/object\/([^/]+)\/(.+)$/);
+    if(!match||request.headers.get('x-upsert')==='true')return json({message:'Only exact non-upsert synthetic writes are supported'},409);
+    const bucket=decodeURIComponent(match[1]),path=decodeURIComponent(match[2]);let bytes,mime;
+    if((request.headers.get('content-type')||'').startsWith('multipart/form-data')){
+      const form=await request.formData(),files=[...form.values()].filter(value=>value instanceof Blob);
+      if(files.length!==1)return json({message:'One file part required'},400);mime=files[0].type;bytes=new Uint8Array(await files[0].arrayBuffer());
+    }else{mime=request.headers.get('content-type');bytes=new Uint8Array(await request.arrayBuffer());}
+    if(!bytes.length||bytes.length>10485760)return json({message:'Synthetic upload size invalid'},413);
+    return database(request,async()=>{
+      const user=actor(request).user;
+      const row=request.method==='POST'?(await flow.db.query('insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4) returning id',[bucket,path,user?.id||null,{size:bytes.length,mimetype:mime}])).rows[0]:(await flow.db.query('update storage.objects set metadata=$3 where bucket_id=$1 and name=$2 returning id',[bucket,path,{size:bytes.length,mimetype:mime}])).rows[0];
+      if(!row)return json({message:'Synthetic object write was not permitted'},403);
+      originals.set(bucket+'/'+path,{bytes,mime});storageMetrics.writes++;
+      return json({Key:bucket+'/'+path,Id:row.id},200);
+    });
+  }
+  if(request.method==='DELETE'&&['manual-transcription','verified-upload'].includes(workerData.scenario)){
     const match=url.pathname.match(/^\/storage\/v1\/object\/([^/]+)$/),body=await request.json();
     if(!match||!Array.isArray(body.prefixes)||!body.prefixes.length||body.prefixes.length>10||body.prefixes.some(value=>typeof value!=='string'))return json({message:'Unsupported synthetic delete request'},400);
     const bucket=decodeURIComponent(match[1]);
@@ -154,6 +172,7 @@ async function storageRead(request,url){
   return database(request,async()=>{
     const rows=(await flow.db.query('select bucket_id,name from storage.objects where bucket_id=$1 and name=$2',[bucket,path])).rows;
     const original=rows.length===1&&originals.get(bucket+'/'+path);
+    if(original)storageMetrics.reads++;
     return original?new Response(original.bytes,{headers:{'Content-Type':original.mime,'Content-Length':String(original.bytes.length),'Cache-Control':'no-store'}}):json({message:'Original does not exist or is inaccessible'},404);
   });
 }
@@ -167,7 +186,7 @@ async function dispatch(request) {
   const origin=request.headers.get('origin');
   if(origin&&!/^http:\/\/(?:127[.]0[.]0[.]1|localhost):\d+$/.test(origin))return json({message:'Only loopback preview origins are allowed'},403);
   const response=request.method==='OPTIONS'?new Response(null,{status:204}):await dispatchInner(request);
-  if(origin){response.headers.set('Access-Control-Allow-Origin',origin);response.headers.set('Vary','Origin');response.headers.set('Access-Control-Allow-Headers','authorization,apikey,content-type,prefer,x-client-info,x-request-id,x-correlation-id,range,range-unit');response.headers.set('Access-Control-Allow-Methods','GET,HEAD,POST,PATCH,DELETE,OPTIONS');response.headers.set('Access-Control-Expose-Headers','Content-Range');}
+  if(origin){response.headers.set('Access-Control-Allow-Origin',origin);response.headers.set('Vary','Origin');response.headers.set('Access-Control-Allow-Headers','authorization,apikey,content-type,prefer,x-client-info,x-request-id,x-correlation-id,range,range-unit,x-upsert,cache-control');response.headers.set('Access-Control-Allow-Methods','GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS');response.headers.set('Access-Control-Expose-Headers','Content-Range');}
   return response;
 }
 async function dispatchInner(request) {
@@ -192,7 +211,7 @@ async function dispatchInner(request) {
     if(functionName)response=handlers.has(functionName)?await handlers.get(functionName)(request):json({message:'No such product handler'},404);
     else if(rpcName)response=await rpc(request,rpcName);
     else if(table)response=await rest(request,url,table);
-    else if(url.pathname.startsWith('/storage/v1/'))response=originals.size?await storageRead(request,url):json({message:'No original file is seeded by the manual-activity fixture'},404);
+    else if(url.pathname.startsWith('/storage/v1/'))response=originals.size||workerData.scenario==='verified-upload'?await storageRead(request,url):json({message:'No original file is seeded by the manual-activity fixture'},404);
     else response=json({message:'Synthetic route unavailable'},404);
   } catch(error){response=json({code:error.code||'LOCAL_ADAPTER_ERROR',message:error.message,details:error.detail||null},400);}
   return armed?.phase==='afterCommit'?json({code:'SYNTHETIC_RESPONSE_LOST',message:'Synthetic failure after the database committed'},armed.status||503):response;
@@ -229,14 +248,15 @@ try {
   baseUrl='http://127.0.0.1:'+server.address().port;
   const localFetch=globalThis.fetch;
   globalThis.fetch=(input,init)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url);if(target.origin!==baseUrl)throw new Error('Outbound fetch outside this dedicated synthetic API is blocked');return localFetch(input,init);};
-  previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario};
-  globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
-  for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(workerData.scenario==='manual-transcription'?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
+  previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario,storageMetrics};
+  globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
+  for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot','verify-upload-receipt',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(workerData.scenario==='manual-transcription'?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
   if(workerData.scenario==='showcase')previewConfig.manifest=await seedShowcase({db:flow.db,baseUrl,scope,accounts,originals});
   if(workerData.scenario==='manual-transcription')previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});
+  if(workerData.scenario==='verified-upload')previewConfig.manifest={synthetic:true,scenario:'verified-upload',fixtures:{a:{organizationId:scope.organizationId,projectId:scope.projectId},b:{organizationId:scope.otherOrganizationId,projectId:scope.otherProjectId}},notRun:['real Supabase Auth/JWT/Storage','independent SQL connection lock-wait races','service-role maintenance attestation']};
   parentPort.on('message',async message=>{try{
     let value;
-    if(message.kind==='request'){const input=message.value,response=await dispatch(new Request(input.url,{method:input.method,headers:input.headers,...(['GET','HEAD'].includes(input.method)?{}:{body:input.body})}));value={status:response.status,headers:[...response.headers],body:response.body?await response.text():null};}
+    if(message.kind==='request'){const input=message.value,response=await dispatch(new Request(input.url,{method:input.method,headers:input.headers,...(['GET','HEAD'].includes(input.method)?{}:{body:input.body})}));value={status:response.status,headers:[...response.headers],body:response.body?new Uint8Array(await response.arrayBuffer()):null};}
     else if(message.kind==='fault'){fault=message.value;value=true;}
     else if(message.kind==='close'){await new Promise(resolve=>server.close(resolve));await dbQueue;await flow.close();value=true;}
     else throw new Error('Unknown worker command');

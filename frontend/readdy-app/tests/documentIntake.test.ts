@@ -17,7 +17,9 @@ const input = (staging = true, documentType = 'receipt') => ({ file: file(), sco
 const json = (data: unknown, status = 200, headers: Record<string, string> = {}) => new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json', ...headers } });
 type Row = Record<string, unknown>;
 interface Options {
-    deny?: 'auth' | 'contract' | 'duplicate' | 'storage';
+    deny?: 'auth' | 'contract' | 'duplicate' | 'storage' | 'verificationContract';
+    verificationContract?:unknown;
+    wrongProof?:boolean;
     contract?: unknown;
     mode?: 'reject' | 'lost' | 'lostSaved' | 'malformed';
     duplicate?: Row;
@@ -55,6 +57,9 @@ function sdk(options: Options = {}) {
                     assert.deepEqual(JSON.parse(String(init?.body)), { p_project_id: P });
                     return options.deny === 'contract' ? json({ code: 'PGRST202', message: 'contract not deployed' }, 404) : json(Object.hasOwn(options, 'contract') ? options.contract : [{ project_id: P, organization_id: O, contract_version: '20261102.2', can_write: true }]);
                 }
+                if(parsed.pathname==='/rest/v1/rpc/upload_verification_contract'){
+                    return options.deny==='verificationContract'?json({message:'hash contract absent'},404):json(Object.hasOwn(options,'verificationContract')?options.verificationContract:[{project_id:P,organization_id:O,contract_version:'20261106.hash.1',can_verify:true,max_bytes:10485760,client_receipt_insert:false}]);
+                }
                 if (parsed.pathname === '/rest/v1/projects')
                     return json(Object.hasOwn(options, 'projectBody') ? options.projectBody : [{ id: P, organization_id: O, name: 'Synthetic project', project_code: 'TEST' }], 200, { 'Content-Range': `0-0/${options.projectCount ?? 1}` });
                 if (parsed.pathname.startsWith('/storage/v1/object/')) {
@@ -86,26 +91,25 @@ function sdk(options: Options = {}) {
                             return json(state.saved ? [state.saved] : []);
                         if (options.deny === 'duplicate')
                             return json({ code: '42501', message: 'synthetic duplicate read failed' }, 403);
-                        return json(options.duplicate ? [options.duplicate] : []);
+                        assert.equal(parsed.searchParams.get('hash_verification_status'),'eq.server_verified');
+                        return json(options.duplicate?.hash_verification_status==='server_verified' ? [options.duplicate] : []);
                     }
-                    assert.equal(method, 'POST');
-                    const row = JSON.parse(String(init?.body)) as Row;
-                    assert.equal(row.storage_path, state.path);
-                    assert.equal(row.storage_bucket, state.bucket);
-                    assert.equal(row.uploaded_by_user_id, U);
-                    assert.equal(row.ocr_status, 'pending');
-                    assert.equal(row.status, 'active');
-                    assert.deepEqual(row.metadata, { intake_mode: 'upload_only' });
-                    if (options.mode === 'reject')
-                        return json({ code: '23505', message: 'synthetic row rejected' }, 409);
-                    if (options.mode === 'lost')
-                        throw new Error('synthetic network response lost');
-                    if (options.mode === 'malformed')
-                        return json({ ...row, organization_id: X });
-                    state.saved = row;
-                    if (options.mode === 'lostSaved')
-                        throw new Error('synthetic response lost AFTER commit');
-                    return json(row, 201);
+                    throw new Error('Direct receipt INSERT must not be used by the current client');
+                }
+                if(parsed.pathname==='/functions/v1/verify-upload-receipt'){
+                    assert.equal(method,'POST');
+                    const body=JSON.parse(String(init?.body));
+                    assert.equal(body.request_id,body.document_id);assert.equal(body.storage_path,state.path);assert.equal(body.storage_bucket,state.bucket);
+                    for(const forbidden of ['uploaded_by_user_id','sha256_hash','hash_verification_status','metadata','env','is_test'])assert.equal(forbidden in body,false);
+                    const sha=Buffer.from(await crypto.subtle.digest('SHA-256',await state.uploaded!.arrayBuffer())).toString('hex');
+                    const row:Row={id:body.document_id,organization_id:body.organization_id,project_id:body.project_id,uploaded_by_user_id:U,storage_bucket:body.storage_bucket,storage_path:body.storage_path,original_filename:body.original_filename,mime_type:body.mime_type,file_size_bytes:body.file_size_bytes,sha256_hash:sha,document_type:body.document_type,ocr_status:'pending',status:'active',env:body.storage_bucket==='documents'?'production':'staging',is_test:body.storage_bucket!=='documents',metadata:{intake_mode:'upload_only'},hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X};
+                    const envelope=(saved:Row)=>({success:true,data:{state:'verified',document_id:body.document_id,request_id:body.request_id,receipt:saved,server_proof:{contract_version:'20261106.hash.1',sha256_hash:sha,storage_object_id:options.wrongProof?D:X,verified_at:row.server_verified_at},duplicate_of_document_id:null}});
+                    if(options.mode==='reject')return json({success:false,error:{message:'server verification rejected'}},409);
+                    if(options.mode==='lost')throw new Error('synthetic response lost before commit');
+                    if(options.mode==='malformed')return json(envelope({...row,organization_id:X}));
+                    state.saved=row;
+                    if(options.mode==='lostSaved')throw new Error('synthetic response lost after server commit');
+                    return json(envelope(row));
                 }
                 throw new Error('Unexpected request: ' + method + ' ' + parsed.pathname);
             } },
@@ -114,7 +118,7 @@ function sdk(options: Options = {}) {
     journals.set(client, journal);
     return { client, state, calls, journal, memory };
 }
-const writes = (calls: ReturnType<typeof sdk>['calls']) => calls.filter(call => (call.method !== 'GET' && call.url.pathname.startsWith('/storage/')) || (call.url.pathname === '/rest/v1/uploaded_documents' && call.method === 'POST'));
+const writes = (calls: ReturnType<typeof sdk>['calls']) => calls.filter(call => (call.method !== 'GET' && call.url.pathname.startsWith('/storage/')) || (call.url.pathname === '/functions/v1/verify-upload-receipt' && call.method === 'POST'));
 test('installed SDK stores original bytes, a unique non-overwriting object, real SHA256 and verified receipt', async () => {
     const { client, state, calls } = sdk();
     const stages: string[] = [];
@@ -133,9 +137,11 @@ test('installed SDK stores original bytes, a unique non-overwriting object, real
     assert.deepEqual(stages, ['checking', 'uploading', 'recording']);
     assert.equal(writes(calls).length, 2);
     assert.deepEqual(journals.get(client)!.list(U, scope), []);
-    assert.ok(calls.every(call => !call.url.pathname.includes('/functions/')));
+    assert.ok(calls.filter(call=>call.url.pathname.includes('/functions/')).every(call=>call.url.pathname==='/functions/v1/verify-upload-receipt'));
+    assert.equal(calls.filter(call=>call.url.pathname==='/rest/v1/uploaded_documents'&&call.method==='POST').length,0);
+    assert.equal(result.verification.sha256Hash,hash);
 });
-test('production and staging attachments use the existing prefix and explicitly write both environment flags', async () => {
+test('production and staging attachments retain prefixes while the server derives environment flags', async () => {
     for (const [staging, type, bucket] of [[false, 'receipt', 'documents'], [true, 'invoice', 'staging-attachments']] as const) {
         const { client, state } = sdk();
         await runUpload(client, input(staging, type));
@@ -346,7 +352,7 @@ test('review S4: explicitly complete the original receipt after file-success/row
 test('review P3-c: another tab completed the same content; a local orphan must not mask the verified receipt',async()=>{
     const options:Options={mode:'reject'};const instance=sdk(options);
     await assert.rejects(runUpload(instance.client,input()),IntakeError);
-    options.duplicate={...instance.state.saved,id:D,organization_id:O,project_id:P,uploaded_by_user_id:X,storage_bucket:'staging-receipts',storage_path:`staging/${P}/legacy.pdf`,original_filename:'other.pdf',mime_type:'application/pdf',file_size_bytes:file().size,sha256_hash:instance.journal.list(U,scope)[0].sha256Hash,document_type:'invoice',ocr_status:'pending',status:'active',env:'staging',is_test:true};
+    options.duplicate={...instance.state.saved,hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X,id:D,organization_id:O,project_id:P,uploaded_by_user_id:X,storage_bucket:'staging-receipts',storage_path:`staging/${P}/legacy.pdf`,original_filename:'other.pdf',mime_type:'application/pdf',file_size_bytes:file().size,sha256_hash:instance.journal.list(U,scope)[0].sha256Hash,document_type:'invoice',ocr_status:'pending',status:'active',env:'staging',is_test:true};
     const receipt=await runUpload(instance.client,input());
     assert.equal(receipt.existing,true);assert.equal(receipt.attempt.documentId,D);
     assert.equal(writes(instance.calls).length,2);
@@ -411,7 +417,7 @@ test('review S4: already committed receipt is read first and completion lost res
     options.mode = 'lostSaved';
     const receipt = await intake.completeIntakeRegistration(instance.client, attempt, U, instance.journal, () => true);
     assert.equal(receipt.attempt.documentId, attempt.documentId);
-    assert.equal(writes(instance.calls).length, 3); // one object, initial rejected INSERT, successful INSERT with lost response
+    assert.equal(writes(instance.calls).length, 3); // one object, initial rejected verification, successful server commit with lost response
     const again = await intake.completeIntakeRegistration(instance.client, attempt, U, instance.journal, () => true);
     assert.equal(again.attempt.documentId, attempt.documentId);
     assert.equal(writes(instance.calls).length, 3);
@@ -427,7 +433,7 @@ test('review P3-c: receipt completed between first hash lookup and recovery look
     journals.set(instance.client, { ...journal, list(user, target) {
         if (!injected) {
             injected = true;
-            options.duplicate = { id: D, organization_id: O, project_id: P, uploaded_by_user_id: X, storage_bucket: 'staging-receipts', storage_path: `staging/${P}/${D}.pdf`, original_filename: 'other.pdf', mime_type: 'application/pdf', file_size_bytes: file().size, sha256_hash: attempt.sha256Hash, document_type: 'invoice', ocr_status: 'pending', status: 'active', env: 'staging', is_test: true };
+            options.duplicate = { hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X,id: D, organization_id: O, project_id: P, uploaded_by_user_id: X, storage_bucket: 'staging-receipts', storage_path: `staging/${P}/${D}.pdf`, original_filename: 'other.pdf', mime_type: 'application/pdf', file_size_bytes: file().size, sha256_hash: attempt.sha256Hash, document_type: 'invoice', ocr_status: 'pending', status: 'active', env: 'staging', is_test: true };
         }
         return journal.list(user, target);
     } });
@@ -454,4 +460,18 @@ test('review recovery: failed quarantine preserves the malformed entry and faile
     const noRemove = createIntakeRecovery({ ...base, get length() { return base.length; }, removeItem() {} });
     assert.throws(() => noRemove.discard(U, scope, attempt.documentId), /not removed/);
     assert.ok(instance.memory.has(`cocal-intake-recovery:v1:${U}:${attempt.documentId}`));
+});
+
+test('server verification capability is mandatory before bytes; a readable old contract does not authorize hash registration',async()=>{
+ for(const config of [{deny:'verificationContract' as const},{verificationContract:[]},{verificationContract:[{project_id:P,organization_id:O,contract_version:'old',can_verify:true,max_bytes:10485760,client_receipt_insert:false}]},{verificationContract:[{project_id:P,organization_id:O,contract_version:'20261106.hash.1',can_verify:true,max_bytes:10485760,client_receipt_insert:true}]}]){const h=sdk(config);await assert.rejects(runUpload(h.client,input()),IntakeError);assert.equal(writes(h.calls).length,0);}
+});
+test('legacy hash claims never masquerade as trusted duplicates or stop a new different-ID upload',async()=>{
+ const baseline=sdk();await runUpload(baseline.client,input());const legacy={...baseline.state.saved!,id:D,hash_verification_status:'legacy_unverified',server_verified_at:null,verified_storage_object_id:null};
+ const h=sdk({duplicate:legacy});const result=await runUpload(h.client,input());assert.equal(result.existing,false);assert.notEqual(result.attempt.documentId,D);assert.equal(writes(h.calls).length,2);assert.equal(result.verification.sha256Hash,legacy.sha256_hash);
+});
+
+test('an old same-ID receipt stays explicitly legacy and cannot be promoted by local recovery',async()=>{
+ const h=sdk({mode:'reject'});await assert.rejects(runUpload(h.client,input()),IntakeError);const attempt=h.journal.list(U,scope)[0];
+ const seed=sdk();await runUpload(seed.client,input());h.state.saved={...seed.state.saved!,id:attempt.documentId,storage_path:attempt.storagePath,hash_verification_status:'legacy_unverified',server_verified_at:null,verified_storage_object_id:null};
+ await assert.rejects(reconcileIntake(h.client,attempt),e=>e instanceof IntakeError&&e.code==='legacy');assert.equal(writes(h.calls).length,2);
 });

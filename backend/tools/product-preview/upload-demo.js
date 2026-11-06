@@ -1,0 +1,24 @@
+// LOCAL SYNTHETIC DEMO ONLY. Refuses every destination except this round's loopback API.
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {uploadIntake,intakeReference} from '../../../frontend/readdy-app/src/services/documentIntake.ts';
+import {createIntakeRecovery} from '../../../frontend/readdy-app/src/services/intakeRecovery.ts';
+const base='http://127.0.0.1:4200';
+const config=await (await fetch(base+'/__synthetic/config')).json();
+assert.equal(config.synthetic,true);assert.equal(config.scenario,'verified-upload');assert.equal(config.publicKey,'SYNTHETIC-PRODUCT-PUBLIC-KEY');
+const require=createRequire(new URL('../../../frontend/readdy-app/package.json',import.meta.url));
+const {createClient}=require('@supabase/supabase-js');
+const client=createClient(base,config.publicKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+const signed=await client.auth.signInWithPassword(config.accounts.aOwner);assert.equal(signed.error,null);
+const memory=new Map(),journal=createIntakeRecovery({getItem:k=>memory.get(k)??null,setItem:(k,v)=>memory.set(k,v),removeItem:k=>memory.delete(k)});
+const directory=new URL('../../../docs/delivery/evidence/server-attachment-hash-20261106/',import.meta.url);
+const bytes=await readFile(new URL('SYNTHETIC-LOCAL-HASH.pdf',directory));
+const input={file:new File([bytes],'SYNTHETIC-LOCAL-HASH.pdf',{type:'application/pdf'}),scope:{organizationId:config.scope.organizationId,projectId:config.scope.projectId},documentType:'receipt',staging:true,expectedUserId:config.scope.aOwnerId};
+const receipt=await uploadIntake(client,input,journal),again=await uploadIntake(client,input,journal);
+assert.equal(receipt.verification.sha256Hash,createHash('sha256').update(bytes).digest('hex'));assert.equal(again.attempt.documentId,receipt.attempt.documentId);
+const metrics=await (await fetch(base+'/__synthetic/config')).json();
+const evidence={synthetic:true,api:base,ui:'http://127.0.0.1:4201',observed_at:new Date().toISOString(),behavior:'actual installed SDK -> multipart private original -> checked-in server handler -> bounded server SHA -> SQL authority -> same content re-read without second upload',receipt:intakeReference(receipt.attempt,receipt),storage_metrics:metrics.storageMetrics,native_file_chooser:'BLOCKED: Chrome extension lacks Allow access to file URLs; no extension permission change',not_run:['real Supabase JWT/Storage/Deno','independent PostgreSQL SQL connection concurrency','cloud migration/deploy/backup/restore']};
+await mkdir(directory,{recursive:true});await writeFile(new URL('actual-sdk-receipt.json',directory),JSON.stringify(evidence,null,2)+'\n');
+console.log(JSON.stringify({document_id:receipt.attempt.documentId,sha256:receipt.verification.sha256Hash,verified:true,duplicate_reused:again.attempt.documentId===receipt.attempt.documentId,storage_metrics:metrics.storageMetrics,document_url:'http://127.0.0.1:4201/admin/documents/list?'+new URLSearchParams({...input.scope,organization_id:input.scope.organizationId,project_id:input.scope.projectId,document:receipt.attempt.documentId})},null,2));
