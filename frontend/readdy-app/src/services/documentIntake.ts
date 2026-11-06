@@ -37,7 +37,7 @@ export interface IntakeReceipt {
 }
 export type IntakeStage = 'checking' | 'uploading' | 'recording' | 'reconciling';
 export class IntakeError extends Error {
-    code: 'auth' | 'scope' | 'read' | 'readonly' | 'file' | 'duplicate' | 'upload' | 'uncertain' | 'context' | 'recovery' | 'legacy';
+    code: 'auth' | 'scope' | 'read' | 'readonly' | 'file' | 'duplicate' | 'upload' | 'uncertain' | 'context' | 'recovery' | 'legacy' | 'deleting' | 'deleted';
     attempt?: IntakeAttempt;
     constructor(code: IntakeError['code'], attempt?: IntakeAttempt, options?: ErrorOptions) {
         super(code, options);
@@ -112,9 +112,9 @@ function compatiblePath(bucket: string, path: string, projectId: string): boolea
     return bucket === 'documents' ? parts.length === 2 && canonicalUuid(parts[0]) === projectId :
         ['staging-receipts', 'staging-attachments'].includes(bucket) && parts.length === 3 && parts[0] === 'staging' && canonicalUuid(parts[1]) === projectId;
 }
-const receiptColumns = 'id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test,hash_verification_status,server_verified_at,verified_storage_object_id';
+const receiptColumns = 'id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test,hash_verification_status,server_verified_at,verified_storage_object_id,deletion_state,deletion_request_id,deleted_at';
 function receiptRow(row: unknown, expected: IntakeAttempt, existing = false, recovered = false): IntakeReceipt {
-    if (!record(row) || row.hash_verification_status!=='server_verified'||typeof row.server_verified_at!=='string'||!Number.isFinite(Date.parse(row.server_verified_at))||!canonicalUuid(row.verified_storage_object_id)||uuid(row.organization_id) !== expected.organizationId || uuid(row.project_id) !== expected.projectId ||
+    if (!record(row) || row.hash_verification_status!=='server_verified'||row.deletion_state!=='active'||typeof row.server_verified_at!=='string'||!Number.isFinite(Date.parse(row.server_verified_at))||!canonicalUuid(row.verified_storage_object_id)||uuid(row.organization_id) !== expected.organizationId || uuid(row.project_id) !== expected.projectId ||
         row.sha256_hash !== expected.sha256Hash || row.status !== 'active' || row.env !== expected.environment || row.is_test !== expected.isTest ||
         typeof row.storage_bucket !== 'string' || typeof row.storage_path !== 'string' || !compatiblePath(row.storage_bucket, row.storage_path, expected.projectId) ||
         (expected.isTest ? !['staging-receipts', 'staging-attachments'].includes(row.storage_bucket) : row.storage_bucket !== 'documents') ||
@@ -164,7 +164,7 @@ function clearReference(journal:IntakeRecovery|undefined,attempt:IntakeAttempt) 
 }
 async function existingByHash(client:SupabaseClient,attempt:IntakeAttempt,isCurrent:()=>boolean):Promise<IntakeReceipt|null> {
     current(isCurrent,attempt);
-    const response=await client.from('uploaded_documents').select(receiptColumns).eq('organization_id',attempt.organizationId).eq('project_id',attempt.projectId).eq('sha256_hash',attempt.sha256Hash).eq('hash_verification_status','server_verified').maybeSingle();
+    const response=await client.from('uploaded_documents').select(receiptColumns).eq('organization_id',attempt.organizationId).eq('project_id',attempt.projectId).eq('sha256_hash',attempt.sha256Hash).eq('hash_verification_status','server_verified').eq('deletion_state','active').maybeSingle();
     current(isCurrent,attempt);
     if(response.error)throw new IntakeError('read',attempt,{cause:response.error});
     if(response.data===null)return null;
@@ -178,7 +178,7 @@ export async function reconcileIntake(client:SupabaseClient,attempt:IntakeAttemp
     current(isCurrent,attempt);
     if(response.error)throw new IntakeError('uncertain',attempt,{cause:response.error});
     if(response.data!==null){
-        const row=response.data;if(record(row)&&row.id===attempt.documentId&&row.organization_id===attempt.organizationId&&row.project_id===attempt.projectId&&row.hash_verification_status==='legacy_unverified')throw new IntakeError('legacy',attempt);
+        const row=response.data;if(record(row)&&row.id===attempt.documentId&&row.organization_id===attempt.organizationId&&row.project_id===attempt.projectId&&['pending','deleted'].includes(String(row.deletion_state)))throw new IntakeError(row.deletion_state==='deleted'?'deleted':'deleting',attempt);if(record(row)&&row.id===attempt.documentId&&row.organization_id===attempt.organizationId&&row.project_id===attempt.projectId&&row.hash_verification_status==='legacy_unverified')throw new IntakeError('legacy',attempt);
         const receipt=receiptRow(response.data,attempt,false,true);await verifyOriginal(client,receipt,isCurrent);clearReference(journal,attempt);return receipt;
     }
     const other=await existingByHash(client,attempt,isCurrent);
@@ -200,7 +200,7 @@ async function registerReceipt(client:SupabaseClient,attempt:IntakeAttempt,journ
   clearReference(journal,attempt);return receipt;
  }catch(cause){
   current(isCurrent,attempt);onStage('reconciling');
-  try{const recovered=await reconcileIntake(client,attempt,isCurrent,journal);if(recovered)return recovered;}catch(error){if(error instanceof IntakeError&&(error.code==='context'||error.code==='legacy'))throw error;}
+  try{const recovered=await reconcileIntake(client,attempt,isCurrent,journal);if(recovered)return recovered;}catch(error){if(error instanceof IntakeError&&(error.code==='context'||error.code==='legacy'||error.code==='deleting'||error.code==='deleted'))throw error;}
   throw new IntakeError('uncertain',attempt,{cause});
  }
 }

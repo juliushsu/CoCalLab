@@ -91,8 +91,8 @@ function sdk(options: Options = {}) {
                             return json(state.saved ? [state.saved] : []);
                         if (options.deny === 'duplicate')
                             return json({ code: '42501', message: 'synthetic duplicate read failed' }, 403);
-                        assert.equal(parsed.searchParams.get('hash_verification_status'),'eq.server_verified');
-                        return json(options.duplicate?.hash_verification_status==='server_verified' ? [options.duplicate] : []);
+                        assert.equal(parsed.searchParams.get('hash_verification_status'),'eq.server_verified');assert.equal(parsed.searchParams.get('deletion_state'),'eq.active');
+                        return json(options.duplicate?.hash_verification_status==='server_verified'&&options.duplicate?.deletion_state==='active' ? [options.duplicate] : []);
                     }
                     throw new Error('Direct receipt INSERT must not be used by the current client');
                 }
@@ -102,7 +102,7 @@ function sdk(options: Options = {}) {
                     assert.equal(body.request_id,body.document_id);assert.equal(body.storage_path,state.path);assert.equal(body.storage_bucket,state.bucket);
                     for(const forbidden of ['uploaded_by_user_id','sha256_hash','hash_verification_status','metadata','env','is_test'])assert.equal(forbidden in body,false);
                     const sha=Buffer.from(await crypto.subtle.digest('SHA-256',await state.uploaded!.arrayBuffer())).toString('hex');
-                    const row:Row={id:body.document_id,organization_id:body.organization_id,project_id:body.project_id,uploaded_by_user_id:U,storage_bucket:body.storage_bucket,storage_path:body.storage_path,original_filename:body.original_filename,mime_type:body.mime_type,file_size_bytes:body.file_size_bytes,sha256_hash:sha,document_type:body.document_type,ocr_status:'pending',status:'active',env:body.storage_bucket==='documents'?'production':'staging',is_test:body.storage_bucket!=='documents',metadata:{intake_mode:'upload_only'},hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X};
+                    const row:Row={id:body.document_id,organization_id:body.organization_id,project_id:body.project_id,uploaded_by_user_id:U,storage_bucket:body.storage_bucket,storage_path:body.storage_path,original_filename:body.original_filename,mime_type:body.mime_type,file_size_bytes:body.file_size_bytes,sha256_hash:sha,document_type:body.document_type,ocr_status:'pending',status:'active',env:body.storage_bucket==='documents'?'production':'staging',is_test:body.storage_bucket!=='documents',metadata:{intake_mode:'upload_only'},deletion_state:'active',hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X};
                     const envelope=(saved:Row)=>({success:true,data:{state:'verified',document_id:body.document_id,request_id:body.request_id,receipt:saved,server_proof:{contract_version:'20261106.hash.1',sha256_hash:sha,storage_object_id:options.wrongProof?D:X,verified_at:row.server_verified_at},duplicate_of_document_id:null}});
                     if(options.mode==='reject')return json({success:false,error:{message:'server verification rejected'}},409);
                     if(options.mode==='lost')throw new Error('synthetic response lost before commit');
@@ -352,7 +352,7 @@ test('review S4: explicitly complete the original receipt after file-success/row
 test('review P3-c: another tab completed the same content; a local orphan must not mask the verified receipt',async()=>{
     const options:Options={mode:'reject'};const instance=sdk(options);
     await assert.rejects(runUpload(instance.client,input()),IntakeError);
-    options.duplicate={...instance.state.saved,hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X,id:D,organization_id:O,project_id:P,uploaded_by_user_id:X,storage_bucket:'staging-receipts',storage_path:`staging/${P}/legacy.pdf`,original_filename:'other.pdf',mime_type:'application/pdf',file_size_bytes:file().size,sha256_hash:instance.journal.list(U,scope)[0].sha256Hash,document_type:'invoice',ocr_status:'pending',status:'active',env:'staging',is_test:true};
+    options.duplicate={...instance.state.saved,deletion_state:'active',hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X,id:D,organization_id:O,project_id:P,uploaded_by_user_id:X,storage_bucket:'staging-receipts',storage_path:`staging/${P}/legacy.pdf`,original_filename:'other.pdf',mime_type:'application/pdf',file_size_bytes:file().size,sha256_hash:instance.journal.list(U,scope)[0].sha256Hash,document_type:'invoice',ocr_status:'pending',status:'active',env:'staging',is_test:true};
     const receipt=await runUpload(instance.client,input());
     assert.equal(receipt.existing,true);assert.equal(receipt.attempt.documentId,D);
     assert.equal(writes(instance.calls).length,2);
@@ -433,7 +433,7 @@ test('review P3-c: receipt completed between first hash lookup and recovery look
     journals.set(instance.client, { ...journal, list(user, target) {
         if (!injected) {
             injected = true;
-            options.duplicate = { hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X,id: D, organization_id: O, project_id: P, uploaded_by_user_id: X, storage_bucket: 'staging-receipts', storage_path: `staging/${P}/${D}.pdf`, original_filename: 'other.pdf', mime_type: 'application/pdf', file_size_bytes: file().size, sha256_hash: attempt.sha256Hash, document_type: 'invoice', ocr_status: 'pending', status: 'active', env: 'staging', is_test: true };
+            options.duplicate = { deletion_state:'active',hash_verification_status:'server_verified',server_verified_at:'2026-11-06T01:00:00Z',verified_storage_object_id:X,id: D, organization_id: O, project_id: P, uploaded_by_user_id: X, storage_bucket: 'staging-receipts', storage_path: `staging/${P}/${D}.pdf`, original_filename: 'other.pdf', mime_type: 'application/pdf', file_size_bytes: file().size, sha256_hash: attempt.sha256Hash, document_type: 'invoice', ocr_status: 'pending', status: 'active', env: 'staging', is_test: true };
         }
         return journal.list(user, target);
     } });
@@ -474,4 +474,8 @@ test('an old same-ID receipt stays explicitly legacy and cannot be promoted by l
  const h=sdk({mode:'reject'});await assert.rejects(runUpload(h.client,input()),IntakeError);const attempt=h.journal.list(U,scope)[0];
  const seed=sdk();await runUpload(seed.client,input());h.state.saved={...seed.state.saved!,id:attempt.documentId,storage_path:attempt.storagePath,hash_verification_status:'legacy_unverified',server_verified_at:null,verified_storage_object_id:null};
  await assert.rejects(reconcileIntake(h.client,attempt),e=>e instanceof IntakeError&&e.code==='legacy');assert.equal(writes(h.calls).length,2);
+});
+
+test('pending or deleted same-ID receipts cannot be restored as active intake or trigger another byte upload',async()=>{
+ for(const deletion_state of ['pending','deleted']){const h=sdk({mode:'reject'});await assert.rejects(runUpload(h.client,input()),e=>e instanceof IntakeError&&e.code==='uncertain');const attempt=h.journal.list(U,scope)[0],seed=sdk();await runUpload(seed.client,input());h.state.saved={...seed.state.saved!,id:attempt.documentId,storage_path:attempt.storagePath,deletion_state,deletion_request_id:X,deleted_at:deletion_state==='deleted'?'2026-11-06T00:00:00Z':null};const before=h.calls.filter(c=>c.url.pathname==='/functions/v1/verify-upload-receipt').length;await assert.rejects(intake.completeIntakeRegistration(h.client,attempt,U,h.journal),e=>e instanceof IntakeError&&e.code===(deletion_state==='deleted'?'deleted':'deleting'));assert.equal(h.calls.filter(c=>c.url.pathname.startsWith('/storage/')&&c.method==='POST').length,1);assert.equal(h.calls.filter(c=>c.url.pathname==='/functions/v1/verify-upload-receipt').length,before);}
 });

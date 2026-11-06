@@ -1,6 +1,6 @@
 import {verifyStoredFile} from '../../../modules/file-verification/index.js';
 export const UPLOAD_VERIFICATION_VERSION='20261106.hash.1';
-export const VERIFIED_RECEIPT_FIELDS=['id','organization_id','project_id','uploaded_by_user_id','storage_bucket','storage_path','original_filename','mime_type','file_size_bytes','sha256_hash','document_type','ocr_status','status','env','is_test','created_at','received_date','hash_verification_status','server_verified_at','verified_storage_object_id'];
+export const VERIFIED_RECEIPT_FIELDS=['id','organization_id','project_id','uploaded_by_user_id','storage_bucket','storage_path','original_filename','mime_type','file_size_bytes','sha256_hash','document_type','ocr_status','status','env','is_test','created_at','received_date','hash_verification_status','server_verified_at','verified_storage_object_id','deletion_state','deleted_at','deletion_request_id'];
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const error=(code,status=409)=>Object.assign(new Error(code),{code,status});
 const uuid=(value,name)=>{if(typeof value!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value))throw error('INVALID_'+name.toUpperCase(),400);return value.toLowerCase();};

@@ -8,18 +8,20 @@ import EmptyState from '../../../components/base/EmptyState';
 import ConfirmDialog from '../../../components/base/ConfirmDialog';
 import { useAuth } from '../../../hooks/useAuth';
 import { currentSession, resolveNavigationScope } from '../../../services/navigationScope';
-import { getUploadProjects, getUploadAccess, uploadDocument, recheckUploadReceipt, getIntakeRecovery, completeUploadReceipt, discardUploadReference, intakeQuarantinedCount } from '../../../services/documentService';
+import { getUploadProjects, getUploadAccess, uploadDocument, recheckUploadReceipt, getIntakeRecovery, completeUploadReceipt, discardUploadReference, intakeQuarantinedCount,cleanupUploadOriginal,forgetUploadDeletionReference } from '../../../services/documentService';
 import { IntakeError, intakeReference, type IntakeAttempt, type IntakeProject, type IntakeReceipt, type IntakeStage } from '../../../services/documentIntake';
+import type {DocumentDeletionResult} from '../../../services/documentDeletion';
 import { IS_STAGING } from '../../../utils/staging';
 import type { DocumentType } from '../../../types/document';
 interface QueueFile {
     id: string;
     file?: File;
-    status: 'pending' | 'working' | 'received' | 'existing' | 'failed' | 'unknown';
+    status: 'pending' | 'working' | 'received' | 'existing' | 'failed' | 'unknown' | 'cleaned';
     stage?: IntakeStage;
     error?: string;
     attempt?: IntakeAttempt;
     receipt?: IntakeReceipt;
+    deletion?:DocumentDeletionResult;
 }
 function saveReference(value: unknown, id: string) {
     const url = URL.createObjectURL(new Blob([JSON.stringify(value, null, 2)], { type: 'application/json' }));
@@ -58,6 +60,7 @@ export default function DocumentUploadPage() {
     const [accessRetry, setAccessRetry] = useState(0);
     const [recoveryError, setRecoveryError] = useState(false);
     const [quarantined,setQuarantined]=useState(0);
+    const [cleaning,setCleaning]=useState<QueueFile|null>(null);
     const [discarding,setDiscarding]=useState<QueueFile|null>(null);
     const project = projects.find(row => row.id === projectId);
     const canUpload = loadedRoute === route && !authLoading && currentSession(session) && access?.view === view && access.allowed && !recoveryError;
@@ -67,7 +70,7 @@ export default function DocumentUploadPage() {
         setFiles([]);
         setProcessing(false);
         setRecoveryError(false);
-        setQuarantined(0);setDiscarding(null);
+        setQuarantined(0);setDiscarding(null);setCleaning(null);
         return () => { if (currentView.current === view)
             currentView.current = null; };
     }, [view]);
@@ -194,6 +197,18 @@ export default function DocumentUploadPage() {
             }
         }
     };
+    const cleanOriginal=async(item:QueueFile,lookupOnly=false)=>{
+        if(!item.attempt||!project||busy.current||!canUpload)return;const captured=view,isCurrent=()=>currentView.current===captured&&isAuthenticationCurrent(captured.route.authEpoch,captured.route.userId);
+        busy.current=true;setProcessing(true);
+        try{const result=await cleanupUploadOriginal(item.attempt,captured.route.userId,isCurrent,lookupOnly);if(!isCurrent())return;
+          setFiles(rows=>rows.map(row=>row.id!==item.id?row:result?.operation_status==='deleted'?{...row,status:'cleaned',deletion:result,error:undefined}:{...row,deletion:result??undefined,error:'deleteUnconfirmed'}));
+        }catch(cause){if(!isCurrent())return;
+          if(cause&&typeof cause==='object'&&'code' in cause&&cause.code==='RECEIPT_ALREADY_REGISTERED'){
+            try{const receipt=await recheckUploadReceipt(item.attempt,isCurrent);if(isCurrent()&&receipt&&!receipt.recoveryReference){setFiles(rows=>rows.map(row=>row.id===item.id?{...row,status:receipt.existing?'existing':'received',receipt,attempt:receipt.attempt,error:undefined}:row));return;}}catch{/* keep uncertain, never use a mock receipt */}
+          }
+          if(isCurrent())setFiles(rows=>rows.map(row=>row.id===item.id?{...row,error:'deleteUnconfirmed'}:row));
+        }finally{if(currentView.current===captured){busy.current=false;setProcessing(false);setCleaning(null);}}
+    };
     const discard=()=>{
         if(!discarding?.attempt||!project||busy.current||!isAuthenticationCurrent(route.authEpoch,route.userId))return;
         try{
@@ -261,7 +276,7 @@ export default function DocumentUploadPage() {
       <p role="status">{t('documents.intake.summary', { received, total: files.length })}</p>
       <ul className="divide-y">{files.map(item => <li key={item.id} className="py-4">
         <p className="font-medium">{item.file?.name || item.attempt?.originalFilename} ({(item.file?.size ?? item.attempt?.fileSize ?? 0).toLocaleString(i18n.resolvedLanguage || i18n.language)} bytes)</p>
-        <p role="status">{t(`documents.intake.states.${item.stage || item.status}`)}</p>
+        <p role="status">{item.status==='cleaned'?t('documents.deletion.cleaned'):t(`documents.intake.states.${item.stage || item.status}`)}</p>
         {item.error && <p role="alert" className="text-red-700">{t(`documents.intake.errors.${item.error}`)}</p>}
         {item.attempt && <div className="mt-2 break-all text-sm">
           <p>{t('documents.intake.reference')}: {(item.receipt?.attempt??item.attempt).documentId}</p>
@@ -273,10 +288,13 @@ export default function DocumentUploadPage() {
         {item.status === 'unknown' && <button type="button" onClick={() => void recheck(item)} disabled={processing} className="mt-2 underline disabled:opacity-50">{t('documents.intake.recheck')}</button>}
         {item.status==='unknown'&&<button type="button" onClick={()=>void recheck(item,true)} disabled={processing||!canUpload} className="ml-4 mt-2 underline disabled:opacity-50">{t('documents.intake.completeRegistration')}</button>}
         {(item.status==='unknown'||item.receipt?.recoveryReference)&&<button type="button" onClick={()=>setDiscarding(item)} disabled={processing} className="ml-4 mt-2 underline">{t('documents.intake.discardReference')}</button>}
+        {(item.status==='unknown'||item.receipt?.recoveryReference)&&<><button type="button" onClick={()=>setCleaning(item)} disabled={processing||!canUpload} className="ml-4 mt-2 underline">{t('documents.deletion.orphanCleanup')}</button><button type="button" onClick={()=>void cleanOriginal(item,true)} disabled={processing||!canUpload} className="ml-4 mt-2 underline">{t('documents.deletion.orphanLookup')}</button><button type="button" onClick={()=>{if(!item.attempt||processing||!isAuthenticationCurrent(route.authEpoch,route.userId))return;try{forgetUploadDeletionReference(item.attempt,route.userId);setFiles(rows=>rows.map(row=>row.id===item.id?{...row,error:undefined}:row));}catch{setFiles(rows=>rows.map(row=>row.id===item.id?{...row,error:'deleteUnconfirmed'}:row));}}} disabled={processing} title={t('documents.deletion.clearMessage')} className="ml-4 mt-2 underline">{t('documents.deletion.clearReference')}</button><p className="mt-2 text-sm text-gray-600">{t('documents.deletion.clearMessage')} {t('documents.deletion.locateHint')}</p></>}
+        {item.deletion&&<p role="status" className="mt-2 break-all">{t(item.deletion.operation_status==='deleted'?(item.deletion.receipt_present?'documents.deletion.completed':'documents.deletion.completedWithoutReceipt'):item.deletion.operation_status==='pending'?'documents.deletion.pending':'documents.deletion.notFound')} · {item.deletion.request_id}</p>}
         {['pending', 'failed'].includes(item.status) && <button type="button" onClick={() => setFiles(rows => rows.filter(row => row.id !== item.id))} disabled={processing} className="mt-2 underline">{t('common.cancel')}</button>}
       </li>)}</ul>
       <button type="button" onClick={() => void upload()} disabled={!canUpload || processing || !files.some(row => row.status === 'pending')} className="mt-4 rounded bg-teal-700 px-4 py-2 text-white disabled:bg-gray-400">{processing ? t('documents.intake.working') : t('common.upload')}</button>
     </div>}
+    {cleaning&&<ConfirmDialog open title={t('documents.deletion.orphanCleanup')} message={t('documents.deletion.orphanConfirm')} confirmLabel={t('documents.deletion.orphanCleanup')} onConfirm={()=>void cleanOriginal(cleaning)} onCancel={()=>setCleaning(null)} isProcessing={processing}/>}
     {discarding&&<ConfirmDialog open title={t('documents.intake.discardReference')} message={t('documents.intake.discardMessage')} confirmLabel={t('documents.intake.discardConfirm')} onConfirm={discard} onCancel={()=>setDiscarding(null)}><button type="button" onClick={()=>discarding.attempt&&saveReference(intakeReference(discarding.attempt,discarding.receipt),discarding.attempt.documentId)} className="underline">{t('documents.intake.saveReference')}</button></ConfirmDialog>}
   </AdminLayout>;
 }

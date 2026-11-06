@@ -36,6 +36,9 @@ export interface UploadedDocument {
   hash_verification_status?:'legacy_unverified'|'server_verified';
   server_verified_at?:string|null;
   verified_storage_object_id?:string|null;
+  deletion_state?:'active'|'pending'|'deleted';
+  deletion_request_id?:string|null;
+  deleted_at?:string|null;
   document_type: DocumentType;
   ocr_status: OcrStatus;
   status: UploadStatus;

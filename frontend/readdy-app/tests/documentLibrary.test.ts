@@ -126,6 +126,7 @@ function sdk(options:HarnessOptions={}){
 const code=(expected:string)=>(error:unknown)=>Boolean(error&&typeof error==='object'&&'code'in error&&error.code===expected);
 const documentRequests=(h:ReturnType<typeof sdk>)=>h.requests.filter(r=>r.url.pathname==='/rest/v1/uploaded_documents');
 const storageRequests=(h:ReturnType<typeof sdk>)=>h.requests.filter(r=>r.url.pathname.startsWith('/storage/'));
+const deleteRequests=(h:ReturnType<typeof sdk>)=>h.requests.filter(r=>r.method==='DELETE');
 
 test('library query parsing preserves agreeing aliases and exact document UUID, rejecting conflicting or malformed scope',()=>{
   assert.deepEqual(parseLibrarySelection(`organizationId=${O}&organization_id=${O}&project_id=${P}&projectId=${P}&document=${D}`),{...scope,documentId:D});
@@ -233,12 +234,12 @@ test('legacy URL metacharacters and control bytes are unavailable while safe Chi
     const row={...document(),storage_path:`staging/${P}/legacy${bad}.pdf`};
     const list=sdk({documents:[row]});assert.equal((await readDocumentLibrary(list.client,scope,U))[0].privatePathSupported,false);
     const read=sdk({documents:[row]});await assert.rejects(readPrivateOriginal(read.client,D,scope,U),code('path'));assert.equal(storageRequests(read).length,0);
-    const remove=sdk({mutation:true,documents:[row]});await assert.rejects(removeScopedDocument(remove.client,D,scope,U),code('path'));assert.equal(deleteRequests(remove).length,0);
+    const remove=sdk({mutation:true,documents:[row]});await assert.rejects(removeScopedDocument(remove.client,D,scope,U,()=>true,{documentId:D,requestId:D2,storageBucket:row.storage_bucket,storagePath:row.storage_path}),code('path'));assert.equal(deleteRequests(remove).length,0);
   }
   const trailing={...document(),storage_path:`staging/${P}/合法中文 legacy.pdf `};
   const trailingList=sdk({documents:[trailing]});assert.equal((await readDocumentLibrary(trailingList.client,scope,U))[0].privatePathSupported,false);
   const trailingRead=sdk({documents:[trailing]});await assert.rejects(readPrivateOriginal(trailingRead.client,D,scope,U),code('path'));assert.equal(storageRequests(trailingRead).length,0);
-  const trailingDelete=sdk({mutation:true,documents:[trailing]});await assert.rejects(removeScopedDocument(trailingDelete.client,D,scope,U),code('path'));assert.equal(deleteRequests(trailingDelete).length,0);
+  const trailingDelete=sdk({mutation:true,documents:[trailing]});await assert.rejects(removeScopedDocument(trailingDelete.client,D,scope,U,()=>true,{documentId:D,requestId:D2,storageBucket:trailing.storage_bucket,storagePath:trailing.storage_path}),code('path'));assert.equal(deleteRequests(trailingDelete).length,0);
   for(const [bucket,path]of [['staging-receipts',`staging/${P}/合法中文 有空白.pdf`],['documents',`${P}/合法中文 有空白.pdf`]]){
     const h=sdk({documents:[{...document(),storage_bucket:bucket,storage_path:path}]});const result=await readPrivateOriginal(h.client,D,scope,U);
     assert.equal(result.previewable,true);assert.equal(result.document.storage_path,path);
@@ -268,113 +269,9 @@ test('scope/session invalidation rejects an early read and late metadata or priv
   await assert.rejects(readDocumentLibrary(list.client,scope,U,()=>active),code('context'));
 });
 
-const deleteRequests=(h:ReturnType<typeof sdk>)=>h.requests.filter(request=>request.method==='DELETE');
-test('scoped deletion uses installed SDK v2 writable preflight, exact reference HEAD and Storage-before-receipt DELETE',async()=>{
-  const h=sdk({mutation:true});
-  await removeScopedDocument(h.client,D,scope,U);
-  const handshake=h.requests.find(r=>r.url.pathname==='/rest/v1/rpc/upload_intake_contract')!;
-  assert.deepEqual(JSON.parse(String(handshake.body)),{p_project_id:P});
-  const references=h.requests.find(r=>r.url.pathname==='/rest/v1/emission_activities')!;
-  assert.equal(references.method,'HEAD');
-  for(const [key,value]of [['organization_id',O],['source_document_id',D]])assert.equal(references.url.searchParams.get(key),`eq.${value}`);
-  assert.equal(references.url.searchParams.has('project_id'),false,'reference protection must include legacy references from other projects in this tenant');
-  const writes=deleteRequests(h);assert.equal(writes.length,2);
-  assert.equal(writes[0].url.pathname,'/storage/v1/object/staging-receipts');
-  assert.deepEqual(JSON.parse(String(writes[0].body)),{prefixes:[document().storage_path]});
-  assert.equal(writes[1].url.pathname,'/rest/v1/uploaded_documents');
-  assert.equal(writes[1].headers.get('accept'),'application/vnd.pgrst.object+json');
-  for(const [key,value]of [['organization_id',O],['project_id',P],['id',D]])assert.equal(writes[1].url.searchParams.get(key),`eq.${value}`);
-  assert.ok(h.requests.indexOf(handshake)<h.requests.indexOf(writes[0]));
-  assert.ok(h.requests.indexOf(references)<h.requests.indexOf(writes[0]));
-  const drafts=h.requests.find(r=>r.url.pathname==='/rest/v1/extracted_document_drafts')!;
-  assert.equal(drafts.url.searchParams.get('organization_id'),`eq.${O}`);assert.equal(drafts.url.searchParams.get('uploaded_document_id'),`eq.${D}`);
-  assert.equal(drafts.url.searchParams.has('is_latest'),false,'all historical draft references must be checked');
-  assert.ok(h.requests.indexOf(drafts)<h.requests.indexOf(writes[0]));
+// Old two-service DELETE intent checks moved to new server-only contract/SQL/HTTP tests.
+test('old callers without a captured durable request cannot fall back to client Storage or receipt DELETE',async()=>{const h=sdk({mutation:true});await assert.rejects(removeScopedDocument(h.client,D,scope,U),/受控刪除/);assert.equal(h.requests.filter(r=>r.method==='DELETE').length,0);});
+test('pending/deleted originals are unavailable for private download, while tombstone metadata stays readable',async()=>{
+ for(const deletion_state of ['pending','deleted']){const row={...document(),deletion_state,deletion_request_id:D2,deleted_at:deletion_state==='deleted'?'2026-11-06T00:00:00Z':null,status:deletion_state==='deleted'?'archived':'active'};const h=sdk({documents:[row]});const records=await readDocumentLibrary(h.client,scope,U);assert.equal(records[0].deletion_state,deletion_state);await assert.rejects(readPrivateOriginal(h.client,D,scope,U),code('missing'));assert.equal(storageRequests(h).length,0);}
 });
-
-test('a source_document_id NULL activity linked through a draft prevents every Storage or receipt DELETE',async()=>{
-  const h=sdk({mutation:true,drafts:[{id:DR}],activities:[{source_document_id:null,source_draft_id:DR}]});
-  await assert.rejects(removeScopedDocument(h.client,D,scope,U));assert.equal(deleteRequests(h).length,0);
-  const refs=h.requests.filter(r=>r.url.pathname==='/rest/v1/emission_activities');
-  assert.equal(refs.length,2);assert.equal(refs[0].url.searchParams.get('source_document_id'),`eq.${D}`);
-  assert.equal(refs[1].url.searchParams.get('source_draft_id'),`in.(${DR})`);
-  assert.equal(refs[1].url.searchParams.get('organization_id'),`eq.${O}`);
-  assert.equal(refs[1].url.searchParams.has('project_id'),false);
-});
-
-test('draft metadata errors, truncated or duplicate draft IDs and unknown indirect counts fail before DELETE',async()=>{
-  for(const options of [{draftStatus:403},{draftStatus:503},{drafts:null},{drafts:{}},
-    {drafts:[{id:DR}],draftCount:null},{drafts:[{id:DR}],draftCount:2},{drafts:[{id:DR}],draftCount:-1},
-    {drafts:[{id:DR},{id:DR}],draftCount:2},{drafts:[{id:'bad'}],draftCount:1},
-    {drafts:[{id:DR}],linkedCount:null},{drafts:[{id:DR}],linkedCount:-1},{drafts:[{id:DR}],linkedStatus:403}]){
-    const h=sdk({mutation:true,...options});await assert.rejects(removeScopedDocument(h.client,D,scope,U));assert.equal(deleteRequests(h).length,0);
-  }
-});
-
-test('a complete unreferenced historical draft list permits the existing scoped deletion sequence',async()=>{
-  const h=sdk({mutation:true,drafts:[{id:DR},{id:D2}],activities:[]});
-  await removeScopedDocument(h.client,D,scope,U);
-  assert.equal(deleteRequests(h).length,2);
-  const linked=h.requests.find(r=>r.url.pathname==='/rest/v1/emission_activities'&&r.url.searchParams.has('source_draft_id'))!;
-  assert.equal(linked.url.searchParams.get('source_draft_id'),`in.(${DR},${D2})`);
-});
-
-test('viewer, missing/old/malformed or foreign contract and failed identity cannot start a delete',async()=>{
-  for(const options of [{authStatus:401},{authId:OB},{contractStatus:404},
-    {contract:[]},{contract:[{project_id:P,organization_id:O,contract_version:'20261102',can_write:true}]},
-    {contract:[{project_id:P,organization_id:O,contract_version:'20261102.2',can_write:false}]},
-    {contract:[{project_id:PB,organization_id:OB,contract_version:'20261102.2',can_write:true}]}]){
-    const h=sdk({mutation:true,...options});await assert.rejects(removeScopedDocument(h.client,D,scope,U));assert.equal(deleteRequests(h).length,0);
-  }
-});
-
-test('known references, missing/invalid count and reference lookup error cannot delete either resource',async()=>{
-  for(const options of [{referencesCount:1},{referencesCount:null},{referencesCount:-1},{referencesStatus:403},{referencesStatus:503}]){
-    const h=sdk({mutation:true,...options});await assert.rejects(removeScopedDocument(h.client,D,scope,U));assert.equal(deleteRequests(h).length,0);
-  }
-});
-
-test('Storage refusal, empty or wrong-path delete acknowledgement retains the receipt and never reports success',async()=>{
-  for(const options of [{storageDeleteStatus:403},{storageDeleteStatus:503},{removed:[]},{removed:null},{removed:[{name:`staging/${PB}/another.pdf`,id:D}]}]){
-    const h=sdk({mutation:true,...options});await assert.rejects(removeScopedDocument(h.client,D,scope,U));
-    assert.equal(deleteRequests(h).length,1);assert.equal(deleteRequests(h)[0].url.pathname,'/storage/v1/object/staging-receipts');
-  }
-});
-
-test('receipt error, zero or wrong ID after confirmed Storage removal is an explicit partial failure, never success',async()=>{
-  for(const options of [{rowDeleteStatus:403},{rowDeleteStatus:503},{rowDeleted:[]},{rowDeleted:null},{rowDeleted:{id:D2}}]){
-    const h=sdk({mutation:true,...options});await assert.rejects(removeScopedDocument(h.client,D,scope,U));assert.equal(deleteRequests(h).length,2);
-  }
-});
-
-test('unsupported path, metadata scope mismatch and context changes stop before the next deletion boundary',async()=>{
-  for(const options of [{documents:[{...document(),storage_path:'staging/fixtures/legacy.pdf'}]},{documents:[document(D2,true)]},{documents:[]}]){
-    const h=sdk({mutation:true,...options});await assert.rejects(removeScopedDocument(h.client,D,scope,U));assert.equal(deleteRequests(h).length,0);
-  }
-  const early=sdk({mutation:true});await assert.rejects(removeScopedDocument(early.client,D,scope,U,()=>false));assert.equal(early.requests.length,0);
-  for(const selected of [{organizationId:'bad',projectId:P},{organizationId:O,projectId:''},{organizationId:O,projectId:PB}]){
-    const h=sdk({mutation:true});await assert.rejects(removeScopedDocument(h.client,D,selected,U));assert.equal(deleteRequests(h).length,0);
-  }
-  for(const point of ['documents','contract','references','drafts','linked-references','storage-delete','row-delete'] as const){
-    let active=true;const h=sdk({mutation:true,drafts:[{id:DR}],hook:async kind=>{if(kind===point){await Promise.resolve();active=false;}}});
-    await assert.rejects(removeScopedDocument(h.client,D,scope,U,()=>active));
-    assert.equal(deleteRequests(h).length,point==='row-delete'?2:point==='storage-delete'?1:0);
-  }
-});
-
-test('pending manual transcription blocks original bytes deletion before any Storage call',async()=>{
- for(const draft of [{id:DR,extraction_provider:'MANUAL_TRANSCRIPTION_NO_OCR'},{id:DR,raw_payload:{manual_transcription:{user_id:U}}}]){
- const h=sdk({mutation:true,drafts:[draft]});await assert.rejects(removeScopedDocument(h.client,D,scope,U),/人工轉錄/);assert.equal(deleteRequests(h).length,0);
- }
-});
-
-
-test('server verified originals cannot fall through the old two-service delete sequence',async()=>{
- const verified={...document(),hash_verification_status:'server_verified',server_verified_at:'2026-11-06T00:00:00Z',verified_storage_object_id:D2};
- const h=sdk({documents:[verified],mutation:true});
- const rows=await readDocumentLibrary(h.client,{...scope},U);assert.equal(rows[0].hash_verification_status,'server_verified');
- await assert.rejects(removeScopedDocument(h.client,D,scope,U),/受控服務端刪除/);
- assert.equal(h.requests.filter(r=>r.method==='DELETE').length,0);
- const corrupt=sdk({documents:[{...verified,verified_storage_object_id:null}]});
- await assert.rejects(readDocumentLibrary(corrupt.client,{...scope},U),code('integrity'));
-});
+test('invalid deletion state or deleted tombstone without completion proof is rejected, not shown as a safe active file',async()=>{for(const row of [{...document(),deletion_state:'unknown'},{...document(),deletion_state:'deleted'},{...document(),deletion_state:'pending',deletion_request_id:'bad'}]){const h=sdk({documents:[row]});await assert.rejects(readDocumentLibrary(h.client,scope,U),code('integrity'));}});

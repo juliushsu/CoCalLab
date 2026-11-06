@@ -347,6 +347,29 @@ export const cocal = {
   },
 
   documents: {
+    deletion: {
+      completedWithoutReceipt: "Original removal confirmed; no receipt exists. The operation audit is retained.",
+      locateHint: "After clearing a corrupt reference, Check locates this same user/original operation ID without starting a removal.",
+  "action": "Remove original; retain receipt",
+  "retry": "Retry controlled removal",
+  "lookup": "Check removal (no new operation)",
+  "clearReference": "Clear local removal reference",
+  "confirm": "Fence new references, remove the private original, then archive the receipt with audit. Partial failures require the same operation ID. A database rollback does not restore removed bytes.",
+  "completed": "Original removal confirmed; archived receipt and audit retained.",
+  "pending": "Removal is unconfirmed. Bytes may already be absent; keep the original operation ID and retry.",
+  "notFound": "No such removal operation found. This does not establish whether the original exists.",
+  "noReference": "No pending local or server removal reference; no new removal was started.",
+  "clearMessage": "Clear only this user/project/original local reference. This does not cancel server work or restore/remove any file.",
+  "orphanCleanup": "Clean unregistered original (retain audit)",
+  "orphanLookup": "Check unregistered original cleanup",
+  "orphanConfirm": "Only this user/project/original ID is eligible. The server refuses cleanup if a receipt already exists. Storage and database updates are not a cross-service atomic transaction; keep the same IDs after failure.",
+  "cleaned": "Unregistered original removal confirmed; server audit retained.",
+  "states": {
+    "active": "Original active",
+    "pending": "Removal requires recovery (not deleted)",
+    "deleted": "Original removed; receipt/audit retained"
+  }
+},
     library: {
       "selectScope": "Select an organization or project",
       "selectScopeDescription": "Use the project selector or the organization/project entries to choose a unit. No first organization is assumed.",
@@ -402,6 +425,9 @@ export const cocal = {
         reconciling: 'Reading back to verify saved status',
       },
       errors: {
+        deleting: "Original removal is pending. Keep its original ID; it cannot be restored as active intake.",
+        deleted: "This original was removed. Its receipt is retained for audit; the same ID cannot register again.",
+        deleteUnconfirmed: "Removal/cleanup is unconfirmed. Keep the same operation IDs and check or retry; no file restoration is claimed.",
           legacy: "This legacy receipt has not been server-verified and will not be rewritten or upgraded automatically. Retain its ID for Owner review, or explicitly abandon the local reference before a new intake.",
         auth: 'Your session is invalid or expired. Sign in again, then check the status of this attempt.',
         scope: 'The organization or project scope is invalid or inaccessible. Please select it again.',

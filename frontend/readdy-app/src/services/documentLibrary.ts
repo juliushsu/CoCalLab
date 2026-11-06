@@ -1,7 +1,9 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
+import {documentDeletionOperation} from './documentDeletion.ts';
+import type {DeletionAttempt} from './documentDeletionRecovery.ts';
 import {attachmentVerificationView} from './attachmentVerificationView.ts';
 import {canonicalUuid,resolveNavigationScope} from './navigationScope.ts';
-import {getIntakeAccess,listIntakeProjects,type IntakeProject,type IntakeScope} from './documentIntake.ts';
+import {listIntakeProjects,type IntakeProject,type IntakeScope} from './documentIntake.ts';
 import type {UploadedDocument,DocumentType,OcrStatus,UploadStatus} from '../types/document.ts';
 
 export interface LibrarySelection {organizationId:string;projectId?:string;documentId?:string}
@@ -32,7 +34,7 @@ export function privatePathSupported(bucket:string,path:string,projectId:string)
   return bucket==='documents'?parts.length===2&&canonicalUuid(parts[0])===projectId:
     ['staging-receipts','staging-attachments'].includes(bucket)&&parts.length===3&&parts[0]==='staging'&&canonicalUuid(parts[1])===projectId;
 }
-const columns='id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,metadata,received_date,archived_at,created_at,updated_at,hash_verification_status,server_verified_at,verified_storage_object_id';
+const columns='id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,metadata,received_date,archived_at,created_at,updated_at,hash_verification_status,server_verified_at,verified_storage_object_id,deletion_state,deletion_request_id,deleted_at';
 const object=(v:unknown):v is Record<string,unknown>=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 function documentRow(value:unknown,scope:LibrarySelection,projects?:IntakeProject[]):LibraryDocument{
   if(!object(value))throw new DocumentLibraryError('read');
@@ -44,8 +46,11 @@ function documentRow(value:unknown,scope:LibrarySelection,projects?:IntakeProjec
     typeof value.sha256_hash!=='string'||!['pending','processing','succeeded','failed'].includes(String(value.ocr_status))||
     !['receipt','invoice','bill','utility_bill','contract','report','other'].includes(String(value.document_type))||!['active','archived'].includes(String(value.status))||
     typeof value.created_at!=='string'||typeof value.updated_at!=='string'||!object(value.metadata))throw new DocumentLibraryError('read');
+  if(value.deletion_state!==undefined&&!['active','pending','deleted'].includes(String(value.deletion_state)))throw new DocumentLibraryError('integrity');
+  if(value.deletion_state==='deleted'&&(value.status!=='archived'||typeof value.deleted_at!=='string'||!Number.isFinite(Date.parse(value.deleted_at))||!canonicalUuid(value.deletion_request_id)))throw new DocumentLibraryError('integrity');
+  if(value.deletion_state==='pending'&&!canonicalUuid(value.deletion_request_id))throw new DocumentLibraryError('integrity');
   const proof=attachmentVerificationView(value);if(proof.state==='invalid')throw new DocumentLibraryError('integrity');
-  return {hash_verification_status:proof.state,server_verified_at:typeof value.server_verified_at==='string'?value.server_verified_at:null,verified_storage_object_id:typeof value.verified_storage_object_id==='string'?value.verified_storage_object_id:null,id,organization_id:org,project_id:project,project_name:projects?.find(p=>p.id===project)?.name,uploaded_by_user_id:value.uploaded_by_user_id===null?null:uuid(value.uploaded_by_user_id),
+  return {deletion_state:value.deletion_state as 'active'|'pending'|'deleted'|undefined,deletion_request_id:typeof value.deletion_request_id==='string'?value.deletion_request_id:null,deleted_at:typeof value.deleted_at==='string'?value.deleted_at:null,hash_verification_status:proof.state,server_verified_at:typeof value.server_verified_at==='string'?value.server_verified_at:null,verified_storage_object_id:typeof value.verified_storage_object_id==='string'?value.verified_storage_object_id:null,id,organization_id:org,project_id:project,project_name:projects?.find(p=>p.id===project)?.name,uploaded_by_user_id:value.uploaded_by_user_id===null?null:uuid(value.uploaded_by_user_id),
     storage_bucket:value.storage_bucket,storage_path:value.storage_path,original_filename:value.original_filename,mime_type:value.mime_type as string|null,file_size_bytes:value.file_size_bytes,
     sha256_hash:value.sha256_hash,document_type:value.document_type as DocumentType,ocr_status:value.ocr_status as OcrStatus,status:value.status as UploadStatus,
     metadata:value.metadata,received_date:typeof value.received_date==='string'?value.received_date:null,archived_at:typeof value.archived_at==='string'?value.archived_at:null,
@@ -82,6 +87,7 @@ export async function readScopedDocument(client:SupabaseClient,documentId:string
 export async function readPrivateOriginal(client:SupabaseClient,documentId:string,scope:IntakeScope,userId:string,isCurrent=()=>true){
   const row=await readScopedDocument(client,documentId,scope,userId,isCurrent);
   if(!row.privatePathSupported)throw new DocumentLibraryError('path');
+  if(row.deletion_state==='pending'||row.deletion_state==='deleted')throw new DocumentLibraryError('missing');
   const response=await client.storage.from(row.storage_bucket).download(row.storage_path);current(isCurrent);
   if(response.error||!response.data)throw new DocumentLibraryError('download',{cause:response.error});
   const blob=response.data;
@@ -99,28 +105,10 @@ export async function readPrivateOriginal(client:SupabaseClient,documentId:strin
   return {document:row,blob,previewable:Boolean(previewable),previewMime:previewable?mime:null};
 }
 
-/** Preserve the existing delete action. Storage + receipt are NOT atomic. */
-export async function removeScopedDocument(client:SupabaseClient,documentId:string,scope:IntakeScope,userId:string,isCurrent=()=>true){
-  const row=await readScopedDocument(client,documentId,scope,userId,isCurrent);
-  if(!row.privatePathSupported)throw new DocumentLibraryError('path');
-  if(row.hash_verification_status==='server_verified')throw new Error('已驗證原件須經受控服務端刪除；此入口暫不刪除bytes或收件，下一批接續恢復流程。');
-  await getIntakeAccess(client,scope,userId,isCurrent);current(isCurrent);
-  const references=await client.from('emission_activities').select('id',{count:'exact',head:true}).eq('organization_id',row.organization_id).eq('source_document_id',row.id);current(isCurrent);
-  if(references.error||!Number.isSafeInteger(references.count)||references.count!==0)throw new Error('Document references could not be ruled out; no file was removed.');
-  // A legitimate activity may refer through source_draft_id while leaving
-  // source_document_id NULL. Check all visible draft versions, not only latest.
-  const drafts=await client.from('extracted_document_drafts').select('id,extraction_provider,raw_payload',{count:'exact'}).eq('organization_id',row.organization_id).eq('uploaded_document_id',row.id);current(isCurrent);
-  if(drafts.error||!Array.isArray(drafts.data)||drafts.count!==drafts.data.length)throw new Error('Draft references could not be ruled out; no file was removed.');
-  if(drafts.data.some(d=>d.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR'||object(d.raw_payload)&&Object.hasOwn(d.raw_payload,'manual_transcription')))throw new Error('文件已有服務端人工轉錄紀錄，未刪除原件或收件；請走管理處理。');
-  const draftIds=drafts.data.map(draft=>uuid(draft.id));
-  if(new Set(draftIds).size!==draftIds.length)throw new Error('Draft references are incomplete; no file was removed.');
-  if(draftIds.length){
-    const linked=await client.from('emission_activities').select('id',{count:'exact',head:true}).eq('organization_id',row.organization_id).in('source_draft_id',draftIds);current(isCurrent);
-    if(linked.error||!Number.isSafeInteger(linked.count)||linked.count!==0)throw new Error('The document has activity references through drafts; no file was removed.');
-  }
-  const removed=await client.storage.from(row.storage_bucket).remove([row.storage_path]);current(isCurrent);
-  if(removed.error)throw removed.error;
-  if(!removed.data?.some(item=>item.name===row.storage_path))throw new Error('File removal was not confirmed; intake record retained.');
-  const deleted=await client.from('uploaded_documents').delete().eq('id',row.id).eq('organization_id',row.organization_id).eq('project_id',row.project_id).select('id').maybeSingle();current(isCurrent);
-  if(deleted.error||deleted.data?.id!==row.id)throw new Error('The file may have been removed but the intake record was not confirmed deleted. Keep its ID and check before retrying.',{cause:deleted.error});
+/** Server-only controlled deletion. A persisted fixed request is mandatory; no legacy fallback. */
+export async function removeScopedDocument(client:SupabaseClient,documentId:string,scope:IntakeScope,userId:string,isCurrent=()=>true,attempt?:DeletionAttempt){
+ if(!attempt||attempt.documentId!==uuid(documentId)||!canonicalUuid(attempt.requestId))throw new Error('請先保存受控刪除操作ID；未使用舊Storage／收件兩步刪除。');
+ const row=await readScopedDocument(client,documentId,scope,userId,isCurrent);if(!row.privatePathSupported)throw new DocumentLibraryError('path');
+ if(attempt.storageBucket!==row.storage_bucket||attempt.storagePath!==row.storage_path)throw new DocumentLibraryError('scope');
+ return documentDeletionOperation(client,scope,userId,attempt,'delete',isCurrent);
 }
