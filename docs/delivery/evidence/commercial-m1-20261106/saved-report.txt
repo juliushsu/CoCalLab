@@ -1,0 +1,96 @@
+- status:
+  - text: SYNTHETIC 本機產品流程 · 原App人工建檔→正式計算／報告handler→隔離SQL保存；不是雲端Supabase驗收。登入owner@product-preview.invalid／測試密碼synthetic-local-only。0.5係數全合成，非正式預設。重啟API會建立全新測試資料庫。
+  - link "人工活動／計算／報告":
+    - /url: /admin/activities
+  - text: ·
+  - link "報告歷史":
+    - /url: /admin/reports/history
+  - text: ·
+  - link "登入":
+    - /url: /login
+- alert
+- generic: ⚠ STAGING ENVIRONMENT — Test environment, data will not enter production
+- generic: TEST MODE
+- banner:
+  - generic: CC
+  - heading "CoCalLab" [level=1]
+  - generic: TEST MODE
+  - button "繁中"
+  - button "EN"
+  - button "日本語"
+  - generic: owner@product-preview.invalid
+  - generic: Owner
+  - button "Sign Out":
+    - generic: Sign Out
+- complementary:
+  - navigation:
+    - generic: "Environment: staging"
+    - button "Workspace":
+      - generic: Workspace
+    - button "Carbon Inventory":
+      - generic: Carbon Inventory
+    - button "Reporting":
+      - generic: Reporting
+    - button "Methodology":
+      - generic: Methodology
+    - button "Product & Supply Chain":
+      - generic: Product & Supply Chain
+- main:
+  - heading "Emission Activities" [level=1]
+  - paragraph: "Total: 1 activities"
+  - button "Add Activity": Add Activity
+  - button "Upload Document": Upload Document
+  - text: 目前專案
+  - combobox "目前專案":
+    - option "全部已授權專案（新增／計算需選擇）"
+    - option "SYNTHETIC local workflow（SYNTHETIC-LOCAL）" [selected]
+  - button "計算並保存"
+  - button "保存報告快照／重試"
+  - button "重新讀取"
+  - button "放棄報告恢復參考（不刪除報告）"
+  - button "開啟已保存報告"
+  - paragraph: 盤查期間：2026-01-01 ～ 2026-12-31。數量與單位由人工輸入；係數不使用正式預設測試值。
+  - status: 報告快照已保存並重讀核對：50 kgCO₂e = 0.05 tCO₂e。
+  - button "Data Label Guide":
+    - generic: Data Label Guide
+  - generic: Scope
+  - combobox:
+    - option "All" [selected]
+    - option "Scope 1"
+    - option "Scope 2"
+    - option "Scope 3"
+  - generic: Category
+  - textbox "Enter category name"
+  - generic: Inclusion Status
+  - combobox:
+    - option "All" [selected]
+    - option "Included"
+    - option "Excluded"
+    - option "Pending"
+  - button "Reset"
+  - table:
+    - rowgroup:
+      - row "Activity Name Category Scope Quantity Activity Date Inclusion Status Actions":
+        - columnheader "Activity Name"
+        - columnheader "Category"
+        - columnheader "Scope"
+        - columnheader "Quantity"
+        - columnheader "Activity Date"
+        - columnheader "Inclusion Status"
+        - columnheader "Actions"
+    - rowgroup:
+      - row "[TEST] SYNTHETIC M1 purchased electricity SYNTHETIC local workflow · 6849e92b Test Data Energy Use Scope 2 100 kWh 2026-11-06 Included View":
+        - cell "[TEST] SYNTHETIC M1 purchased electricity SYNTHETIC local workflow · 6849e92b Test Data":
+          - text: "[TEST] SYNTHETIC M1 purchased electricity"
+          - paragraph: SYNTHETIC local workflow · 6849e92b
+          - generic "This is test data. You can create, edit, and delete it normally.": Test Data
+        - cell "Energy Use":
+          - generic: Energy Use
+        - cell "Scope 2"
+        - cell "100 kWh":
+          - generic: 100 kWh
+        - cell "2026-11-06":
+          - generic: 2026-11-06
+        - cell "Included"
+        - cell "View":
+          - button "View"
