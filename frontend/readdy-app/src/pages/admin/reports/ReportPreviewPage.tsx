@@ -15,6 +15,7 @@ import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ApiResponse } from '../../../services/types';
 import type { ReportVersion, ReportSection, ReportStatistics } from '../../../types/report';
 import { getReportData } from '../../../services/reportService';
+import ReportOutlinePanel from './components/ReportOutlinePanel';
 
 // Generate Report Response Type
 interface GenerateReportResponse {
@@ -473,6 +474,8 @@ export default function ReportPreviewPage() {
         )}
 
         {!statistics && <p className="text-sm text-gray-500">{t('reports.snapshot.statisticsUnknown', '此報告未提供完整排放統計，無法顯示總量。')}</p>}
+
+        <ReportOutlinePanel snapshot={report.saved_snapshot} />
 
         {/* Sections */}
         <div className="space-y-4">
