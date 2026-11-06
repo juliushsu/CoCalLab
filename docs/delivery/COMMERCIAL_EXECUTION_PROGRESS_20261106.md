@@ -1,3 +1,17 @@
+# 2026-11-06 附件完整性／重算／刪除候選交付
+
+Business baseline06bad081，後續文件保留；RELEASE HOLD/UAT7dccd545不變，未合併或部署。
+
+| 本輪項目 | 固定來源 | 實際結果 |
+| --- | --- | --- |
+| 服務端SHA及偽hash占位防護 | 411a99d597046f65dd54fc134df5dc0d8346c346 / PR25 | server actual bytes、私有proof、legacy不占可信unique、同ID恢復 |
+| 通用重算冪等 | 67e546fa6894303ccbff66d829d077b93c5fb8e2 / PR26 | 同操作重送不增版本、完整輸入/結果比對、歷史lookup明示 |
+| 受控刪除／引用／恢復 | 1b1e82913ee593f4255eb33a92744d597c530b2c / codex/controlled-document-deletion-20261106 | file/row分階段、receipt封存audit、sameID恢復、租戶及processing fence |
+
+累積本機FE219、backend27全過；SQL/HTTP292PASS/2獨立連線NOT_RUN，tsc/lint/build PASS。子集/代理重跑不可加總。完整SDK verified→MANUAL→confirm→calc→report50kg/.05t→authorized HTML/JSON及Chrome同ID partial恢復證據，見CONTROLLED_DOCUMENT_DELETION_DELIVERY_20261106.md。商業／真服務／復原／19+1負載驗收仍缺，Mock OCR/AI不當完成。
+
+以下歷史交付保留，最新接續以NEXT_ACTION.md為準。
+
 # Commercial execution checkpoint — 2026-11-06
 
 Instruction: CTO_COMMERCIAL_EXECUTION_20261106.md @43cbb102d5e291d9bd446f18354a9372753023da. Release HOLD, UAT7dccd545 unchanged.

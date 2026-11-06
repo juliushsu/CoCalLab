@@ -86,13 +86,14 @@ test('manual HTTP latest readonly/suspended overrides earlier active for both cr
     assert.equal((await rows(r,'emission_activities',token)).length,0);
   }finally{await r.close();}
 });
-test('manual pending source cannot be deleted via raw Storage/receipt API before activity exists; unprotected same-scope original can be deleted',async()=>{
+test('manual pending source cannot be deleted via raw Storage/receipt API before activity exists; unreferenced same-scope original uses controlled deletion',async()=>{
   const r=await createProductRuntime({port:0,scenario:'manual-transcription'});try{
     const token=await login(r),b=await login(r,'otherOwner'),input=request(r),f=r.config.manifest.fixtures;assert.equal((await create(r,token,input)).status,200);assert.equal((await rows(r,'emission_activities',token)).length,0);
     const denied=await call(r,'/storage/v1/object/'+f.a.document.bucket,token,{prefixes:[f.a.document.path]},'DELETE');assert.equal(denied.status,200);assert.deepEqual(denied.body,[]);
     const receipt=await call(r,'/rest/v1/uploaded_documents?id=eq.'+input.document_id,token,undefined,'DELETE');assert.equal(receipt.status,200);assert.deepEqual(receipt.body,[]);
     const read=await fetch(r.baseUrl+'/storage/v1/object/'+f.a.document.bucket+'/'+f.a.document.path,{headers:{Authorization:'Bearer '+token}});assert.equal(read.status,200);assert.equal((await rows(r,'uploaded_documents',token)).length,1);
-    const positive=await call(r,'/storage/v1/object/'+f.b.document.bucket,b,{prefixes:[f.b.document.path]},'DELETE');assert.equal(positive.status,200);assert.equal(positive.body.length,1);
+    const raw=await call(r,'/storage/v1/object/'+f.b.document.bucket,b,{prefixes:[f.b.document.path]},'DELETE');assert.equal(raw.body.code,'42501');
+    const positive=await call(r,'/functions/v1/delete-uploaded-document',b,{organization_id:f.b.organizationId,project_id:f.b.projectId,document_id:f.b.document.documentId,request_id:randomUUID()});assert.equal(positive.status,200,JSON.stringify(positive.body));assert.equal(positive.body.data.operation_status,'deleted');assert.equal(positive.body.data.receipt_present,true);
     const deleted=await fetch(r.baseUrl+'/storage/v1/object/'+f.b.document.bucket+'/'+f.b.document.path,{headers:{Authorization:'Bearer '+b}});assert.equal(deleted.status,404);
   }finally{await r.close();}
 });
