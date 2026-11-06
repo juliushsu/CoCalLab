@@ -5,6 +5,7 @@ import { registerHooks, createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { createLocalWorkflow } from '../local-workflow/engine.js';
+import { seedShowcase } from './showcase.js';
 
 const PUBLIC_KEY = 'SYNTHETIC-PRODUCT-PUBLIC-KEY';
 const SERVICE_KEY = 'SYNTHETIC-PRODUCT-SERVICE-KEY';
@@ -24,6 +25,7 @@ const tables = new Set(['organizations','organization_members','subscriptions','
 const rpcs = new Set(['recalculate_project_atomic','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','upload_intake_contract',
   'list_my_organizations','get_project_for_navigation','confirm_draft_atomic']);
 const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
+const originals=new Map();
 let registering = '', baseUrl = '', flow, server, fault = null, previewConfig, dbQueue = Promise.resolve();
 const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type':'application/json', ...headers } });
 // PostgreSQL numeric/int8 arrive as strings in PGlite; PostgREST emits JSON numbers.
@@ -132,6 +134,18 @@ async function rpc(request,name) {
     return json(wireRows(await flow.db.query('select * from public.'+sqlIdentifier(name)+'('+keys.map((key,i)=>sqlIdentifier(key)+' => $'+(i+1)+'::'+procedure.types[names.indexOf(key)]).join(',')+')',keys.map(key=>input[key]))));
   });
 }
+async function storageRead(request,url){
+  if(request.method!=='GET')return json({message:'Synthetic showcase Storage is read-only; upload/delete are not implemented'},405);
+  if(url.pathname.startsWith('/storage/v1/object/public/'))return json({message:'Public originals are not available'},404);
+  const match=url.pathname.match(/^\/storage\/v1\/object\/(?:authenticated\/)?([^/]+)\/(.+)$/);
+  if(!match)return json({message:'Only authenticated synthetic original downloads are implemented'},404);
+  const bucket=decodeURIComponent(match[1]),path=decodeURIComponent(match[2]);
+  return database(request,async()=>{
+    const rows=(await flow.db.query('select bucket_id,name from storage.objects where bucket_id=$1 and name=$2',[bucket,path])).rows;
+    const original=rows.length===1&&originals.get(bucket+'/'+path);
+    return original?new Response(original.bytes,{headers:{'Content-Type':original.mime,'Content-Length':String(original.bytes.length),'Cache-Control':'no-store'}}):json({message:'Original does not exist or is inaccessible'},404);
+  });
+}
 function makeSession(user) {
   const expires_at = Math.floor(Date.now()/1000)+3600;
   const encoded = value => Buffer.from(JSON.stringify(value)).toString('base64url');
@@ -167,7 +181,7 @@ async function dispatchInner(request) {
     if(functionName)response=handlers.has(functionName)?await handlers.get(functionName)(request):json({message:'No such product handler'},404);
     else if(rpcName)response=await rpc(request,rpcName);
     else if(table)response=await rest(request,url,table);
-    else if(url.pathname.startsWith('/storage/v1/'))response=json({message:'No original file is seeded by the manual-activity fixture'},404);
+    else if(url.pathname.startsWith('/storage/v1/'))response=originals.size?await storageRead(request,url):json({message:'No original file is seeded by the manual-activity fixture'},404);
     else response=json({message:'Synthetic route unavailable'},404);
   } catch(error){response=json({code:error.code||'LOCAL_ADAPTER_ERROR',message:error.message,details:error.detail||null},400);}
   return armed?.phase==='afterCommit'?json({code:'SYNTHETIC_RESPONSE_LOST',message:'Synthetic failure after the database committed'},armed.status||503):response;
@@ -175,7 +189,7 @@ async function dispatchInner(request) {
 
 try {
   flow=await createLocalWorkflow(); // Initialization only. No lab receive/review/calculate/snapshot is called.
-  const scope={...flow.scope,otherOrganizationId:randomUUID(),otherProjectId:randomUUID(),viewerId:randomUUID(),outsiderId:randomUUID(),otherOwnerId:randomUUID()};
+  const scope={...flow.scope,otherOrganizationId:randomUUID(),otherProjectId:randomUUID(),viewerId:randomUUID(),outsiderId:randomUUID(),otherOwnerId:randomUUID(),...(workerData.scenario==='showcase'?{aOwnerId:randomUUID()}: {})};
   await flow.db.query("update organizations set env='staging',is_test=true where id=$1",[scope.organizationId]);
   await flow.db.query("update projects set env='staging',is_test=true where id=$1",[scope.projectId]);
   await flow.db.query("update organization_members set role='owner' where organization_id=$1 and user_id=$2",[scope.organizationId,scope.userId]);
@@ -184,11 +198,13 @@ try {
   await flow.db.query("insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",[scope.otherOrganizationId]);
   for(const [org,user]of [[scope.otherOrganizationId,scope.userId],[scope.organizationId,scope.viewerId]])await flow.db.query("insert into organization_members(organization_id,user_id,role,status) values($1,$2,'viewer','active')",[org,user]);
   await flow.db.query("insert into organization_members(organization_id,user_id,role,status) values($1,$2,'owner','active')",[scope.otherOrganizationId,scope.otherOwnerId]);
+  if(scope.aOwnerId)await flow.db.query("insert into organization_members(organization_id,user_id,role,status) values($1,$2,'owner','active')",[scope.organizationId,scope.aOwnerId]);
   if(workerData.withFactor)for(const [org,factor]of [[scope.organizationId,scope.factorId],[scope.otherOrganizationId,randomUUID()]])await flow.db.query(`insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,subcategory,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,metadata,env,is_test)
     values($1,$2,'SYNTHETIC-0.5','SYNTHETIC custom factor','SYNTHETIC TEST ONLY','energy','purchased_electricity','electricity','kWh',0.5,'2026-01-01',1,'custom','active','{"synthetic":true}','staging',true)`,[factor,org]);
   for(const row of (await flow.db.query("select table_name,column_name from information_schema.columns where table_schema='public'")).rows){if(!columns.has(row.table_name))columns.set(row.table_name,new Set());columns.get(row.table_name).add(row.column_name);}
   const accounts={owner:{email:'owner@product-preview.invalid',password:'synthetic-local-only'},viewer:{email:'viewer@product-preview.invalid',password:'synthetic-local-only'},outsider:{email:'outsider@product-preview.invalid',password:'synthetic-local-only'},otherOwner:{email:'b-owner@product-preview.invalid',password:'synthetic-local-only'}};
-  for(const [name,id]of [['owner',scope.userId],['viewer',scope.viewerId],['outsider',scope.outsiderId],['otherOwner',scope.otherOwnerId]])users.set(name,{...accounts[name],user:{id,email:accounts[name].email,aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{synthetic:true},created_at:'2026-01-01T00:00:00Z'}});
+  if(scope.aOwnerId)accounts.aOwner={email:'a-owner@product-preview.invalid',password:'synthetic-local-only'};
+  for(const [name,id]of [['owner',scope.userId],['viewer',scope.viewerId],['outsider',scope.outsiderId],['otherOwner',scope.otherOwnerId],...(scope.aOwnerId?[['aOwner',scope.aOwnerId]]:[])])users.set(name,{...accounts[name],user:{id,email:accounts[name].email,aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{synthetic:true},created_at:'2026-01-01T00:00:00Z'}});
   server=createServer(async(req,res)=>{try{const body=[];for await(const chunk of req)body.push(chunk);const request=new Request(baseUrl+req.url,{method:req.method,headers:req.headers,...(['GET','HEAD'].includes(req.method)?{}:{body:Buffer.concat(body)})});const response=await dispatch(request);res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));}catch(error){res.writeHead(500,{'Content-Type':'application/json'});res.end(JSON.stringify({message:error.message}));}});
   if(workerData.port!==0&&fetchBlockedPorts.has(workerData.port))throw new Error('Configured preview port is blocked by Fetch');
   for(let attempt=0;;attempt++){
@@ -202,9 +218,10 @@ try {
   baseUrl='http://127.0.0.1:'+server.address().port;
   const localFetch=globalThis.fetch;
   globalThis.fetch=(input,init)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url);if(target.origin!==baseUrl)throw new Error('Outbound fetch outside this dedicated synthetic API is blocked');return localFetch(input,init);};
-  previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts};
-  globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
-  for(const name of ['recalculate-project','generate-report','enforce-subscription-status']){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
+  previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario};
+  globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
+  for(const name of ['recalculate-project','generate-report','enforce-subscription-status',...(workerData.scenario==='showcase'?['confirm-draft']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
+  if(workerData.scenario==='showcase')previewConfig.manifest=await seedShowcase({db:flow.db,baseUrl,scope,accounts,originals});
   parentPort.on('message',async message=>{try{
     let value;
     if(message.kind==='request'){const input=message.value,response=await dispatch(new Request(input.url,{method:input.method,headers:input.headers,...(['GET','HEAD'].includes(input.method)?{}:{body:input.body})}));value={status:response.status,headers:[...response.headers],body:response.body?await response.text():null};}
@@ -213,5 +230,5 @@ try {
     else throw new Error('Unknown worker command');
     parentPort.postMessage({id:message.id,value});
   }catch(error){parentPort.postMessage({id:message.id,error:{message:error.message,code:error.code}});}});
-  parentPort.postMessage({kind:'ready',scope,baseUrl,publicKey:PUBLIC_KEY,accounts});
+  parentPort.postMessage({kind:'ready',scope,baseUrl,publicKey:PUBLIC_KEY,accounts,config:previewConfig});
 }catch(error){if(server)server.close();if(flow)await flow.close().catch(()=>{});parentPort.postMessage({kind:'fatal',message:error.message,code:error.code});}

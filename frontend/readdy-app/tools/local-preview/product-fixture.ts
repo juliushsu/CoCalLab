@@ -1,7 +1,7 @@
 // TEST PREVIEW ONLY. Real installed SDK over same-origin, loopback-only synthetic services.
 import {createClient} from '@supabase/supabase-js';
 import {createLogoutSafeStorage} from '../../src/services/authPersistence';
-const configuration=await fetch('/product-api/__synthetic/config').then(response=>{if(!response.ok)throw new Error('本機合成API尚未啟動（4194）；依README啟動，不回假資料。');return response.json();});
+const configuration=await fetch('/product-api/__synthetic/config').then(response=>{if(!response.ok)throw new Error('本機合成API尚未啟動（M1:4194／M2:4196）；依README啟動，不回假資料。');return response.json();});
 if(configuration.synthetic!==true||configuration.publicKey!=='SYNTHETIC-PRODUCT-PUBLIC-KEY'||!configuration.scope?.organizationId)throw new Error('本機測試設定無效。');
 const storageKey='cocal-synthetic-product-'+configuration.scope.organizationId;
 const authStorage=createLogoutSafeStorage(sessionStorage,storageKey);
