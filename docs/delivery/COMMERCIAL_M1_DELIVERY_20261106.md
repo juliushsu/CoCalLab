@@ -54,3 +54,7 @@ node node_modules/vite/bin/vite.js --config tools/local-preview/vite.product.con
 固定`18c0894...`新增ledger/RPC已經獨立代理審閱；交Owner協調Claude時只問：一般會員能否利用既有可寫資料表偽造／改變ledger權威綁定，或讓兩RPC回傳不屬於目前scope／actor／version／claim的報告？範圍限本批migration、generate-report handler及boundary tests，不重開整案。尚未宣稱Claude已收到、CTO已裁定或已放行。
 
 部署候選需先套用新migration再部署新handler；缺V2時明確失敗，不退回舊二階寫入。雲端migration、資源、成本、schema／資料、main合併與Production仍未授權，沒有執行。回復方案為停用新生成入口、保留已保存報告與ledger，不刪資料、不自動降級到舊半交易路徑。
+
+## CI 安裝順序修正
+
+初次GitHub CI在SQL階段找不到前端SDK，原因為workflow尚未執行前端npm ci；本機214/214已安裝同一SDK，因此通過。已將既有lockfile的npm ci移至SQL／HTTP測試前，不跳過或降低任何測試，不新增套件。此為CI設定修正，固定業務程式仍為18c0894；最新版CI結果另以實際run收件。
