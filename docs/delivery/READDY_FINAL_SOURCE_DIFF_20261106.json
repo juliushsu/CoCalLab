@@ -1,0 +1,719 @@
+{
+  "archiveSha256": "f6e909dc801a6785b7be453a53da24bde38efa20be3b5357cda1a19e2e309325",
+  "codeSha": "18c0894cf9da42eb341ce5835ba36fdc3a7bedc9",
+  "counts": {
+    "SAME": 54,
+    "CHANGED": 54,
+    "MISSING_CURRENT": 4
+  },
+  "referenceFiles": 112,
+  "currentExtra": 25,
+  "files": [
+    {
+      "path": "vite.config.ts",
+      "state": "SAME",
+      "referenceLines": 84,
+      "currentLines": 84
+    },
+    {
+      "path": "package.json",
+      "state": "CHANGED",
+      "referenceLines": 46,
+      "currentLines": 47
+    },
+    {
+      "path": "src/App.tsx",
+      "state": "SAME",
+      "referenceLines": 20,
+      "currentLines": 20
+    },
+    {
+      "path": "src/index.css",
+      "state": "SAME",
+      "referenceLines": 3,
+      "currentLines": 3
+    },
+    {
+      "path": "src/main.tsx",
+      "state": "SAME",
+      "referenceLines": 12,
+      "currentLines": 12
+    },
+    {
+      "path": "src/hooks/useSubscriptionStatus.ts",
+      "state": "CHANGED",
+      "referenceLines": 82,
+      "currentLines": 49
+    },
+    {
+      "path": "src/hooks/useIdleTimeout.ts",
+      "state": "SAME",
+      "referenceLines": 128,
+      "currentLines": 128
+    },
+    {
+      "path": "src/hooks/useEdgeFunction.ts",
+      "state": "SAME",
+      "referenceLines": 74,
+      "currentLines": 74
+    },
+    {
+      "path": "src/hooks/useDataOrigin.ts",
+      "state": "SAME",
+      "referenceLines": 54,
+      "currentLines": 54
+    },
+    {
+      "path": "src/hooks/useAuth.ts",
+      "state": "SAME",
+      "referenceLines": 10,
+      "currentLines": 10
+    },
+    {
+      "path": "src/lib/supabase.ts",
+      "state": "CHANGED",
+      "referenceLines": 38,
+      "currentLines": 56
+    },
+    {
+      "path": "src/mocks/activities.fixture.ts",
+      "state": "SAME",
+      "referenceLines": 110,
+      "currentLines": 110
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "state": "MISSING_CURRENT",
+      "referenceLines": 79,
+      "currentLines": 0
+    },
+    {
+      "path": "src/i18n/index.ts",
+      "state": "SAME",
+      "referenceLines": 19,
+      "currentLines": 19
+    },
+    {
+      "path": "src/mocks/carbonAdjustments.fixture.ts",
+      "state": "SAME",
+      "referenceLines": 335,
+      "currentLines": 335
+    },
+    {
+      "path": "src/mocks/reports.fixture.ts",
+      "state": "SAME",
+      "referenceLines": 169,
+      "currentLines": 169
+    },
+    {
+      "path": "src/router/index.ts",
+      "state": "SAME",
+      "referenceLines": 27,
+      "currentLines": 27
+    },
+    {
+      "path": "src/router/config.tsx",
+      "state": "CHANGED",
+      "referenceLines": 177,
+      "currentLines": 171
+    },
+    {
+      "path": "src/pages/NotFound.tsx",
+      "state": "SAME",
+      "referenceLines": 18,
+      "currentLines": 18
+    },
+    {
+      "path": "src/components/layout/AdminLayout.tsx",
+      "state": "CHANGED",
+      "referenceLines": 479,
+      "currentLines": 473
+    },
+    {
+      "path": "src/i18n/local/zh/cocal.ts",
+      "state": "CHANGED",
+      "referenceLines": 1776,
+      "currentLines": 1918
+    },
+    {
+      "path": "src/pages/auth/LoginPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 225,
+      "currentLines": 118
+    },
+    {
+      "path": "src/pages/home/page.tsx",
+      "state": "SAME",
+      "referenceLines": 29,
+      "currentLines": 29
+    },
+    {
+      "path": "src/i18n/local/ja/cocal.ts",
+      "state": "CHANGED",
+      "referenceLines": 1796,
+      "currentLines": 1914
+    },
+    {
+      "path": "src/i18n/local/index.ts",
+      "state": "SAME",
+      "referenceLines": 26,
+      "currentLines": 26
+    },
+    {
+      "path": "src/components/feature/ValueChainProgress.tsx",
+      "state": "MISSING_CURRENT",
+      "referenceLines": 96,
+      "currentLines": 0
+    },
+    {
+      "path": "src/components/feature/SubscriptionStatusCard.tsx",
+      "state": "SAME",
+      "referenceLines": 117,
+      "currentLines": 117
+    },
+    {
+      "path": "src/components/feature/StagingBanner.tsx",
+      "state": "SAME",
+      "referenceLines": 55,
+      "currentLines": 55
+    },
+    {
+      "path": "src/components/feature/ReadonlyBanner.tsx",
+      "state": "SAME",
+      "referenceLines": 52,
+      "currentLines": 52
+    },
+    {
+      "path": "src/components/feature/IdleWarningModal.tsx",
+      "state": "SAME",
+      "referenceLines": 84,
+      "currentLines": 84
+    },
+    {
+      "path": "src/components/feature/GovernanceBanner.tsx",
+      "state": "SAME",
+      "referenceLines": 124,
+      "currentLines": 124
+    },
+    {
+      "path": "src/components/feature/DataOriginLegend.tsx",
+      "state": "SAME",
+      "referenceLines": 93,
+      "currentLines": 93
+    },
+    {
+      "path": "src/components/feature/BetaFeedbackButton.tsx",
+      "state": "MISSING_CURRENT",
+      "referenceLines": 108,
+      "currentLines": 0
+    },
+    {
+      "path": "src/i18n/local/en/cocal.ts",
+      "state": "CHANGED",
+      "referenceLines": 1776,
+      "currentLines": 1918
+    },
+    {
+      "path": "src/components/auth/ProtectedRoute.tsx",
+      "state": "SAME",
+      "referenceLines": 28,
+      "currentLines": 28
+    },
+    {
+      "path": "src/components/base/StatusBadge.tsx",
+      "state": "SAME",
+      "referenceLines": 110,
+      "currentLines": 110
+    },
+    {
+      "path": "src/components/base/LoadingState.tsx",
+      "state": "SAME",
+      "referenceLines": 12,
+      "currentLines": 12
+    },
+    {
+      "path": "src/components/base/ErrorState.tsx",
+      "state": "CHANGED",
+      "referenceLines": 35,
+      "currentLines": 60
+    },
+    {
+      "path": "src/components/base/EmptyState.tsx",
+      "state": "SAME",
+      "referenceLines": 74,
+      "currentLines": 74
+    },
+    {
+      "path": "src/components/base/DataOriginBadge.tsx",
+      "state": "SAME",
+      "referenceLines": 110,
+      "currentLines": 110
+    },
+    {
+      "path": "src/components/base/ConfirmDialog.tsx",
+      "state": "CHANGED",
+      "referenceLines": 109,
+      "currentLines": 113
+    },
+    {
+      "path": "src/pages/home/components/WorkflowSection.tsx",
+      "state": "CHANGED",
+      "referenceLines": 79,
+      "currentLines": 79
+    },
+    {
+      "path": "src/pages/home/components/ProblemsSection.tsx",
+      "state": "SAME",
+      "referenceLines": 66,
+      "currentLines": 66
+    },
+    {
+      "path": "src/pages/home/components/PricingSection.tsx",
+      "state": "SAME",
+      "referenceLines": 171,
+      "currentLines": 171
+    },
+    {
+      "path": "src/pages/home/components/HeroSection.tsx",
+      "state": "SAME",
+      "referenceLines": 72,
+      "currentLines": 72
+    },
+    {
+      "path": "src/pages/home/components/Header.tsx",
+      "state": "CHANGED",
+      "referenceLines": 100,
+      "currentLines": 100
+    },
+    {
+      "path": "src/pages/home/components/Footer.tsx",
+      "state": "CHANGED",
+      "referenceLines": 69,
+      "currentLines": 69
+    },
+    {
+      "path": "src/pages/home/components/FeaturesSection.tsx",
+      "state": "CHANGED",
+      "referenceLines": 88,
+      "currentLines": 88
+    },
+    {
+      "path": "src/pages/home/components/DocumentIntelligenceSection.tsx",
+      "state": "SAME",
+      "referenceLines": 141,
+      "currentLines": 141
+    },
+    {
+      "path": "src/pages/home/components/CTASection.tsx",
+      "state": "SAME",
+      "referenceLines": 45,
+      "currentLines": 45
+    },
+    {
+      "path": "src/pages/home/components/AudienceSection.tsx",
+      "state": "CHANGED",
+      "referenceLines": 77,
+      "currentLines": 77
+    },
+    {
+      "path": "src/pages/home/components/AIRoadmapSection.tsx",
+      "state": "SAME",
+      "referenceLines": 115,
+      "currentLines": 115
+    },
+    {
+      "path": "src/pages/admin/subscription/SubscriptionManagementPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 391,
+      "currentLines": 391
+    },
+    {
+      "path": "src/pages/admin/product-carbon/ProductCarbonPage.tsx",
+      "state": "SAME",
+      "referenceLines": 465,
+      "currentLines": 465
+    },
+    {
+      "path": "src/pages/admin/documents/UploadedDocumentListPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 421,
+      "currentLines": 115
+    },
+    {
+      "path": "src/pages/admin/documents/ExtractedDraftReviewPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 628,
+      "currentLines": 554
+    },
+    {
+      "path": "src/pages/admin/documents/DocumentUploadPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 987,
+      "currentLines": 282
+    },
+    {
+      "path": "src/pages/admin/reports/ReportPreviewPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 698,
+      "currentLines": 608
+    },
+    {
+      "path": "src/pages/admin/reports/ReportGenerationHistoryPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 794,
+      "currentLines": 778
+    },
+    {
+      "path": "src/pages/admin/reports/ReportCenterPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 332,
+      "currentLines": 234
+    },
+    {
+      "path": "src/utils/subscription.ts",
+      "state": "CHANGED",
+      "referenceLines": 61,
+      "currentLines": 69
+    },
+    {
+      "path": "src/utils/staging.ts",
+      "state": "SAME",
+      "referenceLines": 31,
+      "currentLines": 31
+    },
+    {
+      "path": "src/utils/errorHandler.ts",
+      "state": "SAME",
+      "referenceLines": 73,
+      "currentLines": 73
+    },
+    {
+      "path": "src/utils/categoryScope.ts",
+      "state": "SAME",
+      "referenceLines": 39,
+      "currentLines": 39
+    },
+    {
+      "path": "src/pages/admin/documents/components/DraftAIExplanationPanel.tsx",
+      "state": "CHANGED",
+      "referenceLines": 406,
+      "currentLines": 321
+    },
+    {
+      "path": "src/pages/admin/organizations/OrganizationMembersPage.tsx",
+      "state": "SAME",
+      "referenceLines": 169,
+      "currentLines": 169
+    },
+    {
+      "path": "src/pages/admin/organizations/OrganizationListPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 185,
+      "currentLines": 185
+    },
+    {
+      "path": "src/pages/admin/organizations/EditOrganizationPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 333,
+      "currentLines": 93
+    },
+    {
+      "path": "src/pages/admin/organizations/CreateOrganizationPage.tsx",
+      "state": "SAME",
+      "referenceLines": 309,
+      "currentLines": 309
+    },
+    {
+      "path": "src/services/types.ts",
+      "state": "CHANGED",
+      "referenceLines": 49,
+      "currentLines": 52
+    },
+    {
+      "path": "src/services/reportSnapshotService.ts",
+      "state": "CHANGED",
+      "referenceLines": 138,
+      "currentLines": 25
+    },
+    {
+      "path": "src/services/reportService.ts",
+      "state": "CHANGED",
+      "referenceLines": 86,
+      "currentLines": 17
+    },
+    {
+      "path": "src/services/projectService.ts",
+      "state": "CHANGED",
+      "referenceLines": 196,
+      "currentLines": 147
+    },
+    {
+      "path": "src/services/organizationService.ts",
+      "state": "CHANGED",
+      "referenceLines": 224,
+      "currentLines": 234
+    },
+    {
+      "path": "src/services/fixtureService.ts",
+      "state": "SAME",
+      "referenceLines": 25,
+      "currentLines": 25
+    },
+    {
+      "path": "src/services/edgeFunction.ts",
+      "state": "CHANGED",
+      "referenceLines": 88,
+      "currentLines": 153
+    },
+    {
+      "path": "src/services/documentService.ts",
+      "state": "CHANGED",
+      "referenceLines": 230,
+      "currentLines": 56
+    },
+    {
+      "path": "src/services/analyticsService.ts",
+      "state": "CHANGED",
+      "referenceLines": 101,
+      "currentLines": 60
+    },
+    {
+      "path": "src/services/adjustmentService.ts",
+      "state": "CHANGED",
+      "referenceLines": 270,
+      "currentLines": 249
+    },
+    {
+      "path": "src/services/activityService.ts",
+      "state": "CHANGED",
+      "referenceLines": 37,
+      "currentLines": 44
+    },
+    {
+      "path": "src/pages/admin/reports/components/ReportOutlinePanel.tsx",
+      "state": "MISSING_CURRENT",
+      "referenceLines": 396,
+      "currentLines": 0
+    },
+    {
+      "path": "src/pages/admin/organizations/components/MemberListTable.tsx",
+      "state": "SAME",
+      "referenceLines": 293,
+      "currentLines": 293
+    },
+    {
+      "path": "src/pages/admin/organizations/components/AddMemberModal.tsx",
+      "state": "SAME",
+      "referenceLines": 272,
+      "currentLines": 272
+    },
+    {
+      "path": "src/pages/admin/ai-governance/AIGovernancePage.tsx",
+      "state": "SAME",
+      "referenceLines": 400,
+      "currentLines": 400
+    },
+    {
+      "path": "src/pages/admin/projects/ProjectOverviewPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 301,
+      "currentLines": 288
+    },
+    {
+      "path": "src/pages/admin/projects/ProjectListPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 271,
+      "currentLines": 271
+    },
+    {
+      "path": "src/pages/admin/projects/EditProjectPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 369,
+      "currentLines": 101
+    },
+    {
+      "path": "src/pages/admin/projects/CreateProjectPage.tsx",
+      "state": "SAME",
+      "referenceLines": 455,
+      "currentLines": 455
+    },
+    {
+      "path": "src/types/activity.ts",
+      "state": "CHANGED",
+      "referenceLines": 95,
+      "currentLines": 122
+    },
+    {
+      "path": "src/types/analytics.ts",
+      "state": "SAME",
+      "referenceLines": 119,
+      "currentLines": 119
+    },
+    {
+      "path": "src/types/subscription.ts",
+      "state": "SAME",
+      "referenceLines": 83,
+      "currentLines": 83
+    },
+    {
+      "path": "src/types/report.ts",
+      "state": "CHANGED",
+      "referenceLines": 99,
+      "currentLines": 121
+    },
+    {
+      "path": "src/types/project.ts",
+      "state": "CHANGED",
+      "referenceLines": 54,
+      "currentLines": 81
+    },
+    {
+      "path": "src/types/organization.ts",
+      "state": "CHANGED",
+      "referenceLines": 68,
+      "currentLines": 79
+    },
+    {
+      "path": "src/types/emissionFactor.ts",
+      "state": "SAME",
+      "referenceLines": 126,
+      "currentLines": 126
+    },
+    {
+      "path": "src/types/document.ts",
+      "state": "CHANGED",
+      "referenceLines": 98,
+      "currentLines": 99
+    },
+    {
+      "path": "src/types/dataOrigin.ts",
+      "state": "SAME",
+      "referenceLines": 62,
+      "currentLines": 62
+    },
+    {
+      "path": "src/types/carbonAdjustment.ts",
+      "state": "CHANGED",
+      "referenceLines": 210,
+      "currentLines": 218
+    },
+    {
+      "path": "src/types/capability.ts",
+      "state": "SAME",
+      "referenceLines": 72,
+      "currentLines": 72
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/CarbonAdjustmentsPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 386,
+      "currentLines": 145
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/components/AdjustmentDetailDrawer.tsx",
+      "state": "CHANGED",
+      "referenceLines": 289,
+      "currentLines": 289
+    },
+    {
+      "path": "src/pages/admin/emission-factors/FactorSourcesPage.tsx",
+      "state": "SAME",
+      "referenceLines": 992,
+      "currentLines": 992
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/components/RuleResultTab.tsx",
+      "state": "CHANGED",
+      "referenceLines": 206,
+      "currentLines": 196
+    },
+    {
+      "path": "src/pages/admin/emission-factors/EmissionFactorsPage.tsx",
+      "state": "SAME",
+      "referenceLines": 393,
+      "currentLines": 393
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/components/ItemsTab.tsx",
+      "state": "CHANGED",
+      "referenceLines": 207,
+      "currentLines": 180
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/components/EmissionsSummaryPanel.tsx",
+      "state": "SAME",
+      "referenceLines": 215,
+      "currentLines": 215
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/components/CertificatesTab.tsx",
+      "state": "SAME",
+      "referenceLines": 168,
+      "currentLines": 168
+    },
+    {
+      "path": "src/pages/admin/carbon-adjustments/components/ApplicationsTab.tsx",
+      "state": "SAME",
+      "referenceLines": 134,
+      "currentLines": 134
+    },
+    {
+      "path": "src/pages/admin/analytics/EmissionsAnalyticsPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 709,
+      "currentLines": 106
+    },
+    {
+      "path": "src/pages/admin/activities/EmissionActivityDetailPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 637,
+      "currentLines": 121
+    },
+    {
+      "path": "src/pages/admin/activities/EmissionActivitiesListPage.tsx",
+      "state": "CHANGED",
+      "referenceLines": 449,
+      "currentLines": 435
+    },
+    {
+      "path": "src/pages/admin/activities/components/CreateActivityModal.tsx",
+      "state": "CHANGED",
+      "referenceLines": 418,
+      "currentLines": 384
+    }
+  ],
+  "extra": [
+    "src/hooks/useTenantNavigation.ts",
+    "src/contexts/AuthProvider.tsx",
+    "src/contexts/authContextValue.ts",
+    "src/contexts/AuthContext.ts",
+    "src/services/tenantNavigationService.ts",
+    "src/services/subscriptionFence.ts",
+    "src/services/reportSnapshotAdapter.ts",
+    "src/services/reportAdapter.ts",
+    "src/services/projectStatistics.ts",
+    "src/services/navigationScope.ts",
+    "src/services/manualWorkflow.ts",
+    "src/services/manualRecovery.ts",
+    "src/services/intakeRecovery.ts",
+    "src/services/functionRequest.ts",
+    "src/services/entityUpdateContract.ts",
+    "src/services/draftReview.ts",
+    "src/services/documentLibrary.ts",
+    "src/services/documentIntake.ts",
+    "src/services/authSessionGate.ts",
+    "src/services/authPersistence.ts",
+    "src/services/authContinuity.ts",
+    "src/services/analyticsContract.ts",
+    "src/services/adjustmentItemAdapter.ts",
+    "src/services/adjustmentContract.ts",
+    "src/services/activityDetail.ts"
+  ],
+  "normalization": "BOM and CRLF normalized; trailing EOF whitespace ignored. File differences are not feature counts.",
+  "routes": {
+    "reference": 29,
+    "current": 29,
+    "identical": true,
+    "differences": []
+  }
+}
