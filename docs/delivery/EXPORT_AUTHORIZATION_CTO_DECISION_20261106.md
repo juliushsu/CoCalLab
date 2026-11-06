@@ -1,3 +1,5 @@
+> 最新裁定：CTO於2026-11-06明確核准方案A本機開發／隔離測試；已實作來源a868b2e，詳REPORT_EXPORT_INTEGRATION_20261106.md。以下保留提出方案時的歷史脈絡，不再是等待答覆；雲端與發布未授權。
+
 # WAITING_CTO — 報告下載授權
 
 目前工作順序第3項已讀固定PR9 1e93fee26e6d07a28e85089325ae5afa75d36160、PR10 059162660c588346e3cf36aec6ae1ca7dd8f1d39；皆未合併。可沿用3個純formatter/read/download helper與11個測試，不整頁覆蓋M1及導覽成果。
