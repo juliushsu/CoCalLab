@@ -64,6 +64,9 @@ test('A/B/shared/viewer integrated reads, direct IDs, attachments, writes and sa
   }
   assert.equal((await exported(r,shared,ar)).status,200,'shared user remains owner only in A');
   for(const [who,report]of [[a,br],[b,ar]])assert.notEqual((await exported(r,who,{...report,organization_id:scopeOf(r,who===b).organization_id})).status,200,'mixed organization/project IDs refused');
+  const browserOrigin='http://127.0.0.1:4207';
+  const browserExport=await fetch(r.baseUrl+'/functions/v1/export-report-snapshot',{method:'POST',headers:{Origin:browserOrigin,Authorization:'Bearer '+a.token,'Content-Type':'application/json'},body:JSON.stringify({organization_id:ar.organization_id,project_id:ar.project_id,report_id:ar.report_id})});
+  assert.equal(browserExport.status,200,'new preview origin reaches actual CORS-protected handler');assert.equal(browserExport.headers.get('Access-Control-Allow-Origin'),browserOrigin);
   const saved=await exported(r,a,ar);assert.equal(saved.body.data.snapshot.integrity_status,'server_verified');assert.equal(saved.body.data.snapshot.scope_totals.scope_2,50);
  }finally{await r.close();}
 });
