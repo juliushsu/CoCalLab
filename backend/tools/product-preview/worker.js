@@ -18,6 +18,8 @@ const require = createRequire(new URL('../../../frontend/readdy-app/package.json
 const sdkUrl = pathToFileURL(require.resolve('@supabase/supabase-js')).href;
 registerHooks({ resolve(specifier, context, next) {
   if (/^https:\/\/esm[.]sh\/@supabase\/supabase-js@/.test(specifier)) return next(sdkUrl, context);
+  if (specifier === 'npm:@supabase/supabase-js@2.49.4') return next(sdkUrl, context);
+  if (/^(?:npm:|jsr:)/.test(specifier)) throw new Error('Unapproved external module in the synthetic product worker');
   if (/^https?:/.test(specifier)) throw new Error('External module loading is blocked in the synthetic product worker');
   return next(specifier, context);
 } });

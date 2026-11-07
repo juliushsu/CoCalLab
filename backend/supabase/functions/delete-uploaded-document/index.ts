@@ -13,6 +13,10 @@ serveWithCors(async(request:Request)=>{
   return successEnvelope(request,operation,{requestId:input.request_id,status:operation.operation_status});
  }catch(cause){
   const denied=cause instanceof AuthzError;
-  return errorEnvelope(request,{code:denied?cause.code:cause?.code||'DOCUMENT_DELETE_UNCONFIRMED',message:cause?.message||'Deletion not confirmed',details:input?{organization_id:input.organization_id,project_id:input.project_id,document_id:input.document_id,request_id:input.request_id,operation_status:'unconfirmed',recovery:'Keep the same reference. Lookup saved operation; no automatic undo, new ID, byte resend or receipt hard deletion.'}:null},{requestId:input?.request_id,status:'unconfirmed',httpStatus:denied?cause.httpStatus:cause?.status||409});
+  const record=typeof cause==='object'&&cause!==null?cause:null;
+  const code=record&&'code' in record&&typeof record.code==='string'&&record.code?record.code:'DOCUMENT_DELETE_UNCONFIRMED';
+  const message=record&&'message' in record&&typeof record.message==='string'&&record.message?record.message:'Deletion not confirmed';
+  const status=record&&'status' in record&&typeof record.status==='number'&&record.status?record.status:409;
+  return errorEnvelope(request,{code:denied?cause.code:code,message,details:input?{organization_id:input.organization_id,project_id:input.project_id,document_id:input.document_id,request_id:input.request_id,operation_status:'unconfirmed',recovery:'Keep the same reference. Lookup saved operation; no automatic undo, new ID, byte resend or receipt hard deletion.'}:null},{requestId:input?.request_id,status:'unconfirmed',httpStatus:denied?cause.httpStatus:status});
  }
 },{allowedMethods:['POST']});

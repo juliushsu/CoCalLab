@@ -1,4 +1,4 @@
-import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
+import type { SupabaseClient } from './supabase-sdk.ts';
 import { createRequestScopedClient } from './supabase-client.ts';
 
 const WRITE_ROLES = new Set(['owner', 'admin', 'editor']);

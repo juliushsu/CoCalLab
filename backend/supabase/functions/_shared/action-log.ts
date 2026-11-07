@@ -1,4 +1,4 @@
-import type { SupabaseClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4';
+import type { SupabaseClient } from './supabase-sdk.ts';
 import { currentRuntimeEnv } from './staging-guard.ts';
 
 type ActionLogInput = {

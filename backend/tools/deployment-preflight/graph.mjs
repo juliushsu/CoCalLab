@@ -7,11 +7,15 @@ export function importsOf(name,source){
  const ast=ts.createSourceFile(name,source,ts.ScriptTarget.Latest,true),imports=[],unresolved=[];
  const add=(node,dynamic=false)=>{if(node&&ts.isStringLiteralLike(node))imports.push({specifier:node.text,dynamic});else unresolved.push({kind:'nonliteral_dynamic_import'});};
  const visit=node=>{if(ts.isImportDeclaration(node)||ts.isExportDeclaration(node)){if(node.moduleSpecifier)add(node.moduleSpecifier);}else if(ts.isCallExpression(node)&&node.expression.kind===ts.SyntaxKind.ImportKeyword)add(node.arguments[0],true);ts.forEachChild(node,visit);};
- visit(ast);return {imports,unresolved};
+ visit(ast);
+ for(const reference of ast.typeReferenceDirectives)imports.push({specifier:reference.fileName,dynamic:false,typeReference:true});
+ return {imports,unresolved};
 }
 export function classify(specifier){
  if(specifier.startsWith('.'))return 'relative';
  if(specifier.startsWith('node:'))return 'node_builtin';
+ if(/^npm:(?:@[^/]+\/)?[^@/]+@\d+[.]\d+[.]\d+(?:-[0-9A-Za-z.-]+)?(?:\/|$)/.test(specifier))return 'exact_npm';
+ if(specifier.startsWith('npm:'))return 'floating_npm';
  if(/^https:\/\/esm[.]sh\/(?:@[^/]+\/)?[^@/?]+@\d+[.]\d+[.]\d+(?:-[0-9A-Za-z.-]+)?(?:[/?]|$)/.test(specifier))return 'exact_https';
  if(/^https:\/\//.test(specifier))return 'floating_or_unclassified_https';
  return 'other_external';
