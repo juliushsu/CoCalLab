@@ -1,0 +1,8 @@
+{
+  "run_id": 42367239996,
+  "source_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42367239996",
+  "scope": "Verify source workflow; no native Deno or real cloud/independent SQL acceptance implied"
+}

@@ -1,0 +1,5 @@
+# 9ebf5b1 UAT candidate templates
+
+Application pinned 9ebf5b13427edf8d228659a24269ddaaf86a84f0; 44 source migrations (41 schema candidates +3 historical fixture files held). This supersedes the ba2 template only as a proposal, not a deployment. Old template/config-generation evidence remains unchanged. All15 functions have gateway JWT checks;3 Mock providers remain disabled in the proposal. No cloud resource/write authorization follows from these files or the private budget/14-day limit. Target ref stays null. Config must be copied to the dedicated Supabase workdir only after approval; no production imports or automatic deployment.
+
+New handler: save-manual-activity. Frozen SDK/Node dependencies and15-entry native evidence are under docs/delivery/evidence/deployment-preflight-20261107-9ebf5b13427e. Full managed runtime, raw Storage/JWT/gateway, NOT VALID validation and DB+Storage recovery remain NOT_RUN. Exact origins/redirects remain planned; local4213 is a separate synthetic preview.

@@ -37,3 +37,7 @@ Owner尚未選UAT環境。wynqnvidepzzcwutexvn僅既有候選ref，不能因已�
 [Claude固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)維持不變；已收到遠端507a94e回覆，[收件／待裁定](../docs/delivery/CLAUDE_REVIEW_RECEIPT_20261107.md)區分歷史與整合版本，不重開整案。不以CLI檢查／bundle／文件完備解除發布HOLD。
 
 後續：核對本機工具結果→Owner登入後唯讀分類→Owner另裁定具體UAT target/費用/寫入範圍→環境回執→真服務驗收。尚未核准前，雲端部署／migration／bucket／帳號／真實上傳／撤權／備份reset還原全部NOT_RUN。
+
+## Subsequent security candidate
+
+The latest local source candidate is 9ebf5b13427edf8d228659a24269ddaaf86a84f0; the candidate templates are in [deployment/uat/candidates/9ebf5b13427e](uat/candidates/9ebf5b13427e/README.md). They inventory44 source migrations/15 functions and preserve the older ba2/b7 artifacts. The CLI config parser proof is only local scaffolding, not deployment or function execution. Source, config and service acceptance remain separate. No cloud resource/write authorization is granted by these files; the owner budget/14-day limit does not change the latest CTO hold.

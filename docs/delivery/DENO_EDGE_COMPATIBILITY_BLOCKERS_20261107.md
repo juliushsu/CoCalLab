@@ -1,5 +1,7 @@
 # Deno／Edge 相容性待辦 — 固定 ba2c7a56
 
+> 後續狀態（2026-11-07）：CTO四P2與七項邊界已正式裁定並完成本機修復候選；不再等待同一裁定。最新入口為[四P2交付](CTO_P2_INTEGRATION_DELIVERY_20261107.md)及[定向複審入口](CLAUDE_CTO_P2_REVIEW_START_HERE_20261107.md)。下文保留當時固定來源／盤點證據；新候選、未驗項及雲端授權以最新交付為準。
+
 **BLOCKED_OR_PARTIAL；不是部署通過或新安全稽核。** 應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde，本輪沒有修改handler／migration／前端／業務module。
 
 ## 實際證據

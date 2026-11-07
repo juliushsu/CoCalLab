@@ -1,5 +1,7 @@
 # Claude 回覆收件與待裁定事項 — 2026-11-07
 
+> 後續狀態（2026-11-07）：CTO四P2與七項邊界已正式裁定並完成本機修復候選；不再等待同一裁定。最新入口為[四P2交付](CTO_P2_INTEGRATION_DELIVERY_20261107.md)及[定向複審入口](CLAUDE_CTO_P2_REVIEW_START_HERE_20261107.md)。下文保留當時固定來源／盤點證據；新候選、未驗項及雲端授權以最新交付為準。
+
 **RECEIVED／WAITING_CTO；發布HOLD。** 遠端新增固定文件提交[507a94ea334c3a65f06d75955a365218112df84d](https://github.com/juliushsu/CoCalLab/blob/507a94ea334c3a65f06d75955a365218112df84d/docs/delivery/CLAUDE_INTEGRATION_REVIEW_REPLY_20261107.md)，已保留原文及歷史合入PR28工作分支，沒有強推或改應用ba2c7a56。
 
 回覆對應固定入口9839e1f的H/R/D/L/M及I1–I6，明確區分歷史SHA與最終ba2；**Claude沒有重跑任何測試**。主代理已讀總覽及相關來源段落，本文件不是全文逐行複核、獨立實測或CTO裁定。

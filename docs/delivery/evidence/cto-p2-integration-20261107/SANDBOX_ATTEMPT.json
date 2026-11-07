@@ -1,0 +1,13 @@
+{
+  "source_sha": "f637e1d2f5efe02c225d8a7dbeb8ca4a8c7a386c",
+  "status": "BLOCKED_OR_PARTIAL",
+  "summary": {
+    "checksPassed": 15,
+    "checksFailed": 0,
+    "bundlesCreated": 0,
+    "total": 15
+  },
+  "reason": "Sandbox Deno bundler cannot read ancestor directory (Access is denied); check succeeds, bundle fails. No application handler executed.",
+  "resolution": "Owner-approved host build for final b7 source:15 checks and15 static bundles PASS; full sandbox attempt preserved locally in ignored generated diagnostic directory",
+  "not_a_source_fix_or_runtime_pass": true
+}

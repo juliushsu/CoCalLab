@@ -1,0 +1,7 @@
+⚠️  deno bundle is experimental and subject to changes
+bundler warning: Comparison with -0 using the "===" operator will also match 0[equals-negative-zero]
+    at file:///C:/Users/User/OneDrive/%E6%96%87%E4%BB%B6/ChatGPT/CaCalLab/local-uat/CoCalLab-UAT-LOCAL-01/tooling/deployment-20261107/deno-cache/npm/registry.npmjs.org/webidl-conversions/3.0.1/lib/index.js:52:23
+    note: Floating-point equality is defined such that 0 and -0 are equal, so "x === -0" returns true for both 0 and -0. You need to use "Object.is(x, -0)" instead to test for -0.
+Bundled 100 modules in 165ms
+  ..\bundles\process-document.js.map 1.45MB
+  ..\bundles\process-document.js     810.61KB

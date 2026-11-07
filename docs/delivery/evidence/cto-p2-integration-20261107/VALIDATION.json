@@ -1,0 +1,80 @@
+{
+  "program_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+  "test_fixture_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+  "recorded_at_utc": "2026-11-07T11:21:59.860Z",
+  "cloud_actions": 0,
+  "release": "HOLD",
+  "checks": {
+    "backend": {
+      "passed": 31,
+      "failed": 0,
+      "command": "node --test backend/tests/*.test.js"
+    },
+    "frontend": {
+      "passed": 225,
+      "failed": 0,
+      "command": "node --test tests/*.test.ts",
+      "source_note": "Frontend source/tests byte-identical to the tested b7/1f frontend; backend-only marker/adapter delta in9eb"
+    },
+    "integration": {
+      "total": 337,
+      "passed": 335,
+      "failed": 0,
+      "not_run": 2,
+      "command": "PGLITE_RUNTIME_ROOT=<isolated runtime> node --test --test-concurrency=1 backend/tests/integration/*.test.js",
+      "independent_sql_connections": "NOT_RUN",
+      "note": "Historical explicit migration subsets test their named baselines; new P2 tests use full chain. Not a managed Supabase E2E."
+    },
+    "frontend_types": {
+      "exit": 0
+    },
+    "frontend_lint": {
+      "exit": 0,
+      "warnings": 0
+    },
+    "frontend_build": {
+      "exit": 0,
+      "host": "Owner-approved local host process after sandbox Access denied",
+      "warnings": [
+        "Browserslist data age",
+        "main bundle >500kB"
+      ]
+    },
+    "native_deno": {
+      "source_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+      "checksPassed": 15,
+      "checksFailed": 0,
+      "bundlesCreated": 15,
+      "total": 15,
+      "status": "STATIC_PREFLIGHT_PASS_NOT_RUNTIME_ACCEPTANCE",
+      "lock_sha256": "5897f3dd1da8f61e76c7aa93463166ed5efd8bf2939e4efe222fd62698cd2725",
+      "lock_unchanged": true
+    },
+    "browser": {
+      "result": "PASS_FOR_DOCUMENTED_LOCAL_SYNTHETIC_FLOW",
+      "evidence": "../cto-p2-browser-20261107/BROWSER_RESULTS.json",
+      "native_chooser_download": "NOT_RUN",
+      "source_note": "Browser run fixed b7, not falsely relabelled9eb; later marker/adapter delta separately unit/HTTP/native tested"
+    }
+  },
+  "overlap": "Unit/integration/independent subsets overlap; never add these counts together",
+  "log_normalization": "CRLF to LF, local repo prefix and trailing blank whitespace normalized; test diagnostics preserved",
+  "log_sha256": {
+    "integration-final.txt": "b3f08c022e305407d1142047d22d85f9b2087836a1f6b1e4c277573d03248d9d",
+    "backend-unit-final.txt": "8603b30ad7ec627b045f9e898fb8cde41a4894944de14fbd93729613e6ed09a7",
+    "frontend-unit.txt": "16e010646896df31aae4135e9feb2bd91ce5e85ea085aad5010ae658f6f1afbf",
+    "integration-9ebf5b1.txt": "3860c3d9d8dcf4e605a632c64760b324db2f18bdb88f60ac376e6104567f2b13",
+    "backend-unit-9ebf5b1.txt": "d0824cf57e9b70c8d70ddec8489dafe44f0593be5e6f6224f5cce03dce4d0216"
+  },
+  "status": "LOCAL_SOURCE_CANDIDATE_VALIDATED_PENDING_CLAUDE_AND_REAL_SERVICE",
+  "latest_integration_log": "integration-9ebf5b1.txt",
+  "latest_backend_log": "backend-unit-9ebf5b1.txt",
+  "github_ci": {
+    "run_id": 42367239996,
+    "source_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42367239996",
+    "scope": "Verify source workflow; no native Deno or real cloud/independent SQL acceptance implied"
+  }
+}
