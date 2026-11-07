@@ -62,5 +62,5 @@
     "fixture_policy": "Pure historical DML: exclude from proposed fresh-UAT application; preserve source/history. Do not fabricate CLI migration history or use this exclusion on an existing project.",
     "not_valid": "Inventory and validate separately; migration success is not validation"
   },
-  "cloud_read_scope": "Owner 2026-11-07: existing CoCalLab Supabase metadata/aggregate plan and usage only; WAITING_LOGIN; no content/key/config writes. This is a receipt note, not executable authorization."
+  "cloud_read_scope": "Owner 2026-11-07 authorized and completed PC login; scoped metadata/aggregate inventory complete. Exact observations remain in restricted local Owner report; environment purpose/deployed SHA unverified. This receipt grants no resource creation, cloud writes, settings changes or costs."
 }

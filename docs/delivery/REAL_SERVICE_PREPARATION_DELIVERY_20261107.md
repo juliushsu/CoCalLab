@@ -38,17 +38,19 @@ node deployment/uat/prepare-manual-fixtures.mjs
 
 ## Supabase唯讀盤點狀態
 
-Owner已明確回覆「授權上述Supabase唯讀盤點」；**AUTHORIZED_READ_ONLY／WAITING_LOGIN**。PC已開Supabase Dashboard登入頁，尚待Owner自行登入，故本輪未新增任何live專案／用量／帳務結論。若Owner改由Mac讀取，使用受限、跨主機可讀的脫敏回執。
+Owner已授權並完成PC登入，**READONLY_COMPLETE_WITH_SCOPE_LIMITS**。指定專案的metadata／aggregate、方案／用量、schema統計、migration／function清單及backup／branch metadata已唯讀核對；沒有讀業務列、Auth名單、Storage檔案、keys或付款資訊，也沒有任何雲端寫入。
 
-[核准讀取範圍](EXISTING_RESOURCE_READONLY_SCOPE_20261107.md)：僅指定CoCalLab metadata、aggregate資料／使用者是否存在、用途／相依、方案與用量，不開業務列、Auth使用者清單、Storage檔案或keys，不改任何設定。不能用可能寫audit／subscription狀態的應用頁作唯讀盤點。帳單／付款或企業內容不進公開Git／聊天。
+[公開脫敏回執與環境選項](SUPABASE_READONLY_INVENTORY_RECEIPT_20261107.md)已備；精確版本、統計、部署落差與證據URL保留repo外的Owner受限本機報告。既有專案不能證實為安全空白UAT，實際用途／真實資料性質／外部相依仍需Owner分類；部署SHA仍UNKNOWN。備份存在不等於復原已驗。
 
-既有wynqnvidepzzcwutexvn目前仍只有歷史候選識別證據；Owner表示已付費，實際plan／usage／資料分類尚待登入核對。Cloudflare／Railway不在這次新授權內；未擴至其他帳戶。環境先分類再決定，不自行建立新UAT。
+Cloudflare／Railway不在此次新增授權內。環境選擇、新費用、建資源與任何寫入仍WAITING_OWNER；本次沒有自選UAT或讀取正式內容。
 
 ## 下一關與未驗
 
-1. WAITING_LOGIN：Owner登入PC或指定Mac提供受限盤點；取得metadata後提出重用／另建的具體選擇。既有唯讀授權不需重問，但任何寫入／費用／設定變更仍需另核准。
+1. WAITING_OWNER：已完成限定唯讀盤點並提出既有main／獨立UAT／無資料branch選項；建議保留既有main，另核准獨立UAT與費用及具體操作包。未獲核准前不建立資源／寫入／改設定，既有唯讀授權不重問。
 2. WAITING_CTO：採用前先處理[原生Deno相容性缺口](DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md)，對相關依賴與三支handler邊界作最小修正、另固定新候選SHA；不修改本輪ba2來混淆版本。
 3. CLAUDE_RECEIVED／WAITING_CTO：遠端507a94e的[回覆原文](CLAUDE_INTEGRATION_REVIEW_REPLY_20261107.md)已保留合入，見[收件摘要](CLAUDE_REVIEW_RECEIPT_20261107.md)。沿[固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)，區分歷史與ba2整合版本；回覆沒有重跑測試；四類P2為審查者評級，尚待CTO裁定，不推定放行或重開整案。
 4. NOT_RUN：真JWT／PostgREST／Storage／Deno Edge、原生選檔與落盤、兩獨立PG連線、live migration／NOT VALID資料驗證、備份復原及19+1代表使用者驗收。原生chooser權限阻礙沿用，不擅自擴權／重試Docker/WSL。
 
 前一輪FE221／backend27／SQL308 PASS+2 NOT_RUN及CI是既有來源證據，本輪沒有重跑或與新preflight加總；它們不能抵銷此次原生Deno失敗。即使一般CI通過，部署仍BLOCKED／發布HOLD。
+
+補充：工具／文件固定142dba990537b0750d1b7f4d82a415ade0def848的GitHub Verify已實際success；未重跑產品測試、未將CI抵銷原生Deno失敗。此回執更新只改文件與授權註記，不改應用ba2。

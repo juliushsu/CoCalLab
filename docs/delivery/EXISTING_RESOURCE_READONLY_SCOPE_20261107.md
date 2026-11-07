@@ -1,6 +1,6 @@
-# 既有資源唯讀盤點範圍 — AUTHORIZED_READ_ONLY／WAITING_LOGIN
+# 既有資源唯讀盤點範圍 — AUTHORIZED_READ_ONLY／READONLY_COMPLETE_WITH_SCOPE_LIMITS
 
-此文件定義可核准的唯讀操作，**Owner已於2026-11-07明確授權上述Supabase唯讀盤點；PC尚停登入頁，等待Owner自行登入**。不選擇UAT環境、不建立專案、不改設定、不讀業務資料內容；是否重用須另裁定。
+此文件定義已授權的唯讀操作，**Owner已於2026-11-07授權並完成PC登入；限定範圍盤點已完成**。結果見[脫敏回執](SUPABASE_READONLY_INVENTORY_RECEIPT_20261107.md)，精確統計／版本／用量與差異保留受限本機Owner報告。不選擇UAT環境、不建立專案、不改設定、不讀業務資料內容；是否重用須另裁定。
 
 ## 核准後允許收集
 
