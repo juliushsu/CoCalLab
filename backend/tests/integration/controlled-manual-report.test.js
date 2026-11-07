@@ -56,3 +56,13 @@ test('installed client service recovers committed activity response loss with sa
   const replay=await saveManualReport(client,scope,r.scope.userId,attempt);assert.equal(replay.id,report.id);
  }finally{await client.auth.signOut({scope:'local'});await r.close();}
 });
+test('legacy embedded MANUAL provider with empty raw provenance is rejected by service before processing/classification',async()=>{
+ const r=await createProductRuntime({port:0,scenario:'manual-transcription'});try{
+  const token=await login(r,'aOwner'),f=r.config.manifest.fixtures.a,scope={organization_id:f.organizationId,project_id:f.projectId},id=randomUUID();
+  // Explicit synthetic maintenance fixture represents historical provider naming, not an OCR success.
+  const seeded=await api(r,'/rest/v1/extracted_document_drafts','SYNTHETIC-PRODUCT-SERVICE-KEY',{...scope,id,uploaded_document_id:f.document.documentId,extraction_provider:'ocr_manual_import',extraction_version:1,raw_payload:{},normalized_payload:{quantity:100},status:'pending_review',classification_status:'unclassified',is_latest:false,env:'staging',is_test:true});assert.equal(seeded.status,201,JSON.stringify(seeded.body));
+  const process=await api(r,'/functions/v1/process-document',token,{...scope,uploaded_document_id:f.document.documentId,provider_hint:'mock',request_id:randomUUID()});assert.equal(process.status,409,JSON.stringify(process.body));assert.equal(process.body.error.code,'MANUAL_SOURCE_RETAINED');
+  const classify=await api(r,'/functions/v1/classify-document',token,{...scope,draft_id:id,model_hint:'mock',normalized_payload:{quantity:0},request_id:randomUUID()});assert.equal(classify.status,409,JSON.stringify(classify.body));assert.equal(classify.body.error.code,'MANUAL_SOURCE_RETAINED');
+  const after=await api(r,'/rest/v1/extracted_document_drafts?id=eq.'+id,token,undefined,'GET');assert.equal(after.body.length,1);assert.equal(after.body[0].extraction_provider,'ocr_manual_import');assert.deepEqual(after.body[0].raw_payload,{});assert.deepEqual(after.body[0].normalized_payload,{quantity:100});assert.equal(after.body[0].is_latest,false);
+ }finally{await r.close();}
+});
