@@ -63,8 +63,13 @@ test('manual SQL transaction rechecks readonly, period, missing object and stale
     await f.db.query("update subscriptions set status='readonly' where organization_id=$1",[f.scope.organizationId]);await assert.rejects(f.confirm(intent),error=>error.code==='42501');
     await f.db.query("update subscriptions set status='active' where organization_id=$1",[f.scope.organizationId]);
     await f.db.query('update extracted_document_drafts set is_latest=false where id=$1',[f.draft]);await assert.rejects(f.confirm(intent),/stale_draft/);await f.db.query('update extracted_document_drafts set is_latest=true where id=$1',[f.draft]);
-    await f.db.query('delete from storage.objects where bucket_id=$1 and name=$2',['staging-receipts',f.path]);await assert.rejects(f.confirm(intent),error=>error.code==='42501');
-    assert.equal(await f.count('emission_activities'),0);
+    const audit=await f.count('audit_logs');
+    await f.db.query('delete from storage.objects where bucket_id=$1 and name=$2',['staging-receipts',f.path]);
+    // The new verification fence runs before the historical existence-only
+    // scope check: missing bytes now fail the exact saved object binding.
+    await assert.rejects(f.confirm(intent),error=>error.code==='P0001'&&error.message==='verification_object_binding_changed');
+    assert.equal(await f.count('emission_activities'),0);assert.equal(await f.count('calculation_results'),0);assert.equal(await f.count('audit_logs'),audit);
+    const draft=(await f.db.query('select status,reviewed_by_user_id from extracted_document_drafts where id=$1',[f.draft])).rows[0];assert.equal(draft.status,'pending_review');assert.equal(draft.reviewed_by_user_id,null);
   }finally{await f.close();}
 });
 test('manual pending source deletion stays denied under broad permissive policies while service maintenance is preserved',async()=>{
