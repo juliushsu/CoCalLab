@@ -18,3 +18,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Intermediate sandbox-only compiler diagnostic; final b7 evidence is published.
+/docs/delivery/evidence/deployment-preflight-20261107-f637e1d2f5ef/

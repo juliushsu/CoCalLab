@@ -28,7 +28,7 @@ const tables = new Set(['organizations','organization_members','subscriptions','
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
 const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','read_verified_report_snapshot','upload_intake_contract',
   'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing','save_manual_activity_atomic','report_calculation_inputs','classify_document_atomic','process_document_atomic']);
-const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
+const handlers = new Map(), columns = new Map(), jsonColumns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
 const storageMetrics={writes:0,reads:0};
 let registering = '', baseUrl = '', flow, server, fault = null, previewConfig, dbQueue = Promise.resolve();
@@ -122,9 +122,11 @@ async function rest(request, url, table) {
       for (const object of objects) {
         if (!object || typeof object !== 'object' || Array.isArray(object)) throw new Error('Invalid local row body');
         const keys = Object.keys(object); if (!keys.length || keys.some(key => !columns.get(table).has(key))) throw new Error('Unknown local row column');
-        if (request.method === 'POST') rows.push(...wireRows(await flow.db.query('insert into public.'+sqlIdentifier(table)+'('+keys.map(sqlIdentifier).join(',')+') values('+keys.map((_,i)=>'$'+(i+1)).join(',')+') returning *',Object.values(object))));
+        // PostgREST transports JSON scalars as JSON, not an unquoted SQL string.
+        const rowValues=keys.map(key=>object[key]!==null&&jsonColumns.get(table)?.has(key)?JSON.stringify(object[key]):object[key]);
+        if (request.method === 'POST') rows.push(...wireRows(await flow.db.query('insert into public.'+sqlIdentifier(table)+'('+keys.map(sqlIdentifier).join(',')+') values('+keys.map((_,i)=>'$'+(i+1)).join(',')+') returning *',rowValues)));
         else {
-          const values = [...params,...Object.values(object)];
+          const values = [...params,...rowValues];
           rows.push(...wireRows(await flow.db.query('update public.'+sqlIdentifier(table)+' set '+keys.map((key,i)=>sqlIdentifier(key)+'=$'+(params.length+i+1)).join(',')+where+' returning *',values)));
         }
       }
@@ -143,7 +145,7 @@ async function rpc(request,name) {
     if (procedures.length !== 1) throw new Error('RPC unavailable or ambiguous: '+name);
     const procedure=procedures[0], names=procedure.proargnames.slice(0,procedure.pronargs), keys=Object.keys(input);
     if(keys.some(key=>!names.includes(key)))throw new Error('Unknown RPC argument');
-    return json(wireRows(await flow.db.query('select * from public.'+sqlIdentifier(name)+'('+keys.map((key,i)=>sqlIdentifier(key)+' => $'+(i+1)+'::'+procedure.types[names.indexOf(key)]).join(',')+')',keys.map(key=>input[key]))));
+    return json(wireRows(await flow.db.query('select * from public.'+sqlIdentifier(name)+'('+keys.map((key,i)=>sqlIdentifier(key)+' => $'+(i+1)+'::'+procedure.types[names.indexOf(key)]).join(',')+')',keys.map(key=>input[key]!==null&&['json','jsonb'].includes(procedure.types[names.indexOf(key)])?JSON.stringify(input[key]):input[key]))));
   });
 }
 async function storageRead(request,url){
@@ -249,7 +251,7 @@ try {
   if(scope.aOwnerId)await flow.db.query("insert into organization_members(organization_id,user_id,role,status) values($1,$2,'owner','active')",[scope.organizationId,scope.aOwnerId]);
   if(workerData.withFactor)for(const [org,factor]of [[scope.organizationId,scope.factorId],[scope.otherOrganizationId,randomUUID()]])await flow.db.query(`insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,subcategory,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,metadata,env,is_test)
     values($1,$2,'SYNTHETIC-0.5','SYNTHETIC custom factor','SYNTHETIC TEST ONLY','energy','purchased_electricity','electricity','kWh',0.5,'2026-01-01',1,'custom','active','{"synthetic":true}','staging',true)`,[factor,org]);
-  for(const row of (await flow.db.query("select table_name,column_name from information_schema.columns where table_schema='public'")).rows){if(!columns.has(row.table_name))columns.set(row.table_name,new Set());columns.get(row.table_name).add(row.column_name);}
+  for(const row of (await flow.db.query("select table_name,column_name,data_type from information_schema.columns where table_schema='public'")).rows){if(!columns.has(row.table_name)){columns.set(row.table_name,new Set());jsonColumns.set(row.table_name,new Set());}columns.get(row.table_name).add(row.column_name);if(['json','jsonb'].includes(row.data_type))jsonColumns.get(row.table_name).add(row.column_name);}
   const accounts={owner:{email:'owner@product-preview.invalid',password:'synthetic-local-only'},viewer:{email:'viewer@product-preview.invalid',password:'synthetic-local-only'},outsider:{email:'outsider@product-preview.invalid',password:'synthetic-local-only'},otherOwner:{email:'b-owner@product-preview.invalid',password:'synthetic-local-only'}};
   if(scope.aOwnerId)accounts.aOwner={email:'a-owner@product-preview.invalid',password:'synthetic-local-only'};
   for(const [name,id]of [['owner',scope.userId],['viewer',scope.viewerId],['outsider',scope.outsiderId],['otherOwner',scope.otherOwnerId],...(scope.aOwnerId?[['aOwner',scope.aOwnerId]]:[])])users.set(name,{...accounts[name],user:{id,email:accounts[name].email,aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{synthetic:true},created_at:'2026-01-01T00:00:00Z'}});
