@@ -12,3 +12,11 @@ test('exact pins are distinguished from a floating major and runtime execution p
  assert.equal(classify('https://esm.sh/@supabase/supabase-js@2.49.4'),'exact_https');assert.equal(classify('https://esm.sh/@supabase/supabase-js@2'),'floating_or_unclassified_https');
  for(const args of [['run','a.ts'],['serve','a.ts'],['check','--preload=evil.ts','a.ts'],['cache','--env-file=secret','a.ts'],['bundle','--allow-net','a.ts']])assert.throws(()=>assertAnalysisCommand(args));assert.doesNotThrow(()=>assertAnalysisCommand(['bundle','--allow-import=esm.sh','a.ts']));
 });
+
+test('native npm and triple-slash type dependencies are inventoried, including the exact Node declaration pin',()=>{
+ const parsed=importsOf('sdk.ts',`/// <reference types="npm:@types/node@22.12.0" />\nexport {createClient} from 'npm:@supabase/supabase-js@2.49.4';`);
+ assert.equal(classify('npm:@supabase/supabase-js@2.49.4'),'exact_npm');
+ assert.equal(classify('npm:@supabase/supabase-js@2'),'floating_npm');
+ assert.equal(classify('npm:@supabase/supabase-js'),'floating_npm');
+ assert.deepEqual(parsed.imports.find(i=>i.typeReference),{specifier:'npm:@types/node@22.12.0',dynamic:false,typeReference:true});
+});

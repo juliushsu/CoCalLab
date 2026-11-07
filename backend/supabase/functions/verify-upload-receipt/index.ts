@@ -18,7 +18,11 @@ serveWithCors(async(request:Request)=>{
   const data=await verifyUploadReceipt({client,storage,actorUserId:actor.user_id,input,signal:request.signal});
   return successEnvelope(request,data,{status:data.state,requestId:input.request_id});
  }catch(cause){
-  const code=cause instanceof AuthzError?cause.code:cause?.code||'VERIFICATION_NOT_CONFIRMED';
-  return errorEnvelope(request,{code,message:cause?.message||'Verification not confirmed',details:input?{document_id:input.document_id,request_id:input.request_id,verification_state:'unconfirmed',retry:'Keep the same document/request IDs; no automatic cleanup or byte resend'}:null},{httpStatus:cause instanceof AuthzError?cause.httpStatus:cause?.status||409,status:'unconfirmed',requestId:input?.request_id});
+  const record=typeof cause==='object'&&cause!==null?cause:null;
+  const fallbackCode=record&&'code' in record&&typeof record.code==='string'&&record.code?record.code:'VERIFICATION_NOT_CONFIRMED';
+  const code=cause instanceof AuthzError?cause.code:fallbackCode;
+  const message=record&&'message' in record&&typeof record.message==='string'&&record.message?record.message:'Verification not confirmed';
+  const status=record&&'status' in record&&typeof record.status==='number'&&record.status?record.status:409;
+  return errorEnvelope(request,{code,message,details:input?{document_id:input.document_id,request_id:input.request_id,verification_state:'unconfirmed',retry:'Keep the same document/request IDs; no automatic cleanup or byte resend'}:null},{httpStatus:cause instanceof AuthzError?cause.httpStatus:status,status:'unconfirmed',requestId:input?.request_id});
  }
 },{allowedMethods:['POST']});

@@ -1,5 +1,5 @@
 import { serveWithCors } from '../_shared/cors.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from '../_shared/supabase-sdk.ts';
 
 serveWithCors(async (req) => {
   try {

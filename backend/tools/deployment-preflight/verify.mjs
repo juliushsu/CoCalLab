@@ -1,13 +1,14 @@
 // Static compiler preflight only. No deno run/serve, Supabase link/deploy/DB, or .env.
 import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import {spawnSync,execFileSync} from 'node:child_process';import {fileURLToPath,pathToFileURL} from 'node:url';
 import {graphFor,importsOf,parserVersion,assertAnalysisCommand} from './graph.mjs';
-const COMMIT='ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde';
+const COMMIT=process.argv[3]||'ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde';
+if(!/^[a-f0-9]{40}$/.test(COMMIT))throw new Error('Source must be an explicit full commit SHA');
 const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
 const tools=path.resolve(repo,'../tooling/deployment-20261107'),work=path.join(tools,COMMIT),source=path.join(work,'source'),bundles=path.join(work,'bundles');
-const evidence=path.join(repo,'docs/delivery/evidence/deployment-preflight-20261107');
+const evidence=path.join(repo,'docs/delivery/evidence',COMMIT==='ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde'?'deployment-preflight-20261107':'deployment-preflight-20261107-'+COMMIT.slice(0,12));
 const lock=path.join(evidence,'deno.lock'),deno=path.join(tools,'deno-2.9.8/deno.exe'),supabase=path.join(tools,'supabase-2.122.1/supabase.exe');
 const git='git',mode=process.argv[2]||'all';
-if(!['inventory','all','verify'].includes(mode)||process.argv.length>3)throw new Error('Usage: node backend/tools/deployment-preflight/verify.mjs [inventory|all|verify]');
+if(!['inventory','all','verify'].includes(mode)||process.argv.length>4)throw new Error('Usage: node backend/tools/deployment-preflight/verify.mjs [inventory|all|verify] [full-source-sha]');
 const sha=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 const pins=[
  {name:'Supabase CLI',version:'2.122.1',archive:'supabase_2.122.1_windows_amd64.zip',archiveSha256:'254d141398da58b9acd273ff3f98c69b3efc89a077946715b1e4f7c22d4b0b99',binary:supabase,binarySha256:'19c0a8a2c911d05bf64b4fe2a1c1e25ad59eac1d04e2d0d10b2f9758668203df',url:'https://github.com/supabase/cli/releases/download/v2.122.1/supabase_2.122.1_windows_amd64.zip'},
@@ -15,9 +16,9 @@ const pins=[
 ];
 for(const dir of [source,bundles,evidence])fs.mkdirSync(dir,{recursive:true});
 for(const pin of pins){pin.archivePath=path.join(tools,pin.archive);if(sha(fs.readFileSync(pin.archivePath))!==pin.archiveSha256||sha(fs.readFileSync(pin.binary))!==pin.binarySha256)throw new Error('Pinned asset/binary mismatch: '+pin.name);}
-const env={SystemRoot:process.env.SystemRoot,PATH:process.env.PATH,CI:'1',NO_COLOR:'1',DENO_NO_UPDATE_CHECK:'1',DENO_NO_PROMPT:'1',DENO_DIR:path.join(tools,'deno-cache'),DENO_TLS_CA_STORE:'system,mozilla',SUPABASE_HOME:path.join(tools,'supabase-home')};
+const env={SystemRoot:process.env.SystemRoot,PATH:process.env.PATH,CI:'1',NO_COLOR:'1',DENO_NO_UPDATE_CHECK:'1',DENO_NO_PROMPT:'1',DENO_DIR:path.join(tools,'deno-cache'),DENO_TLS_CA_STORE:'mozilla',SUPABASE_HOME:path.join(tools,'supabase-home')};
 const commands=[];
-const sanitize=text=>String(text||'').replaceAll(pathToFileURL(source+path.sep).href,'<FIXED_SOURCE>/').replaceAll(source,'<FIXED_SOURCE>').replaceAll(tools,'<TOOL_ROOT>').replaceAll(repo,'<REPO_ROOT>').replace(/\x1b\[[0-9;]*m/g,'');
+const sanitize=text=>String(text||'').replaceAll(pathToFileURL(source+path.sep).href,'<FIXED_SOURCE>/').replaceAll(source,'<FIXED_SOURCE>').replaceAll(tools,'<TOOL_ROOT>').replaceAll(repo,'<REPO_ROOT>').replace(/\x1b\[[0-9;]*m/g,'').replace(/\r\n/g,'\n').replace(/[\t ]+$/gm,'');
 for(const file of fs.readdirSync(evidence).filter(name=>name.endsWith('.txt')))fs.writeFileSync(path.join(evidence,file),sanitize(fs.readFileSync(path.join(evidence,file),'utf8')));
 function command(binary,args,label){
  if(binary===deno)assertAnalysisCommand(args);else if(binary!==supabase||args.join(' ')!=='--version')throw new Error('Only local tool version/analysis commands permitted');
@@ -46,7 +47,7 @@ const common=['--no-config','--node-modules-dir=none','--allow-import=esm.sh,reg
 const transportFailure=text=>/error sending request|certificate|TLS|timed out|ENOTFOUND|ECONN|Failed to fetch|Client error/i.test(text);
 const blockedRoots=new Set();
 if(mode==='all')for(const fn of functions){
- const roots=fn.edges.filter(e=>e.kind.endsWith('https')).map(e=>e.specifier);
+ const roots=fn.edges.filter(e=>e.kind.endsWith('https')||e.kind.endsWith('npm')).map(e=>e.specifier);
  if(roots.some(root=>blockedRoots.has(root))){fn.discovery={status:'NOT_RUN_SHARED_TRANSPORT_BLOCKER'};continue;}
  // Cache resolves the graph/lock without making success depend on type-check
  // success. A failed deno check may not write a lock at all. No code executes.

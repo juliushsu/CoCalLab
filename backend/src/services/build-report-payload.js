@@ -121,7 +121,16 @@ function boundarySnapshot({ project, workspace, legal_entity, site }) {
   };
 }
 
-export function build_report_payload({ project, activities, calculation_results, workspace = null, legal_entity = null, site = null }) {
+/** @typedef {{id: string, slug?: string|null, display_name?: string|null, legal_name?: string|null, tax_id?: string|null, country_code?: string|null, timezone?: string|null}} ReportWorkspace */
+/** @typedef {{id: string, workspace_id?: string|null, entity_code?: string|null, registered_name?: string|null, display_name?: string|null, tax_id?: string|null, country_code?: string|null, registration_address?: string|null, industry_code?: string|null, status?: string|null}} ReportLegalEntity */
+/** @typedef {{id: string, workspace_id?: string|null, legal_entity_id?: string|null, site_code?: string|null, site_name?: string|null, facility_type?: string|null, address?: string|null, country_code?: string|null, timezone?: string|null, cbam_installation_ref?: string|null, status?: string|null}} ReportSite */
+
+// Only the null defaults are annotated; no runtime metadata, fallback or gate
+// changes. Imported JS signatures must accept the actual selected DB objects.
+export function build_report_payload({ project, activities, calculation_results,
+  workspace = /** @type {ReportWorkspace|null} */ (null),
+  legal_entity = /** @type {ReportLegalEntity|null} */ (null),
+  site = /** @type {ReportSite|null} */ (null) }) {
   // An included unknown calculation is not a zero-emission saved report.
   for (const activity of activities.filter(row => row.inclusion_status === 'included')) {
     const latest = calculation_results.filter(row => row.emission_activity_id === activity.id && row.is_latest !== false);
