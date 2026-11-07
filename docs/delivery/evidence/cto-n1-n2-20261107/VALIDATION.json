@@ -1,0 +1,88 @@
+{
+  "sourceCommit": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "release": "HOLD",
+  "environment": "Windows Node24.22.1; fixed git-archive snapshot; PGlite0.5.13 single serialized connection / PG18.6 WASM; synthetic Auth/Storage + installed SDK adapter",
+  "sourceBinding": "FIXED_SOURCE.json; all 925 tracked blobs verified",
+  "results": {
+    "integration": {
+      "tests": 358,
+      "pass": 356,
+      "fail": 0,
+      "notRun": 2,
+      "exitCode": 0,
+      "durationMs": 466254.0075
+    },
+    "backendUnit": {
+      "pass": 33,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "frontendUnit": {
+      "pass": 227,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS_WITH_EXISTING_CHUNK_SIZE_WARNING",
+    "nativeDeno": {
+      "version": "2.9.8",
+      "checks": 15,
+      "checksPass": 15,
+      "staticBundles": 15,
+      "hashes": "PASS",
+      "evidence": "../deployment-preflight-20261107-33d3613487f4/failure-summary.json"
+    }
+  },
+  "commands": [
+    "$env:PGLITE_RUNTIME_ROOT=(Resolve-Path ../../sql-runtime).Path; node --test --test-concurrency=1 <all sorted backend/tests/integration/*.test.js>",
+    "node --test backend/tests/*.test.js",
+    "node --test tests/*.test.ts [frontend cwd]",
+    "node node_modules/typescript/bin/tsc --noEmit --project tsconfig.app.json",
+    "node node_modules/eslint/bin/eslint.js src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "node node_modules/vite/bin/vite.js build",
+    "node backend/tools/deployment-preflight/verify.mjs verify 33d3613487f42a7e9c5888ae312441e730d3d87e",
+    "node backend/tools/deployment-preflight/summarize.mjs 33d3613487f42a7e9c5888ae312441e730d3d87e"
+  ],
+  "independentReview": "INDEPENDENT_REVIEW.md; overlapping subsets, not additive",
+  "superseded": "Earlier working-tree run351=349PASS/2NOT_RUN preceded witness; retained local only, not final fixed evidence",
+  "notRun": [
+    "Independent SQL reference/delete lock-wait sessions",
+    "Independent SQL recalculation/commit sessions",
+    "Real Supabase JWT/PostgREST/Storage/managed Edge/ESZIP",
+    "React foreground refresh/native file chooser/download to OS",
+    "Cloud migration/NOT VALID validation/backup+restore/19+1 acceptance"
+  ],
+  "githubCI": "PENDING_AFTER_PUSH; no success claim",
+  "artifacts": [
+    {
+      "file": "integration.txt",
+      "sha256": "4e5ce331b9e9548e46f0b82d2ead0f9b7738c65688ede69b19a308177d28c93e"
+    },
+    {
+      "file": "backend-unit.txt",
+      "sha256": "3c89b4133d4a4de10959a9a140f06cfa81c914e239ba8f06c7e3fce097012b39"
+    },
+    {
+      "file": "frontend-unit.txt",
+      "sha256": "c636534cfa01931a4407c6f609d3251d38aec750830074cc712b85d6df69c442"
+    },
+    {
+      "file": "typecheck.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "lint.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "build.txt",
+      "sha256": "a0f89cd28b8f9d4bcfd544302bd524d8088f0529c049be73c84776169c9da23e"
+    },
+    {
+      "file": "legacy-handler-target.txt",
+      "sha256": "1a705bfea8fdb8525148ef1117fb5b39b1cf3055f0a2ae6cf35b18eb7c841649"
+    }
+  ],
+  "recordedAt": "2026-11-07T14:50:00.130Z"
+}

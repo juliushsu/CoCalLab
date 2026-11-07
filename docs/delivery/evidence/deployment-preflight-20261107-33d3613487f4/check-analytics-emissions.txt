@@ -1,0 +1,1 @@
+Check backend/supabase/functions/analytics-emissions/index.ts
