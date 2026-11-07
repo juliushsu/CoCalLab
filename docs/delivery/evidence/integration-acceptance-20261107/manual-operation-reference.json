@@ -1,0 +1,31 @@
+{
+  "synthetic": true,
+  "organizationId": "af56c9b3-4e55-4f97-aa9d-b339f1e1fd2e",
+  "projectId": "58784ac7-a15c-4115-ab57-8e7936711786",
+  "userId": "506c402b-51de-4bef-a544-32e0113915b0",
+  "documentId": "70c8a93a-74be-4104-aff1-d3b65181c7a2",
+  "draftId": "7bbd69f2-5017-48dd-94fc-5e912d0c41fa",
+  "requestId": "08897771-38dc-49eb-8924-98e3f66a8b6a",
+  "transcription": {
+    "activity_name": "SYNTHETIC source electricity",
+    "quantity": 100,
+    "unit": "kWh",
+    "activity_date": "2026-01-15",
+    "category": "energy",
+    "subcategory": null,
+    "activity_type": "electricity",
+    "final_scope": 2,
+    "inclusion_status": "included",
+    "exclusion_reason": null,
+    "review_note": "SYNTHETIC local integration only",
+    "period_start": "2026-01-01",
+    "period_end": "2026-01-31",
+    "source_locator": "Page 1",
+    "source_text": "SYNTHETIC 100 kWh"
+  },
+  "confirmation": {
+    "requestId": "ee318b44-bf09-48a3-9768-51d07c67f294",
+    "decision": "confirmed",
+    "reviewNote": "SYNTHETIC same person reviewed; not dual-person approval"
+  }
+}

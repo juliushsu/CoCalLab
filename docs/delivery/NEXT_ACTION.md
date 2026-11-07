@@ -1,14 +1,14 @@
-# Next action — 2026-11-06
+# Next action — 2026-11-07
 
-- RELEASE HOLD；UAT固定7dccd5452152f2495d10ad1437d5d03215166065。Business baseline06bad0818625bd9d4f3b685dff50994157b52757；後續文件/既有功能保留。未合併main、部署、操作雲端/正式資料或新增費用。
-- SOURCE_DONE_LOCAL候選1：411a99d597046f65dd54fc134df5dc0d8346c346，codex/server-attachment-hash-20261106，Draft PR25；server bytes SHA／可信unique／legacy不升格／同ID恢復。docs86ceb01，CI42200533556 success。
-- SOURCE_DONE_LOCAL候選2：67e546fa6894303ccbff66d829d077b93c5fb8e2，codex/recalculation-idempotency-20261106，Draft PR26；private intent/input/result authority，重送不增版本、歷史查回明示。docsa2ae19c，CI42203669999 success。
-- SOURCE_DONE_LOCAL候選3：1b1e82913ee593f4255eb33a92744d597c530b2c，current codex/controlled-document-deletion-20261106；durable prepare/Storage/finalize＋audit tombstone、引用/processing lease fence、sameID lookup/locate、orphan/partial恢復；不宣稱跨服務atomic。
-- 最終實跑FE219/219、backend27/27；SQL/HTTP294 cases=292PASS/2 explicit NOT_RUN；tsc/lint/build PASS。獨立review新delete24PASS/1NOT_RUN、FE18子集等與全套重疊不可加總；無待修已證P1/P2。兩skip為獨立SQL連線並行，不以Promise.all代替。
-- 可操作最新入口http://127.0.0.1:4205/login →API4204，固定來源1b1e82913ee593f4255eb33a92744d597c530b2c的Node/PGlite/合成Auth/Storage；非雲端部署SHA。僅合成帳號a-owner@product-preview.invalid／synthetic-local-only。自建API exec60691/UI92729，Ctrl+C停止會清資料/換ID；其他預覽/5432保留。
-- 實際SDK可信收件→MANUAL同人轉錄/確認→calc v1及generic v2重送不增加→保存50kg/.05t報告→server授權HTML/JSON產檔；有引用拒刪。另無引用tombstone/hash釋放，Chrome把真pending object_absent以原ID恢復封存，未重傳/產新ID。
-- 證據/步驟/維運：CONTROLLED_DOCUMENT_DELETION_DELIVERY_20261106.md、CONTROLLED_DELETION_OPERATIONS_20261106.md及evidence/controlled-deletion-20261106。歷史NEXT保留NEXT_ACTION_HISTORY_20261106.md；原Readdy ZIP/stash均保留。
-- WAITING_CTO：三份固定SHA定向CLAUDE_*_TARGETED_REVIEW_20261106.md；未通知Claude或推定裁定。一般來源開發可依既有隊列繼續；本輪三項候選已交付，不重開H0。
-- WAITING_OWNER/NOT_RUN：真Supabase JWT/Storage/Deno、獨立SQL並行/lock-wait、隔離服務migration/備份復原/19+1負載/代表使用者；雲端/Production仍未授權。原生chooser缺extension file URLs權限BLOCKED，未擴權；原生download存檔未驗。Mock OCR/AI與legacy processing重送冪等、全report防竄改仍OPEN，不冒稱商用完成。
-- 下一條可執行命令（repo root，需重現或有新變更時跑對應範圍）：$env:PGLITE_RUNTIME_ROOT=(Resolve-Path '../tooling/sql-runtime').Path; node --test --test-concurrency=1 backend/tests/integration/document-deletion-http.test.js backend/tests/integration/document-deletion-sql.test.js。
-- 最新完整預覽重建：node backend/tools/product-preview/delivery-demo.js（先確認4204自建服務已停止；不殺其他程序）；UI命令見交付文件。此為有限session交接，不宣稱代理無限背景運作。
+- RELEASE HOLD；正式UAT固定7dccd5452152f2495d10ad1437d5d03215166065。未合併main、部署或操作雲端／正式資料。
+- 整合分支codex/integration-acceptance-20261107；程式固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde（report核心6974e18，ba2c7a5僅本機預覽origin）。PR21–27祖先鏈核對完成，原29路由／選單保留＋MANUAL一路共30。完整交付INTEGRATION_ACCEPTANCE_DELIVERY_20261107.md。
+- SOURCE_DONE_LOCAL：006完整report權威，普通直接寫入／刪除拒絕，legacy不補簽；合法v2整交易保存，lookup/export完整row與request fresh核對；內容或authority漂移409，不建替代報告。server_verified不是碳資料／業務認證。
+- SYNTHETIC_PASS：A/B/shared/viewer ID/API/Storage/exports；handler→RPC間revoke四流程拒絕／sameID重授權恢復不重傳；A-B-A／同人重登舊下載丟棄，routine refresh保留。真React延遲生成競態只來源複核，不冒稱瀏覽器已測。
+- 實跑FE221/221、backend27/27、SQL/HTTP310 cases＝308 PASS／2 NOT_RUN；type-check/lint/build PASS。subset與獨立審閱13＋13及時區／來源各1皆不加總；兩獨立SQL並行仍未驗。
+- 專屬預覽http://127.0.0.1:4207/login →合成API4206；a-owner@product-preview.invalid／synthetic-local-only只本機。API54957／UI77958為本次服務；重啟會清資料／換IDs。其他預覽／既有5432保留。Chrome已走原專案→中心→歷史→report且重載，50kg/.05t與來源提示可見。
+- 同SHA實際SDK可信收件→MANUAL同人確認→calc v1/generic v2同ID重送→完整保存report→授權HTML/JSON實際Node產檔；引用拒刪／無引用封存／pending恢復scenario保留。evidence/integration-acceptance-20261107含JSON/HTML/截圖/完整SQL輸出及41份migration manifest（本機套38，非雲端清單）。
+- READY_TO_FORWARD／WAITING_CLAUDE：CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md，五組原固定SHA保留；新增CLAUDE_REPORT_INTEGRITY_TARGETED_REVIEW_20261107.md固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde。已提示Owner轉交，未聯絡第三方；WAITING_CTO新authority/RPC裁定。
+- WAITING_OWNER：ISOLATED_UAT_EXECUTION_PROPOSAL_20261107.md，推薦新獨立Supabase UAT／純靜態前端，列資源、成本、migration/bucket/帳號／backup-reset-restore窗口供一次核准。現wynqnvidepzzcwutexvn只name match，不寫入；Cloudflare帳戶/Pages、Railway/Runway分類未新增證實，不建資源。
+- BLOCKED/NOT_RUN：真Auth/JWT/Storage/PostgREST/Deno、live migration/drift／NOT VALID資料驗證、兩獨立PG連線、備份還原object generation/proof一致性、原生chooser/存檔、代表使用者及19+1負載；不擴browser權限、不重試Docker/WSL。Mock OCR/AI及未宣稱輸入可信度仍OPEN。
+- 下一條可執行命令（有新變更或需要重現時，repo root）：$env:PGLITE_RUNTIME_ROOT=(Resolve-Path '../tooling/sql-runtime').Path; node --test --test-concurrency=1 backend/tests/integration/report-integrity-sql.test.js backend/tests/integration/report-integrity-http.test.js backend/tests/integration/tenant-revocation-integration.test.js
+- 完整預覽重建：node backend/tools/product-preview/delivery-demo.js --integration-acceptance；另在frontend/readdy-app跑node node_modules/vite/bin/vite.js --config tools/local-preview/vite.acceptance.config.mjs。先核對4206/4207占用，只停止本次自有服務。舊NEXT保留NEXT_ACTION_HISTORY_20261107.md；有限session交接，不宣稱無限背景執行。

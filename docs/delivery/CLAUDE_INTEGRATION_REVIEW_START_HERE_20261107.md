@@ -1,10 +1,14 @@
 # Claude 定向審查單一入口 — 2026-11-07
 
-**READY_TO_FORWARD／WAITING_CLAUDE；發布 HOLD。** 請 Owner／CTO 將本入口交給 Claude。Codex 未聯絡第三方；獨立代理審閱不等於 Claude 裁定。只做下列五組差異的唯讀審查，不重開整案稽核。
+**READY_TO_FORWARD／WAITING_CLAUDE；發布 HOLD。** 請 Owner／CTO 將本入口交給 Claude。Codex 未聯絡第三方；獨立代理審閱不等於 Claude 裁定。只做下列五組及本輪I增補的唯讀審查，不重開整案稽核。
+
+## 本輪增補
+
+五組原程式SHA均不變；新增[完整報告權威I1–I6](CLAUDE_REPORT_INTEGRITY_TARGETED_REVIEW_20261107.md)，固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde（006／handlers核心6974e18）。整合交集改由此固定候選核對；原1b1/e565為初始歷史基線，不冒稱最新修復。詳見[整合交付](INTEGRATION_ACCEPTANCE_DELIVERY_20261107.md)。
 
 ## 版本固定與閱讀方式
 
-Repository：`juliushsu/CoCalLab`。先在各固定程式 SHA 閱讀指定差異，再以整合程式 `1b1e82913ee593f4255eb33a92744d597c530b2c` 查後續交集；完整 checkout／文件基線 `e565b4fe19ebf088d71c4ab5c553e4c5306215c4`。不要改用移動的 branch HEAD。詳細指令文件可能晚於程式提交，請從本入口固定文件版本的相對連結開啟，不假設它們存在於較早程式 SHA。
+Repository：`juliushsu/CoCalLab`。先在各固定程式 SHA 閱讀指定差異，再以最終整合程式 `ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde` 查後續交集；完整 checkout／文件基線 `e565b4fe19ebf088d71c4ab5c553e4c5306215c4`。不要改用移動的 branch HEAD。詳細指令文件可能晚於程式提交，請從本入口固定文件版本的相對連結開啟，不假設它們存在於較早程式 SHA。
 
 | 組別 | 固定程式 SHA | 詳細問題與證據入口 | 狀態 |
 |---|---|---|---|
@@ -20,7 +24,7 @@ Repository：`juliushsu/CoCalLab`。先在各固定程式 SHA 閱讀指定差異
 
 交集至少核對：005 對 003 begin／complete／結果及 catalog 的替換；刪除引用 fence 與 MANUAL／report；processing lease 的開始／完成／釋放。較早 SHA 的缺陷若被較晚差異修復，分別列出歷史與整合狀態，不混成同一受審版本。不要擴至已關閉且無新證據的登入或 H0 範圍。
 
-**已知 OPEN：**舊 ledger 保護 request 綁定，沒有聲稱完整 report row 不可改寫。本輪已重現一般角色直接 INSERT／UPDATE／DELETE completed 報告，以及只有非空 hash 的歷史 row 可匯出；整合修正正在進行，後續將另附固定 SHA 增補審查，不能把目前五份來源結論當成這項已關閉。Mock OCR／AI 也未完成。
+**已知 OPEN：**舊 ledger 保護 request 綁定，沒有聲稱完整 report row 不可改寫。本輪已重現一般角色直接 INSERT／UPDATE／DELETE completed 報告，以及只有非空 hash 的歷史 row 可匯出；整合修正已作本機來源候選交付，固定SHA增補見上方I1–I6；仍待Claude／CTO裁定，不能把目前五份來源結論當成這項已關閉。Mock OCR／AI 也未完成。
 
 ## 回覆格式與證據界線
 
@@ -34,4 +38,4 @@ Repository：`juliushsu/CoCalLab`。先在各固定程式 SHA 閱讀指定差異
 
 ## 可直接轉交的文字
 
-> 請唯讀審查此固定文件入口列出的 H／R／D／L／M 五組固定程式 SHA，逐題依來源回覆；聚焦權限繞過、競態、重送與失敗恢復。請區分各歷史版本與整合 1b1e829 的後續覆蓋，勿改用 branch HEAD，勿重開整案。完整 report 防竄改為正在修復的已知 OPEN，後續另交固定增補。不得改程式或操作雲端，未跑測試請明示；發布維持 HOLD。
+> 請唯讀審查此固定文件入口列出的 H／R／D／L／M 五組固定程式 SHA，逐題依來源回覆；聚焦權限繞過、競態、重送與失敗恢復。請區分各歷史版本與最終整合ba2c7a5的後續覆蓋，勿改用 branch HEAD，勿重開整案。完整report防竄改已補本機候選，請另審上方固定I1–I6增補，勿視為外部審查已關閉。不得改程式或操作雲端，未跑測試請明示；發布維持 HOLD。
