@@ -15,7 +15,7 @@ import { EdgeFunctionService } from '../../../services/edgeFunction';
 import type { ApiResponse } from '../../../services/types';
 import type { ReportVersion, ReportSection, ReportStatistics } from '../../../types/report';
 import { getReportData } from '../../../services/reportService';
-import {reportExportPreflight,exportCurrentSnapshot,saveReportFile,reportExportIsBusy,releaseReportExportAttempt,type ReportExportAttempt} from '../../../services/reportDownload';
+import {reportExportPreflight,exportCurrentSnapshot,saveReportFile,reportExportIsBusy,releaseReportExportAttempt,reportExportVisitNotice,type ReportExportAttempt} from '../../../services/reportDownload';
 import {readAuthorizedReportSnapshot} from '../../../services/reportExportRead';
 import {getSupabaseClient} from '../../../lib/supabase';
 import {useAuth} from '../../../hooks/useAuth';
@@ -81,9 +81,11 @@ export default function ReportPreviewPage() {
   const exportBlock=reportExportPreflight({loading:statusLoading,error:subscriptionError,isReadonly}) ?? reportIntegrityExportBlock(report?.saved_snapshot?.integrity_status);
   const exportContext=useMemo(()=>({authEpoch,user:user?.id,reportId,organizationId,projectId,exportBlock}),[authEpoch,user?.id,reportId,organizationId,projectId,exportBlock]);
   const [exportAttempt,setExportAttempt]=useState<ReportExportAttempt<typeof exportContext>|null>(null);
+  const activeExportAttempt=useRef<ReportExportAttempt<typeof exportContext>|null>(null);
+  const previousExportContext=useRef(exportContext);
   const exporting=reportExportIsBusy(exportAttempt,exportContext);
   const currentExport=useRef<typeof exportContext|null>(exportContext);currentExport.current=exportContext;
-  useLayoutEffect(()=>{currentExport.current=exportContext;setExportAttempt(null);setExportNotice('');setExportDialogOpen(false);return()=>{if(currentExport.current===exportContext)currentExport.current=null;};},[exportContext]);
+  useLayoutEffect(()=>{currentExport.current=exportContext;const attempt=activeExportAttempt.current,previous=previousExportContext.current;previousExportContext.current=exportContext;activeExportAttempt.current=null;setExportAttempt(null);setExportNotice(notice=>reportExportVisitNotice(attempt,previous,exportContext,notice));setExportDialogOpen(false);return()=>{if(currentExport.current===exportContext)currentExport.current=null;};},[exportContext]);
   // Generation continuity follows identity/scope only; export preflight refreshes must not strand its busy state.
   const generationScope=useMemo(()=>({authEpoch,user:user?.id,reportId,organizationId,projectId}),[authEpoch,user?.id,reportId,organizationId,projectId]);
   const currentGeneration=useRef<typeof generationScope|null>(generationScope);currentGeneration.current=generationScope;
@@ -306,12 +308,12 @@ export default function ReportPreviewPage() {
     const captured=exportContext;
     const attempt={context:captured};
     const isCurrent=()=>currentExport.current===captured&&isAuthenticationCurrent(captured.authEpoch,captured.user||'')&&!captured.exportBlock;
-    setExportAttempt(attempt);setExportNotice('正在向伺服器確認匯出權限與保存快照…');
+    activeExportAttempt.current=attempt;setExportAttempt(attempt);setExportNotice('正在向伺服器確認匯出權限與保存快照…');
     try{
       const requested=await exportCurrentSnapshot(()=>readAuthorizedReportSnapshot(getSupabaseClient(),reportId,projectId,organizationId),format,isCurrent,saveReportFile);
       if(isCurrent()){setExportNotice(requested?'已向瀏覽器提出下載請求；請核對實際檔案，未宣稱作業系統已存檔。':'操作範圍已變更，未下載。');setExportDialogOpen(false);}
     }catch(error){if(isCurrent())setExportNotice(error instanceof Error?error.message:'匯出失敗，未產生檔案。');}
-    finally{if(currentExport.current!==null)setExportAttempt(active=>releaseReportExportAttempt(active,attempt));}
+    finally{activeExportAttempt.current=releaseReportExportAttempt(activeExportAttempt.current,attempt);if(currentExport.current!==null)setExportAttempt(active=>releaseReportExportAttempt(active,attempt));}
   };
 
   if (loading) {

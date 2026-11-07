@@ -1,9 +1,10 @@
 // Isolated worker: actual checked-in Deno handlers + installed SDK + SQL-backed HTTP.
 import { parentPort, workerData } from 'node:worker_threads';
 import { createServer } from 'node:http';
-import { registerHooks, createRequire } from 'node:module';
+import { registerHooks, createRequire, stripTypeScriptTypes } from 'node:module';
 import { pathToFileURL } from 'node:url';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, createHash } from 'node:crypto';
+import {readFileSync} from 'node:fs';
 import { createLocalWorkflow } from '../local-workflow/engine.js';
 import { seedShowcase } from './showcase.js';
 import { seedManualScenario } from './manual-scenario.js';
@@ -22,12 +23,19 @@ registerHooks({ resolve(specifier, context, next) {
   if (/^(?:npm:|jsr:)/.test(specifier)) throw new Error('Unapproved external module in the synthetic product worker');
   if (/^https?:/.test(specifier)) throw new Error('External module loading is blocked in the synthetic product worker');
   return next(specifier, context);
+},load(url,context,next){
+  if(workerData.legacyConfirm&&url===new URL('../../supabase/functions/confirm-draft/index.ts',import.meta.url).href){
+    const source=readFileSync(new URL('../../tests/fixtures/confirm-draft-9ebf5b1.source.txt',import.meta.url));
+    if(createHash('sha256').update(source).digest('hex')!=='970ccc0d6bf79ae61290dc90c29d2577a74eb4f6cb2c304346b3be71dada96be')throw new Error('Pinned legacy confirmation fixture hash mismatch');
+    return {format:'module',source:stripTypeScriptTypes(source.toString('utf8')),shortCircuit:true};
+  }
+  return next(url,context);
 } });
 
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
 const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','read_verified_report_snapshot','upload_intake_contract',
-  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing','save_manual_activity_atomic','report_calculation_inputs','classify_document_atomic','process_document_atomic']);
+  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','draft_confirmation_request','commit_draft_confirmation','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing','save_manual_activity_atomic','report_calculation_inputs','classify_document_atomic','process_document_atomic']);
 const handlers = new Map(), columns = new Map(), jsonColumns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
 const storageMetrics={writes:0,reads:0};
@@ -221,6 +229,12 @@ async function dispatchInner(request) {
       const {organizationId,userId}=armed.revokeMembership;
       if(![organizationId,userId].every(value=>typeof value==='string'&&/^[0-9a-f-]{36}$/i.test(value)))throw new Error('Invalid synthetic revocation scope');
       await database(new Request(baseUrl,{headers:{Authorization:'Bearer '+SERVICE_KEY}}),()=>flow.db.query("update organization_members set status='inactive' where organization_id=$1 and user_id=$2",[organizationId,userId]));
+    }else if(armed.phase==='beforeDispatch'&&armed.mutateDraft){
+      const {id,patch,token}=armed.mutateDraft;
+      if(typeof id!=='string'||!/^[0-9a-f-]{36}$/i.test(id)||!patch||typeof patch!=='object'||Array.isArray(patch)||Object.keys(patch).some(k=>!['normalized_payload','suggested_category','suggested_scope','classification_result','classification_status','confidence_score'].includes(k)))throw new Error('Invalid synthetic draft mutation');
+      const target=new URL('/rest/v1/extracted_document_drafts?id=eq.'+id,baseUrl);
+      const mutation=await rest(new Request(target,{method:'PATCH',headers:{Authorization:'Bearer '+(token||SERVICE_KEY),'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(patch)}),target,'extracted_document_drafts');
+      const changed=await mutation.json();if(mutation.status!==200||!Array.isArray(changed)||changed.length!==1||changed[0].id!==id)throw new Error('Synthetic draft interleaving did not update exactly one row');
     }else if(armed.phase!=='afterCommit')return json(armed.body??{code:'SYNTHETIC_FAULT',message:'Synthetic injected failure before operation'},armed.status||503);
   }
   let response;

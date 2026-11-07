@@ -1,0 +1,19 @@
+[
+ {"provider":"MANUAL_TRANSCRIPTION_NO_OCR","raw":{},"expected":true},
+ {"provider":"manual","raw":null,"expected":true},
+ {"provider":"ocr_manual_import","raw":{},"expected":true},
+ {"provider":"OCR-MANUAL-IMPORT","raw":{},"expected":true},
+ {"provider":"ocr_manual","raw":[],"expected":true},
+ {"provider":"manuality","raw":{},"expected":false},
+ {"provider":"ocrmanual_import","raw":{},"expected":false},
+ {"provider":"ocr manual import","raw":{},"expected":false},
+ {"provider":"mock","raw":{"manual_transcription":null},"expected":true},
+ {"provider":"ocr","raw":["manual_transcription"],"expected":true},
+ {"provider":"ocr","raw":"manual_transcription","expected":true},
+ {"provider":"ocr","raw":{"nested":{"manual_transcription":{}}},"expected":false},
+ {"provider":"ocr","raw":[{"manual_transcription":{}}],"expected":false},
+ {"provider":"ocr","raw":"MANUAL_TRANSCRIPTION","expected":false},
+ {"provider":null,"raw":null,"expected":false},
+ {"provider":"ocr","raw":0,"expected":false},
+ {"provider":"ocr","raw":true,"expected":false}
+]

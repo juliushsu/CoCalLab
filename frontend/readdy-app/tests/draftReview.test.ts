@@ -5,6 +5,8 @@ import type { ExtractedDocumentDraft } from '../src/types/document.ts';
 import { draftReviewScope, draftReviewDestination, draftReviewValues, validateDraftReviewRows, readDraftReviewRows, buildDraftDecision, submitDraftDecision, submitDraftBatch } from '../src/services/draftReview.ts';
 // Actual backend contract is imported for compatibility; no server or cloud is contacted.
 import { validateConfirmDraftInput } from '../../../backend/src/contracts/contracts.js';
+import {isProtectedManualDraft} from '../src/services/draftReview.ts';
+import {readFileSync} from 'node:fs';
 const O = '00000000-0000-4000-8000-000000000001', P = '00000000-0000-4000-8000-000000000002', D = '00000000-0000-4000-8000-000000000003', A = '00000000-0000-4000-8000-000000000004', B = '00000000-0000-4000-8000-000000000005';
 const scope = { organizationId: O, projectId: P };
 test('review destinations preserve scope using the parameter names actually consumed by each page',()=>{
@@ -19,6 +21,11 @@ test('review destinations preserve scope using the parameter names actually cons
     assert.equal(draftReviewDestination('/admin/activities',{}),'/admin/activities');
 });
 const fixture = (id = D) => ({ id, organization_id: O, project_id: P, uploaded_document_id:A, status: 'pending_review', is_latest: true, normalized_payload: { quantity: 0, unit: 'kWh', activity_date: '2026-11-02' } } as ExtractedDocumentDraft);
+test('frontend MANUAL adapter shares the portable corpus; every protected shape avoids generic confirmation',()=>{
+ const corpus=JSON.parse(readFileSync(new URL('../../../modules/document-provenance/manual-provenance.corpus.json',import.meta.url),'utf8'));
+ for(const item of corpus){const draft={...fixture(),extraction_provider:item.provider,raw_payload:item.raw};assert.equal(isProtectedManualDraft(draft),item.expected,JSON.stringify(item));if(item.expected){assert.throws(()=>buildDraftDecision(draft,'confirmed',scope),/專用確認/);assert.throws(()=>buildDraftDecision(draft,'rejected',scope),/專用確認/);}}
+ const a=buildDraftDecision(fixture(),'confirmed',scope),b=buildDraftDecision(fixture(),'confirmed',scope);assert.equal(a.request_id,b.request_id);assert.equal(a.request_id,'draft-confirm-v1:'+D);
+});
 const saved = (draft_id = D, draft_status = 'confirmed') => ({ success: true, data: { draft_id, draft_status, emission_activity_id: draft_status === 'confirmed' ? A : null } });
 const readClient = (fetch: typeof globalThis.fetch) => createClient('https://synthetic-sdk.invalid', 'test-only-key', {
     accessToken: async () => 'test-user-token', auth: {persistSession: false, autoRefreshToken: false}, global: {fetch},
@@ -74,7 +81,7 @@ test('document review link filters the exact document and rejects a different re
 });
 test('confirm payload satisfies actual backend contract and nests supported overrides', () => {
     const payload = buildDraftDecision(fixture(), 'confirmed', scope, { reviewNote: ' human checked ', category: ' electricity ', scope: '2' });
-    assert.deepEqual(payload, { organization_id: O, project_id: P, draft_id: D, decision: 'confirmed', overrides: { review_note: 'human checked', category: 'electricity', suggested_scope: 2 } });
+    assert.deepEqual(payload, { organization_id: O, project_id: P, draft_id: D, decision: 'confirmed', request_id:'draft-confirm-v1:'+D, overrides: { review_note: 'human checked', category: 'electricity', suggested_scope: 2 } });
     assert.equal(validateConfirmDraftInput(payload), payload);
     assert.equal('suggested_category' in payload, false);
 });
@@ -85,7 +92,7 @@ test('display reads the same canonical quantity/unit/date as the backend, not le
 });
 test('rejection uses decision and review_note without confirmation-only overrides', () => {
     const payload = buildDraftDecision(fixture(), 'rejected', scope, { reviewNote: ' unreadable ', category: 'ignored', scope: 'invalid' });
-    assert.deepEqual(payload, { organization_id: O, project_id: P, draft_id: D, decision: 'rejected', overrides: { review_note: 'unreadable' } });
+    assert.deepEqual(payload, { organization_id: O, project_id: P, draft_id: D, decision: 'rejected', request_id:'draft-confirm-v1:'+D, overrides: { review_note: 'unreadable' } });
     assert.equal(validateConfirmDraftInput(payload), payload);
     assert.equal('status' in payload, false);
 });
