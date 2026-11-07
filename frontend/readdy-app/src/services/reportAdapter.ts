@@ -14,7 +14,7 @@ const nonnegativeNumber = (value: unknown): value is number =>
 
 /** Report totals are stored in kgCO2e and presented in tonnes. Unknown is not zero. */
 export function adaptReportData(row: ReportRow) {
-  const savedFields:(keyof ReportSavedSnapshot)[]=['id','organization_id','project_id','status','report_version','created_at','payload','payload_hash','reporting_period_start','reporting_period_end','included_activity_count','excluded_activity_count','pending_activity_count','scope_totals','category_totals','factor_sources','warning_count','based_on_calculated_at','is_test','env','claim_purpose','legal_entity_snapshot','site_snapshot','boundary_snapshot','gross_emissions_snapshot','adjustment_summary','claim_results','adjustment_manifest'];
+  const savedFields:(keyof ReportSavedSnapshot)[]=['id','organization_id','project_id','status','integrity_status','report_version','created_at','payload','payload_hash','reporting_period_start','reporting_period_end','included_activity_count','excluded_activity_count','pending_activity_count','scope_totals','category_totals','factor_sources','warning_count','based_on_calculated_at','is_test','env','claim_purpose','legal_entity_snapshot','site_snapshot','boundary_snapshot','gross_emissions_snapshot','adjustment_summary','claim_results','adjustment_manifest'];
   const saved_snapshot:ReportSavedSnapshot=Object.fromEntries(savedFields.map(field=>[field,row[field]??null]));
   const payload=row.payload&&typeof row.payload==='object'&&!Array.isArray(row.payload)?row.payload as Record<string,unknown>:{};
   const projectMetadata=payload.project_metadata&&typeof payload.project_metadata==='object'&&!Array.isArray(payload.project_metadata)?payload.project_metadata as Record<string,unknown>:{};

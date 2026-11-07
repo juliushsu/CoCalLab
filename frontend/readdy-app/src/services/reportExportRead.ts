@@ -1,3 +1,4 @@
+import {reportIntegrityExportBlock} from './reportIntegrity.ts';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { REPORT_EXPORT_FIELDS, prepareReportExportSnapshot } from './reportExport.ts';
 
@@ -24,5 +25,7 @@ export async function readAuthorizedReportSnapshot(client:Pick<SupabaseClient,'f
  const {data,error}=await client.functions.invoke('export-report-snapshot',{body:{report_id:reportId,project_id:projectId,organization_id:organizationId}});
  if(error)throw new Error('伺服器拒絕或無法完成匯出授權：'+error.message);
  if(data?.success!==true||data.data?.policy!=='tenant_write_v1')throw new Error('匯出服務尚未啟用或回覆無效。');
+ const integrityBlock=reportIntegrityExportBlock(data.data.snapshot?.integrity_status);
+ if(integrityBlock)throw new Error(integrityBlock);
  return prepareReportExportSnapshot(data.data.snapshot,{reportId,projectId,organizationId});
 }

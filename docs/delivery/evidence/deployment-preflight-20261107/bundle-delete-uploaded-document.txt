@@ -1,0 +1,7 @@
+⚠️  deno bundle is experimental and subject to changes
+bundler warning: Comparison with -0 using the "===" operator will also match 0[equals-negative-zero]
+    at deno:https://esm.sh/webidl-conversions@3.0.1/denonext/webidl-conversions.mjs:46:23
+    note: Floating-point equality is defined such that 0 and -0 are equal, so "x === -0" returns true for both 0 and -0. You need to use "Object.is(x, -0)" instead to test for -0.
+Bundled 29 modules in 190ms
+  ..\bundles\delete-uploaded-document.js.map 2.21MB
+  ..\bundles\delete-uploaded-document.js     1.4MB

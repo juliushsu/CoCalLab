@@ -1,0 +1,12 @@
+Download https://esm.sh/@supabase/auth-js@2.119.0/denonext/auth-js.mjs
+Download https://esm.sh/@supabase/functions-js@2.119.0/denonext/functions-js.mjs
+Download https://esm.sh/@supabase/postgrest-js@2.119.0/denonext/postgrest-js.mjs
+Download https://esm.sh/@supabase/realtime-js@2.119.0/denonext/realtime-js.mjs
+Download https://esm.sh/@supabase/storage-js@2.119.0/denonext/storage-js.mjs
+Download https://esm.sh/@supabase/supabase-js@2.119.0/denonext/dist/tracingRegistry.mjs
+Download https://esm.sh/@supabase/supabase-js@2.119.0/denonext/supabase-js.mjs
+Download https://esm.sh/tslib@2.8.1/denonext/tslib.mjs
+Download https://esm.sh/@supabase/phoenix@0.4.5/denonext/phoenix.mjs
+Download https://esm.sh/iceberg-js@^0.8.1?target=denonext
+Download https://esm.sh/iceberg-js@0.8.1?target=denonext
+Download https://esm.sh/iceberg-js@0.8.1/denonext/iceberg-js.mjs

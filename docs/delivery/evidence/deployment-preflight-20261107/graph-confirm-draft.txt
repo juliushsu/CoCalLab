@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "roots": [
+    "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+  ],
+  "modules": [
+    {
+      "kind": "external",
+      "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+    }
+  ],
+  "redirects": {
+    "https://esm.sh/@supabase/node-fetch@^2.6.14?target=denonext": "https://esm.sh/@supabase/node-fetch@2.6.15?target=denonext",
+    "https://esm.sh/@supabase/supabase-js@2": "https://esm.sh/@supabase/supabase-js@2.119.0",
+    "https://esm.sh/@types/ws@~8.18.2/index.d.mts": "https://esm.sh/@types/ws@8.18.2/index.d.mts",
+    "https://esm.sh/bufferutil@^4.0.1?target=denonext": "https://esm.sh/bufferutil@4.1.0?target=denonext",
+    "https://esm.sh/iceberg-js@^0.8.1?target=denonext": "https://esm.sh/iceberg-js@0.8.1?target=denonext",
+    "https://esm.sh/node-gyp-build@^4.3.0?target=denonext": "https://esm.sh/node-gyp-build@4.8.4?target=denonext",
+    "https://esm.sh/tr46@~0.0.3?target=denonext": "https://esm.sh/tr46@0.0.3?target=denonext",
+    "https://esm.sh/utf-8-validate@%3E=5.0.2?target=denonext": "https://esm.sh/utf-8-validate@6.0.6?target=denonext",
+    "https://esm.sh/webidl-conversions@^3.0.0?target=denonext": "https://esm.sh/webidl-conversions@3.0.1?target=denonext",
+    "https://esm.sh/whatwg-url@^5.0.0?target=denonext": "https://esm.sh/whatwg-url@5.0.0?target=denonext",
+    "https://esm.sh/ws@^8.18.0?target=denonext": "https://esm.sh/ws@8.22.1?target=denonext"
+  },
+  "npmPackages": {}
+}

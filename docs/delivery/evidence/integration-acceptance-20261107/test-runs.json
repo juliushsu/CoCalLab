@@ -1,0 +1,56 @@
+{
+  "source_sha": "ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde",
+  "report_core_sha": "6974e182518ade7ffed9aa9db53ca1e364380dbf",
+  "observed_date": "2026-11-07",
+  "environment": "Windows Node24.22.1 / PGlite0.5.13 PG18.6; synthetic Auth/JWT/Storage; checked-in handlers + SDK2.57.4",
+  "tests": [
+    {
+      "command": "node --test tests/*.test.ts",
+      "cwd": "frontend/readdy-app",
+      "pass": 221,
+      "fail": 0
+    },
+    {
+      "command": "node --test backend/tests/*.test.js",
+      "pass": 27,
+      "fail": 0
+    },
+    {
+      "command": "node --test --test-concurrency=1 backend/tests/integration/*.test.js",
+      "cases": 310,
+      "pass": 308,
+      "fail": 0,
+      "skipped_not_run": 2,
+      "log": "sql-http-run.txt",
+      "note": "Report core frozen; during this run only test-preview 4207 origin was added. Final origin-specific tenant suite separately passed."
+    },
+    {
+      "command": "node --test --test-concurrency=1 backend/tests/integration/tenant-revocation-integration.test.js",
+      "after": "ba2c preview origin change",
+      "pass": 3,
+      "fail": 0,
+      "overlaps_full_suite": true
+    }
+  ],
+  "checks": {
+    "type_check": "PASS",
+    "lint": "PASS",
+    "final_build": "PASS",
+    "bundle_kb": 502.2,
+    "warning": "main chunk >500kB; Browserslist stale"
+  },
+  "independent_review": {
+    "scope": "source + overlapping target suites; no proven unresolved P1/P2 in this targeted scope",
+    "not_external_claude": true,
+    "counts_are_non_additive": true
+  },
+  "not_run": [
+    "real Supabase Auth/JWT/PostgREST/Storage/Deno",
+    "independent SQL recalc and deletion concurrency",
+    "React delayed-generation callback race",
+    "native chooser/save",
+    "cloud migrations/drift/backup/restore",
+    "19+1 business acceptance"
+  ],
+  "log_encoding": "UTF-8; Windows CRLF normalized to LF only; result text unchanged"
+}

@@ -24,7 +24,7 @@ registerHooks({ resolve(specifier, context, next) {
 
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
-const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','upload_intake_contract',
+const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','read_verified_report_snapshot','upload_intake_contract',
   'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing']);
 const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
@@ -210,7 +210,15 @@ async function dispatchInner(request) {
   if(url.pathname==='/auth/v1/user')return actor(request).user?json(actor(request).user):json({message:'Synthetic token rejected'},401);
   if(url.pathname==='/auth/v1/logout'&&request.method==='POST'){sessions.delete((request.headers.get('authorization')||'').replace(/^Bearer\s+/i,''));return new Response(null,{status:204});}
   const armed=fault&&fault.path===url.pathname&&(fault.method||'POST')===request.method?fault:null;
-  if(armed){fault=null;if(armed.phase!=='afterCommit')return json(armed.body??{code:'SYNTHETIC_FAULT',message:'Synthetic injected failure before operation'},armed.status||503);}
+  if(armed){
+    fault=null;
+    // In-process test-only interleaving, not a business HTTP endpoint or SQL concurrency proof.
+    if(armed.phase==='beforeDispatch'&&armed.revokeMembership){
+      const {organizationId,userId}=armed.revokeMembership;
+      if(![organizationId,userId].every(value=>typeof value==='string'&&/^[0-9a-f-]{36}$/i.test(value)))throw new Error('Invalid synthetic revocation scope');
+      await database(new Request(baseUrl,{headers:{Authorization:'Bearer '+SERVICE_KEY}}),()=>flow.db.query("update organization_members set status='inactive' where organization_id=$1 and user_id=$2",[organizationId,userId]));
+    }else if(armed.phase!=='afterCommit')return json(armed.body??{code:'SYNTHETIC_FAULT',message:'Synthetic injected failure before operation'},armed.status||503);
+  }
   let response;
   try {
     const functionName=url.pathname.match(/^\/functions\/v1\/([^/]+)$/)?.[1];
@@ -257,7 +265,7 @@ try {
   const localFetch=globalThis.fetch;
   globalThis.fetch=(input,init)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url);if(target.origin!==baseUrl)throw new Error('Outbound fetch outside this dedicated synthetic API is blocked');return localFetch(input,init);};
   previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario,storageMetrics};
-globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:4203,http://localhost:4203,http://127.0.0.1:4205,http://localhost:4205,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
+globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:4203,http://localhost:4203,http://127.0.0.1:4205,http://localhost:4205,http://127.0.0.1:4207,http://localhost:4207,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
   for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot','verify-upload-receipt','delete-uploaded-document','process-document',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(['manual-transcription','verified-upload'].includes(workerData.scenario)?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
   if(workerData.scenario==='showcase')previewConfig.manifest=await seedShowcase({db:flow.db,baseUrl,scope,accounts,originals});
   if(workerData.scenario==='manual-transcription')previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});

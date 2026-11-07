@@ -20,6 +20,7 @@ import {readAuthorizedReportSnapshot} from '../../../services/reportExportRead';
 import {getSupabaseClient} from '../../../lib/supabase';
 import {useAuth} from '../../../hooks/useAuth';
 import ReportOutlinePanel from './components/ReportOutlinePanel';
+import {reportIntegrityExportBlock,reportIntegrityNotice} from '../../../services/reportIntegrity';
 
 // Generate Report Response Type
 interface GenerateReportResponse {
@@ -77,13 +78,18 @@ export default function ReportPreviewPage() {
   const invalidScope=scope.kind==='invalid';
   const { status, isReadonly, reason, loading: statusLoading, error:subscriptionError } = useSubscriptionStatus(organizationId);
 
-  const exportBlock=reportExportPreflight({loading:statusLoading,error:subscriptionError,isReadonly});
+  const exportBlock=reportExportPreflight({loading:statusLoading,error:subscriptionError,isReadonly}) ?? reportIntegrityExportBlock(report?.saved_snapshot?.integrity_status);
   const exportContext=useMemo(()=>({authEpoch,user:user?.id,reportId,organizationId,projectId,exportBlock}),[authEpoch,user?.id,reportId,organizationId,projectId,exportBlock]);
   const currentExport=useRef<typeof exportContext|null>(exportContext);currentExport.current=exportContext;
   useLayoutEffect(()=>{currentExport.current=exportContext;return()=>{if(currentExport.current===exportContext)currentExport.current=null;};},[exportContext]);
+  // Generation continuity follows identity/scope only; export preflight refreshes must not strand its busy state.
+  const generationScope=useMemo(()=>({authEpoch,user:user?.id,reportId,organizationId,projectId}),[authEpoch,user?.id,reportId,organizationId,projectId]);
+  const currentGeneration=useRef<typeof generationScope|null>(generationScope);currentGeneration.current=generationScope;
+  useLayoutEffect(()=>{currentGeneration.current=generationScope;return()=>{if(currentGeneration.current===generationScope)currentGeneration.current=null;};},[generationScope]);
   const loadSequence = useRef(0);
   const loadReportData = useCallback(async () => {
     const sequence = ++loadSequence.current;
+    const current=()=>sequence===loadSequence.current&&Boolean(user?.id&&isAuthenticationCurrent(authEpoch,user.id));
     try {
       setLoading(true);
       setError(null);
@@ -91,14 +97,15 @@ export default function ReportPreviewPage() {
       
       // 使用 reportService 取得資料（會自動處理 Supabase 連線狀態）
       if(invalidScope)throw new Error('組織／專案範圍不明確。');
+      if(!current())throw new Error('登入狀態已失效。');
       const response = await getReportData(reportId || '',{organizationId,projectId});
       const {report,sections,statistics}=response;
-      if(sequence!==loadSequence.current)return;
+      if(!current())return;
       if((!organizationId||!projectId)&&'resolvedScope' in response&&response.resolvedScope?.organizationId){
         navigate('/admin/reports/'+encodeURIComponent(reportId||'')+'?'+new URLSearchParams({organization_id:response.resolvedScope.organizationId,projectId:response.resolvedScope.projectId}),{replace:true});return;
       }
       
-      if (sequence !== loadSequence.current) return;
+      if (!current()) return;
       setReport(report);
       setSections(sections);
       setStatistics(statistics);
@@ -108,7 +115,7 @@ export default function ReportPreviewPage() {
     } finally {
       if (sequence === loadSequence.current) setLoading(false);
     }
-  }, [reportId, t,organizationId,projectId,invalidScope,navigate]);
+  }, [reportId, t,organizationId,projectId,invalidScope,navigate,authEpoch,user?.id,isAuthenticationCurrent]);
 
   useEffect(() => {
     void loadReportData();
@@ -157,9 +164,12 @@ export default function ReportPreviewPage() {
 
   /**
    * 呼叫 generate-report Edge Function
-   * 產生完整報告，包含所有章節
+   * 保存報告快照；不代表章節完整或商業驗收
    */
   const handleGenerateReport = async (projectId: string) => {
+    const generationContext=currentGeneration.current;
+    const current=()=>generationContext!==null&&currentGeneration.current===generationContext&&Boolean(user?.id&&isAuthenticationCurrent(authEpoch,user.id));
+    if(!current())return;
     if (isReadonly) {
       setGenerateError(t('subscription.readonlyBanner.message'));
       return;
@@ -192,6 +202,7 @@ export default function ReportPreviewPage() {
         },
       });
 
+      if(!current())return;
       // 處理錯誤
       if (!response.success || response.error) {
         const details = response.error?.details || {};
@@ -213,13 +224,14 @@ export default function ReportPreviewPage() {
         setGenerateWarnings(response.meta.warnings.map(w => w.message));
       }
       // Read the persisted report through the route; generation does not return chapters.
-      navigate(`/admin/reports/${encodeURIComponent(result.report_generation_id)}?organization_id=${encodeURIComponent(organizationId)}`);
+      navigate(`/admin/reports/${encodeURIComponent(result.report_generation_id)}?${new URLSearchParams({organization_id:organizationId,projectId})}`);
 
     } catch (err) {
+      if(!current())return;
       console.error('Failed to generate report:', err);
       setGenerateError(err instanceof Error ? err.message : t('reports.generateError'));
     } finally {
-      setIsGenerating(false);
+      if(current())setIsGenerating(false);
     }
   };
 
@@ -478,6 +490,7 @@ export default function ReportPreviewPage() {
         {!statistics && <p className="text-sm text-gray-500">{t('reports.snapshot.statisticsUnknown', '此報告未提供完整排放統計，無法顯示總量。')}</p>}
 
         <p role="status" className="mb-4 rounded bg-amber-50 p-3 text-sm">{exportNotice||exportBlock||'HTML／JSON每次由服務端核對權限並重讀保存快照；PDF／Word尚未提供。'}</p>
+        <p role="status" className="mb-4 text-sm">{reportIntegrityNotice(report.saved_snapshot?.integrity_status)}</p>
         <ReportOutlinePanel snapshot={report.saved_snapshot} />
 
         {/* Sections */}

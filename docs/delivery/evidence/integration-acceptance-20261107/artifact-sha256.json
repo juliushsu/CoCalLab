@@ -1,0 +1,46 @@
+{
+  "source_sha": "ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde",
+  "synthetic_only": true,
+  "files": [
+    {
+      "file": "actual-integration.json",
+      "bytes": 18110,
+      "sha256": "8e23d3519f3aff3d3f0f03040f7189ee2b21c5062e2d241b38f2ef09b1c1c7f5"
+    },
+    {
+      "file": "actual-saved-report.html",
+      "bytes": 7132,
+      "sha256": "de78829576f61227f2726972bd8f4f63d184cec88f06b0cf1df04ec14a24e1bb"
+    },
+    {
+      "file": "actual-saved-report.json",
+      "bytes": 5688,
+      "sha256": "9b566958df5ec6ce6627440b4499510c2511c6251bca89d2e52f39fd99d19532"
+    },
+    {
+      "file": "manual-operation-reference.json",
+      "bytes": 1064,
+      "sha256": "00ce6c4aa8eeb53505f0936addebc1b6c5aa39f7409ba9ce55bab5c6f3f259b1"
+    },
+    {
+      "file": "saved-report.jpg",
+      "bytes": 133100,
+      "sha256": "bf561a29ec6d6d8721959c1c48e6923887e48c378c87e637d850209605f8faf3"
+    },
+    {
+      "file": "source-migrations.json",
+      "bytes": 8378,
+      "sha256": "06985f11d67e4356826087a2f8a4c0d74158500576c7fd68b7c7989f6210d609"
+    },
+    {
+      "file": "sql-http-run.txt",
+      "bytes": 34707,
+      "sha256": "dc6f5321752814e8d4aaf02adf0810ad988cdfe4179e9ca62eef43cb08e4a201"
+    },
+    {
+      "file": "test-runs.json",
+      "bytes": 1881,
+      "sha256": "0d256d21136c6a213ad381ac85ee180a4e3015f529f9b2ad332ca4e415f04e59"
+    }
+  ]
+}

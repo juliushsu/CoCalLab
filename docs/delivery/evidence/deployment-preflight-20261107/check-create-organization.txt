@@ -1,0 +1,149 @@
+Check backend/supabase/functions/create-organization/index.ts
+TS2552 [ERROR]: Cannot find name 'PublicKeyCredentialRpEntity'. Did you mean 'PublicKeyCredentialUserEntity'?
+    rp: PublicKeyCredentialRpEntity;
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:16:9
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialParameters'.
+    pubKeyCredParams: PublicKeyCredentialParameters[];
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:31:23
+
+TS2304 [ERROR]: Cannot find name 'AuthenticatorSelectionCriteria'.
+    authenticatorSelection?: AuthenticatorSelectionCriteria;
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:46:30
+
+TS2304 [ERROR]: Cannot find name 'AttestationConveyancePreference'.
+    attestation?: AttestationConveyancePreference;
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:56:19
+
+TS2304 [ERROR]: Cannot find name 'AuthenticationExtensionsClientInputs'.
+    extensions?: AuthenticationExtensionsClientInputs;
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:66:18
+
+TS2304 [ERROR]: Cannot find name 'UserVerificationRequirement'.
+    userVerification?: UserVerificationRequirement;
+                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:99:24
+
+TS2304 [ERROR]: Cannot find name 'AuthenticationExtensionsClientInputs'.
+    extensions?: AuthenticationExtensionsClientInputs;
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:109:18
+
+TS2552 [ERROR]: Cannot find name 'PublicKeyCredentialType'. Did you mean 'PublicKeyCredentialFuture'?
+    type: PublicKeyCredentialType;
+          ~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:127:11
+
+TS2304 [ERROR]: Cannot find name 'AuthenticationExtensionsClientOutputs'.
+    clientExtensionResults: AuthenticationExtensionsClientOutputs;
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:226:29
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialType'.
+    type: PublicKeyCredentialType;
+          ~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:231:11
+
+TS2304 [ERROR]: Cannot find name 'AuthenticatorAssertionResponse'.
+    response: AuthenticatorAssertionResponse;
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:241:15
+
+TS2304 [ERROR]: Cannot find name 'AuthenticationExtensionsClientOutputs'.
+    clientExtensionResults: AuthenticationExtensionsClientOutputs;
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:274:29
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialType'.
+    type: PublicKeyCredentialType;
+          ~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:279:11
+
+TS2304 [ERROR]: Cannot find name 'COSEAlgorithmIdentifier'.
+    publicKeyAlgorithm?: COSEAlgorithmIdentifier;
+                         ~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:315:26
+
+TS2304 [ERROR]: Cannot find name 'AuthenticatorAttestationResponse'.
+export interface AuthenticatorAttestationResponseFuture extends AuthenticatorAttestationResponse {
+                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:396:65
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialDescriptor'.
+export interface PublicKeyCredentialDescriptorFuture extends Omit<PublicKeyCredentialDescriptor, 'transports'> {
+                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:419:67
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialCreationOptions'.
+export interface PublicKeyCredentialCreationOptionsFuture extends StrictOmit<PublicKeyCredentialCreationOptions, 'excludeCredentials' | 'user'> {
+                                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:433:78
+
+TS2304 [ERROR]: Cannot find name 'AuthenticatorSelectionCriteria'.
+    authenticatorSelection?: AuthenticatorSelectionCriteria;
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:453:30
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialParameters'.
+    pubKeyCredParams: PublicKeyCredentialParameters[];
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:458:23
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialRpEntity'.
+    rp: PublicKeyCredentialRpEntity;
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:463:9
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialRequestOptions'.
+export interface PublicKeyCredentialRequestOptionsFuture extends StrictOmit<PublicKeyCredentialRequestOptions, 'allowCredentials'> {
+                                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:472:77
+
+TS2304 [ERROR]: Cannot find name 'AttestationConveyancePreference'.
+    attestation?: AttestationConveyancePreference;
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:487:19
+
+TS2552 [ERROR]: Cannot find name 'PublicKeyCredential'. Did you mean 'PublicKeyCredentialJSON'?
+export interface PublicKeyCredentialFuture<T extends PublicKeyCredentialJSON = PublicKeyCredentialJSON> extends PublicKeyCredential {
+                                                                                                                ~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:501:113
+
+TS2304 [ERROR]: Cannot find name 'PublicKeyCredentialType'.
+    type: PublicKeyCredentialType;
+          ~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts:506:11
+
+TS2304 [ERROR]: Cannot find name 'CredentialCreationOptions'.
+    options: StrictOmit<CredentialCreationOptions, 'publicKey'> & {
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.errors.d.ts:66:25
+
+TS2304 [ERROR]: Cannot find name 'CredentialRequestOptions'.
+    options: StrictOmit<CredentialRequestOptions, 'publicKey'> & {
+                        ~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.errors.d.ts:81:25
+
+TS2304 [ERROR]: Cannot find name 'CredentialCreationOptions'.
+export declare function createCredential(options: StrictOmit<CredentialCreationOptions, 'publicKey'> & {
+                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.d.ts:126:62
+
+TS2304 [ERROR]: Cannot find name 'CredentialRequestOptions'.
+export declare function getCredential(options: StrictOmit<CredentialRequestOptions, 'publicKey'> & {
+                                                          ~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.d.ts:138:59
+
+TS2304 [ERROR]: Cannot find name 'CredentialMediationRequirement'.
+        mediation?: CredentialMediationRequirement;
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/types.d.ts:2790:21
+
+Found 29 errors.
+
+error: Type checking failed.
