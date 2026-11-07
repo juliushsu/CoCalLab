@@ -1,5 +1,7 @@
 # Next action — 2026-11-07／真服務準備
 
+- PATH_SELECTED／WAITING_OWNER_BUDGET_AND_RETENTION：Owner已選同一付費組織另建獨立Micro UAT，保留既有main；預算與保留期限尚未填入，已提出補充問題。尚未建立資源、啟動計費或取得target ref，到期刪除亦未授權。下方三方案是原盤點提案歷史；現在待補費用／期限界線及CTO／相容性阻礙，並非重新要求選路徑。來源／文件前版固定6c0f6a192bb4bf3f075d886395eaebbeed0398bf；應用與UAT基線不變，下一條本機命令見下。
+
 - RELEASE HOLD；PR28仍Draft／未合併。應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde；正式UAT仍7dccd5452152f2495d10ad1437d5d03215166065。branch codex/integration-acceptance-20261107，本輪只加工具／設定草稿／證據／手冊，應用source未變。
 - PREPARATION_DELIVERED／DEPLOYMENT_BLOCKED：入口REAL_SERVICE_PREPARATION_DELIVERY_20261107.md；固定CLI2.122.1／Deno2.9.8，46來源／14靜態JS＋map與frozen lock hash已核對。完整Auth/CORS/JWT草稿只作本機config-load，41 migration及3歷史fixture HOLD、人工手冊已備。未套雲端；4211未啟動。
 - BLOCKED：原生Deno frozen typecheck 0/14 PASS、14 FAIL。SDK WS/WebAuthn宣告＋generate-report／verify-upload-receipt／delete-uploaded-document共9個來源診斷；DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md列位置與最小後續修正方案。不改ba2、不加skipLibCheck假綠。參考Edge1.78.1的Deno fork crate2.1.4不同於建置CLI；managed actual UNKNOWN。
