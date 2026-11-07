@@ -34,6 +34,6 @@ Owner尚未選UAT環境。wynqnvidepzzcwutexvn僅既有候選ref，不能因已�
 
 [人工驗收手冊](../docs/delivery/MANUAL_REAL_SERVICE_ACCEPTANCE_20261107.md)列角色、原生選檔、實際下載落盤、A/B/shared切換、撤權、舊分頁、六種進行中窗口及每案證據模板。PDF正例／空檔／無效PDF可用node deployment/uat/prepare-manual-fixtures.mjs本機生成，僅待人工選檔，不代表上傳成功。
 
-[Claude固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)維持不變，等待定向回覆；不重開整案。不以CLI檢查／bundle／文件完備解除發布HOLD。
+[Claude固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)維持不變；已收到遠端507a94e回覆，[收件／待裁定](../docs/delivery/CLAUDE_REVIEW_RECEIPT_20261107.md)區分歷史與整合版本，不重開整案。不以CLI檢查／bundle／文件完備解除發布HOLD。
 
 後續：核對本機工具結果→Owner登入後唯讀分類→Owner另裁定具體UAT target/費用/寫入範圍→環境回執→真服務驗收。尚未核准前，雲端部署／migration／bucket／帳號／真實上傳／撤權／備份reset還原全部NOT_RUN。

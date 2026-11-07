@@ -48,7 +48,7 @@ Owner已明確回覆「授權上述Supabase唯讀盤點」；**AUTHORIZED_READ_O
 
 1. WAITING_LOGIN：Owner登入PC或指定Mac提供受限盤點；取得metadata後提出重用／另建的具體選擇。既有唯讀授權不需重問，但任何寫入／費用／設定變更仍需另核准。
 2. WAITING_CTO：採用前先處理[原生Deno相容性缺口](DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md)，對相關依賴與三支handler邊界作最小修正、另固定新候選SHA；不修改本輪ba2來混淆版本。
-3. WAITING_CLAUDE：沿[固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)，區分歷史與ba2整合版本；沒有新增審查回覆或推定放行，不重開整案。
+3. CLAUDE_RECEIVED／WAITING_CTO：遠端507a94e的[回覆原文](CLAUDE_INTEGRATION_REVIEW_REPLY_20261107.md)已保留合入，見[收件摘要](CLAUDE_REVIEW_RECEIPT_20261107.md)。沿[固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)，區分歷史與ba2整合版本；回覆沒有重跑測試；四類P2為審查者評級，尚待CTO裁定，不推定放行或重開整案。
 4. NOT_RUN：真JWT／PostgREST／Storage／Deno Edge、原生選檔與落盤、兩獨立PG連線、live migration／NOT VALID資料驗證、備份復原及19+1代表使用者驗收。原生chooser權限阻礙沿用，不擅自擴權／重試Docker/WSL。
 
 前一輪FE221／backend27／SQL308 PASS+2 NOT_RUN及CI是既有來源證據，本輪沒有重跑或與新preflight加總；它們不能抵銷此次原生Deno失敗。即使一般CI通過，部署仍BLOCKED／發布HOLD。
