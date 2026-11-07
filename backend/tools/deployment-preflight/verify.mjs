@@ -18,7 +18,7 @@ for(const dir of [source,bundles,evidence])fs.mkdirSync(dir,{recursive:true});
 for(const pin of pins){pin.archivePath=path.join(tools,pin.archive);if(sha(fs.readFileSync(pin.archivePath))!==pin.archiveSha256||sha(fs.readFileSync(pin.binary))!==pin.binarySha256)throw new Error('Pinned asset/binary mismatch: '+pin.name);}
 const env={SystemRoot:process.env.SystemRoot,PATH:process.env.PATH,CI:'1',NO_COLOR:'1',DENO_NO_UPDATE_CHECK:'1',DENO_NO_PROMPT:'1',DENO_DIR:path.join(tools,'deno-cache'),DENO_TLS_CA_STORE:'mozilla',SUPABASE_HOME:path.join(tools,'supabase-home')};
 const commands=[];
-const sanitize=text=>String(text||'').replaceAll(pathToFileURL(source+path.sep).href,'<FIXED_SOURCE>/').replaceAll(source,'<FIXED_SOURCE>').replaceAll(tools,'<TOOL_ROOT>').replaceAll(repo,'<REPO_ROOT>').replace(/\x1b\[[0-9;]*m/g,'').replace(/\r\n/g,'\n').replace(/[\t ]+$/gm,'');
+const sanitize=text=>String(text||'').replaceAll(pathToFileURL(source+path.sep).href,'<FIXED_SOURCE>/').replaceAll(source,'<FIXED_SOURCE>').replaceAll(tools,'<TOOL_ROOT>').replaceAll(repo,'<REPO_ROOT>').replace(/\x1b\[[0-9;]*m/g,'').replace(/\r\n/g,'\n').replace(/[\t ]+$/gm,'').replace(/\n+$/,'\n');
 for(const file of fs.readdirSync(evidence).filter(name=>name.endsWith('.txt')))fs.writeFileSync(path.join(evidence,file),sanitize(fs.readFileSync(path.join(evidence,file),'utf8')));
 function command(binary,args,label){
  if(binary===deno)assertAnalysisCommand(args);else if(binary!==supabase||args.join(' ')!=='--version')throw new Error('Only local tool version/analysis commands permitted');

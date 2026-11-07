@@ -1,0 +1,9 @@
+------- pre-test output -------
+(node:100988) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+----- pre-test output end -----
+running 3 tests from ./backend/tests/native-deno-sdk.test.ts
+native pinned SDK keeps request JWT and public apikey separate from service credentials ... ok (22ms)
+native request SDK never substitutes the service key when incoming Authorization is absent ... ok (1ms)
+native SDK client creation rejects a missing required environment value before HTTP ... ok (1ms)
+
+ok | 3 passed | 0 failed (29ms)

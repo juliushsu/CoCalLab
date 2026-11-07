@@ -18,3 +18,11 @@ Evidence is in `docs/delivery/evidence/deployment-preflight-20261107/`: `manifes
 Observed result: **0/14 native type checks pass; 14/14 static ESM bundles created**. Compilation without type checking is the native bundle default; success is not deployment acceptance. Shared SDK 2.49.4 emits remote TS2303 errors. The floating `create-organization` SDK `@2` resolves to 2.119.0 in this lock and emits remote TS2304/TS2552 errors. Nine additional diagnostics are in the fixed local source: workspace/legal_entity/site inference in generate-report, and caught-error property access in delete/verify-upload handlers. Errors are retained, not suppressed or fixed.
 
 Bundles retain Node built-in imports. Managed Edge compatibility, ESZIP packaging and live execution are **NOT_RUN**. Reference edge-runtime v1.78.1 embeds Deno 2.1.4/deno_core 0.324.0, unlike the local checker 2.9.8; managed actual version is UNKNOWN. Original TS re-resolved without this frozen lock/artifact remains BLOCKED. No production approval follows from these artifacts.
+
+## Subsequent compatibility candidates
+
+The result above is historical ba2 evidence. The compatibility application commit fc3be262bfe931ea37ea8ded194862c0145ce07e passes all 14 native checks and creates all 14 static bundles with exact npm SDK2.49.4 and Node declarations22.12.0. See docs/delivery/DENO_NATIVE_COMPATIBILITY_DELIVERY_20261107.md. The original directory/lock/results remain unchanged.
+
+Pass an optional full 40-character commit SHA after the mode to analyze a new fixed candidate, e.g. node backend/tools/deployment-preflight/verify.mjs verify fc3be262bfe931ea37ea8ded194862c0145ce07e. New evidence has its own SHA-suffixed directory. summarize.mjs accepts the same full SHA; offline integrity failures downgrade both JSON and displayed status and exit nonzero. Tests: node --test backend/tools/deployment-preflight/graph.test.mjs backend/tools/deployment-preflight/audit.test.mjs.
+
+Native SDK contract tests are separate from this analysis-only runner: backend/tests/native-deno-sdk.test.ts uses exact application imports and Deno.test with only loopback HTTP and three synthetic env names. The synthetic Node product worker maps the exact npm SDK to its existing installed SDK, so its HTTP tests remain explicitly different from native SDK and managed Edge acceptance.

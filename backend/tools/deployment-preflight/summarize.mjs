@@ -1,6 +1,7 @@
 // Offline summary/hash audit of existing evidence. No compiler, business code,
 // credentials, Git mutation, network, Docker or cloud operation is invoked.
 import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import {fileURLToPath} from 'node:url';
+import {auditStatus} from './audit.mjs';
 const candidate=process.argv[2];
 if(process.argv.length>3||(candidate&&!/^[a-f0-9]{40}$/.test(candidate)))throw new Error('Expected optional full source SHA');
 const historical=!candidate||candidate==='ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde';
@@ -24,6 +25,8 @@ for(const fn of manifest.functions){
 summary.totals={functions:summary.functions.length,checksPassed:summary.functions.filter(f=>f.typeCheck==='PASS').length,checksFailed:summary.functions.filter(f=>f.typeCheck==='FAILED').length,diagnosticInstances:summary.functions.reduce((n,f)=>n+f.parsedErrorCount,0),localDiagnosticInstances:summary.functions.reduce((n,f)=>n+(f.origins.local_source||0),0),remoteDiagnosticInstances:summary.functions.reduce((n,f)=>n+(f.origins.remote_dependency||0),0),allDiagnosticCountsMatch:summary.functions.every(f=>f.diagnosticCountMatches),allBundleHashesMatch:summary.functions.every(f=>f.bundleHashMatches&&f.sourceMapHashMatches)};
 summary.totals.allSourceHashesMatch=manifest.sourceFiles.every(f=>sha(fs.readFileSync(path.join(manifest.artifactRoot,'source',f.path)))===f.sha256);
 summary.totals.allToolHashesMatch=manifest.toolchain.every(t=>sha(fs.readFileSync(t.archivePath))===t.archiveSha256&&sha(fs.readFileSync(t.binary))===t.binarySha256);
+const audit=auditStatus({requestedCommit:candidate||'ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde',sourceCommit:manifest.sourceCommit,reportedStatus:manifest.status,checks:{lock:summary.lockMatches,diagnosticCounts:summary.totals.allDiagnosticCountsMatch,bundles:summary.totals.allBundleHashesMatch,sources:summary.totals.allSourceHashesMatch,tools:summary.totals.allToolHashesMatch,nativePassConsistent:manifest.status!=='STATIC_PREFLIGHT_PASS_NOT_RUNTIME_ACCEPTANCE'||(summary.totals.checksPassed===summary.totals.functions&&manifest.summary.bundlesCreated===manifest.summary.total&&manifest.lockUnchanged)}});
+summary.status=audit.status;summary.integrityFailures=audit.failures;
 fs.writeFileSync(path.join(dir,'failure-summary.json'),JSON.stringify(summary,null,2)+'\n');
 const lines=['# Native Deno static preflight — '+summary.status,
  '',`Source: \`${summary.sourceCommit}\`. Native Deno 2.9.8; Supabase CLI 2.122.1. No Node application shim is used for these checks.`,
@@ -38,4 +41,4 @@ lines.push('', 'Counts are diagnostic instances, not a count of unique defects. 
  '', 'Large fixed-source/cache/bundle/map artifacts stay under ../tooling/deployment-20261107. manifest.json maps fixed Git blobs/SHA256, each function/transitive local source, remote resolutions and JS/map hashes. No .env, credentials, business handler, Deno serve, Docker or Supabase project service was used. Publication HOLD.');
 fs.writeFileSync(path.join(dir,'RESULTS.md'),lines.join('\n')+'\n');
 console.log(JSON.stringify({status:summary.status,...summary.totals,lockMatches:summary.lockMatches,summary:path.join(dir,'failure-summary.json')}));
-if(!summary.lockMatches||!summary.totals.allDiagnosticCountsMatch||!summary.totals.allBundleHashesMatch||!summary.totals.allSourceHashesMatch||!summary.totals.allToolHashesMatch)process.exitCode=1;
+if(audit.failures.length)process.exitCode=1;
