@@ -114,10 +114,10 @@ test('report request authority cannot be forged through client-writable audit lo
     await t.test('report row scope fence also rejects a malformed service-written ledger binding', async () => {
       const inconsistentRequest = randomUUID();
       await as('service_role', null, 'insert into report_snapshot_requests_v2(organization_id,project_id,request_id,actor_user_id,report_version,claim_purpose,report_generation_id) values($1,$2,$3,$4,1,\'internal_management\',$5)', [scope.organizationId, scope.projectId, inconsistentRequest, scope.userId, historicReport]);
-      assert.deepEqual((await as('service_role', null, lookupSql, lookupArgs.with(3, inconsistentRequest))).rows, []);
-      // Save must fail closed on the conflicting ledger PK, rolling its new A
-      // row back, rather than returning B's known report UUID.
-      await assert.rejects(as('service_role', null, saveSql, saveArgs.with(3, 2).with(16, inconsistentRequest)), { code: '23505' });
+      // Public-only legacy binding is now explicitly unverified, never blessed
+      // or used to create a replacement row and never borrowed from tenant B.
+      await assert.rejects(as('service_role', null, lookupSql, lookupArgs.with(3, inconsistentRequest)), /REPORT_SNAPSHOT_UNVERIFIED/);
+      await assert.rejects(as('service_role', null, saveSql, saveArgs.with(3, 2).with(16, inconsistentRequest)), /REPORT_SNAPSHOT_UNVERIFIED/);
       assert.equal(Number((await db.query('select count(*) as n from report_generations where organization_id=$1 and project_id=$2', [scope.organizationId, scope.projectId])).rows[0].n), 1);
     });
   } finally { await flow.close(); }

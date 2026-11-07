@@ -6,7 +6,7 @@ export type ReportFormat = 'pdf' | 'docx' | 'html';
 
 /** Saved database evidence, not a generated chapter or a live project join. */
 export interface ReportSavedSnapshot {
-  id?:unknown;organization_id?:unknown;project_id?:unknown;status?:unknown;
+  id?:unknown;organization_id?:unknown;project_id?:unknown;status?:unknown;integrity_status?:unknown;
   report_version?:unknown;created_at?:unknown;payload?:unknown;payload_hash?:unknown;
   reporting_period_start?:unknown;reporting_period_end?:unknown;
   included_activity_count?:unknown;excluded_activity_count?:unknown;pending_activity_count?:unknown;

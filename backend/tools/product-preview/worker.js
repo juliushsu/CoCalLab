@@ -24,7 +24,7 @@ registerHooks({ resolve(specifier, context, next) {
 
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
-const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','upload_intake_contract',
+const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','read_verified_report_snapshot','upload_intake_contract',
   'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing']);
 const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
@@ -210,7 +210,15 @@ async function dispatchInner(request) {
   if(url.pathname==='/auth/v1/user')return actor(request).user?json(actor(request).user):json({message:'Synthetic token rejected'},401);
   if(url.pathname==='/auth/v1/logout'&&request.method==='POST'){sessions.delete((request.headers.get('authorization')||'').replace(/^Bearer\s+/i,''));return new Response(null,{status:204});}
   const armed=fault&&fault.path===url.pathname&&(fault.method||'POST')===request.method?fault:null;
-  if(armed){fault=null;if(armed.phase!=='afterCommit')return json(armed.body??{code:'SYNTHETIC_FAULT',message:'Synthetic injected failure before operation'},armed.status||503);}
+  if(armed){
+    fault=null;
+    // In-process test-only interleaving, not a business HTTP endpoint or SQL concurrency proof.
+    if(armed.phase==='beforeDispatch'&&armed.revokeMembership){
+      const {organizationId,userId}=armed.revokeMembership;
+      if(![organizationId,userId].every(value=>typeof value==='string'&&/^[0-9a-f-]{36}$/i.test(value)))throw new Error('Invalid synthetic revocation scope');
+      await database(new Request(baseUrl,{headers:{Authorization:'Bearer '+SERVICE_KEY}}),()=>flow.db.query("update organization_members set status='inactive' where organization_id=$1 and user_id=$2",[organizationId,userId]));
+    }else if(armed.phase!=='afterCommit')return json(armed.body??{code:'SYNTHETIC_FAULT',message:'Synthetic injected failure before operation'},armed.status||503);
+  }
   let response;
   try {
     const functionName=url.pathname.match(/^\/functions\/v1\/([^/]+)$/)?.[1];
