@@ -1,10 +1,14 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
 import {canonicalUuid,resolveNavigationScope} from './navigationScope.ts';
-import type {ExtractedDocumentDraft} from '../types/document.ts';
+import type {ExtractedDocumentDraft,UploadedDocument} from '../types/document.ts';
 export const MANUAL_PROVIDER='MANUAL_TRANSCRIPTION_NO_OCR';
 export interface ManualScope {organizationId:string;projectId:string;documentId:string}
 export interface ManualValues {activity_name:string;quantity:number;unit:string;activity_date:string;category:string;subcategory:null;activity_type:string;final_scope:number|null;inclusion_status:'pending'|'included'|'excluded';exclusion_reason:string|null;review_note:string|null;period_start:string|null;period_end:string|null;source_locator:string;source_text:string|null}
 export interface ManualAttempt {draftId:string;requestId:string;transcription:ManualValues;confirmation?:{requestId:string;decision:'confirmed'|'rejected';reviewNote:string|null}}
+/** UX eligibility only; the service/SQL rechecks private proof and current object binding. */
+export function manualReceiptEligible(receipt:Pick<UploadedDocument,'status'|'deletion_state'|'hash_verification_status'|'server_verified_at'|'verified_storage_object_id'|'sha256_hash'>){
+ return receipt.status==='active'&&receipt.deletion_state==='active'&&receipt.hash_verification_status==='server_verified'&&Boolean(canonicalUuid(receipt.verified_storage_object_id))&&typeof receipt.server_verified_at==='string'&&Number.isFinite(Date.parse(receipt.server_verified_at))&&/^[a-f0-9]{64}$/.test(receipt.sha256_hash);
+}
 export function manualScope(documentId:string,search:string):ManualScope{
  const scope=resolveNavigationScope('/admin/documents/list',search),doc=canonicalUuid(documentId);
  if(scope.kind==='invalid'||!doc||!('organizationId' in scope)||!scope.organizationId||!('projectId' in scope)||!scope.projectId)throw new Error('請從指定單位／專案的文件清單進入人工轉錄。');

@@ -47,6 +47,8 @@ export default function EmissionActivitiesListPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activities, setActivities] = useState<EmissionActivity[]>([]);
+  const [editing,setEditing]=useState<EmissionActivity|null>(null);
+  useEffect(()=>{setEditing(null);},[context]);
   const [filterScope, setFilterScope] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterInclusion, setFilterInclusion] = useState('');
@@ -105,6 +107,7 @@ export default function EmissionActivitiesListPage() {
 
   const handleCloseCreate = () => {
     setShowCreateModal(false);
+    setEditing(null);
     // Remove ?create=true from URL
     if (searchParams.get('create')) {
       const next = new URLSearchParams(searchParams);
@@ -209,8 +212,10 @@ export default function EmissionActivitiesListPage() {
   return (
     <AdminLayout>
       {/* Create Activity Modal */}
-      {showCreateModal && projectId && organizationId && !isReadonly && (
+      {(showCreateModal||editing) && projectId && organizationId && !isReadonly && (
         <CreateActivityModal
+          key={context.search+context.userId+context.authEpoch+(editing?.id??'create')}
+          activity={editing??undefined}
           projectId={projectId}
           organizationId={organizationId}
           userId={userId}
@@ -260,6 +265,7 @@ export default function EmissionActivitiesListPage() {
         <button type="button" disabled={!projectId||!organizationId||working} onClick={()=>{if(!projectId||!organizationId||!isCurrent())return;try{const scope={projectId,organizationId},captured=calculationRawReference(sessionStorage,scope,userId);abandonCalculationReference(sessionStorage,scope,userId,captured);setPendingCalculation(readCalculationReference(sessionStorage,scope,userId)?.requestId??null);setOperationMessage('已清除此使用者／專案的本機計算參考（含損壞參考）；不取消或刪除任何伺服器計算。下次按計算會建立新操作。');}catch(cause){setOperationMessage(String(cause));}}} className="rounded border p-2">放棄計算本機參考（不取消伺服器操作）</button>
         {savedReport&&<button type="button" onClick={()=>navigate('/admin/reports/'+savedReport+'?'+new URLSearchParams({organization_id:organizationId??'',project_id:projectId??''}))} className="rounded border p-2">開啟已保存報告</button>}</div>
         {projectId&&<p className="mb-3 text-sm">盤查期間：{projects.find(row=>row.id===projectId)?.reporting_start_date} ～ {projects.find(row=>row.id===projectId)?.reporting_end_date}。數量與單位由人工輸入；係數不使用正式預設測試值。</p>}
+        {projectId&&<p className="mb-3 text-sm">建立新可信報告前，請先按「計算並保存」取得目前輸入的通用重算紀錄；人工轉錄確認的即時計算不能取代此步驟。舊報告保留原快照，不會因重新計算自動補簽。</p>}
         {pendingCalculation&&<p className="mb-3 text-sm">待核對計算操作：{pendingCalculation}。重試沿用此ID；本機參考不是伺服器完成證明。</p>}
         {working&&<p role="status">處理中，等待伺服器保存／核對結果…</p>}
         {operationMessage&&<p role="status" className="mb-4 border rounded p-3">{operationMessage}</p>}
@@ -427,6 +433,7 @@ export default function EmissionActivitiesListPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          {projectId===activity.project_id&&!isReadonly&&<button disabled={working} onClick={()=>setEditing(activity)} className="mr-3 text-teal-700 disabled:opacity-50">編輯</button>}
                           <button
                             onClick={() => handleViewDetail(activity)}
                             className="text-teal-600 hover:text-teal-900 cursor-pointer"

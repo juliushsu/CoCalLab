@@ -17,6 +17,7 @@ import {
   externalGuardWarning,
 } from '../_shared/staging-guard.ts';
 import { insertActionLog } from '../_shared/action-log.ts';
+import {isProtectedManualDraft} from '../../../src/services/manual-source-guard.js';
 
 serveWithCors(async (request: Request) => {
   if (request.method !== 'POST') {
@@ -56,6 +57,20 @@ serveWithCors(async (request: Request) => {
         requestId: input.request_id,
         httpStatus: 403,
       });
+    }
+
+    // Read every historical draft before any provider work. SQL repeats the fence at commit.
+    let offset=0,total: number | undefined;
+    const seen=new Set<string>();
+    while(true){
+      const history=await supabase.from('extracted_document_drafts').select('id,extraction_provider,raw_payload',{count:'exact'}).eq('organization_id',input.organization_id).eq('project_id',input.project_id).eq('uploaded_document_id',input.uploaded_document_id).order('id').range(offset,offset+199);
+      if(history.error)throw history.error;
+      if(!Array.isArray(history.data)||!Number.isSafeInteger(history.count)||history.count===null||history.count<0||total!==undefined&&total!==history.count)throw new Error('MANUAL_HISTORY_READ_INCOMPLETE');
+      total=history.count;
+      for(const row of history.data){if(seen.has(row.id))throw new Error('MANUAL_HISTORY_READ_INCOMPLETE');seen.add(row.id);if(isProtectedManualDraft(row))return errorEnvelope(request,{code:'MANUAL_SOURCE_RETAINED',message:'This document has retained manual transcription history; provider processing is not permitted'},{httpStatus:409,requestId:input.request_id});}
+      if(seen.size===total)break;
+      if(!history.data.length||seen.size>total)throw new Error('MANUAL_HISTORY_READ_INCOMPLETE');
+      offset+=history.data.length;
     }
 
     // A durable lease precedes provider/read work. It is not OCR enablement or

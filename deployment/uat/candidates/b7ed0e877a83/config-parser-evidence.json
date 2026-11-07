@@ -1,0 +1,10 @@
+{
+  "source_sha": "b7ed0e877a832c9742b9726f906163109249b87e",
+  "tool_version": "2.122.1",
+  "template_sha256": "98f215ebb553664f2c5ddbd89a4fa29191dd66dca9b92d04a92d3953f31cabf4",
+  "command": "supabase functions new local-candidate-config-probe --auth user --workdir <fresh dedicated local scratch>",
+  "exit": 0,
+  "output": "Created new Function at supabase\\functions\\local-candidate-config-probe\n",
+  "meaning": "Parser loads candidate configuration and creates a disposable local scaffold only; not a service/bucket/project creation, not runtime or cloud deployment",
+  "target_ref": null
+}

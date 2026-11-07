@@ -138,3 +138,10 @@ node --test --test-concurrency=1 backend/tests/integration/document-deletion-sql
 ```
 
 Initial RED on pre-005 source: `node --test backend/tests/integration/document-deletion-sql.test.js` failed with `Missing expected rejection` because ordinary authenticated legacy Storage deletion succeeded. New fixtures retain the direct-API assertion and add broad-policy, scope/role, reference-ordering, uppercase UUID/unknown report history, exact bucket binding, partial failure, missing/orphan/duplicate originals, private authority, lost-response, immutable mode, locate and processing-lease cases. **Independent SQL-connection contention/lock-wait races remain NOT_RUN**; sequential ordering and the adapter's serialized connection are not concurrency proof. Cloud, real Storage generation behavior, production restore/migration and deployment remain unverified; publication HOLD.
+
+
+### N1 legacy handler and source-change regression
+
+The test-only runtime accepts legacyConfirm:true to load the exact 9ebf5b13427edf8d228659a24269ddaaf86a84f0 confirm-draft fixture (SHA256 970ccc0d6bf79ae61290dc90c29d2577a74eb4f6cb2c304346b3be71dada96be) at its original module URL. The worker strips TypeScript for Node only; dependencies use the documented installed SDK adapter. This proves the frozen handler against current synthetic SQL, not managed Deno/Edge acceptance. Default preview always uses current handlers.
+
+A worker-command-only beforeDispatch mutateDraft fault performs a real loopback REST PATCH using a supplied synthetic actor token. Tests use it to interleave a draft edit between source read and confirmation commit. It is not a production HTTP endpoint or independent SQL-session concurrency proof. Rejected commits must leave no activity/calculation/audit; replay retains the original IDs. New confirmed writes from a legacy handler without the source witness fail closed; upgrade the handler rather than retrying through the old entry.

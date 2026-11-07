@@ -1,5 +1,7 @@
 # Supabase 唯讀盤點回執 — 2026-11-07
 
+> 後續狀態（2026-11-07）：CTO四P2與七項邊界已正式裁定並完成本機修復候選；不再等待同一裁定。最新入口為[四P2交付](CTO_P2_INTEGRATION_DELIVERY_20261107.md)及[定向複審入口](CLAUDE_CTO_P2_REVIEW_START_HERE_20261107.md)。下文保留當時固定來源／盤點證據；新候選、未驗項及雲端授權以最新交付為準。
+
 **READONLY_COMPLETE_WITH_SCOPE_LIMITS；RELEASE HOLD；WAITING_CTO_PREREQUISITES。** Owner授權並自行完成PC登入後，已核對指定CoCalLab的metadata與aggregate。應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde，正式UAT仍7dccd5452152f2495d10ad1437d5d03215166065；沒有部署或合併。此公開版不包含精確live DB／安全／用量細節。
 
 | 分類 | 結果與證據取得方式 |

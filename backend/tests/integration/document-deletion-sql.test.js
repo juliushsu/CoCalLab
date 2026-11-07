@@ -58,13 +58,23 @@ test('prepare first fences new/changed draft, activity, processing and report re
    await assert.rejects(f.role(as,()=>f.draft(v)),e=>e.code==='42501');
    await assert.rejects(f.role(as,()=>f.db.query('update extracted_document_drafts set uploaded_document_id=$1 where id=$2',[v.document_id,oldDraft.id])),e=>e.code==='42501');
    await assert.rejects(f.role(as,()=>f.activity(v)),e=>e.code==='42501');
-   await assert.rejects(f.role(as,()=>f.db.query('update emission_activities set source_document_id=$1 where id=$2',[v.document_id,oldActivity.id])),e=>e.code==='42501');
+   if(as==='authenticated'){
+    // The new controlled-write policy hides the row before any reference trigger
+    // runs. Prove no mutation rather than expecting an exception from zero rows.
+    const update=await f.role(as,()=>f.db.query('update emission_activities set source_document_id=$1 where id=$2 returning id',[v.document_id,oldActivity.id]));
+    assert.equal(update.rows.length,0);
+   }else await assert.rejects(f.role(as,()=>f.db.query('update emission_activities set source_document_id=$1 where id=$2',[v.document_id,oldActivity.id])),e=>e.code==='42501');
+   assert.equal((await f.db.query('select source_document_id from emission_activities where id=$1',[oldActivity.id])).rows[0].source_document_id,other.document_id);
    if(as==='authenticated'){
     // Existing UPDATE restrictive RLS can hide the row before a trigger fires.
     try{assert.equal((await f.role(as,()=>f.db.query("update uploaded_documents set ocr_status='processing' where id=$1 returning id",[v.document_id]))).rows.length,0);}catch(e){assert.equal(e.code,'42501');}
    }else await assert.rejects(f.role(as,()=>f.db.query("update uploaded_documents set ocr_status='processing' where id=$1",[v.document_id])),e=>e.code==='42501');
    await assert.rejects(f.role(as,()=>f.db.query("insert into report_generations(organization_id,project_id,report_version,payload,payload_hash,reporting_period_start,reporting_period_end) values($1,$2,1,$3,'SYNTHETIC','2026-01-01','2026-12-31')",[v.organization_id,v.project_id,{appendix_mappings:[{source_document_id:v.document_id,source_draft_id:null}]}])),e=>e.code==='42501');
   }
+  // The owner fixture bypasses client RLS and the server-write trigger, so this
+  // separately verifies the durable document fence itself still rejects a new
+  // reference rather than relying only on the new controlled-write boundary.
+  await assert.rejects(f.db.query('update emission_activities set source_document_id=$1 where id=$2',[v.document_id,oldActivity.id]),e=>e.code==='42501'&&e.message==='DOCUMENT_DELETION_FENCED');
  }finally{await f.close();}
 });
 

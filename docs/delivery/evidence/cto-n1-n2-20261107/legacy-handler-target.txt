@@ -1,0 +1,14 @@
+(node:96184) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ frozen 9ebf5b1 legacy confirm handler cannot confirm nonlatest side branch before or after MANUAL confirmation; retry adds nothing (2941.4964ms)
+(node:96184) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ frozen 9ebf5b1 non-MANUAL confirmation without a source witness fails closed, without creating activity/calculation/audit (2506.3233ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5542.5374

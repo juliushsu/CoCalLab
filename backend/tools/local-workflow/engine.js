@@ -3,11 +3,11 @@ import {createRequire} from 'node:module';
 import {resolve} from 'node:path';
 import {readFile,readdir} from 'node:fs/promises';
 import {createHash,randomUUID} from 'node:crypto';
-import {confirm_draft_to_emission_activity} from '../../src/services/confirm-draft.js';
+import {canonicalManualTranscription,manualConfirmationIntent} from '../../src/contracts/manual-transcription.js';
+import {normalizeUnit} from '../../src/services/unit-normalization.js';
 import {calculate_emission_activity} from '../../src/services/calculate-emission-activity.js';
 import {recalculate_project} from '../../src/services/recalculate-project.js';
 import {build_report_payload} from '../../src/services/build-report-payload.js';
-import {validateConfirmDraftInput} from '../../src/contracts/contracts.js';
 import {verifyStoredFile} from '../../../modules/file-verification/index.js';
 
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -22,7 +22,7 @@ function manual(value) {
     new Date(out.activityDate).toISOString().slice(0,10)!==out.activityDate||!out.activityDate.startsWith('2026-'))throw new Error('INVALID_MANUAL_INPUT');
   return out;
 }
-export async function createLocalWorkflow({fault=async()=>{}}={}) {
+export async function createLocalWorkflow({fault=async()=>{},throughMigration=null}={}) {
   if(!process.env.PGLITE_RUNTIME_ROOT)throw new Error('PGLITE_RUNTIME_ROOT must point to the installed local @electric-sql/pglite@0.5.13 runtime');
   const require=createRequire(resolve(process.env.PGLITE_RUNTIME_ROOT,'package.json'));
   const {PGlite}=require('@electric-sql/pglite');
@@ -58,8 +58,8 @@ export async function createLocalWorkflow({fault=async()=>{}}={}) {
       counts:{objects:objects.size,receipts:receipt.length,drafts:draft.length,activities:activity.length,calculations:calculation.length,reports:report.length},
       migrations,omittedMigrations:omitted,gaps:[
         'MISSING: production non-Mock document-to-draft entry; this lab uses explicit human transcription into a local draft. OCR stays pending.',
-        'NOT_RUN: real Supabase Auth/JWT/Storage HTTP, Edge handlers, production report second-phase patch, cloud migration/restore.',
-        'OPEN: production RPC retry/idempotency, server byte/hash attestation and hash uniqueness poisoning.',
+        'NOT_RUN: real Supabase Auth/JWT/Storage HTTP, managed Edge execution, cloud migration/restore.',
+        'NOT_RUN: independent PostgreSQL sessions and managed Storage byte/hash verification; local source evidence is not service acceptance.',
       ]};
   }
   async function calculationInputs(){
@@ -79,6 +79,8 @@ export async function createLocalWorkflow({fault=async()=>{}}={}) {
     const directory=new URL('../../supabase/migrations/',import.meta.url);
     const excluded=new Set(['202603160008_v1_frontend_fixture_seed.sql','202603180007_v1_staging_fixture_alignment.sql','202604070005_v1_adjustment_fixture_seed.sql']);
     for(const file of (await readdir(directory)).filter(f=>f.endsWith('.sql')).sort()){
+      // Test-only historical baseline for before/after regression evidence.
+      if(throughMigration&&file>throughMigration)continue;
       if(excluded.has(file)){omitted.push(file);continue;}
       const source=await readFile(new URL(file,directory),'utf8');await db.exec(source);migrations.push({file,sha256:hash(source)});
     }
@@ -118,19 +120,17 @@ export async function createLocalWorkflow({fault=async()=>{}}={}) {
     review:(value={})=>serial(async()=>{
       const entered=manual(value),receipt=(await own('uploaded_documents'))[0];
       if(!receipt)throw new Error('RECEIPT_REQUIRED');
+      const transcription=canonicalManualTranscription({activity_name:'SYNTHETIC manually transcribed electricity',quantity:entered.quantity,unit:entered.unit,activity_date:entered.activityDate,final_scope:entered.finalScope,category:'energy',subcategory:'purchased_electricity',activity_type:'electricity',inclusion_status:'included',exclusion_reason:null,review_note:'SYNTHETIC local human confirmation; no OCR/classification',period_start:null,period_end:null,source_locator:'SYNTHETIC original page 1',source_text:null});
       let draft=(await own('extracted_document_drafts'))[0];
-      if(draft&&JSON.stringify(draft.normalized_payload)!==JSON.stringify(JSON.parse(JSON.stringify(entered)))){
-        if(Object.keys(entered).some(k=>draft.normalized_payload[k]!==entered[k]))throw new Error('REVIEW_CONFLICT: keep the existing confirmed input');
-      }
+      if(draft&&Object.keys(transcription).some(key=>draft.normalized_payload[key]!==transcription[key]))throw new Error('REVIEW_CONFLICT: keep the existing confirmed input');
       if(draft?.status==='confirmed')return state();
       await transaction(async()=>{await as('service_role',async()=>{
-        if(!draft)[draft]=await insert('extracted_document_drafts',{id:scope.draftId,organization_id:scope.organizationId,project_id:scope.projectId,uploaded_document_id:receipt.id,extraction_version:1,extraction_provider:'LOCAL_MANUAL_TRANSCRIPTION_NO_OCR',raw_payload:{synthetic:true,mode:'human_entry',no_ocr:true},normalized_payload:entered,status:'pending_review',is_latest:true,env:'staging',is_test:true});
-        const overrides={quantity:entered.quantity,unit:entered.unit,activity_date:entered.activityDate,final_scope:entered.finalScope,activity_name:'SYNTHETIC manually transcribed electricity',category:'energy',subcategory:'purchased_electricity',activity_type:'electricity',inclusion_status:'included',review_note:'SYNTHETIC local human confirmation; no OCR/classification'};
-        validateConfirmDraftInput({organization_id:scope.organizationId,project_id:scope.projectId,draft_id:draft.id,decision:'confirmed',overrides});
-        const transformed=confirm_draft_to_emission_activity({draft,decision:'confirmed',overrides,next_activity_code:'SYNTHETIC-EA-000001'});
+        if(!draft){const [saved]=await rows('select * from create_manual_transcription_atomic($1,$2,$3,$4,$5,$6,$7)',[scope.organizationId,scope.projectId,receipt.id,scope.draftId,scope.userId,'SYNTHETIC-LOCAL-TRANSCRIBE-'+scope.draftId,transcription]);draft=saved.draft_data;}
+        const intent=manualConfirmationIntent({decision:'confirmed',request_id:'SYNTHETIC-LOCAL-CONFIRM-'+scope.draftId},transcription);
         const factors=await rows('select * from emission_factors where organization_id=$1 and status=$2',[scope.organizationId,'active']);
-        const calculation=calculate_emission_activity({activity:transformed.emission_activity,factors});
-        await rows('select * from confirm_draft_atomic($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)',[scope.organizationId,scope.projectId,draft.id,'confirmed',transformed.draft_status,overrides.review_note,new Date().toISOString(),transformed.emission_activity,calculation,scope.userId,'SYNTHETIC-LOCAL-REVIEW']);
+        const normalized=normalizeUnit(transcription.quantity,transcription.unit);
+        const calculation=calculate_emission_activity({activity:{...transcription,organization_id:scope.organizationId,project_id:scope.projectId},factors});
+        await rows('select * from confirm_manual_draft_atomic_v2($1,$2,$3,$4,$5,$6,$7,$8)',[scope.organizationId,scope.projectId,draft.id,scope.userId,intent,calculation,normalized.normalized_quantity,normalized.normalized_unit]);
         await fault('review-after-rpc');
       });});
       await fault('review-response');
@@ -141,37 +141,40 @@ export async function createLocalWorkflow({fault=async()=>{}}={}) {
       if(typeof withFactor!=='boolean')throw new Error('INVALID_FACTOR_OPTION');
       const activities=await own('emission_activities');
       if(activities.length!==1)throw new Error('CONFIRMED_ACTIVITY_REQUIRED');
-      const previous=await own('calculation_results');
-      if(previous.some(r=>r.is_latest&&r.status==='calculated')&&withFactor)return state();
       await transaction(async()=>{await as('service_role',async()=>{
-        if(withFactor&&!(await rows('select id from emission_factors where id=$1',[scope.factorId])).length)await insert('emission_factors',{id:scope.factorId,organization_id:scope.organizationId,factor_key:'SYNTHETIC-ONLY-0.5',factor_name:'SYNTHETIC ONLY, NOT AN OFFICIAL FACTOR',source_name:'LOCAL TEST INPUT',category:'energy',subcategory:'purchased_electricity',activity_type:'electricity',unit:'kWh',co2e_kg_per_unit:0.5,valid_from:'2026-01-01',version:1,quality_tier:'custom',status:'active',env:'staging',is_test:true,metadata:{synthetic:true}});
-        const factors=withFactor?await rows('select * from emission_factors where organization_id=$1',[scope.organizationId]):[];
-        // PGlite returns PostgreSQL numeric as text; adapt the read boundary,
-        // never feed a fabricated fallback into the existing calculation service.
-        const numericActivities=activities.map(row=>{
-          if(row.quantity===null||!Number.isFinite(Number(row.quantity)))throw new Error('INVALID_STORED_QUANTITY');
-          return {...row,quantity:Number(row.quantity)};
-        });
-        const result=recalculate_project({organization_id:scope.organizationId,project_id:scope.projectId,activities:numericActivities,factors,previous_calculation_results:previous});
-        await rows('select * from recalculate_project_atomic($1,$2,$3,$4,$5)',[scope.organizationId,scope.projectId,scope.userId,result.calculation_results,'SYNTHETIC-LOCAL-CALCULATE']);
+        const existing=await rows('select id,status from emission_factors where id=$1',[scope.factorId]);
+        if(withFactor&&!existing.length)await insert('emission_factors',{id:scope.factorId,organization_id:scope.organizationId,factor_key:'SYNTHETIC-ONLY-0.5',factor_name:'SYNTHETIC ONLY, NOT AN OFFICIAL FACTOR',source_name:'LOCAL TEST INPUT',category:'energy',subcategory:'purchased_electricity',activity_type:'electricity',unit:'kWh',co2e_kg_per_unit:0.5,valid_from:'2026-01-01',version:1,quality_tier:'custom',status:'active',env:'staging',is_test:true,metadata:{synthetic:true}});
+        if(existing.length&&existing[0].status!==(withFactor?'active':'deprecated'))await rows('update emission_factors set status=$1 where id=$2',[withFactor?'active':'deprecated',scope.factorId]);
+        await db.exec('savepoint local_calculation_probe');
+        try{await rows('select * from report_calculation_inputs($1,$2,$3)',[scope.organizationId,scope.projectId,scope.userId]);await db.exec('release savepoint local_calculation_probe');return;}catch(error){await db.exec('rollback to savepoint local_calculation_probe');await db.exec('release savepoint local_calculation_probe');if(!/CALCULATION_AUTHORITY_(REQUIRED|STALE)/.test(error.message))throw error;}
+        const factors=await rows('select * from emission_factors where organization_id=$1 and status=$2',[scope.organizationId,'active']);
+        const previous=await own('calculation_results');
+        const requestId='SYNTHETIC-LOCAL-CALC-'+hash(JSON.stringify({activities,factors,previousVersion:Math.max(0,...previous.map(r=>Number(r.calculation_version))),withFactor}));
+        const intent=[scope.organizationId,scope.projectId,scope.userId,requestId,true,'v1.0.0'];
+        const [prepared]=await rows("select * from recalculation_request_v2($1,$2,$3,$4,$5,$6,'prepare')",intent);
+        const state=prepared.result;
+        if(state.operation_status!=='completed'){
+          const result=recalculate_project({organization_id:scope.organizationId,project_id:scope.projectId,activities:state.input_snapshot.activities,factors:state.input_snapshot.factors});
+          await rows('select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)',[...intent,state.input_snapshot,result.calculation_results]);
+        }
         await fault('calculate-after-rpc');
       });});
       return state();
     }),
     snapshot:(value={})=>serial(async()=>{
       input(value,[]);
-      const {activities,calculations}=await calculationInputs();
+      await calculationInputs();
+      const [trusted]=await as('service_role',()=>rows('select * from report_calculation_inputs($1,$2,$3)',[scope.organizationId,scope.projectId,scope.userId]));
+      const {activities,calculation_results:calculations,calculation_authority}=trusted.result;
       const project=(await rows('select * from projects where id=$1',[scope.projectId]))[0];
       const workspace=(await rows('select * from organizations where id=$1',[scope.organizationId]))[0];
       const payload=build_report_payload({project,workspace,activities,calculation_results:calculations});
       const payloadHash=hash(JSON.stringify(payload)),existing=(await own('report_generations'))[0];
       if(existing){if(existing.payload_hash!==payloadHash)throw new Error('SNAPSHOT_STALE: existing version is immutable');return state();}
       const gross=Object.values(payload.scope_totals).reduce((sum,n)=>sum+n,0);
+      const snapshot={claim_purpose:'internal_management',gross_emissions_snapshot:{gross_total_co2e_kg:gross,scope_totals:payload.scope_totals,category_totals:payload.category_totals},adjustment_summary:{claim_purpose:'internal_management',application_count:0,requested_total_tco2e:0,eligible_total_tco2e:0,disallowed_total_tco2e:0},claim_results:{claim_purpose:'internal_management',inventory_impact_mode:'claim_only',gross_co2e_kg:gross,eligible_deduction_tco2e:0,eligible_deduction_kg:0,claim_net_co2e_kg:gross},adjustment_manifest:[],calculation_authority};
       await transaction(async()=>{await as('service_role',async()=>{
-        const [saved]=await rows('select * from generate_report_atomic($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)',[scope.organizationId,scope.projectId,scope.userId,1,payload,payloadHash,project.reporting_start_date,project.reporting_end_date,payload.boundary_summary.included_count,payload.boundary_summary.excluded_count,payload.boundary_summary.pending_count,payload.scope_totals,payload.category_totals,payload.factor_sources_used,payload.data_gaps_and_warnings.length,calculations[0].calculated_at,'SYNTHETIC-LOCAL-REPORT']);
-        // Lab-only transaction wrapper; production Edge RPC+patch is two-phase.
-        await db.query('update report_generations set claim_purpose=$1,gross_emissions_snapshot=$2,adjustment_summary=$3,claim_results=$4,adjustment_manifest=$5,env=$6,is_test=$7 where id=$8',[
-          'internal_management',{gross_total_co2e_kg:gross,scope_totals:payload.scope_totals,category_totals:payload.category_totals},{claim_purpose:'internal_management',application_count:0,requested_total_tco2e:0,eligible_total_tco2e:0,disallowed_total_tco2e:0},{claim_purpose:'internal_management',inventory_impact_mode:'claim_only',gross_co2e_kg:gross,eligible_deduction_tco2e:0,eligible_deduction_kg:0,claim_net_co2e_kg:gross},[],'staging',true,saved.report_generation_id]);
+        await rows('select * from generate_report_snapshot_atomic_v2($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)',[scope.organizationId,scope.projectId,scope.userId,1,payload,payloadHash,project.reporting_start_date,project.reporting_end_date,payload.boundary_summary.included_count,payload.boundary_summary.excluded_count,payload.boundary_summary.pending_count,payload.scope_totals,payload.category_totals,payload.factor_sources_used,payload.data_gaps_and_warnings.length,calculations[0].calculated_at,'SYNTHETIC-LOCAL-REPORT',snapshot]);
         await fault('report-after-rpc');
       });});
       return state();

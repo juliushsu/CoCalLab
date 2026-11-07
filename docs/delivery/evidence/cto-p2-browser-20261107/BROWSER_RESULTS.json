@@ -1,0 +1,29 @@
+{
+  "program_sha": "b7ed0e877a832c9742b9726f906163109249b87e",
+  "test_checkout_sha": "1f657f7767906aa3d251db0f5feb1e23eac0c6ed",
+  "observed_at_utc": "2026-11-07T11:01:47.930Z",
+  "environment": "Local Chromium real UI; checked-in handlers and PGlite; Auth/Storage and factor are explicitly SYNTHETIC",
+  "frontend": "http://127.0.0.1:4213",
+  "api": "http://127.0.0.1:4212",
+  "organization_id": "4b2757f8-d89c-4d0c-acd8-0f599aa96b96",
+  "project_id": "008ed24c-f41d-42c8-8e09-52fd0eb4c223",
+  "activity_id": "555a60c1-16a7-4450-835e-40c4ba1e6294",
+  "report_id": "74bd5d96-a1e5-48fb-904b-7bfeff954ab4",
+  "results": [
+    "Original five-stage navigation/pages retained; explicit synthetic banner",
+    "Controlled UI create 100kWh; no general recalc => CALCULATION_AUTHORITY_REQUIRED, no trusted report",
+    "Explicit discard local report recovery reference (no server deletion) permits generic recalc",
+    "Generic recalc saved; edit same activity to120kWh => CALCULATION_AUTHORITY_STALE; old result not trusted",
+    "Discard failed local report reference, recalc120kWh with synthetic0.5 factor, save/readback60kg=0.06t",
+    "After report reference, attempt edit121 rejected REPORT_SOURCE_RETAINED; activity remains120, saved report unchanged",
+    "Saved preview reads completed test snapshot and source/missing chapter guide; no fabricated ten-chapter report",
+    "Export dialog shows HTML/JSON only; cancel/reopen/cancel returns operable state, no native download attempted"
+  ],
+  "not_run": [
+    "Real Supabase/Auth/JWT/Storage/managed Edge",
+    "Delayed in-flight React export race in this browser (helper/HTTP tests separately)",
+    "Native file chooser/save/download",
+    "Independent PostgreSQL connections/lock-order races",
+    "Cloud migrations/resource creation/backup restoration"
+  ]
+}

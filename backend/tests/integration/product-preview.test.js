@@ -1,3 +1,4 @@
+import {saveSyntheticManualActivity} from './synthetic-manual-activity.js';
 // SYNTHETIC LOCAL PRODUCT INTEGRATION ONLY: real handlers/SQL, substituted HTTP/Auth.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -19,10 +20,7 @@ async function login(runtime,name='owner') {
 function manual(runtime,overrides={}) {
   return {organization_id:runtime.scope.organizationId,project_id:runtime.scope.projectId,activity_code:'SYNTHETIC-'+randomUUID(),activity_name:'SYNTHETIC manually entered electricity',activity_date:'2026-01-15',quantity:100,unit:'kWh',category:'energy',subcategory:'purchased_electricity',activity_type:'electricity',final_scope:2,inclusion_status:'included',status:'active',created_by_user_id:runtime.scope.userId,source_document_id:null,source_draft_id:null,env:'staging',is_test:true,...overrides};
 }
-async function insertActivity(runtime,token,overrides={}) {
-  const response=await api(runtime,'/rest/v1/emission_activities',{method:'POST',token,body:manual(runtime,overrides),headers:{Prefer:'return=representation'}});
-  assert.equal(response.status,201,JSON.stringify(response.body));assert.equal(response.body.length,1);return response.body[0];
-}
+async function insertActivity(runtime,token,overrides={}) { return saveSyntheticManualActivity(runtime,token,overrides); }
 function operation(runtime,overrides={}) {return {organization_id:runtime.scope.organizationId,project_id:runtime.scope.projectId,actor_user_id:runtime.scope.userId,force_recalculate:true,request_id:randomUUID(),...overrides};}
 function reportInput(runtime,overrides={}) {return {organization_id:runtime.scope.organizationId,project_id:runtime.scope.projectId,report_version:1,claim_purpose:'internal_management',request_id:randomUUID(),...overrides};}
 async function rows(runtime,token,table) {
@@ -113,10 +111,10 @@ test('product frontend services use installed SDK/real HTTP: save/read/calculate
     const signed=await client.auth.signInWithPassword(runtime.accounts.owner);assert.equal(signed.error,null);
     const scope={organizationId:runtime.scope.organizationId,projectId:runtime.scope.projectId},userId=runtime.scope.userId,id=randomUUID();
     const input={activity_name:'SYNTHETIC manual UI service electricity',category:'energy',activity_type:'electricity',final_scope:'2',quantity:'100',unit:'kWh',activity_date:'2026-01-15',notes:'SYNTHETIC ONLY',inclusion_status:'included',exclusion_reason:''};
-    await runtime.failNext({path:'/rest/v1/emission_activities',phase:'afterCommit'});
-    const activity=await saveManualActivity(client,scope,userId,id,input);assert.equal(activity.id,id);
+    await runtime.failNext({path:'/functions/v1/save-manual-activity',phase:'afterCommit'});
+    await assert.rejects(saveManualActivity(client,scope,userId,id,input),'lost handler response is unconfirmed; retry the same saved intent');
     const retry=await saveManualActivity(client,scope,userId,id,input);assert.equal(retry.id,id);
-    await assert.rejects(saveManualActivity(client,scope,userId,id,{...input,quantity:'101'}),/不同/);
+    await assert.rejects(saveManualActivity(client,scope,userId,id,{...input,quantity:'101'}),/不同|ACTIVITY_REQUEST_INTENT_CONFLICT/);
     const list=await readManualActivities(client,scope,userId);assert.equal(list.length,1);assert.equal(list[0].quantity,100);
     let active=true,posted=0;
     const switching=createClient(runtime.baseUrl,runtime.publicKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},global:{headers:{Authorization:'Bearer '+signed.data.session.access_token},fetch:async(url,init)=>{if((init?.method||'GET')==='POST')posted++;const response=await fetch(url,init);if(String(url).includes('/rest/v1/projects'))active=false;return response;}}});
@@ -186,7 +184,8 @@ test('report V2 snapshot-update SQL failure rolls back prior report INSERT and a
     const first=await api(runtime,'/functions/v1/generate-report',{method:'POST',token,body:reportInput(runtime)});assert.equal(first.status,200,JSON.stringify(first.body));
     const saved=(await rows(runtime,token,'report_generations'))[0],service='SYNTHETIC-PRODUCT-SERVICE-KEY';
     const beforeAudit=await rows(runtime,service,'audit_logs');
-    const snapshot={claim_purpose:'NOT_A_VALID_CLAIM_PURPOSE',gross_emissions_snapshot:saved.gross_emissions_snapshot,adjustment_summary:saved.adjustment_summary,claim_results:saved.claim_results,adjustment_manifest:saved.adjustment_manifest};
+    const authority=await api(runtime,'/rest/v1/rpc/report_calculation_inputs',{method:'POST',token:service,body:{p_organization_id:runtime.scope.organizationId,p_project_id:runtime.scope.projectId,p_actor_user_id:runtime.scope.userId}});assert.equal(authority.status,200,JSON.stringify(authority.body));
+    const snapshot={calculation_authority:authority.body[0].result.calculation_authority,claim_purpose:'NOT_A_VALID_CLAIM_PURPOSE',gross_emissions_snapshot:saved.gross_emissions_snapshot,adjustment_summary:saved.adjustment_summary,claim_results:saved.claim_results,adjustment_manifest:saved.adjustment_manifest};
     const body={p_organization_id:runtime.scope.organizationId,p_project_id:runtime.scope.projectId,p_generated_by_user_id:runtime.scope.userId,p_report_version:2,p_payload:saved.payload,p_payload_hash:saved.payload_hash,p_reporting_period_start:saved.reporting_period_start,p_reporting_period_end:saved.reporting_period_end,p_included_activity_count:saved.included_activity_count,p_excluded_activity_count:saved.excluded_activity_count,p_pending_activity_count:saved.pending_activity_count,p_scope_totals:saved.scope_totals,p_category_totals:saved.category_totals,p_factor_sources:saved.factor_sources,p_warning_count:saved.warning_count,p_based_on_calculated_at:saved.based_on_calculated_at,p_request_id:randomUUID(),p_snapshot:snapshot};
     // The invalid enum is cast in the snapshot UPDATE after v1 inserts report+
     // audit inside V2. This is a real database error, not a before-RPC HTTP fault.

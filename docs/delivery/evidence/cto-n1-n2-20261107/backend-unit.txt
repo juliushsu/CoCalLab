@@ -1,0 +1,41 @@
+✔ handler SQL response normalization preserves fully eligible zero disallowed (1.426ms)
+✔ handler SQL response normalization retains partial and fully disallowed outcomes (2.0758ms)
+✔ handler SQL response normalization rejects missing, invalid and inconsistent data (0.4356ms)
+✔ normalize_extracted_document_draft should normalize basic OCR payload (1.9464ms)
+✔ classify_document_draft should classify electricity bill to scope 2 (0.2844ms)
+✔ resolve_emission_factor should resolve best matching factor (0.4662ms)
+✔ calculate_emission_activity should return pending when factor does not exist (0.4044ms)
+✔ recalculate_project should aggregate calculation counters (0.3303ms)
+✔ build_report_payload should include required summary sections (0.7984ms)
+✔ run_ai_audit should produce structured audit output (0.3779ms)
+✔ enforce_subscription_readonly should switch to readonly after grace period (0.2475ms)
+✔ confirmation witness retains every source/identity/status field and nested clocks, excluding only four top-level lifecycle clocks (4.2899ms)
+✔ portable verifier hashes actual bounded bytes/Blob/stream without a caller hash authority (10.845ms)
+✔ portable verifier supports canonical PDF/PNG/JPEG signatures and rejects misleading MIME/signature/size (2.8488ms)
+✔ portable verifier enforces actual stream maximum even with missing or false Content-Length (1.2842ms)
+✔ portable verifier interruption/timeout fail explicitly, and another attempt can retry original bytes (18.6099ms)
+✔ non-cooperative adapter late body is cancelled after timeout instead of being read/hash-processed (61.1645ms)
+✔ verification service rejects malformed extension substrings before any storage or RPC call (1.0548ms)
+✔ manual endpoint admits explicit editable data and rejects identity/source/calculation authority forgery (3.5467ms)
+✔ manual provider guard retains all historical provenance, including raw marker with empty/null payload (0.5187ms)
+✔ portable MANUAL provenance corpus matches backend row adapter for provider and JSON boundary cases (9.5817ms)
+✔ manual contract keeps explicit valid zero/unit/date/source and rejects missing/defaulted/actor/provider input (3.1358ms)
+✔ equal-ranked eligible factors stay pending with a clear ambiguity warning and NULL amount (0.6823ms)
+✔ manual contract refuses invalid/partial/crossed periods and unsupported units, included unknown Scope or excluded reason (0.4481ms)
+✔ manual confirmation permits review note but refuses changed canonical fields or forged provider/actor (0.9469ms)
+✔ mock OCR provider should return provider/model/raw payload (1.0464ms)
+✔ mock LLM provider should classify and audit with stable shape (0.6864ms)
+✔ contracts should allow provider-driven requests without raw payload in request body (0.3454ms)
+✔ generate-report contract should validate claim_purpose enum (0.4357ms)
+✔ generate-report contract should accept Report Center payload shape (0.1553ms)
+✔ formal report payload refuses missing/pending/error/duplicate latest and invalid totals rather than manufacturing zero (3.2459ms)
+✔ JS report metadata boundary accepts selected objects/null/omission and rejects wrong metadata ID types (1040.8471ms)
+✔ report metadata preserves real selected labels/IDs and calculated kg, with absent metadata still explicit (0.8853ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1402.5063

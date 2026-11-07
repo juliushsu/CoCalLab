@@ -225,7 +225,10 @@ test('real SQL overflow preserves 22003, rolls back review rows, restores postgr
   try {
     await flow.receive();
     let failure;
-    try { await flow.review({ quantity: 1e20, unit: 'kWh', activityDate: '2026-01-15', finalScope: 2 }); }
+    // The real MANUAL contract rejects out-of-range JSON before SQL. Narrow a
+    // test-only empty column instead to retain a genuine SQL 22003/rollback check.
+    await flow.db.exec('alter table emission_activities alter column quantity type numeric(3,2)');
+    try { await flow.review(); }
     catch (error) { failure = error; }
     const rows = await persisted(flow);
     assert.equal(rows.receipts.length, 1);
@@ -235,6 +238,7 @@ test('real SQL overflow preserves 22003, rolls back review rows, restores postgr
     assert.equal(rows.reports.length, 0);
     assert.equal((await flow.db.query('select current_user as role')).rows[0].role, 'postgres');
     assert.equal(failure?.code, '22003', 'role cleanup must not replace numeric overflow with transaction-aborted 25P02');
+    await flow.db.exec('alter table emission_activities alter column quantity type numeric(20,8)');
     await flow.review();
     assert.equal((await persisted(flow)).activities.length, 1);
   } finally { await flow.close(); }

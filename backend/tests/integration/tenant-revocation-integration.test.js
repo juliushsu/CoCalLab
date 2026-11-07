@@ -1,3 +1,4 @@
+import {saveSyntheticManualActivity} from './synthetic-manual-activity.js';
 // Actual checked-in handlers, installed SDK and SQL; SYNTHETIC Auth/Storage only.
 // Deterministic beforeDispatch faults are sequential interleavings, not parallel SQL connections.
 import test from 'node:test';
@@ -31,10 +32,10 @@ const verify=(r,who,body)=>api(r,'/functions/v1/verify-upload-receipt',who.token
 async function active(r,userId,value){const response=await api(r,'/rest/v1/organization_members?organization_id=eq.'+r.scope.organizationId+'&user_id=eq.'+userId,service,{status:value?'active':'inactive'},'PATCH');assert.equal(response.status,200);}
 async function revokeAt(r,path,userId){await r.failNext({path,phase:'beforeDispatch',revokeMembership:{organizationId:r.scope.organizationId,userId}});}
 async function generate(r,who,b=false){
- const scope=scopeOf(r,b),activity=await api(r,'/rest/v1/emission_activities',who.token,{...scope,activity_code:'SYNTHETIC-'+randomUUID(),activity_name:'SYNTHETIC integration electricity',activity_date:'2026-01-15',quantity:b?20:100,unit:'kWh',category:'energy',activity_type:'electricity',final_scope:2,inclusion_status:'included',status:'active',created_by_user_id:who.session.user.id,env:'staging',is_test:true});assert.equal(activity.status,201,JSON.stringify(activity.body));
+ const scope=scopeOf(r,b),activity=await saveSyntheticManualActivity(r,who.token,{...scope,quantity:b?20:100});
  const calculation={...scope,actor_user_id:who.session.user.id,request_id:randomUUID(),force_recalculate:true};const calculated=await api(r,'/functions/v1/recalculate-project',who.token,calculation);assert.equal(calculated.status,200,JSON.stringify(calculated.body));
  const result=await api(r,'/functions/v1/generate-report',who.token,{...scope,report_version:1,claim_purpose:'internal_management',request_id:randomUUID()});assert.equal(result.status,200,JSON.stringify(result.body));
- return {...scope,report_id:result.body.data.report_generation_id,activity_id:activity.body[0].id,calculation};
+ return {...scope,report_id:result.body.data.report_generation_id,activity_id:activity.id,calculation};
 }
 const exported=(r,who,body)=>api(r,'/functions/v1/export-report-snapshot',who.token,{organization_id:body.organization_id,project_id:body.project_id,report_id:body.report_id});
 

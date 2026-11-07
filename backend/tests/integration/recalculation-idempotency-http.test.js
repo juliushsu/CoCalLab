@@ -1,3 +1,4 @@
+import {saveSyntheticManualActivity} from './synthetic-manual-activity.js';
 // SYNTHETIC local HTTP/Auth substitute; checked-in handlers and real SQL.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,7 +15,7 @@ async function api(r,path,{token,method='GET',body,headers={}}={}){
 }
 async function login(r,name='owner'){const x=await api(r,'/auth/v1/token?grant_type=password',{method:'POST',body:r.accounts[name]});assert.equal(x.status,200);return x.body.access_token;}
 function input(r,extra={}){return {organization_id:r.scope.organizationId,project_id:r.scope.projectId,actor_user_id:r.scope.userId,force_recalculate:true,request_id:randomUUID(),...extra};}
-async function activity(r,token){const x=await api(r,'/rest/v1/emission_activities',{method:'POST',token,headers:{Prefer:'return=representation'},body:{organization_id:r.scope.organizationId,project_id:r.scope.projectId,activity_code:'SYNTHETIC-'+randomUUID(),activity_name:'SYNTHETIC idempotency electricity',activity_date:'2026-01-15',quantity:100,unit:'kWh',category:'energy',subcategory:'purchased_electricity',activity_type:'electricity',final_scope:2,inclusion_status:'included',status:'active',created_by_user_id:r.scope.userId,env:'staging',is_test:true}});assert.equal(x.status,201,JSON.stringify(x.body));return x.body[0];}
+async function activity(r,token){return saveSyntheticManualActivity(r,token);}
 async function rows(r,token,table){const x=await api(r,'/rest/v1/'+table+'?organization_id=eq.'+r.scope.organizationId+'&project_id=eq.'+r.scope.projectId,{token});assert.equal(x.status,200);return x.body;}
 async function calc(r,token,body){return api(r,'/functions/v1/recalculate-project',{method:'POST',token,body});}
 
@@ -49,11 +50,11 @@ test('changed quantity or factor invalidates same request; lookup preserves hist
  for(const change of ['quantity','factor']){const r=await createProductRuntime({port:0});try{
   const token=await login(r),a=await activity(r,token),body=input(r);assert.equal((await calc(r,token,body)).status,200);
   const before=await rows(r,token,'calculation_results');
-  const patch=change==='quantity'?await api(r,'/rest/v1/emission_activities?id=eq.'+a.id,{method:'PATCH',token,body:{quantity:101}}):await api(r,'/rest/v1/emission_factors?id=eq.'+r.scope.factorId,{method:'PATCH',token:service,body:{co2e_kg_per_unit:0.6}});
-  assert.equal(patch.status,204,JSON.stringify(patch.body));
+  if(change==='quantity')await saveSyntheticManualActivity(r,token,{...a,quantity:101});
+  else{const patch=await api(r,'/rest/v1/emission_factors?id=eq.'+r.scope.factorId,{method:'PATCH',token:service,body:{co2e_kg_per_unit:0.6}});assert.equal(patch.status,204,JSON.stringify(patch.body));}
   const conflict=await calc(r,token,body);assert.equal(conflict.status,409,JSON.stringify(conflict.body));assert.equal(conflict.body.error.code,'RECALCULATION_INPUT_CHANGED');
-  const historical=await calc(r,token,{...body,action:'lookup'});assert.equal(historical.body.data.operation_status,'historical');assert.equal(historical.body.data.input_matches_current,false);assert.equal(historical.body.data.results_are_latest,true);assert.deepEqual(historical.body.data.calculation_result_ids,before.map(x=>x.id));
-  assert.deepEqual(await rows(r,token,'calculation_results'),before);
+  const historical=await calc(r,token,{...body,action:'lookup'});assert.equal(historical.body.data.operation_status,'historical');assert.equal(historical.body.data.input_matches_current,false);assert.equal(historical.body.data.results_are_latest,change!=='quantity');assert.deepEqual(historical.body.data.calculation_result_ids,before.map(x=>x.id));
+  const after=await rows(r,token,'calculation_results');if(change==='quantity'){assert.deepEqual(after.map(x=>x.id),before.map(x=>x.id));assert.equal(after[0].is_latest,false);assert.equal(after[0].co2e_kg,50);}else assert.deepEqual(after,before);
  }finally{await r.close();}}
 });
 
@@ -101,13 +102,13 @@ test('capability is scoped and latest subscription disables calculate and lookup
  }finally{await r.close();}
 });
 
-test('mutated saved calculation content cannot be presented as current merely because its ID remains latest',async()=>{
+test('direct saved calculation mutation is denied and cannot corrupt current ledger lookup or replay',async()=>{
  const r=await createProductRuntime({port:0});try{
   const token=await login(r);await activity(r,token);const body=input(r);const first=await calc(r,token,body);assert.equal(first.status,200);
   const id=first.body.data.calculation_result_ids[0];
   const mutated=await api(r,'/rest/v1/calculation_results?id=eq.'+id,{method:'PATCH',token,body:{co2e_kg:999}});assert.equal(mutated.status,204,JSON.stringify(mutated.body));
-  const history=await calc(r,token,{...body,action:'lookup'});assert.equal(history.body.data.input_matches_current,true);assert.equal(history.body.data.results_are_latest,false);assert.equal(history.body.data.operation_status,'historical');assert.deepEqual(history.body.data.calculation_result_ids,[id]);
-  const retry=await calc(r,token,body);assert.equal(retry.status,409);assert.equal(retry.body.error.code,'RECALCULATION_RESULT_SUPERSEDED');assert.equal((await rows(r,token,'calculation_results')).length,1);
+  const history=await calc(r,token,{...body,action:'lookup'});assert.equal(history.body.data.input_matches_current,true);assert.equal(history.body.data.results_are_latest,true);assert.equal(history.body.data.operation_status,'completed');assert.deepEqual(history.body.data.calculation_result_ids,[id]);
+  const retry=await calc(r,token,body);assert.equal(retry.status,200);const unchanged=await rows(r,token,'calculation_results');assert.equal(unchanged.length,1);assert.equal(unchanged[0].co2e_kg,50);
  }finally{await r.close();}
 });
 

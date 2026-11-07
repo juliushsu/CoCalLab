@@ -1,0 +1,10 @@
+{
+  "sourceCommit": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "archiveCommit": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "archiveSHA256": "9ad42741fd9a08ebc8beddcb2094328b687513c15988e41190d1fb762036c9bd",
+  "trackedBlobsVerified": 925,
+  "allTrackedBlobsMatch": true,
+  "dependency": "Frontend node_modules junction to existing pinned package-lock installation; ignored build outputs are not source",
+  "checkedAt": "2026-11-07T14:47:14.224Z",
+  "noCloud": true
+}

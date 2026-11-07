@@ -1,9 +1,10 @@
 // Isolated worker: actual checked-in Deno handlers + installed SDK + SQL-backed HTTP.
 import { parentPort, workerData } from 'node:worker_threads';
 import { createServer } from 'node:http';
-import { registerHooks, createRequire } from 'node:module';
+import { registerHooks, createRequire, stripTypeScriptTypes } from 'node:module';
 import { pathToFileURL } from 'node:url';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, createHash } from 'node:crypto';
+import {readFileSync} from 'node:fs';
 import { createLocalWorkflow } from '../local-workflow/engine.js';
 import { seedShowcase } from './showcase.js';
 import { seedManualScenario } from './manual-scenario.js';
@@ -22,13 +23,20 @@ registerHooks({ resolve(specifier, context, next) {
   if (/^(?:npm:|jsr:)/.test(specifier)) throw new Error('Unapproved external module in the synthetic product worker');
   if (/^https?:/.test(specifier)) throw new Error('External module loading is blocked in the synthetic product worker');
   return next(specifier, context);
+},load(url,context,next){
+  if(workerData.legacyConfirm&&url===new URL('../../supabase/functions/confirm-draft/index.ts',import.meta.url).href){
+    const source=readFileSync(new URL('../../tests/fixtures/confirm-draft-9ebf5b1.source.txt',import.meta.url));
+    if(createHash('sha256').update(source).digest('hex')!=='970ccc0d6bf79ae61290dc90c29d2577a74eb4f6cb2c304346b3be71dada96be')throw new Error('Pinned legacy confirmation fixture hash mismatch');
+    return {format:'module',source:stripTypeScriptTypes(source.toString('utf8')),shortCircuit:true};
+  }
+  return next(url,context);
 } });
 
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
 const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','read_verified_report_snapshot','upload_intake_contract',
-  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing']);
-const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
+  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','draft_confirmation_request','commit_draft_confirmation','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing','save_manual_activity_atomic','report_calculation_inputs','classify_document_atomic','process_document_atomic']);
+const handlers = new Map(), columns = new Map(), jsonColumns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
 const storageMetrics={writes:0,reads:0};
 let registering = '', baseUrl = '', flow, server, fault = null, previewConfig, dbQueue = Promise.resolve();
@@ -122,9 +130,11 @@ async function rest(request, url, table) {
       for (const object of objects) {
         if (!object || typeof object !== 'object' || Array.isArray(object)) throw new Error('Invalid local row body');
         const keys = Object.keys(object); if (!keys.length || keys.some(key => !columns.get(table).has(key))) throw new Error('Unknown local row column');
-        if (request.method === 'POST') rows.push(...wireRows(await flow.db.query('insert into public.'+sqlIdentifier(table)+'('+keys.map(sqlIdentifier).join(',')+') values('+keys.map((_,i)=>'$'+(i+1)).join(',')+') returning *',Object.values(object))));
+        // PostgREST transports JSON scalars as JSON, not an unquoted SQL string.
+        const rowValues=keys.map(key=>object[key]!==null&&jsonColumns.get(table)?.has(key)?JSON.stringify(object[key]):object[key]);
+        if (request.method === 'POST') rows.push(...wireRows(await flow.db.query('insert into public.'+sqlIdentifier(table)+'('+keys.map(sqlIdentifier).join(',')+') values('+keys.map((_,i)=>'$'+(i+1)).join(',')+') returning *',rowValues)));
         else {
-          const values = [...params,...Object.values(object)];
+          const values = [...params,...rowValues];
           rows.push(...wireRows(await flow.db.query('update public.'+sqlIdentifier(table)+' set '+keys.map((key,i)=>sqlIdentifier(key)+'=$'+(params.length+i+1)).join(',')+where+' returning *',values)));
         }
       }
@@ -143,7 +153,7 @@ async function rpc(request,name) {
     if (procedures.length !== 1) throw new Error('RPC unavailable or ambiguous: '+name);
     const procedure=procedures[0], names=procedure.proargnames.slice(0,procedure.pronargs), keys=Object.keys(input);
     if(keys.some(key=>!names.includes(key)))throw new Error('Unknown RPC argument');
-    return json(wireRows(await flow.db.query('select * from public.'+sqlIdentifier(name)+'('+keys.map((key,i)=>sqlIdentifier(key)+' => $'+(i+1)+'::'+procedure.types[names.indexOf(key)]).join(',')+')',keys.map(key=>input[key]))));
+    return json(wireRows(await flow.db.query('select * from public.'+sqlIdentifier(name)+'('+keys.map((key,i)=>sqlIdentifier(key)+' => $'+(i+1)+'::'+procedure.types[names.indexOf(key)]).join(',')+')',keys.map(key=>input[key]!==null&&['json','jsonb'].includes(procedure.types[names.indexOf(key)])?JSON.stringify(input[key]):input[key]))));
   });
 }
 async function storageRead(request,url){
@@ -219,6 +229,12 @@ async function dispatchInner(request) {
       const {organizationId,userId}=armed.revokeMembership;
       if(![organizationId,userId].every(value=>typeof value==='string'&&/^[0-9a-f-]{36}$/i.test(value)))throw new Error('Invalid synthetic revocation scope');
       await database(new Request(baseUrl,{headers:{Authorization:'Bearer '+SERVICE_KEY}}),()=>flow.db.query("update organization_members set status='inactive' where organization_id=$1 and user_id=$2",[organizationId,userId]));
+    }else if(armed.phase==='beforeDispatch'&&armed.mutateDraft){
+      const {id,patch,token}=armed.mutateDraft;
+      if(typeof id!=='string'||!/^[0-9a-f-]{36}$/i.test(id)||!patch||typeof patch!=='object'||Array.isArray(patch)||Object.keys(patch).some(k=>!['normalized_payload','suggested_category','suggested_scope','classification_result','classification_status','confidence_score'].includes(k)))throw new Error('Invalid synthetic draft mutation');
+      const target=new URL('/rest/v1/extracted_document_drafts?id=eq.'+id,baseUrl);
+      const mutation=await rest(new Request(target,{method:'PATCH',headers:{Authorization:'Bearer '+(token||SERVICE_KEY),'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify(patch)}),target,'extracted_document_drafts');
+      const changed=await mutation.json();if(mutation.status!==200||!Array.isArray(changed)||changed.length!==1||changed[0].id!==id)throw new Error('Synthetic draft interleaving did not update exactly one row');
     }else if(armed.phase!=='afterCommit')return json(armed.body??{code:'SYNTHETIC_FAULT',message:'Synthetic injected failure before operation'},armed.status||503);
   }
   let response;
@@ -249,7 +265,7 @@ try {
   if(scope.aOwnerId)await flow.db.query("insert into organization_members(organization_id,user_id,role,status) values($1,$2,'owner','active')",[scope.organizationId,scope.aOwnerId]);
   if(workerData.withFactor)for(const [org,factor]of [[scope.organizationId,scope.factorId],[scope.otherOrganizationId,randomUUID()]])await flow.db.query(`insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,subcategory,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,metadata,env,is_test)
     values($1,$2,'SYNTHETIC-0.5','SYNTHETIC custom factor','SYNTHETIC TEST ONLY','energy','purchased_electricity','electricity','kWh',0.5,'2026-01-01',1,'custom','active','{"synthetic":true}','staging',true)`,[factor,org]);
-  for(const row of (await flow.db.query("select table_name,column_name from information_schema.columns where table_schema='public'")).rows){if(!columns.has(row.table_name))columns.set(row.table_name,new Set());columns.get(row.table_name).add(row.column_name);}
+  for(const row of (await flow.db.query("select table_name,column_name,data_type from information_schema.columns where table_schema='public'")).rows){if(!columns.has(row.table_name)){columns.set(row.table_name,new Set());jsonColumns.set(row.table_name,new Set());}columns.get(row.table_name).add(row.column_name);if(['json','jsonb'].includes(row.data_type))jsonColumns.get(row.table_name).add(row.column_name);}
   const accounts={owner:{email:'owner@product-preview.invalid',password:'synthetic-local-only'},viewer:{email:'viewer@product-preview.invalid',password:'synthetic-local-only'},outsider:{email:'outsider@product-preview.invalid',password:'synthetic-local-only'},otherOwner:{email:'b-owner@product-preview.invalid',password:'synthetic-local-only'}};
   if(scope.aOwnerId)accounts.aOwner={email:'a-owner@product-preview.invalid',password:'synthetic-local-only'};
   for(const [name,id]of [['owner',scope.userId],['viewer',scope.viewerId],['outsider',scope.outsiderId],['otherOwner',scope.otherOwnerId],...(scope.aOwnerId?[['aOwner',scope.aOwnerId]]:[])])users.set(name,{...accounts[name],user:{id,email:accounts[name].email,aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{synthetic:true},created_at:'2026-01-01T00:00:00Z'}});
@@ -267,10 +283,24 @@ try {
   const localFetch=globalThis.fetch;
   globalThis.fetch=(input,init)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url);if(target.origin!==baseUrl)throw new Error('Outbound fetch outside this dedicated synthetic API is blocked');return localFetch(input,init);};
   previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario,storageMetrics};
-globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:4203,http://localhost:4203,http://127.0.0.1:4205,http://localhost:4205,http://127.0.0.1:4207,http://localhost:4207,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
-  for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot','verify-upload-receipt','delete-uploaded-document','process-document',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(['manual-transcription','verified-upload'].includes(workerData.scenario)?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
+globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4213,http://localhost:4213,http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:4203,http://localhost:4203,http://127.0.0.1:4205,http://localhost:4205,http://127.0.0.1:4207,http://localhost:4207,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
+  for(const name of ['save-manual-activity','classify-document','recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot','verify-upload-receipt','delete-uploaded-document','process-document',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(['manual-transcription','verified-upload'].includes(workerData.scenario)?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
   if(workerData.scenario==='showcase')previewConfig.manifest=await seedShowcase({db:flow.db,baseUrl,scope,accounts,originals});
-  if(workerData.scenario==='manual-transcription')previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});
+  if(workerData.scenario==='manual-transcription'){
+    previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});
+    // Actual local verifier reads the synthetic bytes and writes the receipt via
+    // its service-only SQL chain. Never stamp a trusted flag in a fixture.
+    for(const fixture of Object.values(previewConfig.manifest.fixtures)){
+      const original=fixture.document;
+      const account=[...users.values()].find(entry=>entry.user.id===(fixture.organizationId===scope.organizationId?scope.aOwnerId:scope.otherOwnerId));
+      if(!account)throw new Error('Synthetic verification actor missing');
+      const session=makeSession(account.user);
+      const response=await handlers.get('verify-upload-receipt')(new Request(baseUrl+'/functions/v1/verify-upload-receipt',{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({organization_id:fixture.organizationId,project_id:fixture.projectId,document_id:original.documentId,request_id:original.documentId,storage_bucket:original.bucket,storage_path:original.path,original_filename:original.originalFilename,document_type:'receipt',file_size_bytes:original.bytes,mime_type:'application/pdf'})}));
+      const result=await response.json();if(!response.ok||!result.success)throw new Error('Synthetic original verification failed: '+JSON.stringify(result));
+    }
+    previewConfig.manifest.notRun=previewConfig.manifest.notRun.filter(value=>value!=='server byte/hash attestation');
+    previewConfig.manifest.cases.push('Synthetic original bytes verified by checked-in local handler; not real Storage/JWT acceptance');
+  }
   if(workerData.scenario==='verified-upload')previewConfig.manifest={synthetic:true,scenario:'verified-upload',fixtures:{a:{organizationId:scope.organizationId,projectId:scope.projectId},b:{organizationId:scope.otherOrganizationId,projectId:scope.otherProjectId}},notRun:['real Supabase Auth/JWT/Storage','independent SQL connection lock-wait races','service-role maintenance attestation']};
   parentPort.on('message',async message=>{try{
     let value;

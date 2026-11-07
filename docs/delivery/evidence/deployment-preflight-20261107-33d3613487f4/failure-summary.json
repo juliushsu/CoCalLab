@@ -1,0 +1,292 @@
+{
+  "sourceCommit": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "status": "STATIC_PREFLIGHT_PASS_NOT_RUNTIME_ACCEPTANCE",
+  "lockSha256": "5897f3dd1da8f61e76c7aa93463166ed5efd8bf2939e4efe222fd62698cd2725",
+  "lockMatches": true,
+  "diagnosticCounting": "instances across separate function checks; shared errors repeat and are not unique defects",
+  "functions": [
+    {
+      "name": "adjustment-rule-result",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "e9ca51de3221003d74f7b9973e50d4f204fbc142e39569783897e83e7faf7be7",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "analytics-emissions",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "8091fcfd9a14c084c82c67bdb76fd403ea7d666fce4ba2fac9f0847dd16090e2",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "classify-document",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "b706921cd1a34f8ff9ac5751258531e5b21c3beb6a236cab97da2cdaf19fe8ea",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "confirm-draft",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "0c2828701e618ba4018535b7a16845b695d46f2ab070ef3d360a4570d1ecd4b6",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "create-organization",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "864dd5d10276bbd6b2d02fa36d5e3a632daace881877ab29ab63ac70d657fc4e",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "delete-uploaded-document",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "ff7c95405f92079754c5d3851197db8bef405bbd65d72905812570fd5f3158c8",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "enforce-subscription-status",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "df66214098ea26653d5c868e8a4fd09180f37681f5d6508504d93dc005ffb11e",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "export-report-snapshot",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "b2e0af681cc0b02e2505a969a393c23a98c696aa69c9cf887286da1f6c9b206f",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "generate-report",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "5ce8e4bcb2ecaab513ade9727d1e4372779f0830d20fb8aa08c294862f438931",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "manual-transcription",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "625a00e3a60ab91f4a6d2c4cf84658e06af0a77ad3b0edb274467b9420764f0c",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "process-document",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "0b15de08e1b8e86da63b13bb226dcf77e45af9ad0b959a6ba8fad8a7218a09e0",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "recalculate-project",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "26c82fc8d08de318bca65c8eaedc87331987eb45f34ea07ffbc31a4c9786f246",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "run-ai-audit",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "ad2997e5279f64a718d811d4f06a739b8a54c4b2f2badee2275fd3ccf72996d0",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "save-manual-activity",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "cd72b661256531199fc46bc0f8d66c75f7dc3ef85de017f1b6dbc9b53635f770",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "verify-upload-receipt",
+      "typeCheck": "PASS",
+      "declaredErrorCount": 0,
+      "parsedErrorCount": 0,
+      "diagnosticCountMatches": true,
+      "errorCodes": {},
+      "origins": {},
+      "localErrors": [],
+      "remoteFiles": {},
+      "bundleSha256": "2f8477988bad67bbc07ec7d9881a14769560a046b57e6b94560a22b5ac95d0b3",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:module"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    }
+  ],
+  "totals": {
+    "functions": 15,
+    "checksPassed": 15,
+    "checksFailed": 0,
+    "diagnosticInstances": 0,
+    "localDiagnosticInstances": 0,
+    "remoteDiagnosticInstances": 0,
+    "allDiagnosticCountsMatch": true,
+    "allBundleHashesMatch": true,
+    "allSourceHashesMatch": true,
+    "allToolHashesMatch": true
+  },
+  "integrityFailures": []
+}

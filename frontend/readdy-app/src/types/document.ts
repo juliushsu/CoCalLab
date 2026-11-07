@@ -96,6 +96,7 @@ export interface UploadDocumentInput {
 
 // 確認草稿輸入
 export interface ConfirmDraftInput {
+  request_id?: string;
   organization_id: string;
   project_id: string;
   draft_id: string;

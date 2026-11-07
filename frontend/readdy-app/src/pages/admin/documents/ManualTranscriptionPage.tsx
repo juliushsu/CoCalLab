@@ -7,7 +7,7 @@ import {useTenantNavigation} from '../../../hooks/useTenantNavigation';
 import {useSubscriptionStatus} from '../../../hooks/useSubscriptionStatus';
 import {attachmentVerificationView} from '../../../services/attachmentVerificationView';
 import {readPrivateOriginal} from '../../../services/documentLibrary';
-import {manualScope,manualFormValues,requireMatchingManualAttempt,readManualAttempt,writeManualAttempt,abandonManualAttempt,readManualDraft,submitManualTranscription,confirmManualTranscription,type ManualAttempt,type ManualValues} from '../../../services/manualTranscription';
+import {manualScope,manualFormValues,manualReceiptEligible,requireMatchingManualAttempt,readManualAttempt,writeManualAttempt,abandonManualAttempt,readManualDraft,submitManualTranscription,confirmManualTranscription,type ManualAttempt,type ManualValues} from '../../../services/manualTranscription';
 import type {ExtractedDocumentDraft} from '../../../types/document';
 const blank:Record<string,string>={activity_name:'',quantity:'',unit:'',activity_date:'',category:'',activity_type:'',final_scope:'',inclusion_status:'pending',exclusion_reason:'',review_note:'',period_start:'',period_end:'',source_locator:'',source_text:''};
 const labels:Record<string,string>={activity_name:'活動名稱',quantity:'數量（可填0，不可空白）',unit:'原單位',activity_date:'活動日期',category:'類別',activity_type:'活動型態（例如 electricity）',final_scope:'Scope',inclusion_status:'納入狀態',exclusion_reason:'排除原因',review_note:'轉錄備註',period_start:'文件期間起日（未知可空白）',period_end:'文件期間迄日（未知可空白）',source_locator:'原件位置（頁／表格／列）',source_text:'原文摘錄（人工選填，非OCR）'};
@@ -21,9 +21,9 @@ export default function ManualTranscriptionPage(){
  const navigation=useTenantNavigation(),subscription=useSubscriptionStatus(selected.scope?.organizationId,{failClosed:true,scopeKey:search});
  const isCurrent=useCallback(()=>active.current===context&&isAuthenticationCurrent(authEpoch,userId),[context,authEpoch,userId,isAuthenticationCurrent]);
  const [loading,setLoading]=useState(true),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[retry,setRetry]=useState(0);
- const [original,setOriginal]=useState<{url:string;name:string;mime:string;hashChecked:boolean;serverProof:string}|null>(null),[draft,setDraft]=useState<ExtractedDocumentDraft|null>(null),[attempt,setAttempt]=useState<ManualAttempt|null>(null),[form,setForm]=useState<Record<string,string>>(blank),[reviewNote,setReviewNote]=useState('');
+ const [original,setOriginal]=useState<{url:string;name:string;mime:string;hashChecked:boolean;serverProof:string;eligible:boolean}|null>(null),[draft,setDraft]=useState<ExtractedDocumentDraft|null>(null),[attempt,setAttempt]=useState<ManualAttempt|null>(null),[form,setForm]=useState<Record<string,string>>(blank),[reviewNote,setReviewNote]=useState('');
  const resource=useRef<string|null>(null);
- useLayoutEffect(()=>{active.current=context;return()=>{if(active.current===context)active.current=null;if(resource.current)URL.revokeObjectURL(resource.current);resource.current=null;};},[context]);
+ useLayoutEffect(()=>{active.current=context;setBusy(false);setNotice('');setAttempt(null);setOriginal(null);setDraft(null);setReviewNote('');setForm(blank);return()=>{if(active.current===context)active.current=null;if(resource.current)URL.revokeObjectURL(resource.current);resource.current=null;};},[context]);
  useEffect(()=>{
   if(authLoading||!selected.scope||!userId){setLoading(false);return;}
   const scope=selected.scope;let cancelled=false;const current=()=>!cancelled&&isCurrent();
@@ -35,12 +35,13 @@ export default function ManualTranscriptionPage(){
    const pending=readManualAttempt(sessionStorage,scope,userId);requireMatchingManualAttempt(pending,saved);if(pending){setAttempt(pending);setForm(formOf(pending.transcription));}
    else{setAttempt(null);setForm(blank);}
    const url=URL.createObjectURL(loaded.blob);if(resource.current)URL.revokeObjectURL(resource.current);resource.current=url;
-   setOriginal({url,name:loaded.document.original_filename,mime:loaded.previewMime||'',hashChecked:/^[a-f0-9]{64}$/.test(loaded.document.sha256_hash),serverProof:attachmentVerificationView(loaded.document).label});setDraft(saved);
+   const receipt=loaded.document;
+   setOriginal({url,name:receipt.original_filename,mime:loaded.previewMime||'',hashChecked:/^[a-f0-9]{64}$/.test(receipt.sha256_hash),serverProof:attachmentVerificationView(receipt).label,eligible:manualReceiptEligible(receipt)});setDraft(saved);
    if(saved){const p=saved.raw_payload.manual_transcription;const confirmation=object(p)&&object(p.confirmation)?p.confirmation:null;setReviewNote(pending?.confirmation?.reviewNote||saved.review_note||'');if(confirmation)setNotice('已讀回伺服器確認紀錄；不重建活動。本次尚未重讀計算狀態，請至活動查看，不以缺少警示當作計算完成。');}
   })().catch(e=>{if(current())setError(e instanceof Error?e.message:'讀取失敗，未啟用轉錄。');}).finally(()=>{if(current())setLoading(false);});
   return()=>{cancelled=true;};
  },[authLoading,selected,userId,isCurrent,retry]);
- const canWrite=Boolean(original&&!error&&!loading&&!busy&&navigation.status==='ready'&&['owner','admin','editor'].includes(navigation.role||'')&&!subscription.loading&&!subscription.error&&!subscription.isReadonly);
+ const canWrite=Boolean(original?.eligible&&!error&&!loading&&!busy&&navigation.status==='ready'&&['owner','admin','editor'].includes(navigation.role||'')&&!subscription.loading&&!subscription.error&&!subscription.isReadonly);
  async function create(){
   if(!canWrite||!selected.scope||draft)return;const scope=selected.scope;
   setBusy(true);setNotice('');try{
@@ -69,6 +70,8 @@ export default function ManualTranscriptionPage(){
  const link=selected.scope?'?'+new URLSearchParams({organization_id:selected.scope.organizationId,projectId:selected.scope.projectId}):'';
  return <AdminLayout><div className="mx-auto max-w-6xl space-y-4"><h1 className="text-2xl font-semibold">人工轉錄與確認（非OCR）</h1>
  <p className="rounded bg-amber-50 p-3">由人核對原件並填值；允許同人轉錄／確認，並非雙人覆核。不自動跨期分攤、不指定係數釘選；hash驗證狀態依收件紀錄顯示，不代表內容真實或合規。確認後依既有resolver計算，缺係數／歧義保留未知。</p>
+ {original&&!original.eligible&&<p role="alert" className="rounded bg-amber-50 p-3">此收件尚未通過服務端原件驗證，或已非有效收件；保留歷史讀取，但不能建立／確認新的人工轉錄。不自動升格歷史資料。</p>}
+ <p className="text-sm">人工確認後，如要保存新可信報告，仍須至活動頁執行通用重算，再保存報告；不會補簽或改寫歷史報告。</p>
  {(selected.error||error)&&<p role="alert" className="rounded bg-red-50 p-3">{selected.error||error}</p>}
  <p role="status">{loading?'正在讀取私有原件與既有人工轉錄…':notice||(!canWrite?'目前唯讀或權限／訂閱尚未確認。':'請先核對原件，再保存人工轉錄。')}</p>
  <div className="flex flex-wrap gap-3"><button disabled={busy||loading} onClick={()=>setRetry(n=>n+1)} className="rounded border p-2">重新核對收件／草稿</button><button disabled={busy} onClick={abandon} className="rounded border p-2">放棄本機恢復參考（不刪伺服器資料）</button><Link className="p-2 text-teal-800 underline" to={'/admin/documents/list'+link}>返回文件清單</Link><Link className="p-2 text-teal-800 underline" to={'/admin/activities'+link}>活動／計算與報告</Link></div>

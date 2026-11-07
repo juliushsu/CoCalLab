@@ -2,7 +2,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import {canonicalUuid} from './navigationScope.ts';
 import type {IntakeScope} from './documentIntake.ts';
 import type {EmissionActivity} from '../types/activity.ts';
-export interface ManualInput {activity_name:string;category:string;activity_type:string;final_scope:string;quantity:string;unit:string;activity_date:string;notes:string;inclusion_status:string;exclusion_reason:string}
+export interface ManualInput {activity_name:string;category:string;activity_type:string;final_scope:string;quantity:string;unit:string;activity_date:string;notes:string;inclusion_status:string;exclusion_reason:string;subcategory?:string|null;data_quality?:string;status?:string}
 export interface ManualProject {id:string;organization_id:string;name:string;project_code:string;reporting_start_date:string;reporting_end_date:string}
 const uuid=(value:unknown)=>{const id=canonicalUuid(value);if(!id)throw new Error('組織、專案或紀錄識別無效。');return id;};
 const check=(current:()=>boolean)=>{if(!current())throw new Error('登入或專案已切換；舊操作結果不採用，已發送的寫入須重新核對。');};
@@ -25,24 +25,24 @@ export async function manualContext(client:SupabaseClient,scope:IntakeScope,user
 }
 export function manualPayload(input:ManualInput,scope:IntakeScope,userId:string,attemptId:string,project:ManualProject){
  if(uuid(project.id)!==uuid(scope.projectId)||uuid(project.organization_id)!==uuid(scope.organizationId)||!date(project.reporting_start_date)||!date(project.reporting_end_date)||project.reporting_end_date<project.reporting_start_date)throw new Error('專案範圍或盤查期間無效。');
- const quantity=Number(input.quantity),unit=input.unit.trim(),type=input.activity_type.trim(),name=input.activity_name.trim();
- if(!name||!input.quantity.trim()||!Number.isFinite(quantity)||quantity<0||!unit||!type||unit.length>32||type.length>100)throw new Error('請明確填寫活動名稱、活動類型、非負數量與單位；空白不會補成零。');
+ const quantity=Number(input.quantity),unit=input.unit.trim(),type=input.activity_type.trim(),name=input.activity_name.trim(),category=input.category.trim();
+ if(!name||!category||!input.quantity.trim()||!Number.isFinite(quantity)||quantity<0||quantity>=1e12||Number(quantity.toFixed(8))!==quantity||!unit||!type||unit.length>32||type.length>100)throw new Error('請明確填寫活動名稱、類別、活動類型、非負數量（最多8位小數）與單位；空白不會補成零。');
  if(!date(input.activity_date)||input.activity_date<project.reporting_start_date||input.activity_date>project.reporting_end_date)throw new Error('活動日期必須在專案盤查期間內。');
  if(!['pending','included','excluded'].includes(input.inclusion_status))throw new Error('請確認納入狀態。');
  const finalScope=input.final_scope?Number(input.final_scope):null;
  if((finalScope!==null&&![1,2,3].includes(finalScope))||(input.inclusion_status==='included'&&finalScope===null))throw new Error('納入活動必須明確確認 Scope 1、2 或3；類別建議不是業務核准。');
  if(input.inclusion_status==='excluded'&&!input.exclusion_reason.trim())throw new Error('排除活動必須填寫原因。');
- return {id:uuid(attemptId),organization_id:uuid(scope.organizationId),project_id:uuid(scope.projectId),created_by_user_id:uuid(userId),activity_code:'MANUAL-'+uuid(attemptId),activity_name:name,activity_type:type,category:input.category||'unclassified',quantity,unit,activity_date:input.activity_date,final_scope:finalScope,suggested_scope:finalScope,data_quality:'primary',inclusion_status:input.inclusion_status,exclusion_reason:input.inclusion_status==='excluded'?input.exclusion_reason.trim():null,review_note:input.notes.trim()||null,status:'active'};
+ return {id:uuid(attemptId),organization_id:uuid(scope.organizationId),project_id:uuid(scope.projectId),created_by_user_id:uuid(userId),activity_code:'MANUAL-'+uuid(attemptId),activity_name:name,activity_type:type,category,subcategory:input.subcategory??null,quantity,unit,activity_date:input.activity_date,final_scope:finalScope,suggested_scope:finalScope,data_quality:input.data_quality??'primary',inclusion_status:input.inclusion_status,exclusion_reason:input.inclusion_status==='excluded'?input.exclusion_reason.trim():null,review_note:input.notes.trim()||null,status:input.status??'active'};
 }
-/** Same UUID is retained across response loss; never upsert or overwrite an existing activity. */
-export async function saveManualActivity(client:SupabaseClient,scope:IntakeScope,userId:string,attemptId:string,input:ManualInput,current=()=>true){
+/** Stable activity and request IDs survive response loss; authority and edits belong to SQL. */
+export async function saveManualActivity(client:SupabaseClient,scope:IntakeScope,userId:string,attemptId:string,input:ManualInput,current=()=>true,requestId=attemptId){
  const project=await manualContext(client,scope,userId,current),payload=manualPayload(input,scope,userId,attemptId,project);
- const read=async()=>{const response=await client.from('emission_activities').select('*').eq('id',payload.id).eq('organization_id',payload.organization_id).eq('project_id',payload.project_id).maybeSingle();check(current);if(response.error)throw new Error('無法核對建檔結果；保留同一識別後重試。');return response.data;};
- const verify=(row:Record<string,unknown>)=>{if(Object.entries(payload).some(([key,value])=>row[key]!==value))throw new Error('此識別已有不同的保存內容，未覆寫；請查看原紀錄。');return row;};
- const prior=await read();if(prior)return verify(prior);
- check(current);const result=await client.from('emission_activities').insert(payload).select('*').maybeSingle();check(current);
- if(result.error||!result.data){const recovered=await read();if(recovered)return verify(recovered);throw new Error('保存未確認，請保留目前表單與識別後重試；不產生新的活動。');}
- return verify(result.data);
+ uuid(requestId);
+ const editable={activity_name:payload.activity_name,activity_type:payload.activity_type,category:payload.category,subcategory:payload.subcategory,quantity:payload.quantity,unit:payload.unit,activity_date:payload.activity_date,final_scope:payload.final_scope,data_quality:payload.data_quality,inclusion_status:payload.inclusion_status,exclusion_reason:payload.exclusion_reason,review_note:payload.review_note,status:payload.status};
+ const result=await invoke(client,'save-manual-activity',{organization_id:payload.organization_id,project_id:payload.project_id,activity_id:payload.id,request_id:requestId,input:editable},current);
+ const row=result?.activity;
+ if(typeof result?.replayed!=='boolean'||!row||row.id!==payload.id||row.organization_id!==payload.organization_id||row.project_id!==payload.project_id||Object.entries(editable).some(([key,value])=>row[key]!==value))throw new Error('活動保存回應的範圍或內容不一致；保留原請求識別核對，不當作成功。');
+ return row as EmissionActivity;
 }
 export async function readManualActivities(client:SupabaseClient,scope:IntakeScope,userId:string,current=()=>true):Promise<EmissionActivity[]>{
  await manualContext(client,scope,userId,current,false);const all:EmissionActivity[]=[],seen=new Set<string>();let total:number|undefined;
@@ -56,7 +56,10 @@ async function invoke(client:SupabaseClient,name:string,payload:Record<string,un
  if(response.error||!response.data?.success||response.data.error){
   let body=response.data;
   if(response.error?.context instanceof Response){try{body=await response.error.context.clone().json();}catch{/* preserve transport error */}check(current);}
-  throw new Error(body?.error?.message||response.error?.message||'操作未確認，請重新核對保存結果。');
+  const message=body?.error?.message||response.error?.message||'操作未確認，請重新核對保存結果。';
+  if(/(?:ACTIVITY_SOURCE|REPORT_SOURCE)_RETAINED/.test(message))throw new Error('此活動已有受保留的來源或報告引用，不能修改；原資料與報告保留。'+message);
+  if(/CALCULATION_AUTHORITY_(?:REQUIRED|STALE)/.test(message))throw new Error('目前沒有可用的通用重算紀錄，或輸入／來源已變更；請先重新計算並保存，再建立新報告。歷史報告不會自動補簽。'+message);
+  throw new Error(message);
  }
  return response.data.data;
 }
@@ -95,7 +98,7 @@ export async function nextManualReport(client:SupabaseClient,scope:IntakeScope,u
 export async function saveManualReport(client:SupabaseClient,scope:IntakeScope,userId:string,attempt:ReportAttempt,current=()=>true){
  await manualContext(client,scope,userId,current);const result=await invoke(client,'generate-report',{organization_id:scope.organizationId,project_id:scope.projectId,report_version:attempt.version,language:'zh-TW',claim_purpose:'internal_management',request_id:attempt.requestId},current);
  const id=uuid(result?.report_generation_id);const saved=await client.from('report_generations').select('*').eq('id',id).eq('organization_id',scope.organizationId).eq('project_id',scope.projectId).maybeSingle();check(current);
- if(saved.error||!saved.data||uuid(saved.data.id)!==id||uuid(saved.data.organization_id)!==uuid(scope.organizationId)||uuid(saved.data.project_id)!==uuid(scope.projectId)||saved.data.status!=='completed'||saved.data.report_version!==attempt.version||!saved.data.payload||!saved.data.gross_emissions_snapshot)throw new Error('報告尚未核對成功；保留請求識別並重讀，不能當作保存完成。');
+ if(result?.integrity_status!=='server_verified'||saved.error||!saved.data||uuid(saved.data.id)!==id||uuid(saved.data.organization_id)!==uuid(scope.organizationId)||uuid(saved.data.project_id)!==uuid(scope.projectId)||saved.data.integrity_status!=='server_verified'||saved.data.status!=='completed'||saved.data.report_version!==attempt.version||!saved.data.payload||!saved.data.gross_emissions_snapshot)throw new Error('報告尚未核對成功；保留請求識別並重讀，不能當作保存完成。');
  const row=saved.data,payload=row.payload,totals=['scope_1','scope_2','scope_3','unknown'].map(key=>payload.scope_totals?.[key]);
  const gross=row.gross_emissions_snapshot.gross_total_co2e_kg;
  if(totals.some(value=>typeof value!=='number'||!Number.isFinite(value)||value<0)||typeof gross!=='number'||!Number.isFinite(gross)||Math.abs(totals.reduce((a,b)=>a+b,0)-gross)>1e-8||payload.project_metadata?.project_id!==scope.projectId||payload.project_metadata?.organization_id!==scope.organizationId)throw new Error('報告保存的範圍或排放單位不一致，未確認成功。');

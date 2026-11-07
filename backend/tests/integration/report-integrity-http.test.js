@@ -1,3 +1,4 @@
+import {saveSyntheticManualActivity} from './synthetic-manual-activity.js';
 // Actual handlers and installed SDK/HTTP against a synthetic local SQL/Auth adapter.
 import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 import {createProductRuntime} from '../../tools/product-preview/runtime.js';
@@ -5,7 +6,7 @@ async function api(r,path,token,body,method='POST'){const response=await fetch(r
 async function login(r,name='owner'){const result=await api(r,'/auth/v1/token?grant_type=password',null,r.accounts[name]);assert.equal(result.status,200);return result.body.access_token;}
 async function publish(r,token){
  const scope={organization_id:r.scope.organizationId,project_id:r.scope.projectId};
- const activity=await api(r,'/rest/v1/emission_activities',token,{...scope,activity_code:'SYNTHETIC-'+randomUUID(),activity_name:'SYNTHETIC report integrity',activity_date:'2026-01-15',quantity:100,unit:'kWh',category:'energy',activity_type:'electricity',final_scope:2,inclusion_status:'included',status:'active',created_by_user_id:r.scope.userId,env:'staging',is_test:true});assert.equal(activity.status,201);
+ await saveSyntheticManualActivity(r,token);
  const calc=await api(r,'/functions/v1/recalculate-project',token,{...scope,actor_user_id:r.scope.userId,force_recalculate:true,request_id:randomUUID()});assert.equal(calc.status,200,JSON.stringify(calc.body));
  const input={...scope,report_version:1,claim_purpose:'internal_management',request_id:randomUUID()},saved=await api(r,'/functions/v1/generate-report',token,input);assert.equal(saved.status,200,JSON.stringify(saved.body));
  return {input,id:saved.body.data.report_generation_id,saved:saved.body.data};

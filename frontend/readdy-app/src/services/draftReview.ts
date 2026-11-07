@@ -2,6 +2,8 @@ import type { ExtractedDocumentDraft, ConfirmDraftInput } from '../types/documen
 import type { ApiResponse, EdgeFunctionOptions } from './types.ts';
 import { canonicalUuid, resolveNavigationScope } from './navigationScope.ts';
 import type { SupabaseClient } from '@supabase/supabase-js';
+import {hasManualProvenance} from '../../../../modules/document-provenance/manual.js';
+export const isProtectedManualDraft=(draft:Pick<ExtractedDocumentDraft,'extraction_provider'|'raw_payload'>)=>hasManualProvenance(draft?.extraction_provider,draft?.raw_payload);
 export interface DraftReviewScope {
     organizationId?: string;
     projectId?: string;
@@ -78,7 +80,7 @@ export async function readDraftReviewRows(client: SupabaseClient, scope: DraftRe
 }
 export function buildDraftDecision(draft: ExtractedDocumentDraft, decision: DraftDecision, scope: DraftReviewScope, edits: DraftReviewEdits = {}): ConfirmDraftInput {
     const identity = validateIdentity(draft, scope);
-    if(draft.extraction_provider==='MANUAL_TRANSCRIPTION_NO_OCR')throw new Error('人工轉錄須使用專用確認入口，保留固定確認請求與唯讀canonical資料。');
+    if(isProtectedManualDraft(draft))throw new Error('人工轉錄須使用專用確認入口，保留固定確認請求與唯讀canonical資料；歷史標記不自動升格。');
     if (decision !== 'confirmed' && decision !== 'rejected')
         throw new Error('草稿決策無效。');
     if (decision === 'confirmed') {
@@ -98,7 +100,9 @@ export function buildDraftDecision(draft: ExtractedDocumentDraft, decision: Draf
             throw new Error('建議範疇必須為 1、2 或 3。');
         overrides.suggested_scope = value;
     }
-    return { ...identity, decision, ...(Object.keys(overrides).length ? { overrides } : {}) };
+    // A draft has one irreversible decision. Deterministic identity survives reload/response loss;
+    // server ledger binds the actual actor and full intent, never a derived activity/calc payload.
+    return { ...identity, decision,request_id:'draft-confirm-v1:'+identity.draft_id, ...(Object.keys(overrides).length ? { overrides } : {}) };
 }
 type Invoke = (options: EdgeFunctionOptions) => Promise<ApiResponse>;
 export async function submitDraftDecision(invoke: Invoke, draft: ExtractedDocumentDraft, decision: DraftDecision, scope: DraftReviewScope, edits: DraftReviewEdits = {}, isCurrent: () => boolean = () => true): Promise<void> {

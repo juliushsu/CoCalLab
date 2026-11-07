@@ -1,0 +1,59 @@
+{
+  "source_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+  "scope": "Four CTO P2 and repair intersections only, source/local test review; not Claude or production clearance",
+  "result": "NO_KNOWN_UNRESOLVED_P1_P2_IN_REVIEWED_DIFF",
+  "reviewed": [
+    "controlled activity/current calculation inputs/source versions/role and tenant boundaries",
+    "legacy RPC actual owner-only call chain",
+    "MANUAL transaction/provider fences and legacy JSON semantics",
+    "private/public report retention and conservative malformed mappings",
+    "explicit32-field seal/v1 history compatibility",
+    "visit/attempt export busy ownership",
+    "three fixture updates retain original attack/rollback cases"
+  ],
+  "fixed_findings": [
+    "legacy braced UUID retention bypass (reproduced then failclosed)",
+    "confirm-time original metadata/generation recheck",
+    "service embedded MANUAL name/array/scalar alignment with SQL",
+    "offline integrity status and complete source identity"
+  ],
+  "independent_tests": [
+    {
+      "range": "new SQL initial fixed subset",
+      "passed": 18,
+      "overlap_with_full_suite": true
+    },
+    {
+      "range": "later existing-ledger/empty-scope friendly denial",
+      "passed": 1,
+      "overlap_with_full_suite": true
+    },
+    {
+      "range": "service/HTTP integration initial subset",
+      "passed": 4,
+      "overlap_with_full_suite": true
+    },
+    {
+      "range": "frontend affected subset",
+      "passed": 19,
+      "overlap_with_full_suite": true
+    },
+    {
+      "range": "last marker contract",
+      "passed": 2,
+      "overlap_with_full_suite": true
+    },
+    {
+      "range": "last HTTP test with3 independent synthetic environments",
+      "passed": 1,
+      "scenarios": 3,
+      "overlap_with_full_suite": true
+    }
+  ],
+  "not_run": [
+    "independent PostgreSQL lock-wait sessions",
+    "real Supabase/JWT/Storage",
+    "native download",
+    "formal external Claude review"
+  ]
+}

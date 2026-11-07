@@ -16,6 +16,7 @@ import {
   externalGuardWarning,
 } from '../_shared/staging-guard.ts';
 import { insertActionLog } from '../_shared/action-log.ts';
+import {isProtectedManualDraft} from '../../../src/services/manual-source-guard.js';
 
 serveWithCors(async (request: Request) => {
   if (request.method !== 'POST') {
@@ -55,7 +56,7 @@ serveWithCors(async (request: Request) => {
 
     const { data: draft, error: draftError } = await supabase
       .from('extracted_document_drafts')
-      .select('id, organization_id, project_id, normalized_payload')
+      .select('id, organization_id, project_id, normalized_payload, extraction_provider, raw_payload')
       .eq('id', input.draft_id)
       .eq('organization_id', input.organization_id)
       .eq('project_id', input.project_id)
@@ -69,6 +70,7 @@ serveWithCors(async (request: Request) => {
       });
     }
 
+    if(isProtectedManualDraft(draft))return errorEnvelope(request,{code:'MANUAL_SOURCE_RETAINED',message:'Manual transcription cannot be reclassified by a provider; its provenance and confirmed inputs are retained'},{httpStatus:409,requestId:input.request_id});
     const normalizedPayload = input.normalized_payload || draft.normalized_payload;
     const externalBlocked = externalActionsBlockedInCurrentEnv();
     const requestedProvider = input.model_hint || Deno.env.get('LLM_PROVIDER') || 'mock';

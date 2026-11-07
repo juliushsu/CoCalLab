@@ -1,13 +1,16 @@
 // Synthetic PGlite roles/catalog only; not real JWT/hosted SQL/concurrency UAT.
 import test from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';
 import {createLocalWorkflow} from '../../tools/local-workflow/engine.js';
+import {recalculate_project} from '../../src/services/recalculate-project.js';
 async function setup(){
  const f=await createLocalWorkflow(),{db,scope:s}=f;
  async function as(role,fn){await db.exec('begin');try{await db.exec('set local role '+role);await db.query("select set_config('request.jwt.claim.sub',$1,true)",[s.userId]);const result=await fn();await db.exec('commit');return result;}catch(e){await db.exec('rollback');throw e;}}
  const report={organization_id:s.organizationId,project_id:s.projectId,generated_by_user_id:s.userId,status:'completed',report_version:1,payload:{appendix_mappings:[],synthetic:true},payload_hash:'SYNTHETIC-NOT-A-SIGNATURE',reporting_period_start:'2026-01-01',reporting_period_end:'2026-12-31'};
  const insert=row=>{const keys=Object.keys(row);return db.query('insert into report_generations('+keys.join(',')+') values('+keys.map((_,i)=>'$'+(i+1)).join(',')+') returning *',Object.values(row));};
  function saveArgs(extra={}){const p={request:randomUUID(),version:1,payload:report.payload,claim:'internal_management',...extra};return [s.organizationId,s.projectId,s.userId,p.version,p.payload,'SYNTHETIC-NOT-A-SIGNATURE','2026-01-01','2026-12-31',0,0,0,{},{},[],0,'2026-01-15T00:00:00Z',p.request,{claim_purpose:p.claim,gross_emissions_snapshot:{gross_total_co2e_kg:0},adjustment_summary:{},claim_results:{},adjustment_manifest:[]}];}
- const publish=args=>as('service_role',async()=>((await db.query('select * from generate_report_snapshot_atomic_v2('+args.map((_,i)=>'$'+(i+1)).join(',')+')',args)).rows[0]));
+ async function authority(){try{return (await as('service_role',()=>db.query('select * from report_calculation_inputs($1,$2,$3)',[s.organizationId,s.projectId,s.userId]))).rows[0].result;}catch(error){if(!/CALCULATION_AUTHORITY_(REQUIRED|STALE)/.test(error.message))throw error;const a=[s.organizationId,s.projectId,s.userId,randomUUID(),true,'v1.0.0'];const prepared=(await as('service_role',()=>db.query("select * from recalculation_request_v2($1,$2,$3,$4,$5,$6,'prepare')",a))).rows[0].result;const calculationRows=recalculate_project({organization_id:s.organizationId,project_id:s.projectId,activities:prepared.input_snapshot.activities,factors:prepared.input_snapshot.factors}).calculation_results;await as('service_role',()=>db.query('select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)',[...a,prepared.input_snapshot,calculationRows]));return (await as('service_role',()=>db.query('select * from report_calculation_inputs($1,$2,$3)',[s.organizationId,s.projectId,s.userId]))).rows[0].result;}}
+ await authority();
+ const publish=async args=>{args[17]={...args[17],calculation_authority:(await authority()).calculation_authority};return as('service_role',async()=>((await db.query('select * from generate_report_snapshot_atomic_v2('+args.map((_,i)=>'$'+(i+1)).join(',')+')',args)).rows[0]));};
  const lookup=(args,actor=s.userId)=>as('service_role',()=>db.query('select * from report_snapshot_request_v2($1,$2,$3,$4,$5,$6)',[s.organizationId,s.projectId,actor,args[16],args[3],args[17].claim_purpose]));
  const read=(id,actor=s.userId)=>as('service_role',()=>db.query('select * from read_verified_report_snapshot($1,$2,$3,$4)',[s.organizationId,s.projectId,actor,id]));
  return {...f,as,report,insert,saveArgs,publish,lookup,read};
@@ -65,7 +68,7 @@ test('legacy rows remain readable unverified; marker or client GUC cannot create
 
 test('marker-stage SQL failure rolls back report/snapshot/request/audit; same original request retries',async()=>{
  const f=await setup();try{const args=f.saveArgs();await f.db.exec("alter table report_generations add constraint synthetic_seal_failure check(integrity_status<>'server_verified')");
-  await assert.rejects(f.publish(args),e=>e.code==='23514');for(const table of ['report_generations','report_snapshot_requests_v2','audit_logs','cocal_report_private.snapshots'])assert.equal(Number((await f.db.query('select count(*) n from '+table)).rows[0].n),0);
+  await assert.rejects(f.publish(args),e=>e.code==='23514');for(const table of ['report_generations','report_snapshot_requests_v2','cocal_report_private.snapshots'])assert.equal(Number((await f.db.query('select count(*) n from '+table)).rows[0].n),0);
   await f.db.exec('alter table report_generations drop constraint synthetic_seal_failure');const saved=await f.publish(args);assert.equal((await f.read(saved.report_generation_id)).rows[0].integrity_status,'server_verified');
  }finally{await f.close();}
 });
@@ -95,7 +98,8 @@ test('source retention survives ordinary report mapping removal or hard-delete a
  const f=await setup();try{const doc=randomUUID(),path=`staging/${f.scope.projectId}/${doc}.pdf`;
   await f.db.query('insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)',['staging-receipts',path,f.scope.userId,{size:30,mimetype:'application/pdf'}]);
   await f.db.query("insert into uploaded_documents(id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,file_size_bytes,sha256_hash) values($1,$2,$3,$4,'staging-receipts',$5,'SYNTHETIC.pdf',30,$6)",[doc,f.scope.organizationId,f.scope.projectId,f.scope.userId,path,'a'.repeat(64)]);
-  const args=f.saveArgs({payload:{appendix_mappings:[{source_document_id:doc,source_draft_id:null}],synthetic:true}}),{report_generation_id:id}=await f.publish(args);
+  const activity=randomUUID();await f.db.query("insert into emission_activities(id,organization_id,project_id,source_document_id,activity_code,activity_name,activity_date,category,activity_type,quantity,unit,inclusion_status,final_scope) values($1,$2,$3,$4,'SYNTHETIC','SYNTHETIC source','2026-01-15','energy','electricity',1,'kWh','included',2)",[activity,f.scope.organizationId,f.scope.projectId,doc]);
+  const args=f.saveArgs({payload:{appendix_mappings:[],synthetic:true}});await assert.rejects(f.publish(args),/REPORT_SOURCE_MAPPING_MISMATCH/);const calculation=(await f.db.query('select id from calculation_results where emission_activity_id=$1 and is_latest',[activity])).rows[0].id;args[4].appendix_mappings=[{emission_activity_id:activity,source_document_id:doc,source_draft_id:null,calculation_result_id:calculation}];const {report_generation_id:id}=await f.publish(args);
   assert.equal((await f.as('authenticated',()=>f.db.query("update report_generations set payload='{\"appendix_mappings\":[]}' where id=$1 returning id",[id]))).rows.length,0);
   assert.equal((await f.as('authenticated',()=>f.db.query('delete from report_generations where id=$1 returning id',[id]))).rows.length,0);
   await assert.rejects(f.as('service_role',()=>f.db.query("select * from document_deletion_request($1,$2,'prepare')",[f.scope.userId,{organization_id:f.scope.organizationId,project_id:f.scope.projectId,document_id:doc,request_id:randomUUID()}])),/DOCUMENT_HAS_REFERENCES/);

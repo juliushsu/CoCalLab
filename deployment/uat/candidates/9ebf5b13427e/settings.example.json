@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "status": "CANDIDATE_TEMPLATE_ONLY_NO_CLOUD_AUTHORIZATION",
+  "application_source_sha": "9ebf5b13427edf8d228659a24269ddaaf86a84f0",
+  "reference_uat_baseline": "7dccd5452152f2495d10ad1437d5d03215166065",
+  "cloud_read_authorized": true,
+  "target_project_ref": null,
+  "frontend": {
+    "planned_local_origin": "http://127.0.0.1:4211",
+    "active": false,
+    "public_env_names": [
+      "VITE_PUBLIC_SUPABASE_URL",
+      "VITE_PUBLIC_SUPABASE_ANON_KEY"
+    ],
+    "values": "OWNER_SUPPLIED_AFTER_ENVIRONMENT_APPROVAL; never use the synthetic adapter for real-service acceptance"
+  },
+  "auth": {
+    "site_url": "http://127.0.0.1:4211",
+    "additional_redirect_urls": [
+      "http://127.0.0.1:4211/login"
+    ],
+    "supported_flow": "existing password sign-in only",
+    "oauth_magic_link_recovery": "NOT_IMPLEMENTED_OR_NOT_VERIFIED; no invented /auth/callback",
+    "require_explicit_target_approval": true
+  },
+  "edge": {
+    "verify_jwt": true,
+    "verify_jwt_false_authorized": false,
+    "cors_allowed_origins": [
+      "http://127.0.0.1:4211"
+    ],
+    "env": {
+      "APP_ENV": "staging",
+      "REPORT_EXPORT_POLICY": "tenant_write_v1"
+    },
+    "secret_env_names": [
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "SUPABASE_SERVICE_ROLE_KEY"
+    ],
+    "managed_runtime_actual_version": "UNKNOWN",
+    "reference_edge_runtime": "1.78.1",
+    "reference_runtime_execution": "NOT_RUN",
+    "config_note": "No wildcard, no gateway bypass to work around 401, no cloud config changes. Exact UAT domain replaces/adds origins only after approval.",
+    "reference_deno_crate_version": "2.1.4 (edge-runtime v1.78.1 source metadata only; not observed managed runtime)"
+  },
+  "toolchain": {
+    "supabase_cli": "2.122.1",
+    "deno_cli": "2.9.8",
+    "purpose": "local dependency resolution/check/bundle; not managed Edge equivalence",
+    "frontend_sdk": "2.57.4",
+    "edge_sdk_import": "npm:@supabase/supabase-js@2.49.4",
+    "node_type_reference": "npm:@types/node@22.12.0"
+  },
+  "migration": {
+    "source_count": 44,
+    "source_execution": "NOT_RUN_ON_CLOUD",
+    "historical_fixture_files": [
+      "202603160008_v1_frontend_fixture_seed.sql",
+      "202603180007_v1_staging_fixture_alignment.sql",
+      "202604070005_v1_adjustment_fixture_seed.sql"
+    ],
+    "fixture_policy": "Pure historical DML: exclude from proposed fresh-UAT application; preserve source/history. Do not fabricate CLI migration history or use this exclusion on an existing project.",
+    "not_valid": "Inventory and validate separately; migration success is not validation"
+  },
+  "cloud_read_scope": "Completed limited readonly inventory. New cloud resources and writes remain unauthorized under the latest CTO ruling. Owner budget/retention recorded privately; no billing or retention clock started.",
+  "cloud_resource_creation_authorized": false
+}

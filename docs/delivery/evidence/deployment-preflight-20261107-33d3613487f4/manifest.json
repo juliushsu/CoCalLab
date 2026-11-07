@@ -1,0 +1,4132 @@
+{
+  "sourceCommit": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "checkoutHead": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "node": {
+    "version": "v24.22.1",
+    "path": "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe"
+  },
+  "git": {
+    "invocation": "git (PATH)",
+    "version": "git version 2.55.0.windows.3"
+  },
+  "astParser": {
+    "name": "typescript",
+    "version": "5.8.3"
+  },
+  "toolchain": [
+    {
+      "name": "Supabase CLI",
+      "version": "2.122.1",
+      "archive": "supabase_2.122.1_windows_amd64.zip",
+      "archiveSha256": "254d141398da58b9acd273ff3f98c69b3efc89a077946715b1e4f7c22d4b0b99",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\supabase-2.122.1\\supabase.exe",
+      "binarySha256": "19c0a8a2c911d05bf64b4fe2a1c1e25ad59eac1d04e2d0d10b2f9758668203df",
+      "url": "https://github.com/supabase/cli/releases/download/v2.122.1/supabase_2.122.1_windows_amd64.zip",
+      "archivePath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\supabase_2.122.1_windows_amd64.zip"
+    },
+    {
+      "name": "Deno",
+      "version": "2.9.8",
+      "archive": "deno-2.9.8-x86_64-pc-windows-msvc.zip",
+      "archiveSha256": "cba84b26e0df5ae7f74fc66b86a95b866872a86292ebd84fa1e959927edd93bf",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "binarySha256": "924397800533d3eb0ed0c889b20ad70e18b970d93acd8135bc043f425e528266",
+      "url": "https://github.com/denoland/deno/releases/download/v2.9.8/deno-x86_64-pc-windows-msvc.zip",
+      "archivePath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8-x86_64-pc-windows-msvc.zip"
+    }
+  ],
+  "versions": [
+    {
+      "name": "Supabase CLI",
+      "label": "version-supabase-cli",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\supabase-2.122.1\\supabase.exe",
+      "args": [
+        "--version"
+      ],
+      "started": "2026-11-07T14:42:14.327Z",
+      "exitCode": 0,
+      "error": null,
+      "output": "2.122.1\n"
+    },
+    {
+      "name": "Deno",
+      "label": "version-deno",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "--version"
+      ],
+      "started": "2026-11-07T14:42:14.716Z",
+      "exitCode": 0,
+      "error": null,
+      "output": "deno 2.9.8 (stable, release, x86_64-pc-windows-msvc)\nv8 15.0.245.2-rusty\ntypescript 6.0.3\n"
+    }
+  ],
+  "functionCount": 15,
+  "sourceFiles": [
+    {
+      "path": "backend/src/adapters/supabase-private-file.js",
+      "gitBlob": "8b63a74c4d26642c40207f1ae5b90980caaa0c90",
+      "sha256": "3a7a6d7a3a778c3944baeb61dc4337e1f65af765860554ae24334020a5f7dc87",
+      "bytes": 933
+    },
+    {
+      "path": "backend/src/contracts/contracts.js",
+      "gitBlob": "725ba95a2cbf1bb9756d98fa59562cffb269454c",
+      "sha256": "5680fe504f3c1cf0c0230715c81206c14a3be8a221857833aa1f9bd822473d70",
+      "bytes": 8888
+    },
+    {
+      "path": "backend/src/contracts/frontend-examples.ts",
+      "gitBlob": "9f52a206709dd6471ef3e42cebe8f9b3b13b5861",
+      "sha256": "c82060ea5f66070e9b685590cb654aec6656764df740d1098ef90190216b1638",
+      "bytes": 9302
+    },
+    {
+      "path": "backend/src/contracts/manual-activity.js",
+      "gitBlob": "964358153e4b3d68cc8a5bef0dbaaaefb51fb69f",
+      "sha256": "b55141a0665d9d98c55a1ee22a88da9a913070135c2609b54b818d182d83ef95",
+      "bytes": 2307
+    },
+    {
+      "path": "backend/src/contracts/manual-transcription.js",
+      "gitBlob": "3388ade9f338083878d5b2f96f1d216e3b56bf26",
+      "sha256": "1e3a4a363c7cb381aab3bc2a9c40c83b27f3ee626e3579b069bba430dec59c89",
+      "bytes": 4823
+    },
+    {
+      "path": "backend/src/i18n/messages.js",
+      "gitBlob": "c79ba1430b70c434ff5b594f345da94e4e354b6a",
+      "sha256": "5e8a1d6b234f76e09936220fef978c6a4f0a080e646dc07505247e7697807619",
+      "bytes": 1823
+    },
+    {
+      "path": "backend/src/providers/index.js",
+      "gitBlob": "7fceea84c0c90b22c53848ecf07ce2d3e2dda485",
+      "sha256": "6b7a1445688217b09460668bcf9642e4ba9e04767886f75136cee813663c671c",
+      "bytes": 590
+    },
+    {
+      "path": "backend/src/providers/llm-provider.js",
+      "gitBlob": "9c62f55d0584a62d773f872533e2791b6c50f9c6",
+      "sha256": "839c857b326ff4309f596b3e468ccda8b31571a2a9540823847449aef01412ce",
+      "bytes": 2202
+    },
+    {
+      "path": "backend/src/providers/mock-llm-provider.js",
+      "gitBlob": "273716bb247d6c7923191de65f97b1b2e2c763a5",
+      "sha256": "39b9b13518afa53ef51901f9786846bc34d6bc6a87a293f76b87ff9fc5443244",
+      "bytes": 964
+    },
+    {
+      "path": "backend/src/providers/mock-ocr-provider.js",
+      "gitBlob": "0ed90191262e2a239e48d6704cf9a85f36f0b802",
+      "sha256": "fbca7dcdcd85ffc2284f1822e5ebb8286e3e8096735663296cbd39d460207ed3",
+      "bytes": 1060
+    },
+    {
+      "path": "backend/src/providers/ocr-provider.js",
+      "gitBlob": "565b3dbdca2407f90f8e4f8bbd3ac1f52ceefdc6",
+      "sha256": "4fe36ba365d3ef9228595bc5815274325d780926228e60ae97d5883989f71b4a",
+      "bytes": 1635
+    },
+    {
+      "path": "backend/src/services/adjustment-result.js",
+      "gitBlob": "462d7d1e496fffe4f3cc7bffa85f6a77de757d08",
+      "sha256": "c2791b6a6cc44a52959c83b2f70b3788e3b383ba480a886e639f4b71844caeda",
+      "bytes": 1118
+    },
+    {
+      "path": "backend/src/services/build-report-payload.js",
+      "gitBlob": "53fa737a19b03dc11013ca574764ee58951da172",
+      "sha256": "049524f941aa98fc7bddb9acda7c6d6d047d6bde6b7ac004b06b37b139999ed5",
+      "bytes": 8814
+    },
+    {
+      "path": "backend/src/services/calculate-emission-activity.js",
+      "gitBlob": "6767a8b7c6b6612a6ca8ac83eec17fff2e25baab",
+      "sha256": "53dd5aec690bf048748a8681d1d571e3c985a50afc9cf7f442e064ccc6e3df6b",
+      "bytes": 3620
+    },
+    {
+      "path": "backend/src/services/classify-document-draft.js",
+      "gitBlob": "dc3fa08cfb15d34ccbdb43f85ce7960ae3416d9a",
+      "sha256": "dc01c1c17aa5debfec915f09ad87bc6e5f2efe0832ba560c9a9dad23692895b9",
+      "bytes": 2451
+    },
+    {
+      "path": "backend/src/services/confirm-draft.js",
+      "gitBlob": "97f19c0b0522a1d2ef1a110eb3c09a78e504b956",
+      "sha256": "ba3d9dfb97a166f9656e35a0cd3570c9df9d1d76a7e7e785e46daac2628cdcf0",
+      "bytes": 2057
+    },
+    {
+      "path": "backend/src/services/delete-uploaded-document.js",
+      "gitBlob": "977a6e3946a91b2ee843d82bc9cc6e5ea211d3ce",
+      "sha256": "33c914f1243b82f4fdde76a4f493f93cd2932f8456eb76a3ea79aea50eb87dd5",
+      "bytes": 4305
+    },
+    {
+      "path": "backend/src/services/draft-confirmation-source.js",
+      "gitBlob": "7febc83d326fa895581c4868cc8e6691f8088ef9",
+      "sha256": "0b72d55a859f3f8fb8501271a96cfac850910bd2bab0c21e24f52876b95df5c4",
+      "bytes": 561
+    },
+    {
+      "path": "backend/src/services/enforce-subscription-readonly.js",
+      "gitBlob": "cb7d2dc97856fb8a230c12cedba74db1144de9a1",
+      "sha256": "4b99a49a60f3eb433edac1d98b19ce556cfa78edf433a966305d7d04389bebcc",
+      "bytes": 2196
+    },
+    {
+      "path": "backend/src/services/index.js",
+      "gitBlob": "b7dd97598540262d9fd5ed0501c8aeb3c047ecd6",
+      "sha256": "c08d2ba8bd4afdf8dd05f46d3907309d927e899fb6c04811f900319e63338c49",
+      "bytes": 712
+    },
+    {
+      "path": "backend/src/services/manual-source-guard.js",
+      "gitBlob": "63f754d19e4281aa25e45f0207824d24736fac0e",
+      "sha256": "e38f41da8e41025f82a4fca4da855ad52261ec69f42b5e65c85a1d1c4bd6512f",
+      "bytes": 266
+    },
+    {
+      "path": "backend/src/services/normalize-extracted-document-draft.js",
+      "gitBlob": "c801f1e6238c7d64386b618f7c2e5ee39494e87c",
+      "sha256": "98544bee591f15b65607de63977ac91961f0c9c07ad067a246877c2225f540eb",
+      "bytes": 2180
+    },
+    {
+      "path": "backend/src/services/recalculate-project.js",
+      "gitBlob": "7e382c771deb16a52a7665bbab7f63551665c4ef",
+      "sha256": "e7db32bc59f42080e3b4c9e1d6c2c3f90a276b9140290f1d0d3defb4f98cee58",
+      "bytes": 1524
+    },
+    {
+      "path": "backend/src/services/report-export.js",
+      "gitBlob": "a44c488deb0c4db24f96acde6d594bf3652ccc59",
+      "sha256": "e2975c6c5b1891c066728e6eff0b9ebf27d5522718fb8ab0078a4990a1502492",
+      "bytes": 1714
+    },
+    {
+      "path": "backend/src/services/resolve-emission-factor.js",
+      "gitBlob": "d106d993fc98237f7e02727cab8c6f3aca164d05",
+      "sha256": "278d287909d1841608985ba87acac840fa8f804c274d5382e464f8654e768317",
+      "bytes": 3130
+    },
+    {
+      "path": "backend/src/services/run-ai-audit.js",
+      "gitBlob": "fabddf87fac05b11bc1da93f479e7b36de5e21b0",
+      "sha256": "4e7307cef13dea19cd4e655422dd2370bf6e01841f07416ac831b2345314e191",
+      "bytes": 3972
+    },
+    {
+      "path": "backend/src/services/unit-normalization.js",
+      "gitBlob": "90844433e41cd4d17e17d2a6f53241ec84563da1",
+      "sha256": "f5a628a2eb35dc176bf67f2a22bb48fe6368e7b9049695f6e844f3fe193ed152",
+      "bytes": 1351
+    },
+    {
+      "path": "backend/src/services/verify-upload-receipt.js",
+      "gitBlob": "a116b7b18e6a26eb75d3d92474db632a8b9e6140",
+      "sha256": "31d13d276d96f3cd854e33fa9a3b421a38a8abe8ae4fb5687e35c191392876a9",
+      "bytes": 4994
+    },
+    {
+      "path": "backend/supabase/functions/_shared/action-log.ts",
+      "gitBlob": "329c82babbab09c3f63bb8aa65df559108f69a06",
+      "sha256": "3496d561301d4587fdf388982890d614983f688877e88feb6a7917db3ca031fe",
+      "bytes": 904
+    },
+    {
+      "path": "backend/supabase/functions/_shared/authz.ts",
+      "gitBlob": "5f406835611fe24437a37845c8fb6643f44f0925",
+      "sha256": "f93193dac590b520c833071d0aa71e6dfedeb8d0302a86e8b496945c56d8166d",
+      "bytes": 2953
+    },
+    {
+      "path": "backend/supabase/functions/_shared/cors.ts",
+      "gitBlob": "6f0a7ed4d8af9ae854b750046e797f1a69121df5",
+      "sha256": "f76bd1dfeca06e0f7368ade3d3bf0467471f98fccfe4866b410d3a3e02b12491",
+      "bytes": 5000
+    },
+    {
+      "path": "backend/supabase/functions/_shared/http.ts",
+      "gitBlob": "68c4033f90dfaefe715c73aed9fc6b1077a4246a",
+      "sha256": "24519a3dd06a8b4f9f810ec7f9709f7b4e9d1ebd8c7db2eb456a796d0d2ff72f",
+      "bytes": 2918
+    },
+    {
+      "path": "backend/supabase/functions/_shared/staging-guard.ts",
+      "gitBlob": "59adc1300737ee7aac94c8765b2fde51f76cc4c9",
+      "sha256": "cf1d0d53182a10e1e48caabe3ec1a6130e180e7755497897de78265ce6dad9f0",
+      "bytes": 474
+    },
+    {
+      "path": "backend/supabase/functions/_shared/supabase-client.ts",
+      "gitBlob": "48aa2fab3232c73246ae8f9edc1de07ade78c02e",
+      "sha256": "a00c7728dc7d06305c4650a33c0a3efba21b5dcaf4e7c62ca52b545a6346bec1",
+      "bytes": 938
+    },
+    {
+      "path": "backend/supabase/functions/_shared/supabase-sdk.ts",
+      "gitBlob": "e2edee8d5b4a0007a7d02f211397da999c6b99a8",
+      "sha256": "86400a9d9204d198b448b0ae88d55656136a7ab45a486bf79ab0a55f8bd0e79b",
+      "bytes": 344
+    },
+    {
+      "path": "backend/supabase/functions/adjustment-rule-result/index.ts",
+      "gitBlob": "4c2ff83dbb5424e3eb1fd338fe2090c26c824f8b",
+      "sha256": "bea869d71bf86a1e87e4de914cc9469c27bce6b66f2b33c80b7039661fcf5e4e",
+      "bytes": 3325
+    },
+    {
+      "path": "backend/supabase/functions/analytics-emissions/index.ts",
+      "gitBlob": "7b58ce536c419e6845bd170bb7f62a3c4d8f7030",
+      "sha256": "f0a8c7b4a383e457fc96c95339ae60943284c877d8654c913e4c382cc9761767",
+      "bytes": 2502
+    },
+    {
+      "path": "backend/supabase/functions/classify-document/index.ts",
+      "gitBlob": "585f62a86b30c54e734463a2ad239408f5272c8d",
+      "sha256": "05a6776a926fb8322d323c26086cdf59829911ec08a9dce3964315b982563184",
+      "bytes": 6064
+    },
+    {
+      "path": "backend/supabase/functions/confirm-draft/index.ts",
+      "gitBlob": "19233b8f096ca01821dc92a3a131ba3709f54b62",
+      "sha256": "4eba33d6099ea01e4372d54062b6f53877b0b6b2379cff8e7b929604d264450a",
+      "bytes": 13988
+    },
+    {
+      "path": "backend/supabase/functions/create-organization/index.ts",
+      "gitBlob": "a3a1b71d5830f5eb28454a17c32a51009e8ff07d",
+      "sha256": "8d518087224340317cc7efd150366bf7292023b0e3c4cc115337a6277ad9f5e7",
+      "bytes": 3582
+    },
+    {
+      "path": "backend/supabase/functions/delete-uploaded-document/index.ts",
+      "gitBlob": "cb43faf1be36a3d482629ba9e49dc97fb6b68855",
+      "sha256": "c54bd20b23a53e13be8fda96367caad41a54509674def59936cb28de59338784",
+      "bytes": 1895
+    },
+    {
+      "path": "backend/supabase/functions/enforce-subscription-status/index.ts",
+      "gitBlob": "e991757db06c3bf29fe304ca28ee68d77892642d",
+      "sha256": "38a236bf6f90acdf9a34799075ddfcd825258dc83650b2aa9e8084a59d12dbaf",
+      "bytes": 2627
+    },
+    {
+      "path": "backend/supabase/functions/export-report-snapshot/index.ts",
+      "gitBlob": "0521d990d06c0e3af139394d703e26659985aefa",
+      "sha256": "5721fbe5348eab9a43a6036a2b3791cf99a76f92c3c562157c835d11f02f5595",
+      "bytes": 3224
+    },
+    {
+      "path": "backend/supabase/functions/generate-report/index.ts",
+      "gitBlob": "7d3e65523a3a380bb13cb9a1ba223f277982ba00",
+      "sha256": "1d0f8b5296bb5e80832313fd629943b7b38da2c87d19e45d3c82d9c62635e58f",
+      "bytes": 14459
+    },
+    {
+      "path": "backend/supabase/functions/manual-transcription/index.ts",
+      "gitBlob": "2ade71bde45466c25f7499d8632a5399bcdfce23",
+      "sha256": "f3a6aab457de76376768e4cc5bd5ce969c4da389c0cd0f322c6324f7ff5f7ca0",
+      "bytes": 2845
+    },
+    {
+      "path": "backend/supabase/functions/process-document/index.ts",
+      "gitBlob": "7f92b20045f180c69a7a0e722249bdadd1565a9f",
+      "sha256": "0ed56fe05d984c24a18faf0f5d4e387da815442a511e5a0aae3ef8f9c089a9d7",
+      "bytes": 9430
+    },
+    {
+      "path": "backend/supabase/functions/recalculate-project/index.ts",
+      "gitBlob": "7269db02cc7000af30467377797c1aaca2258a56",
+      "sha256": "f1720c5b3ea6940a1700dca7e8e3666609e302698239b3e7d7ead551ccfae64f",
+      "bytes": 3775
+    },
+    {
+      "path": "backend/supabase/functions/run-ai-audit/index.ts",
+      "gitBlob": "d5cbdb5061e3c4e5795f0a6e278751515f174159",
+      "sha256": "288f12cdee2a38d214d663c56c58b1ca9bc23ea8b43029a486aa9bc380db7518",
+      "bytes": 5657
+    },
+    {
+      "path": "backend/supabase/functions/save-manual-activity/index.ts",
+      "gitBlob": "b230f329790b15821a601aa9314f310fd81f4e7e",
+      "sha256": "28d798a03881d4e063249f39b1e0a9205c7a8cbe1253874152fb46a9188adc97",
+      "bytes": 2572
+    },
+    {
+      "path": "backend/supabase/functions/verify-upload-receipt/index.ts",
+      "gitBlob": "62fd2d46529ce840fe2fbce64333a6753e7adae1",
+      "sha256": "adf43bd66d390be5f546784d9820acb711a5b6441dad3fb0ec0afca02e219d91",
+      "bytes": 2681
+    },
+    {
+      "path": "modules/document-provenance/manual.d.ts",
+      "gitBlob": "3ba259e48c06cfb32c5fc7720f7418e3c6c43aab",
+      "sha256": "7f6310a1b32e09a7f3edfa834eaab66064efc29e5192a153ac019e9cef78b92a",
+      "bytes": 172
+    },
+    {
+      "path": "modules/document-provenance/manual.js",
+      "gitBlob": "575c23506863e5e798876f92618d63318d7c2430",
+      "sha256": "fd260a158bb9e60c1f0103ca0362c0cc5ccd0ffb3f3aa6ab41d1b6a2c3f8c19d",
+      "bytes": 481
+    },
+    {
+      "path": "modules/file-verification/index.js",
+      "gitBlob": "bbe6d43ad32bb94a9ffaf6dfb8bbf789e7126b7b",
+      "sha256": "ff3b4044305930c32da5e24825d276c12fabc93e3d544361c218f41460035e62",
+      "bytes": 4036
+    }
+  ],
+  "functions": [
+    {
+      "name": "adjustment-rule-result",
+      "entry": "backend/supabase/functions/adjustment-rule-result/index.ts",
+      "files": [
+        "backend/src/services/adjustment-result.js",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/adjustment-rule-result/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "specifier": "../../../src/services/adjustment-result.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/adjustment-result.js"
+        },
+        {
+          "from": "backend/supabase/functions/adjustment-rule-result/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/services/adjustment-result.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-adjustment-rule-result.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-adjustment-rule-result.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\adjustment-rule-result.js",
+        "sha256": "e9ca51de3221003d74f7b9973e50d4f204fbc142e39569783897e83e7faf7be7",
+        "bytes": 811709,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\adjustment-rule-result.js.map",
+          "sha256": "5ec3459b555faa7aff16b23146d6eb42545463bbd8e6017f20af65aaf259d71c",
+          "bytes": 1482221
+        }
+      }
+    },
+    {
+      "name": "analytics-emissions",
+      "entry": "backend/supabase/functions/analytics-emissions/index.ts",
+      "files": [
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/analytics-emissions/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/analytics-emissions/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/analytics-emissions/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/analytics-emissions/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/analytics-emissions/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-analytics-emissions.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-analytics-emissions.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\analytics-emissions.js",
+        "sha256": "8091fcfd9a14c084c82c67bdb76fd403ea7d666fce4ba2fac9f0847dd16090e2",
+        "bytes": 809849,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\analytics-emissions.js.map",
+          "sha256": "9aed6248cb45775d16eff29297875e18769d3abf7548eb117ec549cee46646a3",
+          "bytes": 1479124
+        }
+      }
+    },
+    {
+      "name": "classify-document",
+      "entry": "backend/supabase/functions/classify-document/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/providers/index.js",
+        "backend/src/providers/llm-provider.js",
+        "backend/src/providers/mock-llm-provider.js",
+        "backend/src/providers/mock-ocr-provider.js",
+        "backend/src/providers/ocr-provider.js",
+        "backend/src/services/classify-document-draft.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/manual-source-guard.js",
+        "backend/src/services/run-ai-audit.js",
+        "backend/supabase/functions/_shared/action-log.ts",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/staging-guard.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/classify-document/index.ts",
+        "modules/document-provenance/manual.js"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../../../src/providers/index.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/index.js"
+        },
+        {
+          "from": "backend/src/providers/index.js",
+          "specifier": "./mock-ocr-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/mock-ocr-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-ocr-provider.js",
+          "specifier": "./ocr-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/ocr-provider.js"
+        },
+        {
+          "from": "backend/src/providers/index.js",
+          "specifier": "./mock-llm-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/mock-llm-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "./llm-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/llm-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "../services/classify-document-draft.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/classify-document-draft.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "../services/run-ai-audit.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/run-ai-audit.js"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../_shared/staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../_shared/action-log.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/action-log.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/classify-document/index.ts",
+          "specifier": "../../../src/services/manual-source-guard.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/manual-source-guard.js"
+        },
+        {
+          "from": "backend/src/services/manual-source-guard.js",
+          "specifier": "../../../modules/document-provenance/manual.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "modules/document-provenance/manual.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/providers/index.js",
+        "backend/src/providers/llm-provider.js",
+        "backend/src/providers/mock-llm-provider.js",
+        "backend/src/providers/mock-ocr-provider.js",
+        "backend/src/providers/ocr-provider.js",
+        "backend/src/services/classify-document-draft.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/manual-source-guard.js",
+        "backend/src/services/run-ai-audit.js",
+        "modules/document-provenance/manual.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-classify-document.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\classify-document\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-classify-document.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\classify-document.js",
+        "sha256": "b706921cd1a34f8ff9ac5751258531e5b21c3beb6a236cab97da2cdaf19fe8ea",
+        "bytes": 830748,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\classify-document.js.map",
+          "sha256": "3df75f9ae9bf40141fd8dda41bf1451d1084ffdd09a277b003070eecfff8ace3",
+          "bytes": 1522177
+        }
+      }
+    },
+    {
+      "name": "confirm-draft",
+      "entry": "backend/supabase/functions/confirm-draft/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/contracts/manual-transcription.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/calculate-emission-activity.js",
+        "backend/src/services/confirm-draft.js",
+        "backend/src/services/draft-confirmation-source.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/manual-source-guard.js",
+        "backend/src/services/resolve-emission-factor.js",
+        "backend/src/services/unit-normalization.js",
+        "backend/supabase/functions/_shared/action-log.ts",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/staging-guard.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/confirm-draft/index.ts",
+        "modules/document-provenance/manual.js"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/services/confirm-draft.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/confirm-draft.js"
+        },
+        {
+          "from": "backend/src/services/confirm-draft.js",
+          "specifier": "./unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/src/services/unit-normalization.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/services/calculate-emission-activity.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/calculate-emission-activity.js"
+        },
+        {
+          "from": "backend/src/services/calculate-emission-activity.js",
+          "specifier": "./unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/src/services/calculate-emission-activity.js",
+          "specifier": "./resolve-emission-factor.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/resolve-emission-factor.js"
+        },
+        {
+          "from": "backend/src/services/resolve-emission-factor.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/src/services/resolve-emission-factor.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/calculate-emission-activity.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../_shared/staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../_shared/action-log.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/action-log.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/contracts/manual-transcription.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/manual-transcription.js"
+        },
+        {
+          "from": "backend/src/contracts/manual-transcription.js",
+          "specifier": "../services/unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/services/unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/services/manual-source-guard.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/manual-source-guard.js"
+        },
+        {
+          "from": "backend/src/services/manual-source-guard.js",
+          "specifier": "../../../modules/document-provenance/manual.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "modules/document-provenance/manual.js"
+        },
+        {
+          "from": "backend/supabase/functions/confirm-draft/index.ts",
+          "specifier": "../../../src/services/draft-confirmation-source.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/draft-confirmation-source.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/contracts/manual-transcription.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/calculate-emission-activity.js",
+        "backend/src/services/confirm-draft.js",
+        "backend/src/services/draft-confirmation-source.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/manual-source-guard.js",
+        "backend/src/services/resolve-emission-factor.js",
+        "backend/src/services/unit-normalization.js",
+        "modules/document-provenance/manual.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-confirm-draft.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-confirm-draft.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\confirm-draft.js",
+        "sha256": "0c2828701e618ba4018535b7a16845b695d46f2ab070ef3d360a4570d1ecd4b6",
+        "bytes": 844859,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\confirm-draft.js.map",
+          "sha256": "0595273d975b395f19af45271ec7052a6cfe1aefb919181357600d6f94146ef4",
+          "bytes": 1545502
+        }
+      }
+    },
+    {
+      "name": "create-organization",
+      "entry": "backend/supabase/functions/create-organization/index.ts",
+      "files": [
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/create-organization/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/create-organization/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/create-organization/index.ts",
+          "specifier": "../_shared/supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-create-organization.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\create-organization\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-create-organization.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\create-organization.js",
+        "sha256": "864dd5d10276bbd6b2d02fa36d5e3a632daace881877ab29ab63ac70d657fc4e",
+        "bytes": 807048,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\create-organization.js.map",
+          "sha256": "2e3440f3529c570b8ec2d49e9a9d7ade1b40cc6ac7b7d990fe34184755f1ac11",
+          "bytes": 1471345
+        }
+      }
+    },
+    {
+      "name": "delete-uploaded-document",
+      "entry": "backend/supabase/functions/delete-uploaded-document/index.ts",
+      "files": [
+        "backend/src/services/delete-uploaded-document.js",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/delete-uploaded-document/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/delete-uploaded-document/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/delete-uploaded-document/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/delete-uploaded-document/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/delete-uploaded-document/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/delete-uploaded-document/index.ts",
+          "specifier": "../../../src/services/delete-uploaded-document.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/delete-uploaded-document.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/services/delete-uploaded-document.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-delete-uploaded-document.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-delete-uploaded-document.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\delete-uploaded-document.js",
+        "sha256": "ff7c95405f92079754c5d3851197db8bef405bbd65d72905812570fd5f3158c8",
+        "bytes": 814047,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\delete-uploaded-document.js.map",
+          "sha256": "45830106cf6ae64c0d357389518b2c03b58fe974e99f69c699682748ad3754c2",
+          "bytes": 1486203
+        }
+      }
+    },
+    {
+      "name": "enforce-subscription-status",
+      "entry": "backend/supabase/functions/enforce-subscription-status/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/enforce-subscription-status/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/enforce-subscription-status/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-enforce-subscription-status.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-enforce-subscription-status.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\enforce-subscription-status.js",
+        "sha256": "df66214098ea26653d5c868e8a4fd09180f37681f5d6508504d93dc005ffb11e",
+        "bytes": 814386,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\enforce-subscription-status.js.map",
+          "sha256": "9cc2c406e2ded6c29ef348b521d20cf47779e4a78ccd2292293c3ff60d1ef14c",
+          "bytes": 1493130
+        }
+      }
+    },
+    {
+      "name": "export-report-snapshot",
+      "entry": "backend/supabase/functions/export-report-snapshot/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/report-export.js",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/export-report-snapshot/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/export-report-snapshot/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/export-report-snapshot/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/export-report-snapshot/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/export-report-snapshot/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/export-report-snapshot/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/export-report-snapshot/index.ts",
+          "specifier": "../../../src/services/report-export.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/report-export.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/report-export.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-export-report-snapshot.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-export-report-snapshot.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\export-report-snapshot.js",
+        "sha256": "b2e0af681cc0b02e2505a969a393c23a98c696aa69c9cf887286da1f6c9b206f",
+        "bytes": 818010,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\export-report-snapshot.js.map",
+          "sha256": "5c082a5d64e617f9941d8a400f13767f8ecefec514be415b63833d3f986c7e57",
+          "bytes": 1500969
+        }
+      }
+    },
+    {
+      "name": "generate-report",
+      "entry": "backend/supabase/functions/generate-report/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/build-report-payload.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/supabase/functions/_shared/action-log.ts",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/staging-guard.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/generate-report/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../../../src/services/build-report-payload.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/build-report-payload.js"
+        },
+        {
+          "from": "backend/src/services/build-report-payload.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../_shared/staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/generate-report/index.ts",
+          "specifier": "../_shared/action-log.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/action-log.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/build-report-payload.js",
+        "backend/src/services/enforce-subscription-readonly.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-generate-report.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\generate-report\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-generate-report.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\generate-report.js",
+        "sha256": "5ce8e4bcb2ecaab513ade9727d1e4372779f0830d20fb8aa08c294862f438931",
+        "bytes": 836889,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\generate-report.js.map",
+          "sha256": "72c4d587bc30c532f2bb0bf43093bd1c7cf77455f8f4f5bd69719113495bb33a",
+          "bytes": 1531390
+        }
+      }
+    },
+    {
+      "name": "manual-transcription",
+      "entry": "backend/supabase/functions/manual-transcription/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/contracts/manual-transcription.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/unit-normalization.js",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/manual-transcription/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/manual-transcription/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/manual-transcription/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/manual-transcription/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/manual-transcription/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/manual-transcription/index.ts",
+          "specifier": "../../../src/contracts/manual-transcription.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/manual-transcription.js"
+        },
+        {
+          "from": "backend/src/contracts/manual-transcription.js",
+          "specifier": "../services/unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/src/services/unit-normalization.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/supabase/functions/manual-transcription/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/contracts/manual-transcription.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/unit-normalization.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-manual-transcription.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-manual-transcription.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\manual-transcription.js",
+        "sha256": "625a00e3a60ab91f4a6d2c4cf84658e06af0a77ad3b0edb274467b9420764f0c",
+        "bytes": 821697,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\manual-transcription.js.map",
+          "sha256": "dbd9210f59a71b2c25e0c590ee304e203831133e99eef4c5014900bc0afeb7ed",
+          "bytes": 1508548
+        }
+      }
+    },
+    {
+      "name": "process-document",
+      "entry": "backend/supabase/functions/process-document/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/providers/index.js",
+        "backend/src/providers/llm-provider.js",
+        "backend/src/providers/mock-llm-provider.js",
+        "backend/src/providers/mock-ocr-provider.js",
+        "backend/src/providers/ocr-provider.js",
+        "backend/src/services/classify-document-draft.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/manual-source-guard.js",
+        "backend/src/services/normalize-extracted-document-draft.js",
+        "backend/src/services/run-ai-audit.js",
+        "backend/src/services/unit-normalization.js",
+        "backend/supabase/functions/_shared/action-log.ts",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/staging-guard.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/process-document/index.ts",
+        "modules/document-provenance/manual.js"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../../../src/services/normalize-extracted-document-draft.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/normalize-extracted-document-draft.js"
+        },
+        {
+          "from": "backend/src/services/normalize-extracted-document-draft.js",
+          "specifier": "./unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/src/services/unit-normalization.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../../../src/providers/index.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/index.js"
+        },
+        {
+          "from": "backend/src/providers/index.js",
+          "specifier": "./mock-ocr-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/mock-ocr-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-ocr-provider.js",
+          "specifier": "./ocr-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/ocr-provider.js"
+        },
+        {
+          "from": "backend/src/providers/index.js",
+          "specifier": "./mock-llm-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/mock-llm-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "./llm-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/llm-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "../services/classify-document-draft.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/classify-document-draft.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "../services/run-ai-audit.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/run-ai-audit.js"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../_shared/staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../_shared/action-log.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/action-log.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/process-document/index.ts",
+          "specifier": "../../../src/services/manual-source-guard.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/manual-source-guard.js"
+        },
+        {
+          "from": "backend/src/services/manual-source-guard.js",
+          "specifier": "../../../modules/document-provenance/manual.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "modules/document-provenance/manual.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/providers/index.js",
+        "backend/src/providers/llm-provider.js",
+        "backend/src/providers/mock-llm-provider.js",
+        "backend/src/providers/mock-ocr-provider.js",
+        "backend/src/providers/ocr-provider.js",
+        "backend/src/services/classify-document-draft.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/manual-source-guard.js",
+        "backend/src/services/normalize-extracted-document-draft.js",
+        "backend/src/services/run-ai-audit.js",
+        "backend/src/services/unit-normalization.js",
+        "modules/document-provenance/manual.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-process-document.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\process-document\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-process-document.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\process-document.js",
+        "sha256": "0b15de08e1b8e86da63b13bb226dcf77e45af9ad0b959a6ba8fad8a7218a09e0",
+        "bytes": 830382,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\process-document.js.map",
+          "sha256": "8e057ab022a710f73368bad7cfebf007fd9d4ded7fdf64346daa92ec203a0905",
+          "bytes": 1522459
+        }
+      }
+    },
+    {
+      "name": "recalculate-project",
+      "entry": "backend/supabase/functions/recalculate-project/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/calculate-emission-activity.js",
+        "backend/src/services/recalculate-project.js",
+        "backend/src/services/resolve-emission-factor.js",
+        "backend/src/services/unit-normalization.js",
+        "backend/supabase/functions/_shared/action-log.ts",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/staging-guard.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/recalculate-project/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../../../src/services/recalculate-project.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/recalculate-project.js"
+        },
+        {
+          "from": "backend/src/services/recalculate-project.js",
+          "specifier": "./calculate-emission-activity.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/calculate-emission-activity.js"
+        },
+        {
+          "from": "backend/src/services/calculate-emission-activity.js",
+          "specifier": "./unit-normalization.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/unit-normalization.js"
+        },
+        {
+          "from": "backend/src/services/unit-normalization.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/calculate-emission-activity.js",
+          "specifier": "./resolve-emission-factor.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/resolve-emission-factor.js"
+        },
+        {
+          "from": "backend/src/services/resolve-emission-factor.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/src/services/resolve-emission-factor.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/calculate-emission-activity.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../_shared/staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/recalculate-project/index.ts",
+          "specifier": "../_shared/action-log.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/action-log.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/calculate-emission-activity.js",
+        "backend/src/services/recalculate-project.js",
+        "backend/src/services/resolve-emission-factor.js",
+        "backend/src/services/unit-normalization.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-recalculate-project.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-recalculate-project.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\recalculate-project.js",
+        "sha256": "26c82fc8d08de318bca65c8eaedc87331987eb45f34ea07ffbc31a4c9786f246",
+        "bytes": 826592,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\recalculate-project.js.map",
+          "sha256": "f1c6157901d1404a278baa61bc36c89903c2da4d51c706e17004fe5d55f0cb8f",
+          "bytes": 1514654
+        }
+      }
+    },
+    {
+      "name": "run-ai-audit",
+      "entry": "backend/supabase/functions/run-ai-audit/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/providers/index.js",
+        "backend/src/providers/llm-provider.js",
+        "backend/src/providers/mock-llm-provider.js",
+        "backend/src/providers/mock-ocr-provider.js",
+        "backend/src/providers/ocr-provider.js",
+        "backend/src/services/classify-document-draft.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/run-ai-audit.js",
+        "backend/supabase/functions/_shared/action-log.ts",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/staging-guard.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/run-ai-audit/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../../../src/contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../../../src/providers/index.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/index.js"
+        },
+        {
+          "from": "backend/src/providers/index.js",
+          "specifier": "./mock-ocr-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/mock-ocr-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-ocr-provider.js",
+          "specifier": "./ocr-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/ocr-provider.js"
+        },
+        {
+          "from": "backend/src/providers/index.js",
+          "specifier": "./mock-llm-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/mock-llm-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "./llm-provider.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/providers/llm-provider.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "../services/classify-document-draft.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/classify-document-draft.js"
+        },
+        {
+          "from": "backend/src/providers/mock-llm-provider.js",
+          "specifier": "../services/run-ai-audit.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/run-ai-audit.js"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../_shared/staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        },
+        {
+          "from": "backend/supabase/functions/run-ai-audit/index.ts",
+          "specifier": "../_shared/action-log.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/action-log.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/action-log.ts",
+          "specifier": "./staging-guard.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/staging-guard.ts"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/providers/index.js",
+        "backend/src/providers/llm-provider.js",
+        "backend/src/providers/mock-llm-provider.js",
+        "backend/src/providers/mock-ocr-provider.js",
+        "backend/src/providers/ocr-provider.js",
+        "backend/src/services/classify-document-draft.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/run-ai-audit.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-run-ai-audit.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-run-ai-audit.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\run-ai-audit.js",
+        "sha256": "ad2997e5279f64a718d811d4f06a739b8a54c4b2f2badee2275fd3ccf72996d0",
+        "bytes": 829567,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\run-ai-audit.js.map",
+          "sha256": "d46f16b1a378048845594e1971dd5b2f5a7acd22677eabef78aef80a5878c37b",
+          "bytes": 1520405
+        }
+      }
+    },
+    {
+      "name": "save-manual-activity",
+      "entry": "backend/supabase/functions/save-manual-activity/index.ts",
+      "files": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/contracts/manual-activity.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/save-manual-activity/index.ts"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/save-manual-activity/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/save-manual-activity/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/save-manual-activity/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/save-manual-activity/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/save-manual-activity/index.ts",
+          "specifier": "../../../src/contracts/manual-activity.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/manual-activity.js"
+        },
+        {
+          "from": "backend/supabase/functions/save-manual-activity/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/contracts/contracts.js",
+        "backend/src/contracts/manual-activity.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-save-manual-activity.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-save-manual-activity.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\save-manual-activity.js",
+        "sha256": "cd72b661256531199fc46bc0f8d66c75f7dc3ef85de017f1b6dbc9b53635f770",
+        "bytes": 818180,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\save-manual-activity.js.map",
+          "sha256": "ee6d8a5d3f21c0bd335e647f51f4069e9a213b5e4ca7a67a6513bda26330afa5",
+          "bytes": 1501285
+        }
+      }
+    },
+    {
+      "name": "verify-upload-receipt",
+      "entry": "backend/supabase/functions/verify-upload-receipt/index.ts",
+      "files": [
+        "backend/src/adapters/supabase-private-file.js",
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/verify-upload-receipt.js",
+        "backend/supabase/functions/_shared/authz.ts",
+        "backend/supabase/functions/_shared/cors.ts",
+        "backend/supabase/functions/_shared/http.ts",
+        "backend/supabase/functions/_shared/supabase-client.ts",
+        "backend/supabase/functions/_shared/supabase-sdk.ts",
+        "backend/supabase/functions/verify-upload-receipt/index.ts",
+        "modules/file-verification/index.js"
+      ],
+      "edges": [
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../_shared/cors.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/cors.ts"
+        },
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../_shared/http.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/http.ts"
+        },
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../_shared/authz.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/authz.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@supabase/supabase-js@2.49.4",
+          "dynamic": false,
+          "kind": "exact_npm",
+          "to": "npm:@supabase/supabase-js@2.49.4"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-sdk.ts",
+          "specifier": "npm:@types/node@22.12.0",
+          "dynamic": false,
+          "typeReference": true,
+          "kind": "exact_npm",
+          "to": "npm:@types/node@22.12.0"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/authz.ts",
+          "specifier": "./supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/_shared/supabase-client.ts",
+          "specifier": "./supabase-sdk.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-sdk.ts"
+        },
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../_shared/supabase-client.ts",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/supabase/functions/_shared/supabase-client.ts"
+        },
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../../../src/services/enforce-subscription-readonly.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/enforce-subscription-readonly.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../i18n/messages.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/i18n/messages.js"
+        },
+        {
+          "from": "backend/src/services/enforce-subscription-readonly.js",
+          "specifier": "../contracts/contracts.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/contracts/contracts.js"
+        },
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../../../src/services/verify-upload-receipt.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/services/verify-upload-receipt.js"
+        },
+        {
+          "from": "backend/src/services/verify-upload-receipt.js",
+          "specifier": "../../../modules/file-verification/index.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "modules/file-verification/index.js"
+        },
+        {
+          "from": "backend/supabase/functions/verify-upload-receipt/index.ts",
+          "specifier": "../../../src/adapters/supabase-private-file.js",
+          "dynamic": false,
+          "kind": "relative",
+          "to": "backend/src/adapters/supabase-private-file.js"
+        }
+      ],
+      "missing": [],
+      "unresolved": [],
+      "outsideFunctions": [
+        "backend/src/adapters/supabase-private-file.js",
+        "backend/src/contracts/contracts.js",
+        "backend/src/i18n/messages.js",
+        "backend/src/services/enforce-subscription-readonly.js",
+        "backend/src/services/verify-upload-receipt.js",
+        "modules/file-verification/index.js"
+      ],
+      "check": {
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "check-verify-upload-receipt.txt"
+      },
+      "resolvedGraph": {
+        "redirectsScope": "reachable targets or direct source imports; raw Deno info may include shared-lock redirects",
+        "redirects": {},
+        "supabaseSdkVersions": [],
+        "modules": [
+          {
+            "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts",
+            "kind": "external"
+          }
+        ]
+      },
+      "bundle": {
+        "status": "STATIC_BUNDLE_CREATED",
+        "exitCode": 0,
+        "typeChecking": "separate deno check; bundle does not type-check by default",
+        "log": "bundle-verify-upload-receipt.txt",
+        "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\verify-upload-receipt.js",
+        "sha256": "2f8477988bad67bbc07ec7d9881a14769560a046b57e6b94560a22b5ac95d0b3",
+        "bytes": 828014,
+        "remainingImports": [
+          {
+            "specifier": "node:module",
+            "dynamic": false
+          }
+        ],
+        "sourceMap": {
+          "path": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\verify-upload-receipt.js.map",
+          "sha256": "9968c903942fd6816ec2e6937bcf2b6477708c39fc377987ee744a66b342c4be",
+          "bytes": 1517282
+        }
+      }
+    }
+  ],
+  "commands": [
+    {
+      "label": "version-supabase-cli",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\supabase-2.122.1\\supabase.exe",
+      "args": [
+        "--version"
+      ],
+      "started": "2026-11-07T14:42:14.327Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "version-deno",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "--version"
+      ],
+      "started": "2026-11-07T14:42:14.716Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-adjustment-rule-result",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:14.802Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-adjustment-rule-result",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:16.712Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-adjustment-rule-result",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\adjustment-rule-result.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:16.734Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-analytics-emissions",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:17.324Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-analytics-emissions",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:19.035Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-analytics-emissions",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\analytics-emissions.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:19.055Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-classify-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\classify-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:19.533Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-classify-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\classify-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:21.411Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-classify-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\classify-document.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\classify-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:21.432Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-confirm-draft",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:21.919Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-confirm-draft",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:23.783Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-confirm-draft",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\confirm-draft.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:23.806Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-create-organization",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\create-organization\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:24.272Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-create-organization",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\create-organization\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:25.951Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-create-organization",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\create-organization.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\create-organization\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:25.974Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-delete-uploaded-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:26.454Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-delete-uploaded-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:28.229Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-delete-uploaded-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\delete-uploaded-document.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:28.255Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-enforce-subscription-status",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:28.758Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-enforce-subscription-status",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:30.647Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-enforce-subscription-status",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\enforce-subscription-status.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:30.668Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-export-report-snapshot",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:31.131Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-export-report-snapshot",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:33.375Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-export-report-snapshot",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\export-report-snapshot.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:33.399Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-generate-report",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\generate-report\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:33.843Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-generate-report",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\generate-report\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:35.822Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-generate-report",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\generate-report.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\generate-report\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:35.844Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-manual-transcription",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:36.316Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-manual-transcription",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:37.992Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-manual-transcription",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\manual-transcription.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:38.016Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-process-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\process-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:38.492Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-process-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\process-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:40.290Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-process-document",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\process-document.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\process-document\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:40.311Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-recalculate-project",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:40.745Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-recalculate-project",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:42.497Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-recalculate-project",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\recalculate-project.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:42.519Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-run-ai-audit",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:42.947Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-run-ai-audit",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:44.749Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-run-ai-audit",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\run-ai-audit.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:44.770Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-save-manual-activity",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:45.217Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-save-manual-activity",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:46.941Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-save-manual-activity",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\save-manual-activity.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:46.963Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "check-verify-upload-receipt",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "check",
+        "--all",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--cached-only",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:47.431Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "graph-verify-upload-receipt",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "info",
+        "--json",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:49.227Z",
+      "exitCode": 0,
+      "error": null
+    },
+    {
+      "label": "bundle-verify-upload-receipt",
+      "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+      "args": [
+        "bundle",
+        "--no-config",
+        "--node-modules-dir=none",
+        "--allow-import=esm.sh,registry.npmjs.org",
+        "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-33d3613487f4\\deno.lock",
+        "--frozen-lockfile",
+        "--platform=deno",
+        "--packages=bundle",
+        "--format=esm",
+        "--sourcemap=external",
+        "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\bundles\\verify-upload-receipt.js",
+        "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts"
+      ],
+      "started": "2026-11-07T14:42:49.249Z",
+      "exitCode": 0,
+      "error": null
+    }
+  ],
+  "managedEdgeRuntime": {
+    "pinControl": "NOT_CONTROLLED_BY_THIS_PREFLIGHT",
+    "reference": "supabase/edge-runtime v1.78.1",
+    "referenceDeno": "2.1.4",
+    "referenceDenoCore": "0.324.0",
+    "referenceSources": [
+      "https://github.com/supabase/edge-runtime/blob/v1.78.1/deno/Cargo.toml",
+      "https://github.com/supabase/edge-runtime/blob/v1.78.1/Cargo.toml"
+    ],
+    "managedActual": "UNKNOWN",
+    "status": "NOT_RUN"
+  },
+  "notRun": [
+    "Deno run/serve or business handlers",
+    "Supabase cloud/login/link/deploy/database",
+    "Docker/Edge ESZIP/live Edge compatibility",
+    "Real JWT/Storage/business E2E"
+  ],
+  "artifactRoot": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "lockSha256": "5897f3dd1da8f61e76c7aa93463166ed5efd8bf2939e4efe222fd62698cd2725",
+  "lockUnchanged": true,
+  "summary": {
+    "checksPassed": 15,
+    "checksFailed": 0,
+    "bundlesCreated": 15,
+    "total": 15
+  },
+  "status": "STATIC_PREFLIGHT_PASS_NOT_RUNTIME_ACCEPTANCE"
+}
