@@ -225,9 +225,10 @@ test('real SQL overflow preserves 22003, rolls back review rows, restores postgr
   try {
     await flow.receive();
     let failure;
-    // The real MANUAL contract rejects out-of-range JSON before SQL. Narrow a
-    // test-only empty column instead to retain a genuine SQL 22003/rollback check.
-    await flow.db.exec('alter table emission_activities alter column quantity type numeric(3,2)');
+    // Keep actual schema/views intact. A valid synthetic factor (1e9 kg/kWh)
+    // times valid 100kWh overflows calculation_results.numeric(20,10) in the
+    // real confirmation INSERT, after activity creation, exercising SQL 22003.
+    await flow.db.query("insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,subcategory,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test,metadata) values($1,$2,'SYNTHETIC-SQL-OVERFLOW','SYNTHETIC OVERFLOW ONLY','LOCAL TEST','energy','purchased_electricity','electricity','kWh',1000000000,'2026-01-01',1,'custom','active','staging',true,'{\"synthetic\":true}')",[flow.scope.factorId,flow.scope.organizationId]);
     try { await flow.review(); }
     catch (error) { failure = error; }
     const rows = await persisted(flow);
@@ -238,7 +239,7 @@ test('real SQL overflow preserves 22003, rolls back review rows, restores postgr
     assert.equal(rows.reports.length, 0);
     assert.equal((await flow.db.query('select current_user as role')).rows[0].role, 'postgres');
     assert.equal(failure?.code, '22003', 'role cleanup must not replace numeric overflow with transaction-aborted 25P02');
-    await flow.db.exec('alter table emission_activities alter column quantity type numeric(20,8)');
+    await flow.db.query('delete from emission_factors where id=$1',[flow.scope.factorId]);
     await flow.review();
     assert.equal((await persisted(flow)).activities.length, 1);
   } finally { await flow.close(); }
