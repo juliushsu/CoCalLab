@@ -1,0 +1,23 @@
+{
+  "cli_version": "2.122.1",
+  "command": "supabase init --workdir <new dedicated tooling/deployment-config-20261107>",
+  "scope": "LOCAL_FILES_ONLY; no Docker, listener, database, project link or cloud operation",
+  "generated_default_sha256": "1df9c9c5adc772c23c878f9ec88709e0df5dbbf6851f4f857124a933703d8f67",
+  "prepared_full_config_sha256": "41f470d67b290836b5338e1658af8b0ac551c195c6214d231aea823263792e19",
+  "target_pg_version": "UNKNOWN;17 is CLI default only",
+  "runtime_patch": "UNKNOWN",
+  "seed_disabled": true,
+  "signup_disabled": true,
+  "config_applied": "NOT_RUN",
+  "cli_config_parse_probe": {
+    "command": "supabase functions new local-config-probe --auth user --workdir <dedicated config tooling>",
+    "exit_code": 0,
+    "status": "PASS_LOCAL_CONFIG_LOAD_ONLY",
+    "effect": "Created one disposable local function source directory; never served/deployed/registered remotely",
+    "does_not_prove": [
+      "entrypoint bundle compatibility",
+      "gateway JWT in managed service",
+      "actual Auth/CORS application"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source_sha": "ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde",
+  "command": "node deployment/uat/prepare-manual-fixtures.mjs",
+  "local_creation_and_readback": "PASS",
+  "native_file_selection": "NOT_RUN",
+  "real_upload": "NOT_RUN",
+  "synthetic": true,
+  "purpose": "manual native chooser test only; never OCR or business evidence",
+  "files": [
+    {
+      "name": "SYNTHETIC-100kWh.pdf",
+      "bytes": 740,
+      "sha256": "0c6a8243d7377da2708a3847e4b1140117fb222d30a18b4ca914ee3ff9bf6d83",
+      "expected": "valid synthetic PDF; actual upload still requires approval"
+    },
+    {
+      "name": "SYNTHETIC-empty.pdf",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected": "reject; never create successful receipt"
+    },
+    {
+      "name": "SYNTHETIC-invalid.pdf",
+      "bytes": 43,
+      "sha256": "bcc619d616f16e348b05937fabb3b5dcfc71f8e943d297ba83ffdb713c762e78",
+      "expected": "reject; never create successful receipt"
+    }
+  ]
+}

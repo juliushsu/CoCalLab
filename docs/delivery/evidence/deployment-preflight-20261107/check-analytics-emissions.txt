@@ -1,0 +1,94 @@
+Check backend/supabase/functions/analytics-emissions/index.ts
+TS2303 [ERROR]: Circular definition of import alias 'AddressInfo'.
+    AddressInfo,
+    ~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:2:5
+
+TS2303 [ERROR]: Circular definition of import alias 'CertMeta'.
+    CertMeta,
+    ~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:3:5
+
+TS2303 [ERROR]: Circular definition of import alias 'ClientOptions'.
+    ClientOptions,
+    ~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:4:5
+
+TS2303 [ERROR]: Circular definition of import alias 'CloseEvent'.
+    CloseEvent,
+    ~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:5:5
+
+TS2303 [ERROR]: Circular definition of import alias 'createWebSocketStream'.
+    createWebSocketStream,
+    ~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:6:5
+
+TS2303 [ERROR]: Circular definition of import alias 'Data'.
+    Data,
+    ~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:7:5
+
+TS2303 [ERROR]: Circular definition of import alias 'ErrorEvent'.
+    ErrorEvent,
+    ~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:8:5
+
+TS2303 [ERROR]: Circular definition of import alias 'Event'.
+    Event,
+    ~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:9:5
+
+TS2303 [ERROR]: Circular definition of import alias 'EventListenerOptions'.
+    EventListenerOptions,
+    ~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:10:5
+
+TS2303 [ERROR]: Circular definition of import alias 'FinishRequestCallback'.
+    FinishRequestCallback,
+    ~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:11:5
+
+TS2303 [ERROR]: Circular definition of import alias 'MessageEvent'.
+    MessageEvent,
+    ~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:12:5
+
+TS2303 [ERROR]: Circular definition of import alias 'PerMessageDeflateOptions'.
+    PerMessageDeflateOptions,
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:13:5
+
+TS2303 [ERROR]: Circular definition of import alias 'RawData'.
+    RawData,
+    ~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:14:5
+
+TS2303 [ERROR]: Circular definition of import alias 'ServerOptions'.
+    ServerOptions,
+    ~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:15:5
+
+TS2303 [ERROR]: Circular definition of import alias 'VerifyClientCallbackAsync'.
+    VerifyClientCallbackAsync,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:16:5
+
+TS2303 [ERROR]: Circular definition of import alias 'VerifyClientCallbackSync'.
+    VerifyClientCallbackSync,
+    ~~~~~~~~~~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:17:5
+
+TS2303 [ERROR]: Circular definition of import alias 'WebSocket'.
+    WebSocket,
+    ~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:18:5
+
+TS2303 [ERROR]: Circular definition of import alias 'WebSocketServer'.
+    WebSocketServer,
+    ~~~~~~~~~~~~~~~
+    at https://esm.sh/@types/ws@8.5.13/index.d.mts:19:5
+
+Found 18 errors.
+
+error: Type checking failed.

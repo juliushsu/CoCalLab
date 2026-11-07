@@ -1,0 +1,57 @@
+# Local preparation template ONLY. Not linked, applied or deployed.
+# Stage beside the fixed source's functions directory in a separate review workspace.
+# Managed Auth settings still require an explicit target and approved application.
+project_id = "cocallab-uat-pending-owner"
+
+[auth]
+site_url = "http://127.0.0.1:4211"
+additional_redirect_urls = ["http://127.0.0.1:4211/login"]
+# Only existing password sign-in is in scope; no invented OAuth callback route.
+
+[functions.verify-upload-receipt]
+verify_jwt = true
+entrypoint = "./functions/verify-upload-receipt/index.ts"
+[functions.manual-transcription]
+verify_jwt = true
+entrypoint = "./functions/manual-transcription/index.ts"
+[functions.confirm-draft]
+verify_jwt = true
+entrypoint = "./functions/confirm-draft/index.ts"
+[functions.recalculate-project]
+verify_jwt = true
+entrypoint = "./functions/recalculate-project/index.ts"
+[functions.generate-report]
+verify_jwt = true
+entrypoint = "./functions/generate-report/index.ts"
+[functions.export-report-snapshot]
+verify_jwt = true
+entrypoint = "./functions/export-report-snapshot/index.ts"
+[functions.delete-uploaded-document]
+verify_jwt = true
+entrypoint = "./functions/delete-uploaded-document/index.ts"
+[functions.analytics-emissions]
+verify_jwt = true
+entrypoint = "./functions/analytics-emissions/index.ts"
+[functions.adjustment-rule-result]
+verify_jwt = true
+entrypoint = "./functions/adjustment-rule-result/index.ts"
+[functions.create-organization]
+verify_jwt = true
+entrypoint = "./functions/create-organization/index.ts"
+[functions.enforce-subscription-status]
+verify_jwt = true
+entrypoint = "./functions/enforce-subscription-status/index.ts"
+
+# Existing Mock paths are preserved in source/bundle inventory, not enabled as real OCR/AI acceptance.
+[functions.process-document]
+enabled = false
+verify_jwt = true
+entrypoint = "./functions/process-document/index.ts"
+[functions.classify-document]
+enabled = false
+verify_jwt = true
+entrypoint = "./functions/classify-document/index.ts"
+[functions.run-ai-audit]
+enabled = false
+verify_jwt = true
+entrypoint = "./functions/run-ai-audit/index.ts"

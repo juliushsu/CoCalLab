@@ -1,0 +1,646 @@
+{
+  "sourceCommit": "ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde",
+  "status": "BLOCKED_OR_PARTIAL",
+  "lockSha256": "af50efef97d0c17ba5507a026d87064e781b7bc8eb3ac9bf7d83c37e30c5e765",
+  "lockMatches": true,
+  "diagnosticCounting": "instances across separate function checks; shared errors repeat and are not unique defects",
+  "functions": [
+    {
+      "name": "adjustment-rule-result",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "a12ff28d005535292ed7a38477c31ed5086e6fe48ab221d125bf6dd54a4a67e1",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "analytics-emissions",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "52b1dfcfb3b645a05934916ef49f7e026fe4de5e48b4b086229af5947dcd80b7",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "classify-document",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "8f5f67c098b8b95236fede19df6dc09fd0d9cc507ab3250966f5f481286b32bb",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "confirm-draft",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "98a7ae93c559eb3f72ca6f8dc643e5f945b277488c8365b87a695f440061bccd",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "create-organization",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 29,
+      "parsedErrorCount": 29,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2304": 26,
+        "TS2552": 3
+      },
+      "origins": {
+        "remote_dependency": 29
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/types.d.ts": 1,
+        "https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.d.ts": 2,
+        "https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.dom.d.ts": 24,
+        "https://esm.sh/@supabase/auth-js@2.119.0/dist/module/lib/webauthn.errors.d.ts": 2
+      },
+      "bundleSha256": "af61c0e6ee376933471ba193b336ffe0faa7bf3e2dcbf0282c35bea291b84873",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "delete-uploaded-document",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 21,
+      "parsedErrorCount": 21,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18,
+        "TS2339": 3
+      },
+      "origins": {
+        "local_source": 3,
+        "remote_dependency": 18
+      },
+      "localErrors": [
+        {
+          "code": "TS2339",
+          "message": "Property 'code' does not exist on type '{}'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/delete-uploaded-document/index.ts",
+          "line": 16,
+          "column": 63,
+          "excerpt": "TS2339 [ERROR]: Property 'code' does not exist on type '{}'.\n    at <FIXED_SOURCE>/backend/supabase/functions/delete-uploaded-document/index.ts:16:63"
+        },
+        {
+          "code": "TS2339",
+          "message": "Property 'message' does not exist on type '{}'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/delete-uploaded-document/index.ts",
+          "line": 16,
+          "column": 114,
+          "excerpt": "TS2339 [ERROR]: Property 'message' does not exist on type '{}'.\n    at <FIXED_SOURCE>/backend/supabase/functions/delete-uploaded-document/index.ts:16:114"
+        },
+        {
+          "code": "TS2339",
+          "message": "Property 'status' does not exist on type '{}'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/delete-uploaded-document/index.ts",
+          "line": 16,
+          "column": 542,
+          "excerpt": "TS2339 [ERROR]: Property 'status' does not exist on type '{}'.\n    at <FIXED_SOURCE>/backend/supabase/functions/delete-uploaded-document/index.ts:16:542"
+        }
+      ],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "db99283c0446508a22ec81e7490532a595e4ab3921eff8ae9a849697e735cade",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "enforce-subscription-status",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "01e27b5aa3069c076770aad5d2db626ad46a4c80f65e05d4bf7c5799dc531d01",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "export-report-snapshot",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "6cf22c37df3f88df38894d9947d351fcd1ef3eba54f9d3e152a892b452d55064",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "generate-report",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 21,
+      "parsedErrorCount": 21,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18,
+        "TS2322": 3
+      },
+      "origins": {
+        "local_source": 3,
+        "remote_dependency": 18
+      },
+      "localErrors": [
+        {
+          "code": "TS2322",
+          "message": "Type '{ id: any; slug: any; legal_name: any; display_name: any; tax_id: any; country_code: any; timezone: any; }' is not assignable to type 'null | undefined'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/generate-report/index.ts",
+          "line": 139,
+          "column": 7,
+          "excerpt": "TS2322 [ERROR]: Type '{ id: any; slug: any; legal_name: any; display_name: any; tax_id: any; country_code: any; timezone: any; }' is not assignable to type 'null | undefined'.\n      workspace,\n      ~~~~~~~~~\n    at <FIXED_SOURCE>/backend/supabase/functions/generate-report/index.ts:139:7"
+        },
+        {
+          "code": "TS2322",
+          "message": "Type '{ id: any; workspace_id: any; entity_code: any; registered_name: any; display_name: any; tax_id: any; country_code: any; registration_address: any; industry_code: any; status: any; } | null' is not assignable to type 'null | undefined'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/generate-report/index.ts",
+          "line": 140,
+          "column": 7,
+          "excerpt": "TS2322 [ERROR]: Type '{ id: any; workspace_id: any; entity_code: any; registered_name: any; display_name: any; tax_id: any; country_code: any; registration_address: any; industry_code: any; status: any; } | null' is not assignable to type 'null | undefined'.\n  Type '{ id: any; workspace_id: any; entity_code: any; registered_name: any; display_name: any; tax_id: any; country_code: any; registration_address: any; industry_code: any; status: any; }' is not assignable to type 'null | undefined'.\n      legal_entity: legalEntity,\n      ~~~~~~~~~~~~\n    at <FIXED_SOURCE>/backend/supabase/functions/generate-report/index.ts:140:7"
+        },
+        {
+          "code": "TS2322",
+          "message": "Type '{ id: any; workspace_id: any; legal_entity_id: any; site_code: any; site_name: any; facility_type: any; address: any; country_code: any; timezone: any; cbam_installation_ref: any; status: any; } | null' is not assignable to type 'null | undefined'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/generate-report/index.ts",
+          "line": 141,
+          "column": 7,
+          "excerpt": "TS2322 [ERROR]: Type '{ id: any; workspace_id: any; legal_entity_id: any; site_code: any; site_name: any; facility_type: any; address: any; country_code: any; timezone: any; cbam_installation_ref: any; status: any; } | null' is not assignable to type 'null | undefined'.\n  Type '{ id: any; workspace_id: any; legal_entity_id: any; site_code: any; site_name: any; facility_type: any; address: any; country_code: any; timezone: any; cbam_installation_ref: any; status: any; }' is not assignable to type 'null | undefined'.\n      site,\n      ~~~~\n    at <FIXED_SOURCE>/backend/supabase/functions/generate-report/index.ts:141:7"
+        }
+      ],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "bd9524fa18b58b4018e8b47c8c65ba1b761f95dab889e4306e978ad18b555a38",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "manual-transcription",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "058e6878014fb630ac597a9d257cbf5215bdd05a2c2c11320a6cd025c57909fc",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "process-document",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "d84c8bb7e5c06dc3ea76f6a38cd05d630724e06bc33f5a24f6b37ec83910a056",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "recalculate-project",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "1cec0203eb23dc3544e2db3091c8eb518e29967607542bccf3d83647d74175ac",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "run-ai-audit",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 18,
+      "parsedErrorCount": 18,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18
+      },
+      "origins": {
+        "remote_dependency": 18
+      },
+      "localErrors": [],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "35fb361e1b3d1f94a74a1091b25b4e83eb6315bc86bc2c9d9107619b5b2d9e6e",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    },
+    {
+      "name": "verify-upload-receipt",
+      "typeCheck": "FAILED",
+      "declaredErrorCount": 21,
+      "parsedErrorCount": 21,
+      "diagnosticCountMatches": true,
+      "errorCodes": {
+        "TS2303": 18,
+        "TS2339": 3
+      },
+      "origins": {
+        "local_source": 3,
+        "remote_dependency": 18
+      },
+      "localErrors": [
+        {
+          "code": "TS2339",
+          "message": "Property 'code' does not exist on type '{}'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/verify-upload-receipt/index.ts",
+          "line": 21,
+          "column": 60,
+          "excerpt": "TS2339 [ERROR]: Property 'code' does not exist on type '{}'.\n  const code=cause instanceof AuthzError?cause.code:cause?.code||'VERIFICATION_NOT_CONFIRMED';\n                                                           ~~~~\n    at <FIXED_SOURCE>/backend/supabase/functions/verify-upload-receipt/index.ts:21:60"
+        },
+        {
+          "code": "TS2339",
+          "message": "Property 'message' does not exist on type '{}'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/verify-upload-receipt/index.ts",
+          "line": 22,
+          "column": 53,
+          "excerpt": "TS2339 [ERROR]: Property 'message' does not exist on type '{}'.\n    at <FIXED_SOURCE>/backend/supabase/functions/verify-upload-receipt/index.ts:22:53"
+        },
+        {
+          "code": "TS2339",
+          "message": "Property 'status' does not exist on type '{}'.",
+          "origin": "local_source",
+          "file": "<FIXED_SOURCE>/backend/supabase/functions/verify-upload-receipt/index.ts",
+          "line": 22,
+          "column": 348,
+          "excerpt": "TS2339 [ERROR]: Property 'status' does not exist on type '{}'.\n    at <FIXED_SOURCE>/backend/supabase/functions/verify-upload-receipt/index.ts:22:348"
+        }
+      ],
+      "remoteFiles": {
+        "https://esm.sh/@types/ws@8.5.13/index.d.mts": 18
+      },
+      "bundleSha256": "838854c10daa740d7ad68561d9209d3c5af035eaf2c8b795f2b973b1eab4f4d7",
+      "bundleHashMatches": true,
+      "sourceMapHashMatches": true,
+      "remainingNodeBuiltins": [
+        "node:buffer",
+        "node:crypto",
+        "node:events",
+        "node:fs",
+        "node:http",
+        "node:https",
+        "node:net",
+        "node:os",
+        "node:path",
+        "node:process",
+        "node:punycode",
+        "node:stream",
+        "node:tls",
+        "node:url",
+        "node:util",
+        "node:zlib"
+      ],
+      "edgeCompatibility": "NOT_RUN"
+    }
+  ],
+  "totals": {
+    "functions": 14,
+    "checksPassed": 0,
+    "checksFailed": 14,
+    "diagnosticInstances": 272,
+    "localDiagnosticInstances": 9,
+    "remoteDiagnosticInstances": 263,
+    "allDiagnosticCountsMatch": true,
+    "allBundleHashesMatch": true,
+    "allSourceHashesMatch": true,
+    "allToolHashesMatch": true
+  }
+}

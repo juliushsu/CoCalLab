@@ -1,14 +1,16 @@
-# Next action — 2026-11-07
+# Next action — 2026-11-07／真服務準備
 
-- RELEASE HOLD；正式UAT固定7dccd5452152f2495d10ad1437d5d03215166065。未合併main、部署或操作雲端／正式資料。
-- 整合分支codex/integration-acceptance-20261107；程式固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde（report核心6974e18，ba2c7a5僅本機預覽origin）。PR21–27祖先鏈核對完成，原29路由／選單保留＋MANUAL一路共30。完整交付INTEGRATION_ACCEPTANCE_DELIVERY_20261107.md。
-- SOURCE_DONE_LOCAL：006完整report權威，普通直接寫入／刪除拒絕，legacy不補簽；合法v2整交易保存，lookup/export完整row與request fresh核對；內容或authority漂移409，不建替代報告。server_verified不是碳資料／業務認證。
-- SYNTHETIC_PASS：A/B/shared/viewer ID/API/Storage/exports；handler→RPC間revoke四流程拒絕／sameID重授權恢復不重傳；A-B-A／同人重登舊下載丟棄，routine refresh保留。真React延遲生成競態只來源複核，不冒稱瀏覽器已測。
-- 實跑FE221/221、backend27/27、SQL/HTTP310 cases＝308 PASS／2 NOT_RUN；type-check/lint/build PASS。subset與獨立審閱13＋13及時區／來源各1皆不加總；兩獨立SQL並行仍未驗。
-- 專屬預覽http://127.0.0.1:4207/login →合成API4206；a-owner@product-preview.invalid／synthetic-local-only只本機。API54957／UI77958為本次服務；重啟會清資料／換IDs。其他預覽／既有5432保留。Chrome已走原專案→中心→歷史→report且重載，50kg/.05t與來源提示可見。
-- 同SHA實際SDK可信收件→MANUAL同人確認→calc v1/generic v2同ID重送→完整保存report→授權HTML/JSON實際Node產檔；引用拒刪／無引用封存／pending恢復scenario保留。evidence/integration-acceptance-20261107含JSON/HTML/截圖/完整SQL輸出及41份migration manifest（本機套38，非雲端清單）。
-- READY_TO_FORWARD／WAITING_CLAUDE：CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md，五組原固定SHA保留；新增CLAUDE_REPORT_INTEGRITY_TARGETED_REVIEW_20261107.md固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde。已提示Owner轉交，未聯絡第三方；WAITING_CTO新authority/RPC裁定。
-- WAITING_OWNER：ISOLATED_UAT_EXECUTION_PROPOSAL_20261107.md，推薦新獨立Supabase UAT／純靜態前端，列資源、成本、migration/bucket/帳號／backup-reset-restore窗口供一次核准。現wynqnvidepzzcwutexvn只name match，不寫入；Cloudflare帳戶/Pages、Railway/Runway分類未新增證實，不建資源。
-- BLOCKED/NOT_RUN：真Auth/JWT/Storage/PostgREST/Deno、live migration/drift／NOT VALID資料驗證、兩獨立PG連線、備份還原object generation/proof一致性、原生chooser/存檔、代表使用者及19+1負載；不擴browser權限、不重試Docker/WSL。Mock OCR/AI及未宣稱輸入可信度仍OPEN。
-- 下一條可執行命令（有新變更或需要重現時，repo root）：$env:PGLITE_RUNTIME_ROOT=(Resolve-Path '../tooling/sql-runtime').Path; node --test --test-concurrency=1 backend/tests/integration/report-integrity-sql.test.js backend/tests/integration/report-integrity-http.test.js backend/tests/integration/tenant-revocation-integration.test.js
-- 完整預覽重建：node backend/tools/product-preview/delivery-demo.js --integration-acceptance；另在frontend/readdy-app跑node node_modules/vite/bin/vite.js --config tools/local-preview/vite.acceptance.config.mjs。先核對4206/4207占用，只停止本次自有服務。舊NEXT保留NEXT_ACTION_HISTORY_20261107.md；有限session交接，不宣稱無限背景執行。
+- RELEASE HOLD；PR28仍Draft／未合併。應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde；正式UAT仍7dccd5452152f2495d10ad1437d5d03215166065。branch codex/integration-acceptance-20261107，本輪只加工具／設定草稿／證據／手冊，應用source未變。
+- PREPARATION_DELIVERED／DEPLOYMENT_BLOCKED：REAL_SERVICE_PREPARATION_DELIVERY_20261107.md為本輪入口；deployment/README.md列官方固定工具與設定。CLI2.122.1、原生Deno2.9.8的zip/exe SHA驗證完成，僅workspace tooling，不改PATH／global、不重試Docker/WSL。
+- 實際固定ba2的46source／14入口、remote dependency lock及14JS＋14map已產出並離線hash相符；大產物留tooling/deployment-20261107。deno.lock SHA256 af50efef97d0c17ba5507a026d87064e781b7bc8eb3ac9bf7d83c37e30c5e765，打包前後未變；bundle不是ESZIP／managed runtime通過。
+- BLOCKED：原生Deno frozen typecheck 0/14 PASS、14 FAIL。SDK WS/WebAuthn宣告＋generate-report／verify-upload-receipt／delete-uploaded-document共9個來源診斷；DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md列位置與最小後續修正方案。不改ba2、不加skipLibCheck假綠。參考Edge1.78.1的Deno fork crate2.1.4不同於建置CLI；managed actual UNKNOWN。
+- 本機完整CLI config草稿已產生／parser-load probe PASS，沒有啟動stack/DB/remote。全部14function gateway verify_jwt=true；planned真服務origin4211未啟動，精確Auth redirects/CORS。PG17只是CLI default，target PG UNKNOWN；auto seed/global signup關閉。三Mock enabled=false僅UAT提案，未關掉既有服務。
+- 41份migration順序／SHA與ba2逐一相符；3歷史fixture純DML明列HOLD／fresh-UAT排除提案，不冒稱雲端已套用，不repair/偽造history。NOT VALID歷史資料另驗。
+- MANUAL_REAL_SERVICE_ACCEPTANCE_20261107.md已列原生選檔／落盤、新檔hash、A/B/shared/viewer/API/Storage、撤權／舊分頁／六進行中窗口與sameID恢復。node deployment/uat/prepare-manual-fixtures.mjs可生成正例740-byte PDF／空檔／無效PDF至repo外tooling，原檔及manifest不同內容均拒覆寫；本機實跑讀回hash PASS，native chooser/upload/download仍NOT_RUN。
+- 本輪graph工具3/3 PASS；一名實作＋一名獨立review，獨立graph3/3與46source/14JS/14map/zip/exe/lock/full config hash核對皆重疊不加總。工具／文件定向無未解已證P1/P2；兩P3已修。不重跑前輪FE221/backend27/SQL308+2或冒稱可抵銷Deno FAIL。
+- AUTHORIZED_READ_ONLY／WAITING_LOGIN：Owner已明確授權Supabase metadata／aggregate用途、資料與使用者是否存在、相依、方案／用量唯讀盤點。PC Supabase Dashboard停登入頁，等待Owner自行登入或指定Mac受限盤點；未讀列／Auth名單／Storage／keys／付款內容、未改設定。EXISTING_RESOURCE_READONLY_SCOPE_20261107.md列範圍，既有授權不重問。
+- 環境先盤點分類再選；既有wynqnvidepzzcwutexvn僅歷史候選，Owner表示已付費但plan/use/data尚待live核對；新資源／費用／migration/bucket/上傳/撤權/backup-reset-restore均仍未授權，全部NOT_RUN。Cloudflare/Railway不在此次新增授權內。
+- WAITING_CLAUDE：固定入口9839e1f的CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md不變，含H/R/D/L/M及ba2 I1–I6；未收到新結果、不代為聯絡、不重開整案。WAITING_CTO：相容性最小修正與新候選採用；目前部署仍BLOCKED。
+- NOT_RUN：真JWT/PostgREST/Storage/Edge、managed gateway設定、ESZIP、原生chooser/落盤、2獨立PG連線、live migrations/NOT VALID、backuprestore generation/proof、19+1驗收。既有5432／其他預覽／stash與原ZIP保留，未動Production。
+- 下一條可執行命令（需重現時，repo root）：node backend/tools/deployment-preflight/verify.mjs verify。當前預期exit2=BLOCKED_OR_PARTIAL；graph純離線命令node --test backend/tools/deployment-preflight/graph.test.mjs。不從此工具呼叫任何Supabase服務。
+- 上輪完整本機整合入口／重建與IDs見INTEGRATION_ACCEPTANCE_DELIVERY_20261107.md；本輪沒有重啟預覽，4211僅planned。舊NEXT保留NEXT_ACTION_HISTORY_20261107_PREPARATION.md；有限session交接，不宣稱背景無限運作。

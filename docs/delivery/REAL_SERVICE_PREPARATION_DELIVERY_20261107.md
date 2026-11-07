@@ -1,0 +1,54 @@
+# 真服務驗收準備交付 — 2026-11-07
+
+**準備產物已交付；部署仍BLOCKED／發布HOLD。** PR28應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde、正式UAT仍7dccd545。本輪只新增本機工具、設定草稿、manifest及手冊，未改已裁定應用來源／功能，未合併main。
+
+## 可操作入口與實際結果
+
+| 項目 | 結果／證據 |
+|---|---|
+| 固定工具 | 原生CLI2.122.1、Deno2.9.8；官方ZIP與解壓binary SHA256核對。[工具／來源manifest](evidence/deployment-preflight-20261107/manifest.json) |
+| 原生Deno依賴與打包 | 固定ba2的46個本機source blob、14入口／各自closure及remote resolutions已列；14/14靜態ESM JS＋map實際產出與hash核對，留workspace tooling；frozen lock在打包後未變 |
+| **原生Deno型別** | **0/14 PASS，14 FAIL**；SDK宣告與三支handler共九個來源診斷，並非全部第三方問題。[逐function結果](evidence/deployment-preflight-20261107/RESULTS.md)／[具體相容性待辦](DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md) |
+| Managed Edge／ESZIP | NOT_RUN；bundle仍有node: builtins，不能推論Edge sandbox相容。參考edge-runtime1.78.1／fork deno crate2.1.4與本機工具不同，managed實際版本UNKNOWN |
+| Auth／CORS／JWT草稿 | [設定入口](../../deployment/README.md)，精確origin4211（未啟動），現有password登入／精確redirect，14functions gateway verify_jwt=true。未讀或修改既有帳戶設定 |
+| 完整CLI config | 在全新本機空資料夾以固定CLI init產生、合併functions/Auth、關auto seed／global signup，再以local function config-load probe通過解析；只產生檔案，未啟動stack／Docker／DB。[完整草稿與證據](../../deployment/uat/config-generation-evidence.json)。PG17是CLI預設，不是目標版本 |
+| Migration | [41份固定順序／hash](../../deployment/uat/migrations.manifest.json)，三份歷史fixture純DML另列HOLD／fresh-UAT排除提案；未套雲端、不偽造applied history。NOT VALID另驗 |
+| 人工驗收 | [逐案手冊](MANUAL_REAL_SERVICE_ACCEPTANCE_20261107.md)：原生選檔、落盤／hash、A/B/shared/viewer、直接API／Storage、撤權／舊分頁／六種進行中窗口、sameID恢復；全部待實測 |
+| 合成選檔fixtures | 實際本機產生740-byte PDF／空檔／無效PDF並核對hash，重跑保留既存同內容檔；不同檔／manifest拒覆寫。[證據](../../deployment/uat/manual-fixture-evidence.json)。不是原生選檔或真實上傳PASS |
+| 獨立審閱 | 沿一名實作、一名獨立review；41 migration與ba2 blob逐一核對、fixture hash／界線審閱；兩P3（manifest覆寫、附件download與報告export文字混淆）已修。工具graph target及離線hash另保留實跑結果；不加總或重跑無關產品測試 |
+
+## Windows本機重現
+
+工具位於repo外的同workspace tooling/deployment-20261107；不改PATH或安裝全域。依deployment/README的精確URL／SHA準備兩native工具後，在repo root：
+
+```powershell
+node --test backend/tools/deployment-preflight/graph.test.mjs
+node backend/tools/deployment-preflight/verify.mjs verify
+```
+
+verify只取固定ba2來源、原生version/info/check/bundle，不執行handler／Deno serve、不讀.env、不呼Supabase cloud/login/link/deploy/db命令。當前預期exit2（BLOCKED_OR_PARTIAL），不能將此非零改成PASS；詳細結果在manifest／check-*.txt。此命令可能為未cache的公共依賴解析而連官方程式碼CDN，沒有專案資料；native命令各30秒上限。大型bundle/map/cache都留tooling，repo只留來源工具／lock／脫敏證據。
+
+原生file chooser人工檔案準備：
+
+```powershell
+node deployment/uat/prepare-manual-fixtures.mjs
+```
+
+輸出tooling/manual-fixtures-20261107；Owner在已核准寫入的隔離UAT手動選檔。Mac可讀同固定manifest／手冊；本輪Windows .exe工具不能宣稱Mac原生已驗，需另核對相應官方asset。
+
+## Supabase唯讀盤點狀態
+
+Owner已明確回覆「授權上述Supabase唯讀盤點」；**AUTHORIZED_READ_ONLY／WAITING_LOGIN**。PC已開Supabase Dashboard登入頁，尚待Owner自行登入，故本輪未新增任何live專案／用量／帳務結論。若Owner改由Mac讀取，使用受限、跨主機可讀的脫敏回執。
+
+[核准讀取範圍](EXISTING_RESOURCE_READONLY_SCOPE_20261107.md)：僅指定CoCalLab metadata、aggregate資料／使用者是否存在、用途／相依、方案與用量，不開業務列、Auth使用者清單、Storage檔案或keys，不改任何設定。不能用可能寫audit／subscription狀態的應用頁作唯讀盤點。帳單／付款或企業內容不進公開Git／聊天。
+
+既有wynqnvidepzzcwutexvn目前仍只有歷史候選識別證據；Owner表示已付費，實際plan／usage／資料分類尚待登入核對。Cloudflare／Railway不在這次新授權內；未擴至其他帳戶。環境先分類再決定，不自行建立新UAT。
+
+## 下一關與未驗
+
+1. WAITING_LOGIN：Owner登入PC或指定Mac提供受限盤點；取得metadata後提出重用／另建的具體選擇。既有唯讀授權不需重問，但任何寫入／費用／設定變更仍需另核准。
+2. WAITING_CTO：採用前先處理[原生Deno相容性缺口](DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md)，對相關依賴與三支handler邊界作最小修正、另固定新候選SHA；不修改本輪ba2來混淆版本。
+3. WAITING_CLAUDE：沿[固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)，區分歷史與ba2整合版本；沒有新增審查回覆或推定放行，不重開整案。
+4. NOT_RUN：真JWT／PostgREST／Storage／Deno Edge、原生選檔與落盤、兩獨立PG連線、live migration／NOT VALID資料驗證、備份復原及19+1代表使用者驗收。原生chooser權限阻礙沿用，不擅自擴權／重試Docker/WSL。
+
+前一輪FE221／backend27／SQL308 PASS+2 NOT_RUN及CI是既有來源證據，本輪沒有重跑或與新preflight加總；它們不能抵銷此次原生Deno失敗。即使一般CI通過，部署仍BLOCKED／發布HOLD。
