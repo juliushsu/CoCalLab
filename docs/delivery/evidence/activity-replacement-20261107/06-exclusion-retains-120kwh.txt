@@ -1,0 +1,4 @@
+Browser tab: 1290548162, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~					171 text field (settable) Description: 更正／排除理由, Value: SYNTHETIC 固定版驗收：此來源不納入本次邊界，保留原120kWh
+The focused UI element is 171 text field (settable) Description: 更正／排除理由, Value: SYNTHETIC 固定版驗收：此來源不納入本次邊界，保留原120kWh

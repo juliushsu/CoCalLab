@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { canonicalUuid, resolveNavigationScope } from './navigationScope.ts';
+import {readActivityLineage,type ActivityLineage,type ActivityVersion} from './activityLineage.ts';
 
 export interface ActivityDetailSelection {
   activityId: string;
@@ -49,6 +50,9 @@ export interface ActivityDetailCalculation {
 export interface ActivityDetail {
   activity: ActivityDetailRecord;
   calculation: ActivityDetailCalculation | null;
+  historicalCalculation?:ActivityDetailCalculation|null;
+  lineage?:ActivityLineage;
+  version?:ActivityVersion;
 }
 export const ACTIVITY_DETAIL_COLUMNS = [
   'id','organization_id','project_id','activity_code','activity_name','activity_date',
@@ -142,7 +146,7 @@ export function adaptActivityDetail(row: unknown, calculation: unknown, expected
   }};
 }
 /** Actual user-client read; injectable only so SDK serialization can be tested offline. */
-export async function readActivityDetail(client: Pick<SupabaseClient, 'from'>, selection: ActivityDetailSelection): Promise<ActivityDetail | null> {
+export async function readActivityDetail(client: Pick<SupabaseClient, 'from'|'rpc'>, selection: ActivityDetailSelection): Promise<ActivityDetail | null> {
   const selected = normalizeSelection(selection);
   let query = client.from('emission_activities').select(ACTIVITY_DETAIL_COLUMNS).eq('id',selected.activityId);
   if (selected.organizationId) query = query.eq('organization_id',selected.organizationId);
@@ -151,11 +155,14 @@ export async function readActivityDetail(client: Pick<SupabaseClient, 'from'>, s
   if (error) throw new Error('活動資料讀取失敗，請重試或確認存取權限。', {cause:error});
   if (data === null) return null;
   const {activity} = adaptActivityDetail(data,null,selected);
-  const result = await client.from('calculation_results').select(ACTIVITY_CALCULATION_COLUMNS)
+  const lineage=await readActivityLineage(client,{organizationId:activity.organization_id,projectId:activity.project_id},activity.id),version=lineage.versions.find(row=>row.activity_id===activity.id)!;
+  // Retired rows remain readable, but their preserved calc is explicitly historical.
+  const result = await client.from(version.is_effective?'effective_calculation_results':'calculation_results').select(ACTIVITY_CALCULATION_COLUMNS)
     .eq('emission_activity_id',activity.id).eq('organization_id',activity.organization_id)
     .eq('project_id',activity.project_id).eq('is_latest',true).maybeSingle();
   if (result.error) throw new Error('最新計算快照讀取失敗，請重試或確認存取權限。', {cause:result.error});
-  return adaptActivityDetail(data,result.data,selected);
+  const adapted=adaptActivityDetail(data,result.data,selected);
+  return {...adapted,lineage,version,calculation:version.is_effective?adapted.calculation:null,historicalCalculation:version.is_effective?null:adapted.calculation};
 }
 /** Binding by request-context object blocks a previous activity/tenant/session frame. */
 export function matchingActivityDetailState<T, K extends object>(state: {key: K;value: T} | null, key: K): T | null {

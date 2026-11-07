@@ -1,0 +1,61 @@
+vite v7.3.3 building client environment for production...
+transforming...
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✓ 251 modules transformed.
+rendering chunks...
+computing gzip size...
+out/index.html                                        1.91 kB │ gzip:   0.96 kB
+out/assets/index-pdydv89l.css                        56.02 kB │ gzip:   9.01 kB
+out/assets/staging-diP2eecp.js                        0.11 kB │ gzip:   0.12 kB │ map:     1.22 kB
+out/assets/NotFound-B0IiqiRk.js                       0.78 kB │ gzip:   0.44 kB │ map:     1.34 kB
+out/assets/EmptyState-DwLqFwSF.js                     1.24 kB │ gzip:   0.57 kB │ map:     3.49 kB
+out/assets/ReadonlyBanner-BI_D3rY0.js                 1.38 kB │ gzip:   0.58 kB │ map:     2.86 kB
+out/assets/ErrorState-BCwsfU4t.js                     1.48 kB │ gzip:   0.69 kB │ map:     3.56 kB
+out/assets/analyticsService-HGXepQPs.js               1.63 kB │ gzip:   0.83 kB │ map:     7.64 kB
+out/assets/useSubscriptionStatus-CoOkYkLb.js          1.66 kB │ gzip:   0.87 kB │ map:     8.06 kB
+out/assets/ConfirmDialog-PznNSq2M.js                  1.90 kB │ gzip:   0.93 kB │ map:     5.75 kB
+out/assets/activityLineage-BdLL6IbE.js                2.03 kB │ gzip:   0.99 kB │ map:     5.49 kB
+out/assets/entityUpdateContract-D_8HSg68.js           2.25 kB │ gzip:   0.94 kB │ map:     5.93 kB
+out/assets/edgeFunction-CqXegK8U.js                   2.53 kB │ gzip:   1.19 kB │ map:     8.96 kB
+out/assets/GovernanceBanner-DWWLlFcX.js               2.57 kB │ gzip:   0.97 kB │ map:     6.04 kB
+out/assets/organizationService-DOBdYhhj.js            2.67 kB │ gzip:   0.95 kB │ map:    10.84 kB
+out/assets/StatusBadge-XzlF7g4K.js                    2.78 kB │ gzip:   0.78 kB │ map:     6.08 kB
+out/assets/useTranslation-Bb_ZEsG6.js                 2.96 kB │ gzip:   1.49 kB │ map:    12.24 kB
+out/assets/LoginPage-Bo2LBsiP.js                      3.09 kB │ gzip:   1.26 kB │ map:     7.27 kB
+out/assets/EditOrganizationPage-B-DVZJCa.js           3.40 kB │ gzip:   1.81 kB │ map:     9.38 kB
+out/assets/EditProjectPage-tKmxu_2Y.js                4.22 kB │ gzip:   1.92 kB │ map:    10.95 kB
+out/assets/EmissionsAnalyticsPage-DIAG53WY.js         5.28 kB │ gzip:   2.25 kB │ map:    12.74 kB
+out/assets/OrganizationListPage-cq_35mRY.js           5.34 kB │ gzip:   1.86 kB │ map:    12.93 kB
+out/assets/ReportCenterPage-D-sv_mMK.js               6.33 kB │ gzip:   2.29 kB │ map:    16.01 kB
+out/assets/projectService-AREu_6zZ.js                 7.04 kB │ gzip:   2.58 kB │ map:    20.49 kB
+out/assets/ProjectListPage-DW0DX86q.js                8.31 kB │ gzip:   2.69 kB │ map:    21.57 kB
+out/assets/CreateOrganizationPage-Cd7qalp0.js         8.62 kB │ gzip:   3.12 kB │ map:    19.98 kB
+out/assets/ReportOutlinePanel-BaaJVWhJ.js            11.35 kB │ gzip:   4.73 kB │ map:    23.58 kB
+out/assets/ProjectOverviewPage-DwoDKlod.js           11.98 kB │ gzip:   2.95 kB │ map:    24.67 kB
+out/assets/EmissionFactorsPage-DtfARnGX.js           12.50 kB │ gzip:   3.25 kB │ map:    26.75 kB
+out/assets/CreateProjectPage-C8iGYzNZ.js             12.62 kB │ gzip:   3.16 kB │ map:    29.77 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+out/assets/documentService-CG8o5d6L.js               12.96 kB │ gzip:   5.06 kB │ map:    44.20 kB
+out/assets/UploadedDocumentListPage-DbHFnOu6.js      13.62 kB │ gzip:   4.36 kB │ map:    33.71 kB
+out/assets/DocumentUploadPage-DvS5sMPN.js            14.09 kB │ gzip:   4.29 kB │ map:    40.16 kB
+out/assets/SubscriptionManagementPage-Dc9M9JVR.js    14.50 kB │ gzip:   3.41 kB │ map:    35.14 kB
+out/assets/EmissionActivityDetailPage-OupOoqWK.js    15.19 kB │ gzip:   5.30 kB │ map:    38.03 kB
+out/assets/ManualTranscriptionPage-CWM-5YSu.js       15.97 kB │ gzip:   6.63 kB │ map:    39.08 kB
+out/assets/OrganizationMembersPage-B7GbxbNX.js       18.23 kB │ gzip:   4.59 kB │ map:    47.43 kB
+out/assets/AdminLayout-C5_r09uk.js                   20.74 kB │ gzip:   6.93 kB │ map:    57.16 kB
+out/assets/ReportGenerationHistoryPage-6VNirtdL.js   22.01 kB │ gzip:   6.09 kB │ map:    59.31 kB
+out/assets/documentLibrary-DvcdaOGo.js               22.84 kB │ gzip:   7.01 kB │ map:    66.39 kB
+out/assets/ExtractedDraftReviewPage-eDEuPgN4.js      24.22 kB │ gzip:   6.76 kB │ map:    64.22 kB
+out/assets/ReportPreviewPage-DVEYPmO5.js             25.04 kB │ gzip:   8.65 kB │ map:    73.66 kB
+out/assets/FactorSourcesPage-DoUVYZdE.js             26.84 kB │ gzip:   5.88 kB │ map:    60.15 kB
+out/assets/CarbonAdjustmentsPage-BST0f8aM.js         33.01 kB │ gzip:   8.08 kB │ map:    88.15 kB
+out/assets/page-B0UhRi0C.js                          39.57 kB │ gzip:   9.20 kB │ map:    71.01 kB
+out/assets/EmissionActivitiesListPage-Bc2dquxe.js    61.30 kB │ gzip:  17.53 kB │ map:   161.72 kB
+out/assets/index-D--8neDs.js                        502.25 kB │ gzip: 158.30 kB │ map: 1,882.35 kB
+✓ built in 4.66s

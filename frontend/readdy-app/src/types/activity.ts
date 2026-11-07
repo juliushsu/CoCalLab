@@ -17,6 +17,10 @@ export interface EmissionActivity {
   // 來源追溯
   source_document_id?: string | null;
   source_draft_id?: string | null;
+  /** Read-model version metadata; never sent as editable business input. */
+  is_effective?:boolean;
+  predecessor_activity_id?:string|null;
+  successor_activity_id?:string|null;
 
   // 活動基本資訊
   activity_code?: string;

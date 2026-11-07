@@ -17,7 +17,7 @@ function harness(override?:(table:string,url:URL,method:string,call:number)=>Res
  const requests:{url:URL;method:string;headers:Headers}[]=[];let call=0;
  const client=createClient('https://synthetic-sdk.invalid','test-only-public-key',{accessToken:async()=>'test-only-user-token',auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},global:{fetch:async(url,init)=>{
   const u=new URL(String(url)),table=u.pathname.split('/').at(-1)!,method=init?.method??'GET';requests.push({url:u,method,headers:new Headers(init?.headers)});call++;
-  const result=override?.(table,u,method,call)??(table==='projects'?{data:project}:table==='uploaded_documents'?{data:null,count:2}:table==='report_generations'?{data:null,count:0}:table==='emission_activities'?{data:[activity()],count:1}:{data:[calc()],count:1});
+  const result=override?.(table,u,method,call)??(table==='projects'?{data:project}:table==='uploaded_documents'?{data:null,count:2}:table==='report_generations'?{data:null,count:0}:table==='effective_emission_activities'?{data:[activity()],count:1}:{data:[calc()],count:1});
   return new Response(method==='HEAD'?null:JSON.stringify(result.data),{status:result.status??200,headers:{'Content-Type':'application/json',...(result.count!==undefined?{'Content-Range':result.count===0?'*/0':`0-0/${result.count}`}:{})}});
  }}});
  return {client,requests};
@@ -32,6 +32,16 @@ test('latest included-active total uses kg and converts to tonnes once; irreleva
  const stats=summarizeProjectStatistics([activity(),activity(B,'archived'),activity(D,'active','excluded')],[calc(),calc(P,B,'calculated',999999),calc(O,D,'calculated',999999)],2,1);
  assert.equal(stats.total_emissions_kg,2545);assert.equal(stats.total_emissions,2.545);
  assert.equal(stats.total_activities,3);assert.equal(stats.active_activities,2);assert.equal(stats.inclusion_rate,50);assert.equal(stats.report_generated,true);
+});
+test('project overview uses effective leaves/calculations so retained predecessor plus successor never double count',async()=>{
+ const {client,requests}=harness(table=>{
+  if(table==='emission_activities')return {data:[activity(A),activity(B)],count:2};
+  if(table==='calculation_results')return {data:[calc(C,A,'calculated',50),calc(D,B,'calculated',60)],count:2};
+  if(table==='effective_emission_activities')return {data:[activity(B)],count:1};
+  if(table==='effective_calculation_results')return {data:[calc(D,B,'calculated',60)],count:1};
+ });
+ const overview=await readProjectOverview(client,selected);assert.equal(overview.statistics.total_emissions_kg,60);assert.equal(overview.statistics.total_activities,1);
+ assert.ok(requests.some(r=>r.url.pathname.endsWith('/effective_emission_activities')));assert.ok(requests.some(r=>r.url.pathname.endsWith('/effective_calculation_results')));
 });
 test('valid zero is preserved, but empty or uncalculated included activities have unknown total',()=>{
  assert.equal(summarizeProjectStatistics([activity()],[calc(C,A,'calculated',0)],0,0).total_emissions,0);
@@ -52,7 +62,7 @@ test('SDK reads only selected project, anchors tenant scope, exact counts, lates
  const {client,requests}=harness();const result=await readProjectOverview(client,selected);
  assert.equal(result?.statistics.total_emissions,2.545);assert.equal(requests.length,5);
  for(const request of requests){assert.equal(request.headers.get('authorization'),'Bearer test-only-user-token');assert.ok(['GET','HEAD'].includes(request.method));if(!request.url.pathname.endsWith('/projects')){assert.equal(request.url.searchParams.get('project_id'),'eq.'+P);assert.equal(request.url.searchParams.get('organization_id'),'eq.'+O);}}
- const calculations=requests.find(r=>r.url.pathname.endsWith('/calculation_results'))!.url;
+ const calculations=requests.find(r=>r.url.pathname.endsWith('/effective_calculation_results'))!.url;
  assert.equal(calculations.searchParams.get('is_latest'),'eq.true');assert.ok(calculations.searchParams.get('select')!.includes('co2e_kg'));assert.ok(!calculations.toString().includes('co2e_total'));
  assert.equal(requests.at(-1)!.url.searchParams.get('status'),'eq.completed');
 });
@@ -61,7 +71,7 @@ test('inaccessible project returns empty without downstream queries; wrong tenan
  h=harness(table=>table==='projects'?{data:{...project,organization_id:B}}:undefined);await assert.rejects(readProjectOverview(h.client,selected),/範圍不符/);assert.equal(h.requests.length,1);
 });
 test('permission/server failure at every read is an error, never zero or partial success',async()=>{
- for(const table of ['projects','uploaded_documents','emission_activities','calculation_results','report_generations']){
+ for(const table of ['projects','uploaded_documents','effective_emission_activities','effective_calculation_results','report_generations']){
   for(const status of [403,503]){const {client}=harness(current=>current===table?{data:{message:'synthetic permission/server failure',code:'42501'},status}:undefined);
   await assert.rejects(readProjectOverview(client,selected),/讀取失敗/);}
  }
@@ -74,23 +84,23 @@ test('missing count and network failures are explicit errors',async()=>{
 });
 test('server response cap smaller than requested page is followed to exact total',async()=>{
  const {client,requests}=harness((table,url)=>{
- if(table==='emission_activities')return {data:[Number(url.searchParams.get('offset'))===0?activity():activity(B)],count:2};
- if(table==='calculation_results')return {data:[],count:0};
+ if(table==='effective_emission_activities')return {data:[Number(url.searchParams.get('offset'))===0?activity():activity(B)],count:2};
+ if(table==='effective_calculation_results')return {data:[],count:0};
  });
  const result=await readProjectOverview(client,selected);assert.equal(result?.statistics.total_activities,2);
- assert.deepEqual(requests.filter(r=>r.url.pathname.endsWith('/emission_activities')).map(r=>r.url.searchParams.get('offset')),['0','1']);
+ assert.deepEqual(requests.filter(r=>r.url.pathname.endsWith('/effective_emission_activities')).map(r=>r.url.searchParams.get('offset')),['0','1']);
 });
 test('truncated, changing and repeated paginated results fail instead of silently undercounting',async()=>{
  for(const kind of ['empty','count-changed','duplicate']){
  const {client}=harness((table,url)=>{
-  if(table==='emission_activities'){const first=Number(url.searchParams.get('offset'))===0;return {data:first?[activity()]:kind==='empty'?[]:kind==='duplicate'?[activity()]:[activity(B)],count:kind==='count-changed'&&!first?3:2};}
+  if(table==='effective_emission_activities'){const first=Number(url.searchParams.get('offset'))===0;return {data:first?[activity()]:kind==='empty'?[]:kind==='duplicate'?[activity()]:[activity(B)],count:kind==='count-changed'&&!first?3:2};}
   return undefined;
  });
  await assert.rejects(readProjectOverview(client,selected),/不完整|變動|重複/);
  }
 });
 test('returned child tenant/project mismatches fail despite query filters',async()=>{
- for(const table of ['emission_activities','calculation_results']){const {client}=harness(t=>t===table?{data:[{...(table==='emission_activities'?activity():calc()),organization_id:B}],count:1}:undefined);await assert.rejects(readProjectOverview(client,selected),/組織不符/);}
+ for(const table of ['effective_emission_activities','effective_calculation_results']){const {client}=harness(t=>t===table?{data:[{...(table==='effective_emission_activities'?activity():calc()),organization_id:B}],count:1}:undefined);await assert.rejects(readProjectOverview(client,selected),/組織不符/);}
 });
 test('project/session/query/retry change hides old read context before the next effect',()=>{
  const key={projectId:P,session:{token:'synthetic-1'},search:'',retry:0},state={key,value:{total:2.545}};

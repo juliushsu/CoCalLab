@@ -2,6 +2,7 @@ import type {SupabaseClient} from '@supabase/supabase-js';
 import {canonicalUuid} from './navigationScope.ts';
 import type {IntakeScope} from './documentIntake.ts';
 import type {EmissionActivity} from '../types/activity.ts';
+import {readActivityLineage} from './activityLineage.ts';
 export interface ManualInput {activity_name:string;category:string;activity_type:string;final_scope:string;quantity:string;unit:string;activity_date:string;notes:string;inclusion_status:string;exclusion_reason:string;subcategory?:string|null;data_quality?:string;status?:string}
 export interface ManualProject {id:string;organization_id:string;name:string;project_code:string;reporting_start_date:string;reporting_end_date:string}
 const uuid=(value:unknown)=>{const id=canonicalUuid(value);if(!id)throw new Error('組織、專案或紀錄識別無效。');return id;};
@@ -49,7 +50,12 @@ export async function readManualActivities(client:SupabaseClient,scope:IntakeSco
  for(let offset=0;;){const r=await client.from('emission_activities').select('*',{count:'exact'}).eq('organization_id',uuid(scope.organizationId)).eq('project_id',uuid(scope.projectId)).order('activity_date',{ascending:false}).order('id').range(offset,offset+199);check(current);
  if(r.error||!Array.isArray(r.data)||!Number.isSafeInteger(r.count)||r.count!<0||(total!==undefined&&total!==r.count))throw new Error('活動讀取失敗或分頁資料不完整。');total=r.count!;
  for(const row of r.data){const id=uuid(row.id);if(seen.has(id)||uuid(row.organization_id)!==uuid(scope.organizationId)||uuid(row.project_id)!==uuid(scope.projectId))throw new Error('活動範圍不一致。');seen.add(id);all.push(row as EmissionActivity);}
- if(all.length===total)return all;if(!r.data.length||all.length>total)throw new Error('活動清單已變更，請重新讀取。');offset+=r.data.length;}
+ if(all.length===total)break;if(!r.data.length||all.length>total)throw new Error('活動清單已變更，請重新讀取。');offset+=r.data.length;}
+ const effective=new Set<string>();let expected:number|undefined;
+ for(let offset=0;;){const r=await client.from('effective_emission_activities').select('id,organization_id,project_id',{count:'exact'}).eq('organization_id',scope.organizationId).eq('project_id',scope.projectId).order('id').range(offset,offset+199);check(current);if(r.error||!Array.isArray(r.data)||!Number.isSafeInteger(r.count)||r.count!<0||expected!==undefined&&expected!==r.count)throw new Error('無法核對目前有效活動，未將歷史列當成可編輯版本。');expected=r.count!;for(const row of r.data){const id=uuid(row.id);if(!seen.has(id)||effective.has(id)||row.organization_id!==scope.organizationId||row.project_id!==scope.projectId)throw new Error('有效活動範圍已變更，請重讀。');effective.add(id);}if(effective.size===expected)break;if(!r.data.length||effective.size>expected)throw new Error('有效活動清單不完整。');offset+=r.data.length;}
+ const versions=new Map<string,{predecessor_activity_id:string|null;successor_activity_id:string|null}>();
+ for(const row of all){if(row.status!=='active'||effective.has(row.id)||versions.has(row.id))continue;const family=await readActivityLineage(client,scope,row.id,current);for(const version of family.versions)versions.set(version.activity_id,{predecessor_activity_id:version.predecessor_activity_id,successor_activity_id:version.successor_activity_id});}
+ return all.map(row=>({...row,is_effective:effective.has(row.id),...(versions.get(row.id)??{})}));
 }
 async function invoke(client:SupabaseClient,name:string,payload:Record<string,unknown>,current:()=>boolean){
  check(current);const response=await client.functions.invoke(name,{body:payload});check(current);

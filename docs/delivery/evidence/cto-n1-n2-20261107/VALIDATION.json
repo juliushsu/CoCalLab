@@ -53,7 +53,12 @@
     "React foreground refresh/native file chooser/download to OS",
     "Cloud migration/NOT VALID validation/backup+restore/19+1 acceptance"
   ],
-  "githubCI": "PENDING_AFTER_PUSH; no success claim",
+  "githubCI": {
+    "file": "GITHUB_CI.json",
+    "commit": "23f49ada664d4d37290e5712cf068d2c55f8bd89",
+    "runId": 42383511177,
+    "conclusion": "success"
+  },
   "artifacts": [
     {
       "file": "integration.txt",

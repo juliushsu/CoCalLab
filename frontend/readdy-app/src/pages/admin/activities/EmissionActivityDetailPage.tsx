@@ -13,7 +13,7 @@ import { activityDetailSelection, matchingActivityDetailState, formatActivityEmi
 type ReadState = {status:'success';detail:ActivityDetail|null} | {status:'error';message:string};
 const activityStatuses = {active:'使用中',voided:'作廢',archived:'已封存'};
 const inclusionStatuses = {included:'納入',excluded:'排除',pending:'待確認'};
-const calculationStatuses = {calculated:'已計算',pending_factor:'等待係數',error:'計算失敗',superseded:'已被取代／不計入'};
+const calculationStatuses = {calculated:'已計算',pending_factor:'等待係數',error:'計算失敗',superseded:'排除／不計入（不代表用量為零）'};
 function Field({label,children}: {label:string;children:ReactNode}) {
   return <div><dt className="text-sm font-medium text-gray-500">{label}</dt><dd className="mt-1 break-words text-sm text-gray-900">{children ?? '未知'}</dd></div>;
 }
@@ -62,7 +62,9 @@ export default function EmissionActivityDetailPage() {
   if (!currentSession(session)) return <AdminLayout><ErrorState message="工作階段已失效，請重新登入。" /></AdminLayout>;
   if (state.status === 'error') return <AdminLayout><ErrorState message={state.message} onRetry={reload} /></AdminLayout>;
   if (!state.detail) return <AdminLayout><EmptyState title="找不到可存取的活動" description="此活動不存在，或不在目前組織／專案的可存取範圍。" actionLabel="重新讀取" onAction={reload} /></AdminLayout>;
-  const {activity,calculation} = state.detail;
+  const {activity,lineage,version} = state.detail;
+  const historical=version?.is_effective===false;
+  const calculation=historical?state.detail.historicalCalculation:state.detail.calculation;
   const backQuery = new URLSearchParams({organizationId:activity.organization_id,projectId:activity.project_id});
   return <AdminLayout><div className="space-y-6">
     <div className="flex flex-wrap items-start justify-between gap-4">
@@ -74,9 +76,10 @@ export default function EmissionActivityDetailPage() {
       <button onClick={reload} className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">重新讀取</button>
     </div>
     <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm text-gray-700">
-      <p>目前提供已保存活動與最新計算快照的唯讀查看。活動狀態、計算完成與人工驗證是不同事項。</p>
-      <div className="mt-3 flex flex-wrap gap-2">{['人工驗證','編輯','重新計算'].map(label => <button key={label} disabled className="cursor-not-allowed rounded-lg border border-gray-300 px-3 py-2 text-gray-500">{label}（尚未提供）</button>)}</div>
+      <p>{historical?'此列為歷史／非目前有效活動；原活動與計算保留，不計入目前有效統計。':'此列為目前有效末端；更正或排除將新增版本，原活動與報告保持原值。'}活動狀態、計算完成與人工驗證是不同事項。</p>
+      <div className="mt-3 flex flex-wrap gap-2"><button disabled className="cursor-not-allowed rounded-lg border border-gray-300 px-3 py-2 text-gray-500">人工驗證（尚未提供）</button><button onClick={()=>navigate(`/admin/activities?${backQuery}`)} className="rounded-lg border px-3 py-2">前往清單更正／排除及通用重算</button></div>
     </div>
+    {lineage&&<section className="rounded-lg border bg-white p-5"><h2 className="font-semibold">保留的活動版本鏈</h2><p className="text-sm">歷史列不可原地修改；來源由服務端繼承，版本理由不等於原件真實性或雙人覆核。新版需重算後才可產生新可信報告。</p><ol className="mt-3 space-y-3">{lineage.versions.map(row=><li key={row.activity_id} className="rounded border p-3 text-sm"><button className="text-teal-700 underline" onClick={()=>navigate('/admin/activities/'+row.activity_id+'?'+backQuery)}>v{row.version_index} · {row.activity_id}</button><p>{row.is_effective?'目前有效':'歷史／非目前有效'} · {row.mode==='original'?'原始活動':row.mode==='correct'?'更正版本':'排除版本'} · 理由：{row.reason??'原始建立，未提供取代理由'}</p><p>前版：{row.predecessor_activity_id??'無'}；後版：{row.successor_activity_id??'無'}；操作者：{row.actor_user_id??'未提供'}；時間：{timestamp(row.created_at)}</p></li>)}</ol></section>}
     <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       <h2 className="mb-4 text-lg font-semibold text-gray-900">活動資料</h2>
       <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -91,7 +94,7 @@ export default function EmissionActivityDetailPage() {
       </dl>
     </section>
     <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h2 className="mb-4 text-lg font-semibold text-gray-900">最新計算快照</h2>
+      <h2 className="mb-4 text-lg font-semibold text-gray-900">{historical?'保存的歷史計算（不計目前統計）':'目前有效活動的最新計算快照'}</h2>
       <p className="mb-4 text-xl font-bold text-teal-700">{formatActivityEmissions(calculation?.co2e_kg)}</p>
       {calculation ? <>
         <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -105,7 +108,7 @@ export default function EmissionActivityDetailPage() {
           <h3 className="mt-3 text-sm font-medium">factor_snapshot</h3><pre className="mt-1 overflow-x-auto whitespace-pre-wrap break-words rounded bg-gray-50 p-3 text-xs">{json(calculation.factor_snapshot)}</pre>
           <h3 className="mt-3 text-sm font-medium">input_snapshot</h3><pre className="mt-1 overflow-x-auto whitespace-pre-wrap break-words rounded bg-gray-50 p-3 text-xs">{json(calculation.input_snapshot)}</pre>
         </details>
-      </> : <p className="text-sm text-gray-600">尚無可存取的最新計算快照；不使用舊版本或測試值代替。</p>}
+      </> : <p className="text-sm text-gray-600">{historical?'此歷史列沒有可存取的保存計算。':'尚無目前有效計算；更正後請執行通用重算，不使用前版數字或零值代替。'}</p>}
     </section>
     <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       <h2 className="mb-4 text-lg font-semibold text-gray-900">來源與資料識別</h2>

@@ -1,0 +1,123 @@
+Browser tab: 1290548162, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c".
+1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+	2 container
+		3 text SYNTHETIC 活動保留／取代候選 · 真服務handler＋SQL；歷史不覆寫、有效末端重算／保存報告。Auth與Storage為本機替身，非真服務驗收。API4214重啟清合成資料。
+		4 link Description: 人工活動／計算／報告, Value: 127.0.0.1:4215/admin/activities
+		5 text  ·
+		6 link Description: 報告歷史, Value: 127.0.0.1:4215/admin/reports/history
+		7 text  ·
+		8 link Description: 登入, Value: 127.0.0.1:4215/login
+		9 container root
+			10 container
+				11 text ⚠ STAGING ENVIRONMENT — TEST ENVIRONMENT, DATA WILL NOT ENTER PRODUCTION TEST MODE
+			12 container
+				13 text CC
+				14 heading CoCalLab, Value: 1
+					15 text CoCalLab
+				16 text TEST MODE
+				17 button 繁中
+				18 button EN
+				19 button 日本語
+				20 text a-owner@product-preview.invalid Owner
+				21 button Sign Out
+			22 container
+				23 text ENVIRONMENT :  STAGING
+				24 button WORKSPACE
+				25 button CARBON INVENTORY
+				26 button REPORTING
+				27 button METHODOLOGY
+				28 button PRODUCT & SUPPLY CHAIN
+			29 container
+				30 container 盤查流程導覽
+					31 container 五階段流程
+						32 link Description: 1. 文件收件, Value: 127.0.0.1:4215/admin/documents/upload?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						33 link Description: 2. 人工審核, Value: 127.0.0.1:4215/admin/documents/drafts?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						34 link Description: 3. 活動明細, Value: 127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						35 link Description: 4. 排放分析, Value: 127.0.0.1:4215/admin/analytics?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						36 link Description: 5. 報告, Value: 127.0.0.1:4215/admin/reports?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+					37 container
+						38 text 僅標示目前頁面，不代表其他階段已完成。 導覽沿用目前單位／專案範圍。
+					39 container 下一步捷徑
+						40 link Description: 前往排放分析, Value: 127.0.0.1:4215/admin/analytics?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						41 link Description: 前往報告中心, Value: 127.0.0.1:4215/admin/reports?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+				42 heading Emission Activities, Value: 1
+					43 text Emission Activities
+				44 text Total: 1 activities
+				45 button Add Activity
+				46 button Upload Document
+				47 text 目前專案
+				48 pop up button (collapsed, settable) Description: 目前專案, Value: SYNTHETIC local workflow（SYNTHETIC-LOCAL）, Secondary Actions: Expand
+					49 menu
+						50 全部已授權專案（新增／計算需選擇）
+						51 (selected) SYNTHETIC local workflow（SYNTHETIC-LOCAL）
+				52 button 計算並保存／重試
+				53 button 保存報告快照／重試
+				54 button 重新讀取
+				55 button 放棄報告恢復參考（不刪除報告）
+				56 button 核對待確認計算（不新增版本）
+				57 button 放棄計算本機參考（不取消伺服器操作）
+				58 text 盤查期間： 2026-01-01  ～  2026-12-31 。數量與單位由人工輸入；係數不使用正式預設測試值。 建立新可信報告前，請先按「計算並保存」取得目前輸入的通用重算紀錄；人工轉錄確認的即時計算不能取代此步驟。舊報告保留原快照，不會因重新計算自動補簽。
+				59 button Data Label Guide
+				60 text Scope
+				61 pop up button (collapsed, settable) Value: All, Secondary Actions: Expand
+					62 menu
+						63 (selected) All
+						64 Scope 1
+						65 Scope 2
+						66 Scope 3
+				67 text Category
+				68 text field (settable)
+				69 text Inclusion Status
+				70 pop up button (collapsed, settable) Value: All, Secondary Actions: Expand
+					71 menu
+						72 (selected) All
+						73 Included
+						74 Excluded
+						75 Pending
+				76 button Reset
+				77 table
+					78 row
+						79 cell
+							80 text ACTIVITY NAME
+						81 cell
+							82 text CATEGORY
+						83 cell
+							84 text SCOPE
+						85 cell
+							86 text QUANTITY
+						87 cell
+							88 text ACTIVITY DATE
+						89 cell
+							90 text INCLUSION STATUS
+						91 cell
+							92 text ACTIONS
+					93 row
+						94 cell
+							95 text SYNTHETIC 保留原版100kWh
+							96 text 目前有效版本
+							97 container
+								98 text SYNTHETIC local workflow  ·  ef525573
+							99 button Source Document
+						100 cell
+							101 text Energy Use
+						102 cell
+							103 text Scope 2
+						104 cell
+							105 text 100 kWh
+						106 cell
+							107 text 2026-01-15
+						108 cell
+							109 text Included
+						110 cell
+							111 button 更正／排除（保留原版）
+							112 button View
+				113 container 本機封測回饋
+					114 button 封測回饋（尚未送出）
+	115 container
+		116 button logo icon
+			117 image logo icon
+			118 image
+		119 container
+			120 button
+
+The focused UI element is 1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
