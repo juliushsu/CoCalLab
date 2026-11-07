@@ -1,0 +1,139 @@
+{
+  "applicationCommit": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "testCommit": "d761e46e26e2625551781da2120641e8e18c2d1c",
+  "applicationSourceEquivalent": "SOURCE_EQUIVALENCE.json",
+  "release": "HOLD",
+  "environment": "Windows Node24.22.1; PGlite0.5.13/PG18.6 WASM single serialized connection; synthetic Auth/Storage + installed SDK2.57.4 adapter; Chrome UI4215/API4214",
+  "results": {
+    "integrationFinal": {
+      "tests": 374,
+      "pass": 372,
+      "fail": 0,
+      "notRun": 2,
+      "exitCode": 0,
+      "durationMs": 470551.1418
+    },
+    "integrationInitial": {
+      "source": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+      "tests": 374,
+      "pass": 371,
+      "fail": 1,
+      "notRun": 2,
+      "exitCode": 1,
+      "reason": "Test-only ALTER quantity type fixture blocked by new effective view dependency; preserved log, repaired with actual native-schema calculation overflow22003"
+    },
+    "overflowFixTarget": {
+      "pass": 1,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "backendUnit": {
+      "pass": 35,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "frontendUnit": {
+      "pass": 236,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS_WITH_EXISTING_CHUNK_SIZE_WARNING",
+    "nativeDeno": {
+      "source": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+      "version": "2.9.8",
+      "checkPass": 16,
+      "checks": 16,
+      "staticBundles": 16,
+      "allHashesMatch": true,
+      "lockUnchanged": true,
+      "evidence": "../deployment-preflight-20261107-ed6ca9bbfbc5/failure-summary.json"
+    },
+    "browser": {
+      "evidence": "BROWSER_RESULTS.json",
+      "screenshots": 9,
+      "sourceDirtyAtBoot": false,
+      "originalRowsExactlyUnchanged": 6,
+      "reportsKg": [
+        50,
+        60,
+        0
+      ],
+      "lastReportExcluded": 1,
+      "exclusionRetainsQuantity": 120,
+      "unit": "kWh",
+      "originalReportReadableAfterReplacement": true
+    }
+  },
+  "commands": [
+    "node --test --test-concurrency=1 <all sorted backend/tests/integration/*.test.js> with existing PGLITE_RUNTIME_ROOT",
+    "node --test --test-name-pattern=\"real SQL overflow\" backend/tests/integration/local-workflow.test.js",
+    "node --test backend/tests/*.test.js",
+    "node --test tests/*.test.ts [frontend cwd]",
+    "node node_modules/typescript/bin/tsc --noEmit --project tsconfig.app.json",
+    "node node_modules/eslint/bin/eslint.js src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "node node_modules/vite/bin/vite.js build",
+    "node backend/tools/deployment-preflight/verify.mjs verify ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+    "node backend/tools/deployment-preflight/summarize.mjs ed6ca9bbfbc5581cdcacf2969340575217fcb8c4"
+  ],
+  "independentReview": "INDEPENDENT_REVIEW.md; overlapping SQL11/FE34/HTTP5/last2/fixture1 subsets are NOT additive to full suite",
+  "githubCI": {
+    "file": "GITHUB_CI.json",
+    "commit": "d761e46e26e2625551781da2120641e8e18c2d1c",
+    "id": 42386465225,
+    "conclusion": "success"
+  },
+  "notRun": [
+    "Independent SQL reference/delete lock-wait sessions/40P01",
+    "Independent SQL recalculation/commit sessions",
+    "Real Supabase JWT/PostgREST/Storage/managedEdge/ESZIP",
+    "Native file chooser/download to OS",
+    "Full React foreground subscription-refresh lifecycle",
+    "Cloud migration/NOT VALID/DB+Storage restore/19+1 representative acceptance"
+  ],
+  "artifacts": [
+    {
+      "file": "integration-final.txt",
+      "sha256": "1e950f85290b460140101c5b4b3c8909dfa41b6074d33b0b192b8588ed3ffadd"
+    },
+    {
+      "file": "integration-initial-fixture-failure.txt",
+      "sha256": "069d39cbc1d844d4b25ef6d3282298e28bbd5ea84d197caca3b2f93aa2a4cd07"
+    },
+    {
+      "file": "overflow-fixture-target.txt",
+      "sha256": "7047590888accb162d80e729de5f3a6e4426c377d2bc37de8cf10de5251493df"
+    },
+    {
+      "file": "backend-unit.txt",
+      "sha256": "88968a2985a0ccc2d9aa8ecfd72aff4511cceb39b676595686f5b57ff8439ca8"
+    },
+    {
+      "file": "frontend-unit.txt",
+      "sha256": "1239b1bfba225b78935a6992b6c4309de90fe7d78fd5cf8dc84b7b7c58a3b609"
+    },
+    {
+      "file": "typecheck.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "lint.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "build.txt",
+      "sha256": "1668db839482a718a70cb8ff004c95935b54e36a3228619b60c8ec5bbe3dc6ea"
+    },
+    {
+      "file": "sql-initial-red.txt",
+      "sha256": "c7c89a0a0b0cdb1987c238dd89d8f2ddb7be01a3dcbdb947c1dfc4a43e63bc43"
+    },
+    {
+      "file": "sql-target-final.txt",
+      "sha256": "ea1569f4e870e3e557ee3023eb8f68cdef5af09dd1d9dceeb6ed56906c487dc9"
+    }
+  ],
+  "recordedAt": "2026-11-07T15:34:38.512Z",
+  "browserEvidenceNote": "AX txt files may be incremental or no-change snapshots; screenshots and BROWSER_RESULTS contain the separately verified observations. Not a claim of full DOM or complete React lifecycle acceptance."
+}

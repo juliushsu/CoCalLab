@@ -1,0 +1,196 @@
+Browser tab: 1290548162, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4215/admin/reports/202e02dd-64cb-4caf-bac5-f9c1cc7a7e05?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c".
+1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4215/admin/reports/202e02dd-64cb-4caf-bac5-f9c1cc7a7e05?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+	2 container
+		3 text SYNTHETIC 活動保留／取代候選 · 真服務handler＋SQL；歷史不覆寫、有效末端重算／保存報告。Auth與Storage為本機替身，非真服務驗收。API4214重啟清合成資料。
+		4 link Description: 人工活動／計算／報告, Value: 127.0.0.1:4215/admin/activities
+		5 text  ·
+		6 link Description: 報告歷史, Value: 127.0.0.1:4215/admin/reports/history
+		7 text  ·
+		8 link Description: 登入, Value: 127.0.0.1:4215/login
+		9 container root
+			10 container
+				11 text ⚠ STAGING ENVIRONMENT — TEST ENVIRONMENT, DATA WILL NOT ENTER PRODUCTION TEST MODE
+			12 container
+				13 text CC
+				14 heading CoCalLab, Value: 1
+					15 text CoCalLab
+				16 text TEST MODE
+				17 button 繁中
+				18 button EN
+				19 button 日本語
+				20 text a-owner@product-preview.invalid Owner
+				21 button Sign Out
+			22 container
+				23 text ENVIRONMENT :  STAGING
+				24 button WORKSPACE
+				25 button CARBON INVENTORY
+				26 button REPORTING
+				27 button METHODOLOGY
+				28 button PRODUCT & SUPPLY CHAIN
+			29 container
+				30 container 盤查流程導覽
+					31 container 五階段流程
+						32 link Description: 1. 文件收件, Value: 127.0.0.1:4215/admin/documents/upload?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						33 link Description: 2. 人工審核, Value: 127.0.0.1:4215/admin/documents/drafts?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						34 link Description: 3. 活動明細, Value: 127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						35 link Description: 4. 排放分析, Value: 127.0.0.1:4215/admin/analytics?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						36 link Description: 5. 報告, Value: 127.0.0.1:4215/admin/reports?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+					37 container
+						38 text 僅標示目前頁面，不代表其他階段已完成。 導覽沿用目前單位／專案範圍。
+					39 container 下一步捷徑
+						40 link Description: 碳調整, Value: 127.0.0.1:4215/admin/carbon-adjustments?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+						41 link Description: 報告歷史, Value: 127.0.0.1:4215/admin/reports/history?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&organizationId=ef525573-8253-4379-8721-54d821f3f9c1&project_id=25845d35-190c-401d-aae3-9bb990d10d3c&projectId=25845d35-190c-401d-aae3-9bb990d10d3c
+				42 text BETA NOTICE Reports are for internal testing and inventory workflow validation only. Human review is required before official filing or verification. Reporting entity and site details will be displayed in the next phase.
+				43 button Back to report history
+				44 heading Report Preview, Value: 1
+					45 text Report Preview
+				46 text SYNTHETIC local workflow
+				47 button Export Report
+				48 text Version v 1 Status Completed Generated At 2026/11/7 下午11:12:08 Sections This report has no section content yet
+				49 heading Emission Statistics, Value: 2
+					50 text Emission Statistics
+				51 text Total Emissions 0.05 tCO₂e Scope 1 Emissions 0.00 tCO₂e Scope 2 Emissions 0.05 tCO₂e Scope 3 Emissions 0.00 tCO₂e HTML／JSON每次由服務端核對權限並重讀保存快照；PDF／Word尚未提供。 此報告標記為服務端保存；每次匯出仍由伺服器核對完整內容、來源映射與目前權限。標記本身不是驗證結果，也不代表內容正確或已完成查驗。
+				52 container 十章報告資料導引
+					53 heading 十章報告結構與保存資料來源, Value: 2
+						54 text 十章報告結構與保存資料來源
+					55 text 這是資料導引，並未產生十章正式報告，不計算完成度，也不代表商用、申報或查證通過。
+					56 container
+						57 text 保存資料已標記為測試資料 ；保存環境： staging 。內容依保存資料呈現，不回填示範值。
+					58 container
+						59 button (expanded) 1. 基本資料保存欄位與缺件（非章節完成狀態）, Secondary Actions: Collapse
+							60 text 1
+							61 text .
+							62 text 基本資料
+							63 text 保存欄位與缺件（非章節完成狀態）
+						64 definition list
+							65 container 報告 ID
+								66 text 報告 ID
+							67 text 202e02dd-64cb-4caf-bac5-f9c1cc7a7e05
+							68 container
+								69 text 來源： report_generations.id
+							70 container 組織 ID
+								71 text 組織 ID
+							72 text ef525573-8253-4379-8721-54d821f3f9c1
+							73 container
+								74 text 來源： report_generations.organization_id
+							75 container 專案 ID
+								76 text 專案 ID
+							77 text 25845d35-190c-401d-aae3-9bb990d10d3c
+							78 container
+								79 text 來源： report_generations.project_id
+							80 container 報告版本
+								81 text 報告版本
+							82 text 1
+							83 container
+								84 text 來源： report_generations.report_version
+							85 container 保存時間
+								86 text 保存時間
+							87 text 2026-11-07T15:12:08.956Z
+							88 container
+								89 text 來源： report_generations.created_at
+							90 container 保存狀態
+								91 text 保存狀態
+							92 text completed
+							93 container
+								94 text 來源： report_generations.status
+							95 container 保存的專案名稱
+								96 text 保存的專案名稱
+							97 text SYNTHETIC local workflow
+							98 container
+								99 text 來源： report_generations.payload.project_metadata.name
+							100 container 保存的工作區
+								101 text 保存的工作區
+							102 text {
+  "slug": "synthetic-local-ef525573-8253-4379-8721-54d821f3f9c1",
+  "workspace_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+  "workspace_label": "SYNTHETIC LOCAL ONLY"
+}
+							103 container
+								104 text 來源： report_generations.payload.workspace_snapshot
+							105 container 盤查法人快照未附列內容
+								106 text 盤查法人快照 未附列內容
+							107 text 已保存空物件；未提供內容
+							108 container
+								109 text 來源： report_generations.legal_entity_snapshot
+							110 container 據點快照未附列內容
+								111 text 據點快照 未附列內容
+							112 text 已保存空物件；未提供內容
+							113 container
+								114 text 來源： report_generations.site_snapshot
+						115 content list
+							116 container
+								117 AXListMarker •
+								118 text 只顯示保存時的資料；目前專案資料不回填為歷史快照。
+					119 button (collapsed) 2. 盤查目的保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						120 text 2
+						121 text .
+						122 text 盤查目的
+						123 text 保存欄位與缺件（非章節完成狀態）
+					124 button (collapsed) 3. 盤查邊界保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						125 text 3
+						126 text .
+						127 text 盤查邊界
+						128 text 保存欄位與缺件（非章節完成狀態）
+					129 container
+						130 button (expanded) 4. 盤查期間保存欄位與缺件（非章節完成狀態）, Secondary Actions: Collapse
+							131 text 4
+							132 text .
+							133 text 盤查期間
+							134 text 保存欄位與缺件（非章節完成狀態）
+						135 definition list
+							136 container 起日
+								137 text 起日
+							138 text 2026-01-01
+							139 container
+								140 text 來源： report_generations.reporting_period_start
+							141 container 迄日
+								142 text 迄日
+							143 text 2026-12-31
+							144 container
+								145 text 來源： report_generations.reporting_period_end
+						146 content list
+							147 container
+								148 AXListMarker •
+								149 text 未提供或無效日期保持未知，不以目前專案期間或今日補值。
+					150 button (collapsed) 5. 排放源鑑別保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						151 text 5
+						152 text .
+						153 text 排放源鑑別
+						154 text 保存欄位與缺件（非章節完成狀態）
+					155 button (collapsed) 6. 排放量計算方法保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						156 text 6
+						157 text .
+						158 text 排放量計算方法
+						159 text 保存欄位與缺件（非章節完成狀態）
+					160 button (collapsed) 7. 活動數據來源保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						161 text 7
+						162 text .
+						163 text 活動數據來源
+						164 text 保存欄位與缺件（非章節完成狀態）
+					165 button (collapsed) 8. 排放係數來源保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						166 text 8
+						167 text .
+						168 text 排放係數來源
+						169 text 保存欄位與缺件（非章節完成狀態）
+					170 button (collapsed) 9. 數據品質管理保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						171 text 9
+						172 text .
+						173 text 數據品質管理
+						174 text 保存欄位與缺件（非章節完成狀態）
+					175 button (collapsed) 10. 佐證資料與附件保存欄位與缺件（非章節完成狀態）, Secondary Actions: Expand
+						176 text 10
+						177 text .
+						178 text 佐證資料與附件
+						179 text 保存欄位與缺件（非章節完成狀態）
+				180 heading This report has no section content yet, Value: 3
+					181 text This report has no section content yet
+				182 container 本機封測回饋
+					183 button 封測回饋（尚未送出）
+	184 container
+		185 button logo icon
+			186 image logo icon
+			187 image
+		188 container
+			189 button
+
+The focused UI element is 1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4215/admin/reports/202e02dd-64cb-4caf-bac5-f9c1cc7a7e05?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c

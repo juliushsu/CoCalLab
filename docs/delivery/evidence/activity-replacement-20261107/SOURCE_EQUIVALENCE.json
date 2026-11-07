@@ -1,0 +1,41 @@
+{
+  "applicationCommit": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "testCommit": "d761e46e26e2625551781da2120641e8e18c2d1c",
+  "onlyCommitChange": "backend/tests/integration/local-workflow.test.js",
+  "applicationDiffEmpty": true,
+  "manifests": [
+    {
+      "path": "backend/src",
+      "applicationTree": "e44f92af58d7c4c122053b49d5cc5209c479d613",
+      "testCommitTree": "e44f92af58d7c4c122053b49d5cc5209c479d613"
+    },
+    {
+      "path": "backend/supabase",
+      "applicationTree": "6c393884518baa9db3ade16cdcda59c2f2533ce4",
+      "testCommitTree": "6c393884518baa9db3ade16cdcda59c2f2533ce4"
+    },
+    {
+      "path": "backend/tools",
+      "applicationTree": "596d980233d0ad47daa8dc66d4ad9ac9dc466d9d",
+      "testCommitTree": "596d980233d0ad47daa8dc66d4ad9ac9dc466d9d"
+    },
+    {
+      "path": "frontend/readdy-app/src",
+      "applicationTree": "1fa73a214e86977c560c816a7f692b656b323180",
+      "testCommitTree": "1fa73a214e86977c560c816a7f692b656b323180"
+    },
+    {
+      "path": "frontend/readdy-app/tools",
+      "applicationTree": "350a0b34af06e844b64848287a92edb211734b73",
+      "testCommitTree": "350a0b34af06e844b64848287a92edb211734b73"
+    },
+    {
+      "path": "modules",
+      "applicationTree": "7eff17b5ebf5b661a49ffc7f3fa4f0e7ab53a55b",
+      "testCommitTree": "7eff17b5ebf5b661a49ffc7f3fa4f0e7ab53a55b"
+    }
+  ],
+  "nativeAndBrowserExecutedAt": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "nativeNotRerunForTestOnlyChange": true,
+  "checkedAt": "2026-11-07T15:26:13.211Z"
+}

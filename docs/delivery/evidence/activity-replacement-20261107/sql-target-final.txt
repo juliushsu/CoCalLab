@@ -1,0 +1,19 @@
+✔ N3 correct replaces effective activity without changing retired predecessor calculation report or proof; 120kWh gives60kg not110kg (2211.2088ms)
+✔ N3 exclude preserves the original nonzero quantity/unit and records explicit exclusion rather than zeroing usage (1693.9802ms)
+✔ N3 same request is exactly once; a later successor makes old replay historical without borrowing latest identity (1664.1209ms)
+✔ N3 another request cannot replace an already replaced predecessor; retired rows/calculations resist in-place service/owner writes (1594.0498ms)
+✔ N3 malformed inputs cannot forge sources/identity, exclude by zero, or pretend exclude is correction; explicit valid zero remains real (1613.5965ms)
+✔ N3 row/relation/audit failures roll back the whole replacement; same request retries with original predecessor still effective (4939.1398ms)
+✔ N3 scoped roles, current subscription and revoked memberships gate initial mutation and replay; lineage is read-only for same-tenant viewer (1675.7755ms)
+✔ N3 source-linked MANUAL revision inherits retained original/draft without modifying them, and stale original binding is rejected (1677.6682ms)
+✔ N3 effective analytics rejects incomplete replacement calculations then reports only current included emissions (1700.8176ms)
+✔ N3 two-tenant IDs and private lineage cannot be borrowed even by a shared authorized editor (1632.2279ms)
+✔ N3 an old prepared recalculation cannot write retired predecessor results, while its saved replay remains historical (1582.3687ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22125.4441

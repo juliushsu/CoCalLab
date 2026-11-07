@@ -1,0 +1,26 @@
+{
+  "synthetic": true,
+  "pid": 87796,
+  "api": "http://127.0.0.1:4214",
+  "app": "http://127.0.0.1:4215/login",
+  "checkoutSHA": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "sourceDirty": false,
+  "startedAt": "2026-11-07T15:12:09.064Z",
+  "account": "a-owner@product-preview.invalid",
+  "password": "SYNTHETIC TEST ONLY: see startup instructions",
+  "scope": {
+    "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+    "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c"
+  },
+  "documentId": "6ff76402-af68-43b2-beec-650834b128fb",
+  "draftId": "9335d576-8305-42ad-9d43-5f4e07969821",
+  "activityId": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+  "calculationIds": [
+    "0d430235-b003-4959-8ff8-eaa0c9a2fa49"
+  ],
+  "reportId": "202e02dd-64cb-4caf-bac5-f9c1cc7a7e05",
+  "savedKg": 50,
+  "activitiesUrl": "http://127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c",
+  "reportUrl": "http://127.0.0.1:4215/admin/reports/202e02dd-64cb-4caf-bac5-f9c1cc7a7e05?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c",
+  "notice": "LOCAL SYNTHETIC ONLY. Existing ports/projects preserved. API4214 restart creates fresh synthetic IDs/data. No managedSupabase/JWT/Storage/Edge or native save acceptance."
+}

@@ -1,0 +1,440 @@
+{
+  "synthetic": true,
+  "sourceCommit": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "scope": {
+    "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+    "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c"
+  },
+  "rows": {
+    "emission_activities": [
+      {
+        "id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+        "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+        "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+        "source_document_id": "6ff76402-af68-43b2-beec-650834b128fb",
+        "source_draft_id": "9335d576-8305-42ad-9d43-5f4e07969821",
+        "activity_code": "MANUAL-9335d576-8305-42ad-9d43-5f4e07969821",
+        "activity_name": "SYNTHETIC 保留原版100kWh",
+        "activity_date": "2026-01-15",
+        "category": "energy",
+        "subcategory": null,
+        "activity_type": "electricity",
+        "quantity": 100,
+        "unit": "kWh",
+        "normalized_quantity": 100,
+        "normalized_unit": "kWh",
+        "data_quality": "primary",
+        "inclusion_status": "included",
+        "exclusion_reason": null,
+        "review_note": "SYNTHETIC 人工確認，非OCR",
+        "suggested_scope": 2,
+        "final_scope": 2,
+        "confidence_score": null,
+        "status": "active",
+        "archived_at": null,
+        "created_by_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "created_at": "2026-11-07T15:12:08.863Z",
+        "updated_at": "2026-11-07T15:12:08.863Z",
+        "is_test": true,
+        "env": "staging"
+      }
+    ],
+    "calculation_results": [
+      {
+        "id": "0d430235-b003-4959-8ff8-eaa0c9a2fa49",
+        "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+        "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+        "emission_activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+        "calc_version": 2,
+        "status": "calculated",
+        "is_latest": true,
+        "co2e_kg": 50,
+        "co2_kg": null,
+        "ch4_kg": null,
+        "n2o_kg": null,
+        "factor_id": "f2216e59-afa8-4840-a4a7-60fb5bac66c1",
+        "factor_snapshot": {
+          "unit": "kWh",
+          "version": 1,
+          "factor_id": "f2216e59-afa8-4840-a4a7-60fb5bac66c1",
+          "factor_key": "SYNTHETIC-0.5",
+          "source_url": null,
+          "factor_name": "SYNTHETIC custom factor",
+          "resolved_at": "2026-11-07T15:12:08.899Z",
+          "source_name": "SYNTHETIC TEST ONLY",
+          "quality_tier": "custom",
+          "ch4_kg_per_unit": null,
+          "co2_kg_per_unit": null,
+          "n2o_kg_per_unit": null,
+          "co2e_kg_per_unit": 0.5,
+          "source_reference": null
+        },
+        "input_snapshot": {
+          "unit": "kWh",
+          "category": "energy",
+          "quantity": 100,
+          "subcategory": null,
+          "activity_date": "2026-01-15",
+          "activity_type": "electricity",
+          "normalized_unit": "kWh",
+          "normalized_quantity": 100
+        },
+        "formula_version": "v1.0.0",
+        "warnings": [],
+        "error_code": null,
+        "calculated_at": "2026-11-07T15:12:08.899Z",
+        "created_at": "2026-11-07T15:12:08.901Z",
+        "updated_at": "2026-11-07T15:12:08.901Z",
+        "is_test": true,
+        "env": "staging"
+      },
+      {
+        "id": "5da8fcd2-a33c-4763-8171-3e9d5b5e37ca",
+        "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+        "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+        "emission_activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+        "calc_version": 1,
+        "status": "calculated",
+        "is_latest": false,
+        "co2e_kg": 50,
+        "co2_kg": null,
+        "ch4_kg": null,
+        "n2o_kg": null,
+        "factor_id": "f2216e59-afa8-4840-a4a7-60fb5bac66c1",
+        "factor_snapshot": {
+          "unit": "kWh",
+          "version": 1,
+          "factor_id": "f2216e59-afa8-4840-a4a7-60fb5bac66c1",
+          "factor_key": "SYNTHETIC-0.5",
+          "source_url": null,
+          "factor_name": "SYNTHETIC custom factor",
+          "resolved_at": "2026-11-07T15:12:08.862Z",
+          "source_name": "SYNTHETIC TEST ONLY",
+          "quality_tier": "custom",
+          "ch4_kg_per_unit": null,
+          "co2_kg_per_unit": null,
+          "n2o_kg_per_unit": null,
+          "co2e_kg_per_unit": 0.5,
+          "source_reference": null
+        },
+        "input_snapshot": {
+          "unit": "kWh",
+          "category": "energy",
+          "quantity": 100,
+          "subcategory": null,
+          "activity_date": "2026-01-15",
+          "activity_type": "electricity",
+          "normalized_unit": "kWh",
+          "normalized_quantity": 100
+        },
+        "formula_version": "v1.0.0",
+        "warnings": [],
+        "error_code": null,
+        "calculated_at": "2026-11-07T15:12:08.862Z",
+        "created_at": "2026-11-07T15:12:08.863Z",
+        "updated_at": "2026-11-07T15:12:08.901Z",
+        "is_test": true,
+        "env": "staging"
+      }
+    ],
+    "report_generations": [
+      {
+        "id": "202e02dd-64cb-4caf-bac5-f9c1cc7a7e05",
+        "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+        "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+        "generated_by_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "status": "completed",
+        "report_version": 1,
+        "payload": {
+          "scope_totals": {
+            "scope_1": 0,
+            "scope_2": 50,
+            "scope_3": 0,
+            "unknown": 0
+          },
+          "site_snapshot": {},
+          "category_totals": {
+            "energy": 50
+          },
+          "boundary_summary": {
+            "boundary_type": "operational_control",
+            "pending_count": 0,
+            "excluded_count": 0,
+            "included_count": 1
+          },
+          "project_metadata": {
+            "name": "SYNTHETIC local workflow",
+            "status": "draft",
+            "site_id": null,
+            "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+            "project_code": "SYNTHETIC-LOCAL",
+            "workspace_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+            "legal_entity_id": null,
+            "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1"
+          },
+          "reporting_period": {
+            "end_date": "2026-12-31",
+            "start_date": "2026-01-01"
+          },
+          "appendix_mappings": [
+            {
+              "source_draft_id": "9335d576-8305-42ad-9d43-5f4e07969821",
+              "source_document_id": "6ff76402-af68-43b2-beec-650834b128fb",
+              "emission_activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+              "calculation_result_id": "0d430235-b003-4959-8ff8-eaa0c9a2fa49"
+            }
+          ],
+          "boundary_snapshot": {
+            "site_id": null,
+            "site_label": null,
+            "workspace_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+            "boundary_type": "operational_control",
+            "legal_entity_id": null,
+            "workspace_label": "SYNTHETIC LOCAL ONLY",
+            "reporting_period": {
+              "end_date": "2026-12-31",
+              "start_date": "2026-01-01"
+            },
+            "legal_entity_label": null
+          },
+          "workspace_snapshot": {
+            "slug": "synthetic-local-ef525573-8253-4379-8721-54d821f3f9c1",
+            "workspace_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+            "workspace_label": "SYNTHETIC LOCAL ONLY"
+          },
+          "factor_sources_used": [
+            {
+              "version": 1,
+              "factor_id": "f2216e59-afa8-4840-a4a7-60fb5bac66c1",
+              "factor_key": "SYNTHETIC-0.5",
+              "source_url": null,
+              "factor_name": "SYNTHETIC custom factor",
+              "source_name": "SYNTHETIC TEST ONLY",
+              "quality_tier": "custom",
+              "source_reference": null
+            }
+          ],
+          "legal_entity_snapshot": {},
+          "ai_summary_placeholder": {
+            "en": "AI audit summary pending",
+            "ja": "AI 監査サマリーは未生成です",
+            "zh_tw": "AI 健檢摘要待產生"
+          },
+          "data_gaps_and_warnings": [],
+          "excluded_items_summary": [],
+          "included_activities_summary": [
+            {
+              "co2e_kg": 50,
+              "category": "energy",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_code": "MANUAL-9335d576-8305-42ad-9d43-5f4e07969821",
+              "activity_date": "2026-01-15",
+              "activity_name": "SYNTHETIC 保留原版100kWh",
+              "emission_activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335"
+            }
+          ]
+        },
+        "payload_hash": "565eb95e15dd95496880b2f846b318b87ea2e172fb285d67cd4ab0b57434cb01",
+        "reporting_period_start": "2026-01-01",
+        "reporting_period_end": "2026-12-31",
+        "included_activity_count": 1,
+        "excluded_activity_count": 0,
+        "pending_activity_count": 0,
+        "scope_totals": {
+          "scope_1": 0,
+          "scope_2": 50,
+          "scope_3": 0,
+          "unknown": 0
+        },
+        "category_totals": {
+          "energy": 50
+        },
+        "factor_sources": [
+          {
+            "version": 1,
+            "factor_id": "f2216e59-afa8-4840-a4a7-60fb5bac66c1",
+            "factor_key": "SYNTHETIC-0.5",
+            "source_url": null,
+            "factor_name": "SYNTHETIC custom factor",
+            "source_name": "SYNTHETIC TEST ONLY",
+            "quality_tier": "custom",
+            "source_reference": null
+          }
+        ],
+        "warning_count": 0,
+        "based_on_calculated_at": "2026-11-07T15:12:08.955Z",
+        "error_message": null,
+        "created_at": "2026-11-07T15:12:08.956Z",
+        "updated_at": "2026-11-07T15:12:08.956Z",
+        "is_test": true,
+        "env": "staging",
+        "gross_emissions_snapshot": {
+          "scope_totals": {
+            "scope_1": 0,
+            "scope_2": 50,
+            "scope_3": 0,
+            "unknown": 0
+          },
+          "category_totals": {
+            "energy": 50
+          },
+          "gross_total_co2e_kg": 50
+        },
+        "adjustment_summary": {
+          "claim_purpose": "internal_management",
+          "application_count": 0,
+          "eligible_total_tco2e": 0,
+          "requested_total_tco2e": 0,
+          "disallowed_total_tco2e": 0
+        },
+        "claim_results": {
+          "claim_purpose": "internal_management",
+          "gross_co2e_kg": 50,
+          "claim_net_co2e_kg": 50,
+          "eligible_deduction_kg": 0,
+          "inventory_impact_mode": "claim_only",
+          "eligible_deduction_tco2e": 0
+        },
+        "adjustment_manifest": [],
+        "claim_purpose": "internal_management",
+        "legal_entity_snapshot": {},
+        "site_snapshot": {},
+        "boundary_snapshot": {
+          "site_id": null,
+          "site_label": null,
+          "workspace_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+          "boundary_type": "operational_control",
+          "legal_entity_id": null,
+          "workspace_label": "SYNTHETIC LOCAL ONLY",
+          "reporting_period": {
+            "end_date": "2026-12-31",
+            "start_date": "2026-01-01"
+          },
+          "legal_entity_label": null
+        },
+        "integrity_status": "server_verified"
+      }
+    ],
+    "uploaded_documents": [
+      {
+        "id": "6ff76402-af68-43b2-beec-650834b128fb",
+        "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+        "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+        "uploaded_by_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "storage_bucket": "staging-receipts",
+        "storage_path": "staging/25845d35-190c-401d-aae3-9bb990d10d3c/6ff76402-af68-43b2-beec-650834b128fb.pdf",
+        "original_filename": "SYNTHETIC-A.pdf",
+        "mime_type": "application/pdf",
+        "file_size_bytes": 707,
+        "sha256_hash": "7e6d08557b49167157e8a81595245384b77874574cec985375d9037306677d93",
+        "document_type": "receipt",
+        "ocr_status": "pending",
+        "status": "active",
+        "metadata": {
+          "intake_mode": "server_verified_upload",
+          "verification_contract": "20261106.hash.1"
+        },
+        "received_date": "2026-11-07",
+        "archived_at": null,
+        "created_at": "2026-11-07T15:12:08.747Z",
+        "updated_at": "2026-11-07T15:12:08.747Z",
+        "is_test": true,
+        "env": "staging",
+        "hash_verification_status": "server_verified",
+        "server_verified_at": "2026-11-07T15:12:08.749Z",
+        "verified_storage_object_id": "e7f48f07-997c-40c6-b34f-ca3db29d2f34",
+        "deletion_state": "active",
+        "deleted_at": null,
+        "deletion_request_id": null
+      }
+    ],
+    "extracted_document_drafts": [
+      {
+        "id": "9335d576-8305-42ad-9d43-5f4e07969821",
+        "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+        "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+        "uploaded_document_id": "6ff76402-af68-43b2-beec-650834b128fb",
+        "extraction_version": 1,
+        "extraction_provider": "MANUAL_TRANSCRIPTION_NO_OCR",
+        "raw_payload": {
+          "manual_transcription": {
+            "mode": "MANUAL_NO_OCR",
+            "input": {
+              "unit": "kWh",
+              "category": "energy",
+              "quantity": 100,
+              "period_end": null,
+              "final_scope": 2,
+              "review_note": "SYNTHETIC 人工確認，非OCR",
+              "source_text": null,
+              "subcategory": null,
+              "period_start": null,
+              "activity_date": "2026-01-15",
+              "activity_name": "SYNTHETIC 保留原版100kWh",
+              "activity_type": "electricity",
+              "source_locator": "SYNTHETIC page1",
+              "exclusion_reason": null,
+              "inclusion_status": "included"
+            },
+            "user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+            "request_id": "33b56cc6-a800-40f2-9566-72b697e5efab",
+            "confirmation": {
+              "intent": {
+                "decision": "confirmed",
+                "request_id": "db4a4b43-31d9-4757-b190-e75ac413df06",
+                "review_note": "SYNTHETIC 人工確認，非OCR"
+              },
+              "activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+              "confirmed_at": "2026-11-07T15:12:08.875+00:00",
+              "actor_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+              "calculation_id": "5da8fcd2-a33c-4763-8171-3e9d5b5e37ca",
+              "inclusion_status": "included"
+            },
+            "transcribed_at": "2026-11-07T15:12:08.833+00:00",
+            "original_verification": {
+              "sha256_hash": "7e6d08557b49167157e8a81595245384b77874574cec985375d9037306677d93",
+              "verified_at": "2026-11-07T15:12:08.749+00:00",
+              "contract_version": "20261107.manual.2",
+              "storage_object_id": "e7f48f07-997c-40c6-b34f-ca3db29d2f34"
+            }
+          }
+        },
+        "normalized_payload": {
+          "unit": "kWh",
+          "category": "energy",
+          "quantity": 100,
+          "period_end": null,
+          "final_scope": 2,
+          "review_note": "SYNTHETIC 人工確認，非OCR",
+          "source_text": null,
+          "subcategory": null,
+          "period_start": null,
+          "activity_date": "2026-01-15",
+          "activity_name": "SYNTHETIC 保留原版100kWh",
+          "activity_type": "electricity",
+          "source_locator": "SYNTHETIC page1",
+          "exclusion_reason": null,
+          "inclusion_status": "included"
+        },
+        "status": "confirmed",
+        "classification_status": "unclassified",
+        "confidence_score": null,
+        "suggested_activity_date": "2026-01-15",
+        "suggested_category": "energy",
+        "suggested_scope": 2,
+        "parsed_quantity": 100,
+        "parsed_unit": "kWh",
+        "parsed_vendor": null,
+        "review_note": "SYNTHETIC 人工確認，非OCR",
+        "reviewed_by_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "reviewed_at": "2026-11-07T15:12:08.875Z",
+        "is_latest": true,
+        "created_at": "2026-11-07T15:12:08.829Z",
+        "updated_at": "2026-11-07T15:12:08.863Z",
+        "is_test": true,
+        "env": "staging"
+      }
+    ]
+  }
+}
