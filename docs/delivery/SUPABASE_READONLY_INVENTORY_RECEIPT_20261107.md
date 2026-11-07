@@ -1,6 +1,6 @@
 # Supabase 唯讀盤點回執 — 2026-11-07
 
-**READONLY_COMPLETE_WITH_SCOPE_LIMITS；RELEASE HOLD；WAITING_OWNER。** Owner授權並自行完成PC登入後，已核對指定CoCalLab的metadata與aggregate。應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde，正式UAT仍7dccd5452152f2495d10ad1437d5d03215166065；沒有部署或合併。此公開版不包含精確live DB／安全／用量細節。
+**READONLY_COMPLETE_WITH_SCOPE_LIMITS；RELEASE HOLD；WAITING_CTO_PREREQUISITES。** Owner授權並自行完成PC登入後，已核對指定CoCalLab的metadata與aggregate。應用固定ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde，正式UAT仍7dccd5452152f2495d10ad1437d5d03215166065；沒有部署或合併。此公開版不包含精確live DB／安全／用量細節。
 
 | 分類 | 結果與證據取得方式 |
 |---|---|
@@ -8,16 +8,16 @@
 | UNVERIFIED | 業務用途、資料是否真實或fixture、總Auth使用者數、完整RLS／trigger內容、部署SHA、現有Readdy／其他外部呼叫方、managed runtime／實際JWT設定。未以MAU當總使用者，未以四捨五入0GB當空資料 |
 | MISSING_IN_VISIBLE_LIST | 來源固定清單與live可見migration／Function名稱有落差，逐項列在受限比較JSON；這不等於完整schema或對應服務一定不存在 |
 | BLOCKED | 既有專案不能證實為安全空白UAT；恢復正確性／Storage原件復原未驗；原生Deno14FAIL及真服務／兩獨立SQL／原生選檔下載仍未關閉 |
-| OWNER_ACTION_REQUIRED | 確認現有用途／相依；選擇測試環境並核准具體費用、資源建立、migration／bucket／合成帳號／上傳／撤權及專用備份還原範圍。本次唯讀授權未包含 |
+| OWNER_ACTION_REQUIRED | 現有用途／相依仍未分類；Owner其後已選獨立Micro UAT並補齊累計費用額度及保留期，詳下。migration／bucket／合成帳號／上傳／撤權及專用備份還原仍沿用各自操作核准界線 |
 
 ## 具體可選路徑（尚未執行）
 
-Owner於2026-11-07已選「同一付費組織另建獨立Micro UAT」，保留既有main。**PATH_SELECTED／WAITING_OWNER_BUDGET_AND_RETENTION**：回覆尚未包含預算或保留期限，已請Owner補充；不把選項中的「請填預算／期限」視為已提供數值。尚未建立資源或啟動計費，target ref仍UNKNOWN；到期刪除亦未授權。CTO／原生相容性阻礙與其餘雲端操作核准界線沿用。
+Owner於2026-11-07已選同一付費組織另建獨立Micro UAT，並補齊本次累計新增費用額度及14天保留期限；不是每月循環預算。**OWNER_BUDGET_RETENTION_RECORDED／WAITING_CTO_PREREQUISITES**：精確費用額度與原文留repo外受限OWNER_UAT_BUDGET_AUTHORIZATION_20261107.json，不公開財務授權值、不重問同一授權。期限從實際建立時間起算，created_at／expires_at／target ref仍空，尚未建立資源或啟動計費。沿已約定順序先處理CTO與原生相容性阻礙；平台硬性限額未驗證，不假稱有自動監控或保證封頂。既有main保持原樣，不自動續期，到期刪除仍未授權；其餘migration／bucket／帳號／上傳／撤權／還原界線沿用。
 
 | 選項 | 增量估算與條件 |
 |---|---|
 | 沿用既有main | 不新增compute的理論增量0；流量／資料仍可能增加費用。因用途、真資料及外部相依未明，目前不建議寫入驗收。需Owner完成分類、明確核准受影響範圍與復原方案 |
-| 同一付費組織新建獨立Micro UAT（工程建議） | 官方額外專案約US$10/月compute、按時數；disk／egress／Storage超額另計，不假定可用credit。不另開付費組織或加購PITR／domain／IPv4；專案／Auth／bucket／credentials獨立，僅合成資料；既有main保留。這是待核准提案 |
+| 同一付費組織新建獨立Micro UAT（工程建議） | 官方額外專案約US$10/月compute、按時數；disk／egress／Storage超額另計，不假定可用credit。不另開付費組織或加購PITR／domain／IPv4；專案／Auth／bucket／credentials獨立，僅合成資料；既有main保留。此路徑及預算／期限已由Owner確認，待CTO／相容性前置後執行 |
 | 建無資料preview／persistent branch | Micro起US$0.01344/hour，168h約US$2.26、730h約US$9.81，另計用量。Branch compute不適用compute credit且不受Spend Cap保護。預設不複製資料／Storage原件，但會繼承部分設定與既有Functions；Dashboard branch由基底migration history建schema，不會自動取得本候選完整來源。Include data／真資料seed禁用；不接自動production merge/deploy |
 
 價格核對2026-11-07：[官方多專案計費](https://supabase.com/docs/guides/platform/billing-faq)、[branch費率與界線](https://supabase.com/docs/guides/platform/manage-your-usage/branching)、[branch建立內容](https://supabase.com/docs/guides/deployment/branching)。以上是公開費率估算，不是帳戶實際帳單、稅後報價或消費上限；未讀卡號／發票／付款內容。
@@ -26,7 +26,7 @@ Owner於2026-11-07已選「同一付費組織另建獨立Micro UAT」，保留�
 
 Owner報告檔名OWNER_SUPABASE_READONLY_REPORT_20261107.md，與SUPABASE_READONLY_OBSERVATIONS.json、SOURCE_LIVE_METADATA_COMPARISON.json及SHA256.json位於此PC的repo／OneDrive以外受限暫存資料夾。明確ACL僅Owner、Codex執行帳戶與SYSTEM／Administrators；取得本機可點連結由本輪聊天交付，不將live精確值貼Git。尚無跨Mac共享位置，未上傳第三方；TEMP有清理風險，Owner需保留時另選受限目的地。
 
-核准後才確認新UAT唯一ref與target allowlist，固定經CTO裁定的可驗收SHA，確認41來源／38schema候選＋3歷史fixture HOLD的history方案，逐項套migration、驗NOT VALID、設私有bucket、Auth redirects/CORS/JWT、合成A/B/shared/viewer並跑手冊。憑證留受限未追蹤位置；只對明確專用UAT做DB與合成Storage bytes備份／reset／restore／hash核對，不碰既有main，不宣稱跨服務原子復原。這些均未授權或執行。
+核准後才確認新UAT唯一ref與target allowlist，固定經CTO裁定的可驗收SHA，確認41來源／38schema候選＋3歷史fixture HOLD的history方案，逐項套migration、驗NOT VALID、設私有bucket、Auth redirects/CORS/JWT、合成A/B/shared/viewer並跑手冊。憑證留受限未追蹤位置；只對明確專用UAT做DB與合成Storage bytes備份／reset／restore／hash核對，不碰既有main，不宣稱跨服務原子復原。路徑及預算／期限已收件；其餘操作核准界線未擴大，上述流程均尚未執行。
 
 ## 驗證與下一條命令
 

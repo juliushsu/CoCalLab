@@ -42,11 +42,11 @@ Owner已授權並完成PC登入，**READONLY_COMPLETE_WITH_SCOPE_LIMITS**。指�
 
 [公開脫敏回執與環境選項](SUPABASE_READONLY_INVENTORY_RECEIPT_20261107.md)已備；精確版本、統計、部署落差與證據URL保留repo外的Owner受限本機報告。既有專案不能證實為安全空白UAT，實際用途／真實資料性質／外部相依仍需Owner分類；部署SHA仍UNKNOWN。備份存在不等於復原已驗。
 
-Cloudflare／Railway不在此次新增授權內。環境選擇、新費用、建資源與任何寫入仍WAITING_OWNER；本次沒有自選UAT或讀取正式內容。
+Cloudflare／Railway不在此次新增授權內。Owner已選獨立Micro UAT並補齊本次累計新增費用額度及14天保留期；精確額度留受限授權回執。WAITING_CTO_PREREQUISITES：先解決CTO／原生相容性阻礙，再按已核准條件建立；尚未建立資源，期限尚未起算。其餘雲端寫入授權未擴大，本次未讀正式內容。
 
 ## 下一關與未驗
 
-1. WAITING_OWNER：已完成限定唯讀盤點並提出既有main／獨立UAT／無資料branch選項；建議保留既有main，另核准獨立UAT與費用及具體操作包。未獲核准前不建立資源／寫入／改設定，既有唯讀授權不重問。
+1. OWNER_BUDGET_RETENTION_RECORDED／WAITING_CTO_PREREQUISITES：已選獨立Micro UAT，預算與14天期限已提供，不重問；先處理下列CTO／相容性前置。實際建立時才記起訖時間與target ref，不動既有main、不自動續期或刪除，不把費用額度誤稱平台硬性限額。
 2. WAITING_CTO：採用前先處理[原生Deno相容性缺口](DENO_EDGE_COMPATIBILITY_BLOCKERS_20261107.md)，對相關依賴與三支handler邊界作最小修正、另固定新候選SHA；不修改本輪ba2來混淆版本。
 3. CLAUDE_RECEIVED／WAITING_CTO：遠端507a94e的[回覆原文](CLAUDE_INTEGRATION_REVIEW_REPLY_20261107.md)已保留合入，見[收件摘要](CLAUDE_REVIEW_RECEIPT_20261107.md)。沿[固定入口9839e1f](https://github.com/juliushsu/CoCalLab/blob/9839e1f5ab6ab21f0e81975b1d43ff447cf692f7/docs/delivery/CLAUDE_INTEGRATION_REVIEW_START_HERE_20261107.md)，區分歷史與ba2整合版本；回覆沒有重跑測試；四類P2為審查者評級，尚待CTO裁定，不推定放行或重開整案。
 4. NOT_RUN：真JWT／PostgREST／Storage／Deno Edge、原生選檔與落盤、兩獨立PG連線、live migration／NOT VALID資料驗證、備份復原及19+1代表使用者驗收。原生chooser權限阻礙沿用，不擅自擴權／重試Docker/WSL。
