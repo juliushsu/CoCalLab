@@ -27,7 +27,7 @@ registerHooks({ resolve(specifier, context, next) {
 const tables = new Set(['organizations','organization_members','subscriptions','projects','emission_activities','emission_factors',
   'calculation_results','report_generations','adjustment_applications','legal_entities','sites','action_logs','audit_logs','uploaded_documents','extracted_document_drafts']);
 const rpcs = new Set(['recalculate_project_atomic','recalculation_contract','recalculation_request_v2','commit_recalculation_v2','generate_report_atomic','generate_report_snapshot_atomic_v2','report_snapshot_request_v2','read_verified_report_snapshot','upload_intake_contract',
-  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing']);
+  'list_my_organizations','get_project_for_navigation','confirm_draft_atomic','create_manual_transcription_atomic','confirm_manual_draft_atomic_v2','upload_verification_contract','begin_upload_verification','complete_upload_verification','document_deletion_contract','document_deletion_request','finalize_document_deletion','begin_document_processing','finish_document_processing','release_document_processing','save_manual_activity_atomic','report_calculation_inputs','classify_document_atomic','process_document_atomic']);
 const handlers = new Map(), columns = new Map(), users = new Map(), sessions = new Map();
 const originals=new Map();
 const storageMetrics={writes:0,reads:0};
@@ -267,10 +267,24 @@ try {
   const localFetch=globalThis.fetch;
   globalThis.fetch=(input,init)=>{const target=new URL(typeof input==='string'||input instanceof URL?input:input.url);if(target.origin!==baseUrl)throw new Error('Outbound fetch outside this dedicated synthetic API is blocked');return localFetch(input,init);};
   previewConfig={baseUrl,publicKey:PUBLIC_KEY,scope,accounts,scenario:workerData.scenario,storageMetrics};
-globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:4203,http://localhost:4203,http://127.0.0.1:4205,http://localhost:4205,http://127.0.0.1:4207,http://localhost:4207,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
-  for(const name of ['recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot','verify-upload-receipt','delete-uploaded-document','process-document',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(['manual-transcription','verified-upload'].includes(workerData.scenario)?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
+globalThis.Deno={env:{get(name){const values={SUPABASE_URL:baseUrl,SUPABASE_ANON_KEY:PUBLIC_KEY,SUPABASE_SERVICE_ROLE_KEY:SERVICE_KEY,REPORT_EXPORT_POLICY:workerData.exportPolicy??undefined,APP_ENV:'staging',ENV:'staging',CORS_ALLOWED_ORIGINS:'http://127.0.0.1:4213,http://localhost:4213,http://127.0.0.1:4193,http://localhost:4193,http://127.0.0.1:4195,http://localhost:4195,http://127.0.0.1:4197,http://localhost:4197,http://127.0.0.1:4199,http://localhost:4199,http://127.0.0.1:4201,http://localhost:4201,http://127.0.0.1:4203,http://localhost:4203,http://127.0.0.1:4205,http://localhost:4205,http://127.0.0.1:4207,http://localhost:4207,http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:5174,http://localhost:5174,http://127.0.0.1:4173,http://localhost:4173'};return values[name];}},serve(handler){handlers.set(registering,handler);return {shutdown:async()=>{}};}};
+  for(const name of ['save-manual-activity','classify-document','recalculate-project','generate-report','enforce-subscription-status','export-report-snapshot','verify-upload-receipt','delete-uploaded-document','process-document',...(workerData.scenario!=='manual'?['confirm-draft']:[]),...(['manual-transcription','verified-upload'].includes(workerData.scenario)?['manual-transcription']:[])]){registering=name;await import(new URL('../../supabase/functions/'+name+'/index.ts',import.meta.url));}
   if(workerData.scenario==='showcase')previewConfig.manifest=await seedShowcase({db:flow.db,baseUrl,scope,accounts,originals});
-  if(workerData.scenario==='manual-transcription')previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});
+  if(workerData.scenario==='manual-transcription'){
+    previewConfig.manifest=await seedManualScenario({db:flow.db,scope,originals});
+    // Actual local verifier reads the synthetic bytes and writes the receipt via
+    // its service-only SQL chain. Never stamp a trusted flag in a fixture.
+    for(const fixture of Object.values(previewConfig.manifest.fixtures)){
+      const original=fixture.document;
+      const account=[...users.values()].find(entry=>entry.user.id===(fixture.organizationId===scope.organizationId?scope.aOwnerId:scope.otherOwnerId));
+      if(!account)throw new Error('Synthetic verification actor missing');
+      const session=makeSession(account.user);
+      const response=await handlers.get('verify-upload-receipt')(new Request(baseUrl+'/functions/v1/verify-upload-receipt',{method:'POST',headers:{apikey:PUBLIC_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify({organization_id:fixture.organizationId,project_id:fixture.projectId,document_id:original.documentId,request_id:original.documentId,storage_bucket:original.bucket,storage_path:original.path,original_filename:original.originalFilename,document_type:'receipt',file_size_bytes:original.bytes,mime_type:'application/pdf'})}));
+      const result=await response.json();if(!response.ok||!result.success)throw new Error('Synthetic original verification failed: '+JSON.stringify(result));
+    }
+    previewConfig.manifest.notRun=previewConfig.manifest.notRun.filter(value=>value!=='server byte/hash attestation');
+    previewConfig.manifest.cases.push('Synthetic original bytes verified by checked-in local handler; not real Storage/JWT acceptance');
+  }
   if(workerData.scenario==='verified-upload')previewConfig.manifest={synthetic:true,scenario:'verified-upload',fixtures:{a:{organizationId:scope.organizationId,projectId:scope.projectId},b:{organizationId:scope.otherOrganizationId,projectId:scope.otherProjectId}},notRun:['real Supabase Auth/JWT/Storage','independent SQL connection lock-wait races','service-role maintenance attestation']};
   parentPort.on('message',async message=>{try{
     let value;

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createClient} from '@supabase/supabase-js';
-import {manualScope,manualFormValues,requireMatchingManualAttempt,manualJournalKey,readManualAttempt,writeManualAttempt,abandonManualAttempt,submitManualTranscription,confirmManualTranscription,readManualDraft,MANUAL_PROVIDER,type ManualAttempt} from '../src/services/manualTranscription.ts';
+import {manualScope,manualFormValues,manualReceiptEligible,requireMatchingManualAttempt,manualJournalKey,readManualAttempt,writeManualAttempt,abandonManualAttempt,submitManualTranscription,confirmManualTranscription,readManualDraft,MANUAL_PROVIDER,type ManualAttempt} from '../src/services/manualTranscription.ts';
 import type {ExtractedDocumentDraft} from '../src/types/document.ts';
 const O='00000000-0000-4000-8000-000000000001',P='00000000-0000-4000-8000-000000000002',D='00000000-0000-4000-8000-000000000003',U='00000000-0000-4000-8000-000000000004',R='00000000-0000-4000-8000-000000000005';
 const scope={organizationId:O,projectId:P,documentId:D};
@@ -12,6 +12,11 @@ const draft=()=>({id:R,organization_id:O,project_id:P,uploaded_document_id:D,ext
 test('manual entry requires exact explicit tenant/project/document and rejects conflicts',()=>{
  assert.deepEqual(manualScope(D,'?organization_id='+O+'&projectId='+P),scope);
  for(const search of ['', '?organization_id='+O,'?organization_id='+O+'&organizationId='+P+'&projectId='+P])assert.throws(()=>manualScope(D,search));
+});
+test('new manual UI only enables active server-verified receipts, preserving legacy read access without promoting historical claims',()=>{
+ const row={status:'active',deletion_state:'active',hash_verification_status:'server_verified',server_verified_at:'2026-11-07T00:00:00Z',verified_storage_object_id:D,sha256_hash:'a'.repeat(64)} as const;
+ assert.equal(manualReceiptEligible(row),true);
+ for(const patch of [{status:'archived'},{deletion_state:'pending'},{deletion_state:'deleted'},{hash_verification_status:'legacy_unverified'},{server_verified_at:null},{server_verified_at:'invalid'},{verified_storage_object_id:null},{verified_storage_object_id:'invalid'},{sha256_hash:'client claim'}])assert.equal(manualReceiptEligible({...row,...patch}),false);
 });
 test('manual values preserve real zero, unknown period and immutable canonical fields without 0/kg fallback',()=>{
  const values=manualFormValues({...form(),quantity:'0'});assert.equal(values.quantity,0);assert.equal(values.period_start,null);assert.equal(values.subcategory,null);assert.equal(values.unit,'kWh');

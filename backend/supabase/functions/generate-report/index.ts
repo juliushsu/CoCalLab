@@ -118,21 +118,13 @@ if(saved){if(saved.status!=='completed')throw new Error('REPORT_SAVE_NOT_CONFIRM
       site = data;
     }
 
-    const { data: activities, error: activitiesError } = await supabase
-      .from('emission_activities')
-      .select('*')
-      .eq('project_id', input.project_id)
-      .eq('organization_id', input.organization_id)
-      .eq('status', 'active');
-    if (activitiesError) throw activitiesError;
-
-    const { data: calcResults, error: calcError } = await supabase
-      .from('calculation_results')
-      .select('*')
-      .eq('project_id', input.project_id)
-      .eq('organization_id', input.organization_id)
-      .eq('is_latest', true);
-    if (calcError) throw calcError;
+    // SQL checks the latest completed calculation authority and full current inputs/results.
+    // Writable public rows alone are never accepted as report calculation evidence.
+    const source=await supabase.rpc('report_calculation_inputs',{p_organization_id:input.organization_id,p_project_id:input.project_id,p_actor_user_id:actor.user_id});
+    if(source.error)return toErrorEnvelope(request,new Error(source.error.message),{code:source.error.message?.match(/(?:CALCULATION_AUTHORITY|REPORT_SOURCE)_[A-Z_]+/)?.[0]||'REPORT_SOURCE_INVALID',httpStatus:source.error.code==='42501'?403:409,requestId:input.request_id});
+    const trusted=(Array.isArray(source.data)?source.data[0]:source.data)?.result;
+    if(!trusted||!Array.isArray(trusted.activities)||!Array.isArray(trusted.calculation_results)||!Array.isArray(trusted.factors)||!trusted.calculation_authority||typeof trusted.calculation_authority.request_id!=='string'||!trusted.calculation_authority.request_id)throw new Error('CALCULATION_AUTHORITY_REQUIRED');
+    const activities=trusted.activities,calcResults=trusted.calculation_results;
 
     const payload = build_report_payload({
       project,
@@ -232,12 +224,12 @@ if(saved){if(saved.status!=='completed')throw new Error('REPORT_SAVE_NOT_CONFIRM
       p_warning_count: payload.data_gaps_and_warnings.length,
       p_based_on_calculated_at: new Date().toISOString(),
       p_request_id: input.request_id || crypto.randomUUID(),
-      p_snapshot: {claim_purpose:claimPurpose,gross_emissions_snapshot:grossEmissionsSnapshot,adjustment_summary:adjustmentSummary,claim_results:claimResults,adjustment_manifest:adjustmentManifest},
+      p_snapshot: {calculation_authority:trusted.calculation_authority,claim_purpose:claimPurpose,gross_emissions_snapshot:grossEmissionsSnapshot,adjustment_summary:adjustmentSummary,claim_results:claimResults,adjustment_manifest:adjustmentManifest},
     });
 
     if (rpcError) {
       return toErrorEnvelope(request, rpcError, {
-        code: rpcError.message?.match(/REPORT_SNAPSHOT_(?:UNVERIFIED|INTEGRITY_MISMATCH)/)?.[0]||'GENERATE_REPORT_ATOMIC_FAILED',
+        code: rpcError.message?.match(/(?:REPORT_SNAPSHOT_(?:UNVERIFIED|INTEGRITY_MISMATCH)|CALCULATION_AUTHORITY_[A-Z_]+|REPORT_(?:SOURCE|CALCULATION_AUTHORITY)_[A-Z_]+)/)?.[0]||'GENERATE_REPORT_ATOMIC_FAILED',
         httpStatus: rpcError.code==='42501'?403:409,
         requestId: input.request_id,
       });

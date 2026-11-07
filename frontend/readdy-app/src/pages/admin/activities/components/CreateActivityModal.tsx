@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import {saveManualActivity,manualContext,type ManualInput} from '@/services/manualWorkflow';
-import {activityReference,clearManualReference} from '@/services/manualRecovery';
+import {activityReference,clearManualReference,activityEditReference,clearActivityEditReference} from '@/services/manualRecovery';
+import type {EmissionActivity} from '@/types/activity';
 import { useTranslation } from 'react-i18next';
 import { getSupabaseClient } from '@/lib/supabase';
 import { IS_STAGING } from '@/utils/staging';
 import { getSuggestedScope } from '@/utils/categoryScope';
 
 interface CreateActivityModalProps {
+  activity?: EmissionActivity;
   projectId?: string;
   organizationId?: string;
   userId: string;
@@ -39,7 +41,7 @@ const CATEGORY_OPTIONS = [
   'other',
 ];
 
-export default function CreateActivityModal({ projectId, organizationId, userId, isCurrent, onClose, onCreated }: CreateActivityModalProps) {
+export default function CreateActivityModal({ activity,projectId, organizationId, userId, isCurrent, onClose, onCreated }: CreateActivityModalProps) {
   const { t } = useTranslation();
 
   const [form, setForm] = useState<FormData>({
@@ -56,22 +58,25 @@ export default function CreateActivityModal({ projectId, organizationId, userId,
   });
 
   const [attemptId,setAttemptId] = useState('');
+  const [requestId,setRequestId] = useState('');
   const [restoring,setRestoring] = useState(true);
   useEffect(()=>{
     let mounted=true;
     void(async()=>{try{
       if(!projectId||!organizationId)throw new Error('請先選擇組織與專案。');
-      const scope={organizationId,projectId},id=activityReference(sessionStorage,scope,userId);
+      const scope={organizationId,projectId},id=activity?.id??activityReference(sessionStorage,scope,userId);
+      const request=activity?activityEditReference(sessionStorage,scope,userId,id):id;
       await manualContext(getSupabaseClient(),scope,userId,isCurrent);
       const r=await getSupabaseClient().from('emission_activities').select('*').eq('id',id).eq('organization_id',organizationId).eq('project_id',projectId).maybeSingle();
       if(!mounted||!isCurrent())return;
       if(r.error)throw new Error('無法核對先前的建檔識別，未開始新的建檔。');
       setAttemptId(id);
-      if(r.data){const row=r.data;setForm({activity_name:row.activity_name,category:row.category,activity_type:row.activity_type,quantity:String(row.quantity),unit:row.unit,activity_date:row.activity_date,notes:row.review_note??'',final_scope:row.final_scope===null?'':String(row.final_scope),inclusion_status:row.inclusion_status,exclusion_reason:row.exclusion_reason??''});}
+      setRequestId(request);
+      if(r.data){const row=r.data;setForm({activity_name:row.activity_name,category:row.category,subcategory:row.subcategory??null,data_quality:row.data_quality,status:row.status,activity_type:row.activity_type,quantity:String(row.quantity),unit:row.unit,activity_date:row.activity_date,notes:row.review_note??'',final_scope:row.final_scope===null?'':String(row.final_scope),inclusion_status:row.inclusion_status,exclusion_reason:row.exclusion_reason??''});}
     }catch(cause){if(mounted&&isCurrent())setError(cause instanceof Error?cause.message:'恢復建檔參考失敗。');}
     finally{if(mounted&&isCurrent())setRestoring(false);}})();
     return()=>{mounted=false;};
-  },[projectId,organizationId,userId,isCurrent]);
+  },[activity,projectId,organizationId,userId,isCurrent]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Track whether user has manually overridden the auto-suggested scope
@@ -131,13 +136,14 @@ export default function CreateActivityModal({ projectId, organizationId, userId,
 
     try {
       if (!projectId || !organizationId) throw new Error('請先選擇明確組織與專案。');
-      await saveManualActivity(getSupabaseClient(),{organizationId,projectId},userId,attemptId,{...form,activity_name:IS_STAGING&&!form.activity_name.trim().startsWith('[TEST]')?'[TEST] '+form.activity_name.trim():form.activity_name},isCurrent);
+      await saveManualActivity(getSupabaseClient(),{organizationId,projectId},userId,attemptId,{...form,activity_name:IS_STAGING&&!activity&&!form.activity_name.trim().startsWith('[TEST]')?'[TEST] '+form.activity_name.trim():form.activity_name},isCurrent,requestId);
       if (!isCurrent()) return;
-      clearManualReference(sessionStorage,{organizationId,projectId},userId,'activity',attemptId);
+      if(activity)clearActivityEditReference(sessionStorage,{organizationId,projectId},userId,attemptId,requestId);
+      else clearManualReference(sessionStorage,{organizationId,projectId},userId,'activity',attemptId);
       onCreated();
-    } catch (err: any) {
+    } catch (err) {
       console.error('Create activity failed:', err);
-      if(isCurrent()) setError(err.message || t('errors.generic'));
+      if(isCurrent()) setError(err instanceof Error?err.message:t('errors.generic'));
     } finally {
       if(isCurrent()) setSubmitting(false);
     }
@@ -167,7 +173,7 @@ export default function CreateActivityModal({ projectId, organizationId, userId,
               <i className="ri-add-circle-line text-teal-600 text-lg"></i>
             </div>
             <div>
-              <h2 className="text-base font-semibold text-gray-900">{t('activities.create.title')}</h2>
+              <h2 className="text-base font-semibold text-gray-900">{activity?'編輯活動（受控保存）':t('activities.create.title')}</h2>
               <p className="text-xs text-gray-500 mt-0.5">{t('activities.create.subtitle')}</p>
             </div>
           </div>
@@ -178,6 +184,8 @@ export default function CreateActivityModal({ projectId, organizationId, userId,
             <i className="ri-close-line text-lg"></i>
           </button>
         </div>
+        {activity&&<p className="mx-6 mt-3 text-sm">保存沿用活動ID並保留原請求供失回覆恢復。來源或報告已保留的活動由伺服器拒絕修改；編輯後須重新計算，不能沿用舊報告代表新輸入。</p>}
+        {activity&&error&&requestId&&<button disabled={submitting} type="button" className="mx-6 mt-2 text-sm underline" onClick={()=>{if(!projectId||!organizationId||!isCurrent())return;try{clearActivityEditReference(sessionStorage,{organizationId,projectId},userId,attemptId,requestId);onClose();}catch(cause){setError(cause instanceof Error?cause.message:'無法清除編輯參考。');}}}>放棄此本機編輯請求並關閉；不取消伺服器操作、不刪資料。重新編輯前請先重讀活動。</button>}
 
         {/* Staging notice */}
         {IS_STAGING && (

@@ -2,6 +2,11 @@ import { buildReportExport, type ReportExportFormat, type ReportExportSnapshot }
 
 export const REPORT_EXPORT_AUTHORIZATION_PENDING = '報告匯出暫不提供：尚缺伺服器匯出授權契約，現有報告讀取權限不能當作匯出核准。';
 
+/** Busy belongs to one captured UI visit and one attempt, independently of export authorization. */
+export interface ReportExportAttempt<Context> {context:Context}
+export function reportExportIsBusy<Context>(attempt:ReportExportAttempt<Context>|null,context:Context):boolean{return attempt!==null&&attempt.context===context;}
+export function releaseReportExportAttempt<Context>(active:ReportExportAttempt<Context>|null,finished:ReportExportAttempt<Context>):ReportExportAttempt<Context>|null{return active===finished?null:active;}
+
 /** Fail closed without inventing a role/plan-to-export permission mapping. */
 export function reportExportBlockReason(subscription: { loading: boolean; error: string | null; isReadonly: boolean }): string {
   if (subscription.loading) return '正在確認訂閱狀態，暫不可匯出。';

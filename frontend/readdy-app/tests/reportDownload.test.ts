@@ -6,7 +6,7 @@ import { join, dirname, resolve } from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 import { readPersistedReportSnapshot } from '../src/services/reportExportRead.ts';
 import { buildReportExport, prepareReportExportSnapshot } from '../src/services/reportExport.ts';
-import { exportCurrentSnapshot, reportExportBlockReason, REPORT_EXPORT_AUTHORIZATION_PENDING } from '../src/services/reportDownload.ts';
+import { exportCurrentSnapshot, reportExportBlockReason, REPORT_EXPORT_AUTHORIZATION_PENDING,reportExportIsBusy,releaseReportExportAttempt,type ReportExportAttempt } from '../src/services/reportDownload.ts';
 import { reportExportFixture } from './fixtures/reportExportFixture.ts';
 
 const row = reportExportFixture();
@@ -52,6 +52,27 @@ test('route, session or subscription invalidation during a read prevents a stale
     current=false;finish(snapshot());assert.equal(await pending,false,invalidation);assert.equal(saves,0);
   }
   let reads=0;assert.equal(await exportCurrentSnapshot(async()=>{reads++;return snapshot();},'json',()=>false,()=>assert.fail()),false);assert.equal(reads,0);
+});
+test('report/session/preflight visit changes release visible busy immediately; an obsolete finally cannot clear a newer export',async()=>{
+ for(const change of ['report switch','logout/re-login','subscription refresh','A-B-A visit']){
+  const firstContext={change,visit:1};let context=firstContext;
+  const first={context:firstContext};let active:ReportExportAttempt<typeof context>|null=first;
+  let finish!:(value:ReturnType<typeof snapshot>)=>void;let saves=0;
+  const pending=exportCurrentSnapshot(()=>new Promise(resolve=>{finish=resolve;}),'json',()=>context===firstContext,()=>{saves++;}).finally(()=>{active=releaseReportExportAttempt(active,first);});
+  assert.equal(reportExportIsBusy(active,context),true);
+  context={change,visit:2};assert.equal(reportExportIsBusy(active,context),false,'obsolete pending request cannot strand this visit');
+  const newer={context};active=newer;assert.equal(reportExportIsBusy(active,context),true);
+  finish(snapshot());assert.equal(await pending,false);assert.equal(saves,0);assert.equal(active,newer,'old completion must preserve the newer busy owner');
+  active=releaseReportExportAttempt(active,newer);assert.equal(reportExportIsBusy(active,context),false);
+ }
+});
+test('a rejected export releases its own busy state so same-context retry can download normally',async()=>{
+ const context={},first={context};let active:ReportExportAttempt<typeof context>|null=first;
+ await assert.rejects(exportCurrentSnapshot(async()=>{throw new Error('SYNTHETIC server unavailable');},'html',()=>true,()=>assert.fail()).finally(()=>{active=releaseReportExportAttempt(active,first);}));
+ assert.equal(reportExportIsBusy(active,context),false);
+ const retry={context};active=retry;let saves=0;
+ assert.equal(await exportCurrentSnapshot(async()=>snapshot(),'html',()=>true,()=>{saves++;}).finally(()=>{active=releaseReportExportAttempt(active,retry);}),true);
+ assert.equal(saves,1);assert.equal(reportExportIsBusy(active,context),false);
 });
 test('HTML and JSON actually write readable files with correct units and explicit synthetic provenance',async()=>{
   const dir=await mkdtemp(join(tmpdir(),'cocallab-export-test-'));

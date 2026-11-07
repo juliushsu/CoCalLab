@@ -10,12 +10,15 @@ import StatusBadge from '../../../components/base/StatusBadge';
 import { getProjects } from '../../../services/projectService';
 import { getOrganizations } from '../../../services/organizationService';
 import { getSupabaseClient } from '../../../lib/supabase';
+import {useAuth} from '../../../hooks/useAuth';
 import type { Project, ProjectStatus } from '../../../types/project';
 import type { Organization } from '../../../types/organization';
 
 export default function ProjectListPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const {user,authEpoch,isAuthenticationCurrent}=useAuth();
+  const userId=user?.id??'';
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrganization, setSelectedOrganization] = useState<string>('');
@@ -30,6 +33,7 @@ export default function ProjectListPage() {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
 
   const loadData = useCallback(async () => {
+    const current=()=>isAuthenticationCurrent(authEpoch,userId);
     try {
       setIsLoading(true);
       setError(null);
@@ -37,17 +41,19 @@ export default function ProjectListPage() {
         getProjects(),
         getOrganizations(),
       ]);
+      if(!current())return;
       setProjects(projectsData);
       setOrganizations(orgsData);
     } catch (err) {
       console.error('Failed to load projects:', err);
-      setError(t('common.errors.load_failed'));
+      if(current())setError(t('common.errors.load_failed'));
     } finally {
-      setIsLoading(false);
+      if(current())setIsLoading(false);
     }
-  }, [t]);
+  }, [t,authEpoch,userId,isAuthenticationCurrent]);
 
   useEffect(() => {
+    setDeleteDialogOpen(false);setProjectToDelete(null);setIsDeleting(false);setProjects([]);setOrganizations([]);
     void loadData();
   }, [loadData]);
 
@@ -67,23 +73,31 @@ export default function ProjectListPage() {
   };
 
   const confirmDelete = async () => {
-    if (!projectToDelete) return;
+    if (!projectToDelete||!isAuthenticationCurrent(authEpoch,userId)) return;
+    const current=()=>isAuthenticationCurrent(authEpoch,userId);
     try {
       setIsDeleting(true);
       const supabase = getSupabaseClient();
-      const { error: deleteError } = await supabase
+      const { data:deleted,error: deleteError } = await supabase
         .from('projects')
         .delete()
-        .eq('id', projectToDelete.id);
+        .eq('id', projectToDelete.id)
+        .eq('organization_id',projectToDelete.organization_id)
+        .select('id,organization_id');
       if (deleteError) throw deleteError;
+      if(!current())return;
+      if(!Array.isArray(deleted)||deleted.length!==1||deleted[0].id!==projectToDelete.id||deleted[0].organization_id!==projectToDelete.organization_id)throw new Error('刪除未確認；專案可能有報告、受保留來源或權限已變更，未將空回覆當作成功。');
       setProjects(prev => prev.filter(p => p.id !== projectToDelete.id));
       setDeleteDialogOpen(false);
       setProjectToDelete(null);
     } catch (err) {
       console.error('Delete failed:', err);
-      setError(t('common.errors.delete_failed'));
+      if(!current())return;
+      const message=err instanceof Error?err.message:err&&typeof err==='object'&&'message' in err?String(err.message):t('common.errors.delete_failed');
+      setDeleteDialogOpen(false);
+      setError(/RETAIN|REFERENCE|REPORT|foreign key/i.test(message)?'此專案包含報告或受保留來源，本版禁止硬刪；請保留既有資料。原因：'+message:message);
     } finally {
-      setIsDeleting(false);
+      if(current())setIsDeleting(false);
     }
   };
 

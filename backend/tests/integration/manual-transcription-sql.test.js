@@ -3,6 +3,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
+import {syntheticVerifiedReceipt} from './synthetic-verified-receipt.js';
 import {createLocalWorkflow} from '../../tools/local-workflow/engine.js';
 import {canonicalManualTranscription} from '../../src/contracts/manual-transcription.js';
 import {calculate_emission_activity} from '../../src/services/calculate-emission-activity.js';
@@ -10,7 +11,7 @@ const input=()=>canonicalManualTranscription({activity_name:'SYNTHETIC manual te
 async function setup(){
   const flow=await createLocalWorkflow(),{db,scope}=flow,doc=randomUUID(),draft=randomUUID(),request=randomUUID(),path=`staging/${scope.projectId}/${doc}.pdf`;
   await db.query('insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)',['staging-receipts',path,scope.userId,{size:20,mimetype:'application/pdf'}]);
-  await db.query(`insert into uploaded_documents(id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,ocr_status,status,env,is_test) values($1,$2,$3,$4,'staging-receipts',$5,'SYNTHETIC.sql.pdf','application/pdf',20,$6,'pending','active','staging',true)`,[doc,scope.organizationId,scope.projectId,scope.userId,path,'a'.repeat(64)]);
+  await syntheticVerifiedReceipt({db,scope,doc,path,size:20});
   async function role(role,fn){await db.exec('begin');try{await db.exec('set local role '+role);await db.query("select set_config('request.jwt.claim.sub',$1,true)",[scope.userId]);const result=await fn();await db.exec('commit');return result;}catch(error){await db.exec('rollback');throw error;}}
   async function create(overrides={}){const v={org:scope.organizationId,project:scope.projectId,doc,draft,actor:scope.userId,request,transcription:input(),...overrides};return role('service_role',()=>db.query('select * from create_manual_transcription_atomic($1,$2,$3,$4,$5,$6,$7)',[v.org,v.project,v.doc,v.draft,v.actor,v.request,v.transcription]));}
   async function confirm(intent,calc=calculate_emission_activity({activity:{...input(),organization_id:scope.organizationId},factors:[]})){return role('service_role',()=>db.query('select * from confirm_manual_draft_atomic_v2($1,$2,$3,$4,$5,$6,$7,$8)',[scope.organizationId,scope.projectId,draft,scope.userId,intent,calc,100,'kWh']));}
