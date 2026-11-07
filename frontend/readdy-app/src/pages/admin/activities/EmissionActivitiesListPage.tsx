@@ -116,8 +116,9 @@ export default function EmissionActivitiesListPage() {
     }
   };
 
-  const handleCreated = () => {
+  const handleCreated = (replacement?:{activityId:string;historical:boolean}) => {
     handleCloseCreate();
+    if(replacement)setOperationMessage(replacement.historical?'查回原取代請求的後繼 '+replacement.activityId+'，此後繼也已是歷史版本；未建立新活動，也未當成目前計算。':'新版活動已保存並重讀：'+replacement.activityId+'。原活動、原計算與報告保留；請重新計算後再保存新報告，不會自動重算。');
     loadData();
   };
 
@@ -384,6 +385,7 @@ export default function EmissionActivitiesListPage() {
                             <div>
                               <div className="text-sm font-medium text-gray-900">
                                 {activity.activity_name || t('activities.unclassified')}
+                                <p className="text-xs">{activity.is_effective?'目前有效版本':'歷史／非目前有效版本'}{activity.successor_activity_id&&<> · 已取代，後繼 <button type="button" className="underline" onClick={()=>navigate('/admin/activities/'+activity.successor_activity_id+'?'+new URLSearchParams({organization_id:activity.organization_id!,project_id:activity.project_id}))}>{activity.successor_activity_id.slice(0,8)}</button></>}</p>
                                 <p className="text-xs text-gray-500">{projects.find(row=>row.id===activity.project_id)?.name} · {activity.organization_id?.slice(0,8)}</p>
                               </div>
                               {activity.source_document_id && (
@@ -433,7 +435,7 @@ export default function EmissionActivitiesListPage() {
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          {projectId===activity.project_id&&!isReadonly&&<button disabled={working} onClick={()=>setEditing(activity)} className="mr-3 text-teal-700 disabled:opacity-50">編輯</button>}
+                          {projectId===activity.project_id&&!isReadonly&&<button disabled={working} onClick={()=>setEditing(activity)} className="mr-3 text-teal-700 disabled:opacity-50">{activity.is_effective?'更正／排除（保留原版）':'核對原取代請求'}</button>}
                           <button
                             onClick={() => handleViewDetail(activity)}
                             className="text-teal-600 hover:text-teal-900 cursor-pointer"

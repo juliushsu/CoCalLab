@@ -14,14 +14,13 @@ export async function getEmissionActivityDetail(selection: ActivityDetailSelecti
  */
 export async function getEmissionActivities(projectId?: string): Promise<EmissionActivity[]> {
   if (!isSupabaseConnected()) {
-    console.warn('Supabase not connected, returning empty array');
-    return [];
+    throw new Error('活動資料服務尚未設定，無法讀取。');
   }
 
   const supabase = getSupabaseClient();
 
   let query = supabase
-    .from('emission_activities')
+    .from('effective_emission_activities')
     .select('*, project:projects(name)')
     .order('activity_date', { ascending: false });
 

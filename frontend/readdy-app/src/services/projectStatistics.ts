@@ -82,8 +82,8 @@ export async function readProjectOverview(client:Client,input:ProjectSelection):
  organization_name:record(data.organization)&&typeof data.organization.display_name==='string'?data.organization.display_name:undefined,
  code:data.project_code,start_date:data.reporting_start_date,end_date:data.reporting_end_date} as unknown as Project;
  const documents=await countRows(client,'uploaded_documents',bound);
- const activities=await allRows(client,'emission_activities','id,organization_id,project_id,status,inclusion_status',bound);
- const calculations=await allRows(client,'calculation_results','id,organization_id,project_id,emission_activity_id,is_latest,status,co2e_kg',bound,true);
+ const activities=await allRows(client,'effective_emission_activities','id,organization_id,project_id,status,inclusion_status',bound);
+ const calculations=await allRows(client,'effective_calculation_results','id,organization_id,project_id,emission_activity_id,is_latest,status,co2e_kg',bound,true);
  const reports=await countRows(client,'report_generations',bound,true);
  return {project,statistics:summarizeProjectStatistics(activities,calculations,documents,reports)};
 }

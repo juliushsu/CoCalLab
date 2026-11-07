@@ -18,13 +18,15 @@ const fixture = () => ({id:A,organization_id:O,project_id:P,activity_code:'TEST-
 const calculation = () => ({id:C,organization_id:O,project_id:P,emission_activity_id:A,is_latest:true,status:'calculated',calc_version:2,
   co2e_kg:2545,calculated_at:'2026-01-02T00:00:00Z',formula_version:'v1.0.0',factor_snapshot:{factor_name:'Saved factor',co2e_kg_per_unit:.509,unit:'kWh'},
   input_snapshot:{normalized_quantity:5000,normalized_unit:'kWh'},warnings:[],error_code:null});
-function harness(responses: Array<{body:unknown;status?:number}>) {
+const lineage=()=>({organization_id:O,project_id:P,activity_id:A,versions:[{activity_id:A,predecessor_activity_id:null,successor_activity_id:null,version_index:1,is_effective:true,mode:'original',reason:null,actor_user_id:null,created_at:'2026-01-01T00:00:00Z'}]});
+function harness(responses: Array<{body:unknown;status?:number}>,versionLineage:unknown=lineage()) {
   const requests: Array<{url:URL;init:RequestInit}> = [];
   const client = createClient('https://sdk-fixture.invalid','fixture-public-key',{
     accessToken:async () => 'fixture-user-token',
     auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},
     global:{fetch:async (url,init) => {
       requests.push({url:new URL(String(url)),init:init ?? {}});
+      if(new URL(String(url)).pathname.endsWith('/rpc/activity_version_lineage'))return new Response(JSON.stringify([{result:versionLineage}]),{headers:{'Content-Type':'application/json'}});
       const response = responses.shift();
       if (!response) throw new Error('Unexpected test-only SDK request');
       return new Response(JSON.stringify(response.body),{status:response.status ?? 200,headers:{'Content-Type':'application/json'}});
@@ -83,17 +85,18 @@ test('real Supabase SDK serializes scoped user-JWT reads and only the exact late
   const {client,requests} = harness([{body:[fixture()]},{body:[calculation()]}]);
   const detail = await readActivityDetail(client,{activityId:A.toUpperCase(),organizationId:O.toUpperCase(),projectId:P.toUpperCase()});
   assert.equal(detail?.activity.id,A);assert.equal(detail?.calculation?.co2e_tonnes,2.545);
-  assert.equal(requests.length,2);
-  const [activity,calc] = requests;
+  assert.equal(requests.length,3);
+  const [activity,lineageRequest,calc] = requests;
   assert.equal(activity.url.pathname,'/rest/v1/emission_activities');
   assert.equal(activity.url.searchParams.get('id'),`eq.${A}`);assert.equal(activity.url.searchParams.get('organization_id'),`eq.${O}`);
   assert.equal(activity.url.searchParams.get('project_id'),`eq.${P}`);
   assert.ok(activity.url.searchParams.get('select')?.includes('project:projects(id,organization_id,name)'));
-  assert.equal(calc.url.pathname,'/rest/v1/calculation_results');assert.equal(calc.url.searchParams.get('emission_activity_id'),`eq.${A}`);
+  assert.equal(lineageRequest.url.pathname,'/rest/v1/rpc/activity_version_lineage');
+  assert.equal(calc.url.pathname,'/rest/v1/effective_calculation_results');assert.equal(calc.url.searchParams.get('emission_activity_id'),`eq.${A}`);
   assert.equal(calc.url.searchParams.get('organization_id'),`eq.${O}`);assert.equal(calc.url.searchParams.get('project_id'),`eq.${P}`);
   assert.equal(calc.url.searchParams.get('is_latest'),'eq.true');
   for (const request of requests) {
-    assert.equal(request.init.method,'GET');assert.equal(request.init.body,undefined);
+    if(request===lineageRequest){assert.equal(request.init.method,'POST');assert.deepEqual(JSON.parse(String(request.init.body)),{p_organization_id:O,p_project_id:P,p_activity_id:A});}else{assert.equal(request.init.method,'GET');assert.equal(request.init.body,undefined);}
     assert.equal(new Headers(request.init.headers).get('Authorization'),'Bearer fixture-user-token');
     assert.equal(new Headers(request.init.headers).get('apikey'),'fixture-public-key');
   }
@@ -101,9 +104,9 @@ test('real Supabase SDK serializes scoped user-JWT reads and only the exact late
 test('unscoped route still binds calculation to the returned authorized activity scope', async () => {
   const {client,requests} = harness([{body:[fixture()]},{body:[]}]);
   const detail = await readActivityDetail(client,{activityId:A});
-  assert.equal(detail?.calculation,null);assert.equal(requests.length,2);
-  assert.equal(requests[1].url.searchParams.get('organization_id'),`eq.${O}`);
-  assert.equal(requests[1].url.searchParams.get('project_id'),`eq.${P}`);
+  assert.equal(detail?.calculation,null);assert.equal(requests.length,3);
+  assert.equal(requests[2].url.searchParams.get('organization_id'),`eq.${O}`);
+  assert.equal(requests[2].url.searchParams.get('project_id'),`eq.${P}`);
 });
 test('empty activity is empty and makes no calculation request', async () => {
   const {client,requests} = harness([{body:[]}]);
@@ -141,4 +144,10 @@ test('changing activity, scope, session or retry rejects late results before the
     assert.equal(matchingActivityDetailState(old,next),null);
   }
   assert.equal(matchingActivityDetailState(null,key),null);
+});
+test('retained predecessor detail exposes immutable historical calc separately and never presents it as the effective current result',async()=>{
+ const family={...lineage(),versions:[{...lineage().versions[0],successor_activity_id:B,is_effective:false},{activity_id:B,predecessor_activity_id:A,successor_activity_id:null,version_index:2,is_effective:true,mode:'correct',reason:'SYNTHETIC correction',actor_user_id:O,created_at:'2026-02-01T00:00:00Z'}]};
+ const {client,requests}=harness([{body:[fixture()]},{body:[calculation()]}],family),detail=await readActivityDetail(client,selected);
+ assert.equal(detail.calculation,null);assert.equal(detail.historicalCalculation.co2e_kg,2545);assert.equal(detail.version.successor_activity_id,B);assert.equal(detail.version.is_effective,false);assert.equal(requests[2].url.pathname,'/rest/v1/calculation_results');
+ for(const invalid of [null,{...family,organization_id:B},{...family,versions:[]},{...family,versions:[...family.versions,{...family.versions[1]}]}])await assert.rejects(()=>readActivityDetail(harness([{body:[fixture()]}],invalid).client,selected),/版本鏈|版本/);
 });

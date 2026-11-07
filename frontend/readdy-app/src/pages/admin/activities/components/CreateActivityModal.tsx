@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import {saveManualActivity,manualContext,type ManualInput} from '@/services/manualWorkflow';
-import {activityReference,clearManualReference,activityEditReference,clearActivityEditReference} from '@/services/manualRecovery';
+import {saveManualActivity,manualContext,type ManualInput,type ManualProject} from '@/services/manualWorkflow';
+import {activityReference,clearManualReference} from '@/services/manualRecovery';
+import {replacementFormIntent,replacementOperation,replacementReferenceForm} from '@/services/activityReplacement';
+import {replacementReference,readReplacementReferences,clearReplacementReference,captureReplacementReferences,abandonCapturedReplacementReference,type ReplacementReference} from '@/services/activityReplacementRecovery';
+import {readActivityLineage} from '@/services/activityLineage';
 import type {EmissionActivity} from '@/types/activity';
 import { useTranslation } from 'react-i18next';
 import { getSupabaseClient } from '@/lib/supabase';
@@ -14,7 +17,7 @@ interface CreateActivityModalProps {
   userId: string;
   isCurrent: () => boolean;
   onClose: () => void;
-  onCreated: () => void;
+  onCreated: (replacement?:{activityId:string;historical:boolean}) => void;
 }
 
 interface FormData extends ManualInput {
@@ -59,24 +62,35 @@ export default function CreateActivityModal({ activity,projectId, organizationId
 
   const [attemptId,setAttemptId] = useState('');
   const [requestId,setRequestId] = useState('');
+  const [projectData,setProjectData]=useState<ManualProject|null>(null);
+  const [canReplace,setCanReplace]=useState(false),[mode,setMode]=useState<'correct'|'exclude'>('correct'),[reason,setReason]=useState(''),[notice,setNotice]=useState(''),[reload,setReload]=useState(0);
+  const [reference,setReference]=useState<ReplacementReference|null>(null),[references,setReferences]=useState<ReplacementReference[]>([]),[captures,setCaptures]=useState<{key:string;raw:string}[]>([]);
   const [restoring,setRestoring] = useState(true);
   useEffect(()=>{
     let mounted=true;
+    setRestoring(true);setError(null);setNotice('');setReference(null);setReferences([]);setCanReplace(false);
     void(async()=>{try{
       if(!projectId||!organizationId)throw new Error('請先選擇組織與專案。');
       const scope={organizationId,projectId},id=activity?.id??activityReference(sessionStorage,scope,userId);
-      const request=activity?activityEditReference(sessionStorage,scope,userId,id):id;
-      await manualContext(getSupabaseClient(),scope,userId,isCurrent);
+      const project=await manualContext(getSupabaseClient(),scope,userId,isCurrent);
       const r=await getSupabaseClient().from('emission_activities').select('*').eq('id',id).eq('organization_id',organizationId).eq('project_id',projectId).maybeSingle();
       if(!mounted||!isCurrent())return;
       if(r.error)throw new Error('無法核對先前的建檔識別，未開始新的建檔。');
       setAttemptId(id);
-      setRequestId(request);
+      setRequestId(id);setProjectData(project);
       if(r.data){const row=r.data;setForm({activity_name:row.activity_name,category:row.category,subcategory:row.subcategory??null,data_quality:row.data_quality,status:row.status,activity_type:row.activity_type,quantity:String(row.quantity),unit:row.unit,activity_date:row.activity_date,notes:row.review_note??'',final_scope:row.final_scope===null?'':String(row.final_scope),inclusion_status:row.inclusion_status,exclusion_reason:row.exclusion_reason??''});}
+      if(activity){
+        if(!r.data)throw new Error('原活動不可存取，未建立取代。');
+        setCaptures(captureReplacementReferences(sessionStorage,scope,userId,id));
+        const refs=readReplacementReferences(sessionStorage,scope,userId,id),family=await readActivityLineage(getSupabaseClient(),scope,id,isCurrent);
+        if(!mounted||!isCurrent())return;
+        setCanReplace(family.versions.find(row=>row.activity_id===id)?.is_effective===true);setReferences(refs);
+        if(refs.length===1){const ref=refs[0];setReference(ref);setMode(ref.intent.mode);setReason(ref.intent.reason);setForm(prior=>replacementReferenceForm(ref.intent,prior));}
+      }
     }catch(cause){if(mounted&&isCurrent())setError(cause instanceof Error?cause.message:'恢復建檔參考失敗。');}
     finally{if(mounted&&isCurrent())setRestoring(false);}})();
     return()=>{mounted=false;};
-  },[activity,projectId,organizationId,userId,isCurrent]);
+  },[activity,projectId,organizationId,userId,isCurrent,reload]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Track whether user has manually overridden the auto-suggested scope
@@ -136,10 +150,17 @@ export default function CreateActivityModal({ activity,projectId, organizationId
 
     try {
       if (!projectId || !organizationId) throw new Error('請先選擇明確組織與專案。');
+      if(activity){
+        if(!projectData||!canReplace&&!reference)throw new Error('此活動不是目前有效末端，只能讀取歷史或核對原請求。');
+        const scope={organizationId,projectId},ref=reference??replacementReference(sessionStorage,scope,userId,activity.id,replacementFormIntent(mode,reason,form,scope,userId,activity.id,projectData));
+        setReference(ref);setReferences(readReplacementReferences(sessionStorage,scope,userId,activity.id));setCaptures(captureReplacementReferences(sessionStorage,scope,userId,activity.id));
+        const result=await replacementOperation(getSupabaseClient(),scope,userId,ref,'replace',isCurrent);if(!isCurrent())return;
+        if(!result.activity_id||result.operation_status==='not_found')throw new Error('尚未確認取代保存；保留原ID核對。');
+        clearReplacementReference(sessionStorage,scope,userId,ref);onCreated({activityId:result.activity_id,historical:result.operation_status==='historical'});return;
+      }
       await saveManualActivity(getSupabaseClient(),{organizationId,projectId},userId,attemptId,{...form,activity_name:IS_STAGING&&!activity&&!form.activity_name.trim().startsWith('[TEST]')?'[TEST] '+form.activity_name.trim():form.activity_name},isCurrent,requestId);
       if (!isCurrent()) return;
-      if(activity)clearActivityEditReference(sessionStorage,{organizationId,projectId},userId,attemptId,requestId);
-      else clearManualReference(sessionStorage,{organizationId,projectId},userId,'activity',attemptId);
+      clearManualReference(sessionStorage,{organizationId,projectId},userId,'activity',attemptId);
       onCreated();
     } catch (err) {
       console.error('Create activity failed:', err);
@@ -148,6 +169,11 @@ export default function CreateActivityModal({ activity,projectId, organizationId
       if(isCurrent()) setSubmitting(false);
     }
   };
+  async function lookupReplacement(){
+    if(!activity||!reference||!projectId||!organizationId||submitting||!isCurrent())return;setSubmitting(true);setError(null);
+    try{const result=await replacementOperation(getSupabaseClient(),{organizationId,projectId},userId,reference,'lookup',isCurrent);if(!isCurrent())return;if(result.operation_status==='not_found')setNotice('服務端尚未找到此請求的已保存取代；不代表零排放。原ID與意圖保留，可按原請求重試。');else{setNotice('已查回原後繼 '+result.activity_id+'；'+(result.is_effective?'目前有效':'已是歷史版本')+'。原資料保留，未重建版本。');clearReplacementReference(sessionStorage,{organizationId,projectId},userId,reference);onCreated({activityId:result.activity_id!,historical:result.operation_status==='historical'});}}
+    catch(cause){if(isCurrent())setError(cause instanceof Error?cause.message:'核對未完成，原參考保留。');}finally{if(isCurrent())setSubmitting(false);}
+  }
 
   const getCategoryLabel = (cat: string) => {
     return t(`activities.categoryLabels.${cat}`, cat);
@@ -173,8 +199,8 @@ export default function CreateActivityModal({ activity,projectId, organizationId
               <i className="ri-add-circle-line text-teal-600 text-lg"></i>
             </div>
             <div>
-              <h2 className="text-base font-semibold text-gray-900">{activity?'編輯活動（受控保存）':t('activities.create.title')}</h2>
-              <p className="text-xs text-gray-500 mt-0.5">{t('activities.create.subtitle')}</p>
+              <h2 className="text-base font-semibold text-gray-900">{activity?'更正／排除活動（保留原版）':t('activities.create.title')}</h2>
+              <p className="text-xs text-gray-500 mt-0.5">{activity?'新增可追溯的更正／排除版本，原活動及歷史報告保留。':t('activities.create.subtitle')}</p>
             </div>
           </div>
           <button
@@ -184,11 +210,10 @@ export default function CreateActivityModal({ activity,projectId, organizationId
             <i className="ri-close-line text-lg"></i>
           </button>
         </div>
-        {activity&&<p className="mx-6 mt-3 text-sm">保存沿用活動ID並保留原請求供失回覆恢復。來源或報告已保留的活動由伺服器拒絕修改；編輯後須重新計算，不能沿用舊報告代表新輸入。</p>}
-        {activity&&error&&requestId&&<button disabled={submitting} type="button" className="mx-6 mt-2 text-sm underline" onClick={()=>{if(!projectId||!organizationId||!isCurrent())return;try{clearActivityEditReference(sessionStorage,{organizationId,projectId},userId,attemptId,requestId);onClose();}catch(cause){setError(cause instanceof Error?cause.message:'無法清除編輯參考。');}}}>放棄此本機編輯請求並關閉；不取消伺服器操作、不刪資料。重新編輯前請先重讀活動。</button>}
+        {activity&&<div className="mx-6 mt-3 space-y-2 text-sm"><p>新增可追溯版本；原活動、原計算、來源草稿及歷史報告保持原值。只有目前有效末端可取代。保存後須明確重算，再保存新報告；不冒稱重新OCR或雙人覆核。</p><button disabled={submitting||restoring} type="button" className="underline" onClick={()=>setReload(n=>n+1)}>重新核對原活動／取代參考</button>{!restoring&&!canReplace&&<p>此列已非目前有效末端；只能查看歷史或核對既有取代請求。</p>}{notice&&<p role="status">{notice}</p>}{references.length>1&&!reference&&<div><p>有多筆原請求，請明確選擇一筆核對，不會覆寫其他分頁參考。</p>{references.map(ref=><button type="button" className="block underline" key={ref.requestId} onClick={()=>{setReference(ref);setMode(ref.intent.mode);setReason(ref.intent.reason);setForm(prior=>replacementReferenceForm(ref.intent,prior));setNotice('已選擇原請求；下方顯示此請求保存的原意圖，重試不改值。');}}>{ref.requestId} · {ref.intent.mode} · {ref.intent.reason}</button>)}</div>}{reference&&<><p>原請求：{reference.requestId}；意圖已持久保存，失回覆仍沿用此ID。</p><details><summary>原請求保存的欄位（唯讀）</summary><pre className="overflow-auto whitespace-pre-wrap">{JSON.stringify(reference.intent,null,2)}</pre></details><button disabled={submitting||restoring} type="button" className="underline" onClick={()=>void lookupReplacement()}>核對原取代請求（不建立新版）</button></>}{captures.map(captured=><button key={captured.key} disabled={submitting} type="button" className="block underline" onClick={()=>{if(!projectId||!organizationId||!isCurrent())return;try{abandonCapturedReplacementReference(sessionStorage,{organizationId,projectId},userId,activity.id,captured);setReload(n=>n+1);}catch(cause){setError(cause instanceof Error?cause.message:'參考未清除。');}}}>放棄此本機參考 {captured.key.slice(-8)}（不取消伺服器操作、不刪資料）</button>)}</div>}
 
         {/* Staging notice */}
-        {IS_STAGING && (
+        {IS_STAGING && !activity && (
           <div className="mx-6 mt-4 flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg">
             <i className="ri-test-tube-line text-amber-500 text-sm flex-shrink-0"></i>
             <p className="text-xs text-amber-700">{t('activities.create.stagingNotice')}</p>
@@ -198,11 +223,13 @@ export default function CreateActivityModal({ activity,projectId, organizationId
         {/* Pending write API notice */}
         <div className="mx-6 mt-4 flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg">
           <i className="ri-information-line text-blue-500 text-sm flex-shrink-0"></i>
-          <p className="text-xs text-blue-700">人工輸入直接保存為活動；需明確確認納入狀態與 Scope。係數由後端按活動類型、單位與日期解析，來源及版本保存於計算明細。識別：{attemptId}</p>
+          <p className="text-xs text-blue-700">{activity?'取代會建立新的服務端活動ID，不覆寫前版；前版識別：':'人工輸入保存為新活動，須明確確認納入狀態與Scope。識別：'}{attemptId}</p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
+          {activity&&<div className="space-y-3"><label className="block text-sm">版本操作<select aria-label="版本操作" value={mode} disabled={submitting||restoring||Boolean(reference)||!canReplace||references.length>1} onChange={e=>setMode(e.target.value as 'correct'|'exclude')} className="block w-full rounded border p-2"><option value="correct">更正：新增目前有效版本</option><option value="exclude">排除：保留原數量與單位</option></select></label><label className="block text-sm">更正／排除理由<input aria-label="更正／排除理由" required value={reason} disabled={submitting||restoring||Boolean(reference)||!canReplace||references.length>1} onChange={e=>setReason(e.target.value)} className="block w-full rounded border p-2"/></label>{mode==='exclude'&&<p>下方為原活動用量；新版沿用原 quantity／unit，不改成零，只明確記錄 excluded 與本次排除理由。</p>}</div>}
+          <fieldset className="space-y-4" disabled={Boolean(activity&&(reference||mode==='exclude'||!canReplace||references.length>1))}>
           {/* Activity Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -357,6 +384,7 @@ export default function CreateActivityModal({ activity,projectId, organizationId
           </div>
 
           <p className="text-xs">重新開啟可核對同一使用者／專案的建檔識別。關閉視窗不會撤回已送出的伺服器寫入。{restoring?'正在核對…':''}</p>
+          </fieldset>
           {/* Error */}
           {error && (
             <div className="flex items-center gap-2 px-3 py-2 bg-red-50 border border-red-200 rounded-lg">
@@ -377,11 +405,11 @@ export default function CreateActivityModal({ activity,projectId, organizationId
             </button>
             <button
               type="submit"
-              disabled={submitting||restoring||!attemptId}
+              disabled={submitting||restoring||!attemptId||Boolean(activity&&(!canReplace&&!reference||references.length>1&&!reference))}
               className="px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors whitespace-nowrap cursor-pointer disabled:opacity-50 flex items-center gap-2"
             >
               {submitting && <i className="ri-loader-4-line animate-spin"></i>}
-              {submitting ? t('activities.create.submitting') : t('activities.create.submit')}
+              {submitting ? t('activities.create.submitting') : activity?reference?'以原請求重試取代':mode==='exclude'?'保存排除新版（原用量保留）':'保存更正新版（原版保留）':t('activities.create.submit')}
             </button>
           </div>
         </form>
