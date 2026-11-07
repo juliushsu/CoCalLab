@@ -15,11 +15,12 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: frontend/readdy-app/package-lock.json
-      - run: npm test
-        working-directory: backend
-      # Product HTTP tests use the same installed SDK as the frontend.
+      # Backend metadata-contract tests use the frontend TypeScript parser;
+      # product HTTP tests also use its installed SDK. Install before both.
       - run: npm ci --ignore-scripts --no-audit --no-fund
         working-directory: frontend/readdy-app
+      - run: npm test
+        working-directory: backend
       - name: Install isolated PostgreSQL test runtime
         run: npm install --prefix "$RUNNER_TEMP/cocallab-sql-runtime" @electric-sql/pglite@0.5.13 --ignore-scripts --no-audit --no-fund
       - name: Verify tenant policies in isolated PostgreSQL
