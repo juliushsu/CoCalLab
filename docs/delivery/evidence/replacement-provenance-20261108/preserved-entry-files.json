@@ -1,0 +1,15 @@
+{
+  "base": "9cc2b01b1ddf7dddc625c4509e5e3cf100d723b3",
+  "candidate": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+  "filesCompared": [
+    "frontend/readdy-app/src/components/layout/AdminLayout.tsx",
+    "frontend/readdy-app/src/hooks/useTenantNavigation.ts",
+    "frontend/readdy-app/src/router/config.tsx",
+    "frontend/readdy-app/src/router/index.ts",
+    "frontend/readdy-app/src/services/navigationScope.ts",
+    "frontend/readdy-app/src/services/tenantNavigationService.ts",
+    "frontend/readdy-app/src/services/workflowNavigation.ts"
+  ],
+  "gitDiffEmpty": true,
+  "meaning": "Existing route/navigation/layout source bytes retained; this does not assert every feature is implemented."
+}

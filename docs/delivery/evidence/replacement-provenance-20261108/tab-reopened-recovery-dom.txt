@@ -1,0 +1,96 @@
+Browser tab: 1290549180, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4217/admin/activities?organization_id=35a023b2-f547-4d0e-9bcb-07c323924dec&projectId=5cb41138-5644-46c4-b6cc-892f427f74a4".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~				210 heading Emission Activities, Value: 1
++					211 text Emission Activities
++				212 text Total: 2 activities
++				213 button Add Activity
++				214 button Upload Document
++				215 text 目前專案
++				216 pop up button (collapsed, settable) Description: 目前專案, Value: SYNTHETIC local workflow（SYNTHETIC-LOCAL）, Secondary Actions: Expand
++					217 menu
++						218 全部已授權專案（新增／計算需選擇）
++						219 (selected) SYNTHETIC local workflow（SYNTHETIC-LOCAL）
++				220 button 計算並保存／重試
++				221 button 保存報告快照／重試
++				222 button 重新讀取
++				223 button 放棄報告恢復參考（不刪除報告）
++				224 button 核對待確認計算（不新增版本）
++				225 button 放棄計算本機參考（不取消伺服器操作）
++				226 text 盤查期間： 2026-01-01  ～  2026-12-31 。數量與單位由人工輸入；係數不使用正式預設測試值。 建立新可信報告前，請先按「計算並保存」取得目前輸入的通用重算紀錄；人工轉錄確認的即時計算不能取代此步驟。舊報告保留原快照，不會因重新計算自動補簽。 新版活動已保存並重讀：5402dbff-8655-4497-a2d2-dd324e7bae64。原活動、原計算與報告保留；請重新計算後再保存新報告，不會自動重算。
++				227 button Data Label Guide
++				228 text Scope
++				229 pop up button (collapsed, settable) Value: All, Secondary Actions: Expand
++					230 menu
++						231 (selected) All
++						232 Scope 1
++						233 Scope 2
++						234 Scope 3
++				235 text Category
++				236 text field (settable)
++				237 text Inclusion Status
++				238 pop up button (collapsed, settable) Value: All, Secondary Actions: Expand
++					239 menu
++						240 (selected) All
++						241 Included
++						242 Excluded
++						243 Pending
++				244 button Reset
++				245 table
++					246 row
++						247 cell
++							248 text ACTIVITY NAME
++						249 cell
++							250 text CATEGORY
++						251 cell
++							252 text SCOPE
++						253 cell
++							254 text QUANTITY
++						255 cell
++							256 text ACTIVITY DATE
++						257 cell
++							258 text INCLUSION STATUS
++						259 cell
++							260 text ACTIONS
++					261 row
++						262 cell
++							263 text SYNTHETIC 保留原版100kWh
++							264 text 目前有效版本
++							265 container
++								266 text SYNTHETIC local workflow  ·  35a023b2
++							267 button Source Document
++						268 cell
++							269 text Energy Use
++						270 cell
++							271 text Scope 2
++						272 cell
++							273 text 120 kWh
++						274 cell
++							275 text 2026-01-15
++						276 cell
++							277 text Included
++						278 cell
++							279 button 更正／排除（保留原版）
++							280 button View
++					281 row
++						282 cell
++							283 text SYNTHETIC 保留原版100kWh
++							284 container
++								285 text 歷史／非目前有效版本  · 已取代，後繼
++								286 button 5402dbff
++							287 container
++								288 text SYNTHETIC local workflow  ·  35a023b2
++							289 button Source Document
++						290 cell
++							291 text Energy Use
++						292 cell
++							293 text Scope 2
++						294 cell
++							295 text 100 kWh
++						296 cell
++							297 text 2026-01-15
++						298 cell
++							299 text Included
++						300 cell
++							301 button 核對原取代請求
++							302 button View
+The focused UI element is 1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4217/admin/activities?organization_id=35a023b2-f547-4d0e-9bcb-07c323924dec&projectId=5cb41138-5644-46c4-b6cc-892f427f74a4

@@ -1,0 +1,83 @@
+{
+  "source": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+  "checkoutSHA": "08162ca307f9336b635b77e7682de750e814a5f0",
+  "sourceDirty": false,
+  "synthetic": true,
+  "startedAt": "2026-11-08T10:23:54.490Z",
+  "observedAt": "2026-11-08T10:24:49.140Z",
+  "api": "http://127.0.0.1:4216",
+  "frontend": "http://127.0.0.1:4217",
+  "scope": {
+    "organizationId": "481fc117-6ee3-4189-8ef7-d8b2d589cace",
+    "projectId": "9703e9ea-f7b5-4f23-a51d-797063d99a1f"
+  },
+  "activityIds": {
+    "original": "5fd55b88-a008-4321-99c7-c8cbd70219dd",
+    "corrected": "f832afc2-2f44-498b-81cc-eca324013b62",
+    "excluded": "2e88253f-e04c-4626-9a26-915b701204b4"
+  },
+  "requestIds": {
+    "correct": "181127c5-025a-4377-bc79-0939df74a0e1",
+    "exclude": "1e841d61-3ab8-455d-a361-8c4095979a50",
+    "recovered": "181127c5-025a-4377-bc79-0939df74a0e1"
+  },
+  "reports": [
+    {
+      "id": "c2b182e2-bbc2-4f06-a618-594d9f67303f",
+      "kg": 100
+    },
+    {
+      "id": "a2a5278b-6815-418d-85f9-68484932bb28",
+      "kg": 120
+    },
+    {
+      "id": "47897462-0354-4caf-ac37-56bb36faa39f",
+      "excluded": 1,
+      "included": 0
+    }
+  ],
+  "oldRowAndReportUnchanged": true,
+  "effectiveExcludedQuantity": 120,
+  "originalReportUrl": "http://127.0.0.1:4217/admin/reports/c2b182e2-bbc2-4f06-a618-594d9f67303f?organization_id=481fc117-6ee3-4189-8ef7-d8b2d589cace&project_id=9703e9ea-f7b5-4f23-a51d-797063d99a1f",
+  "correctedReportUrl": "http://127.0.0.1:4217/admin/reports/a2a5278b-6815-418d-85f9-68484932bb28?organization_id=481fc117-6ee3-4189-8ef7-d8b2d589cace&project_id=9703e9ea-f7b5-4f23-a51d-797063d99a1f",
+  "excludedActivityUrl": "http://127.0.0.1:4217/admin/activities/2e88253f-e04c-4626-9a26-915b701204b4?organization_id=481fc117-6ee3-4189-8ef7-d8b2d589cace&project_id=9703e9ea-f7b5-4f23-a51d-797063d99a1f",
+  "activitiesUrl": "http://127.0.0.1:4217/admin/activities?organization_id=481fc117-6ee3-4189-8ef7-d8b2d589cace&project_id=9703e9ea-f7b5-4f23-a51d-797063d99a1f",
+  "files": [
+    {
+      "file": "cocallab-report-c2b182e2-bbc2-4f06-a618-594d9f67303f-v1.html",
+      "bytes": 7433,
+      "sha256": "94744bc6ef98df808516f8229bc2f1ef44b003f06cff054587441f0a34098e08"
+    },
+    {
+      "file": "cocallab-report-c2b182e2-bbc2-4f06-a618-594d9f67303f-v1.json",
+      "bytes": 6005,
+      "sha256": "6c3dbcabb9197ef2ae0d857cb457a5c23c3cf0853cc4e2ffde6b0bb365a822a5"
+    },
+    {
+      "file": "cocallab-report-a2a5278b-6815-418d-85f9-68484932bb28-v2.html",
+      "bytes": 11122,
+      "sha256": "2ac90f24e742a8ec71160140365955a25e068d6baf905e0e5b4f02ba270a8eba"
+    },
+    {
+      "file": "cocallab-report-a2a5278b-6815-418d-85f9-68484932bb28-v2.json",
+      "bytes": 9600,
+      "sha256": "645b39c7d6d34777975ea463d6b862fac17698c0aadeec7699036092e9aafc34"
+    },
+    {
+      "file": "cocallab-report-47897462-0354-4caf-ac37-56bb36faa39f-v3.html",
+      "bytes": 13169,
+      "sha256": "b6ed90a4465aea721fa359cbd331a307b30704f4d908fb7a73e6ecb75cd65c8b"
+    },
+    {
+      "file": "cocallab-report-47897462-0354-4caf-ac37-56bb36faa39f-v3.json",
+      "bytes": 11177,
+      "sha256": "5fc06c95026221839d19e5604cfbefb19c0a2ee0a0cdf28f3c5845892e8d498a"
+    }
+  ],
+  "method": "Actual installed SDK/frontend services→original handlers→PGlite SQL; all data synthetic. This final-source seeded demonstration is separate from earlier99 browser interactions.",
+  "notRun": [
+    "managed JWT Storage Edge",
+    "native chooser/save",
+    "final-source tab-close browser replay (99 browser and040 SDK recovery separately proven)"
+  ]
+}

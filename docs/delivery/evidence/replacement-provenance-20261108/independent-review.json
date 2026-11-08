@@ -1,0 +1,348 @@
+{
+  "source": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+  "reviewedAt": "2026-11-08T10:20:35.021Z",
+  "priorSource": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+  "priorPrivateReceiptSha256": "6bceb578af69850ee3bc616e51dbce0f39e8864d5c31c6954caf046dd989a2c1",
+  "sourceHashes": {
+    "backend/supabase/migrations/202611080002_replacement_provenance.sql": {
+      "workingTreeSha256": "d91770e861d39c6d4eaea96306c50cddd0b59af88c6ac983acb8fd4f3da180a9",
+      "gitBlobSha256": "d91770e861d39c6d4eaea96306c50cddd0b59af88c6ac983acb8fd4f3da180a9",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/supabase/migrations/202611080003_draft_project_lock_order.sql": {
+      "workingTreeSha256": "61ea0adf6607951eeb8717b6e89ed7d38238865619fd6e98da6553fbbd84fd27",
+      "gitBlobSha256": "61ea0adf6607951eeb8717b6e89ed7d38238865619fd6e98da6553fbbd84fd27",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/src/services/build-report-payload.js": {
+      "workingTreeSha256": "28c4d064994825a968cb47cc19ae3aaa5615fda770d568404439bd5ce6ca3d0f",
+      "gitBlobSha256": "28c4d064994825a968cb47cc19ae3aaa5615fda770d568404439bd5ce6ca3d0f",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/src/contracts/activity-replacement.js": {
+      "workingTreeSha256": "3b3ba9c4f38a494010b3907b73513e202ba074108e0d5ef9d316e5092b40a029",
+      "gitBlobSha256": "3b3ba9c4f38a494010b3907b73513e202ba074108e0d5ef9d316e5092b40a029",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/supabase/functions/replace-emission-activity/index.ts": {
+      "workingTreeSha256": "9390f5de9d3c87b42676975a1f94b9ec9099b3ab2d704e1f33f5a1f4f92b35cd",
+      "gitBlobSha256": "9390f5de9d3c87b42676975a1f94b9ec9099b3ab2d704e1f33f5a1f4f92b35cd",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/tests/integration/replacement-provenance-sql.test.js": {
+      "workingTreeSha256": "32750cb14476429005ff79f240a6b4f749ca222ee2de086b7515528badb0c34f",
+      "gitBlobSha256": "32750cb14476429005ff79f240a6b4f749ca222ee2de086b7515528badb0c34f",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/tests/integration/replacement-provenance-http.test.js": {
+      "workingTreeSha256": "8827e639bbf2bf3fed26bc60e5594c226eea1a0964a69f2ce0fbaeb58f261b59",
+      "gitBlobSha256": "8827e639bbf2bf3fed26bc60e5594c226eea1a0964a69f2ce0fbaeb58f261b59",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/tests/replacement-disclosure.test.js": {
+      "workingTreeSha256": "7463ef1b92837985103b22bffcd98c7b1cf9ff541c318f3d753d3e5cc8ab1ddf",
+      "gitBlobSha256": "7463ef1b92837985103b22bffcd98c7b1cf9ff541c318f3d753d3e5cc8ab1ddf",
+      "normalizedLfMatchesFixed": true
+    },
+    "backend/tests/activity-replacement-contract.test.js": {
+      "workingTreeSha256": "ab6089c84ad08ef504ae5d86aad604d8a0ebdc5a8d706ad3e80225ae5e70e46c",
+      "gitBlobSha256": "ab6089c84ad08ef504ae5d86aad604d8a0ebdc5a8d706ad3e80225ae5e70e46c",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/services/replacementDisclosure.ts": {
+      "workingTreeSha256": "cd8f6beb03a5620b56688802cd5b646a00be347b99bd9ab94a807d1ecae63876",
+      "gitBlobSha256": "cd8f6beb03a5620b56688802cd5b646a00be347b99bd9ab94a807d1ecae63876",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/services/activityReplacement.ts": {
+      "workingTreeSha256": "e44a2df6c1d4f06fd0aab6b67801edd0f36540ad228b6e956d44edb92849f6c5",
+      "gitBlobSha256": "e44a2df6c1d4f06fd0aab6b67801edd0f36540ad228b6e956d44edb92849f6c5",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/services/activityReplacementRecovery.ts": {
+      "workingTreeSha256": "0e5845884b4da1760477571d2da5d1f685eaeb21c9419c4ac7675d85341140e9",
+      "gitBlobSha256": "0e5845884b4da1760477571d2da5d1f685eaeb21c9419c4ac7675d85341140e9",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/services/activityLineage.ts": {
+      "workingTreeSha256": "fc8c4c49d9458ee50bff0e4500ee137e1efa0884021646af7aaef2e283cef84c",
+      "gitBlobSha256": "fc8c4c49d9458ee50bff0e4500ee137e1efa0884021646af7aaef2e283cef84c",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/services/reportExport.ts": {
+      "workingTreeSha256": "24bb6177e8d310f028a651205038eac24977645ef70e364e20ddc76c333e30ba",
+      "gitBlobSha256": "24bb6177e8d310f028a651205038eac24977645ef70e364e20ddc76c333e30ba",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/pages/admin/activities/components/CreateActivityModal.tsx": {
+      "workingTreeSha256": "3f8d5e041f50767759f8408975cffedac9fb63f28c25bfe3e6aaea074be8d481",
+      "gitBlobSha256": "3f8d5e041f50767759f8408975cffedac9fb63f28c25bfe3e6aaea074be8d481",
+      "normalizedLfMatchesFixed": true
+    },
+    "frontend/readdy-app/src/pages/admin/reports/components/ReplacementDisclosurePanel.tsx": {
+      "workingTreeSha256": "a7b8d1d95439fcc437503c340515def08c56e519377a35dcbad18f0c2bb3bf0f",
+      "gitBlobSha256": "a7b8d1d95439fcc437503c340515def08c56e519377a35dcbad18f0c2bb3bf0f",
+      "normalizedLfMatchesFixed": true
+    }
+  },
+  "testFilesUnchanged": true,
+  "narrowDiff": "Only mapping-ID sorted JSON array multiset validation moves before version/provenance. Duplicates/omissions retain SOURCE code; reason/lineage still strictly validated. Scope/trusted inputs/replay/seal authority unchanged.",
+  "authorEvidenceReadOnly": {
+    "originalIntegration": {
+      "file": "integration-99c233d.log",
+      "sha256": "c25f6b856c8a693a502edfda6aed4d5c279386e327a847209287c621d242a606",
+      "tests": 390,
+      "passed": 386,
+      "failed": 2,
+      "notRun": 2,
+      "reason": "Expected REPORT_SOURCE_MAPPING_MISMATCH but fail-closed rejection was REPORT_REPLACEMENT_PROVENANCE_MISMATCH"
+    },
+    "targetedClosure": {
+      "file": "mapping-contract-targets-20261108101522390.log",
+      "sha256": "f111a0cce7750f95aa12171b83d222dfa7747b1b2ce2f0fcf67ab451331b8173",
+      "metadataSha256": "28a24ba45ed1e0062558b4dc44563c8c13c190efde61a8ff6a636d3f16891c29",
+      "actualMigrationSha256": "d91770e861d39c6d4eaea96306c50cddd0b59af88c6ac983acb8fd4f3da180a9",
+      "precommitHead": "9481fa3969f9fc3af9529267183b8ea1845fb83f",
+      "tests": 41,
+      "passed": 41,
+      "failed": 0,
+      "notRun": 0,
+      "independentlyExecuted": false
+    }
+  },
+  "independentTests": [
+    {
+      "command": "node --test --test-concurrency=1 --test-name-pattern='P2-1 fake calculation/version, stale inputs|source retention survives ordinary report mapping removal' backend/tests/integration/cto-p2-source-authority-sql.test.js backend/tests/integration/report-integrity-sql.test.js",
+      "passed": 2,
+      "failed": 0,
+      "durationMs": 5286.2517
+    },
+    {
+      "command": "node --test --test-concurrency=1 backend/tests/integration/replacement-provenance-sql.test.js",
+      "passed": 13,
+      "failed": 0,
+      "durationMs": 28480.6926
+    }
+  ],
+  "priorOtherTargetsRetainedWithoutRerun": [
+    {
+      "command": "node --test backend/tests/replacement-disclosure.test.js backend/tests/activity-replacement-contract.test.js",
+      "passed": 4,
+      "failed": 0
+    },
+    {
+      "command": "node --test tests/replacementDisclosure.test.ts tests/activityReplacement.test.ts",
+      "cwd": "frontend/readdy-app",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "command": "node --test --test-concurrency=1 backend/tests/integration/replacement-provenance-http.test.js",
+      "runtime": "PGLITE_RUNTIME_ROOT=../tooling/sql-runtime",
+      "passed": 3,
+      "failed": 0,
+      "durationMs": 8747.5651
+    }
+  ],
+  "native": {
+    "run": "20261108101844270-131586e2",
+    "database": "cocal_sql_race_20261108101844270_131586e2",
+    "resultSha256": "2acce05c15a992783b57d1ca53b594de86a8f075ca8ca671c9e47536f01afd60",
+    "connections": [
+      {
+        "label": "A",
+        "pid": 9788
+      },
+      {
+        "label": "B",
+        "pid": 98760
+      },
+      {
+        "label": "observer",
+        "pid": 67324
+      }
+    ],
+    "cases": [
+      {
+        "name": "N4_R1_early_project_lock_serializes_between_trigger_schedule",
+        "status": "PASS",
+        "triggerOrder": [
+          "a_draft_project_lock",
+          "deletion_draft_reference",
+          "n4_r1_between_draft_triggers",
+          "protect_manual_draft",
+          "report_retain_draft",
+          "trg_extracted_document_drafts_updated_at"
+        ],
+        "blocked": {
+          "label": "R1_fixed_delete_waits_for_early_project_lock",
+          "observed": "2026-11-08T10:18:48.373Z",
+          "pid": 98760,
+          "state": "active",
+          "wait_event_type": "Lock",
+          "wait_event": "transactionid",
+          "blockers": [
+            9788
+          ]
+        },
+        "released": "2026-11-08T10:18:48.375Z",
+        "originalDraftId": "c0810462-1679-4f8b-87f3-8356cc89cca0",
+        "originalDeleteRequestId": "05c3ecdf-d454-457e-b4e0-aa5e0105efe8",
+        "state": {
+          "drafts": "1",
+          "operations": "0",
+          "activities": "1",
+          "calculations": "0",
+          "delete_audits": "0",
+          "deletion_state": "active"
+        }
+      },
+      {
+        "name": "N4_R1_rollback_and_original_UUID_recovery_preserve_fence",
+        "status": "PASS",
+        "originalDraftId": "e2fe9595-dda5-42a5-99e5-91a3809c24eb",
+        "originalDeleteRequestId": "c6ddce82-67d1-457e-9159-5aa50dec760f",
+        "rollbackState": {
+          "drafts": "0",
+          "operations": "1",
+          "activities": "1",
+          "calculations": "0",
+          "delete_audits": "1",
+          "deletion_state": "pending"
+        }
+      },
+      {
+        "name": "N4_R1_ordinary_scope_role_subscription_rejections_keep_rows_unchanged",
+        "status": "PASS",
+        "rejects": [
+          {
+            "case": "foreign_actor",
+            "code": "42501"
+          },
+          {
+            "case": "viewer",
+            "code": "42501"
+          },
+          {
+            "case": "readonly_subscription",
+            "code": "42501"
+          }
+        ]
+      },
+      {
+        "name": "N4_R1_legitimate_pending_update_and_scope_rebind_denial",
+        "status": "PASS",
+        "originalDraftId": "c0810462-1679-4f8b-87f3-8356cc89cca0",
+        "updatedQuantity": 101,
+        "rebindError": "DRAFT_DOCUMENT_SCOPE_DENIED",
+        "updateInterTriggerConcurrency": "NOT_RUN; INSERT named schedule above exercises the shared trigger order"
+      }
+    ],
+    "lockObservations": [
+      {
+        "label": "R1_SYNTHETIC_barrier_between_deletion_and_manual_triggers",
+        "observed": "2026-11-08T10:18:48.325Z",
+        "pid": 9788,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "advisory",
+        "blockers": [
+          67324
+        ]
+      },
+      {
+        "label": "R1_fixed_delete_waits_for_early_project_lock",
+        "observed": "2026-11-08T10:18:48.373Z",
+        "pid": 98760,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          9788
+        ]
+      },
+      {
+        "label": "R1_rollback_insert_releases_project_to_original_delete_request",
+        "observed": "2026-11-08T10:18:48.424Z",
+        "pid": 98760,
+        "state": "active",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          9788
+        ]
+      }
+    ],
+    "schemaMigrations": 46,
+    "tools": {
+      "run.mjs": "55f679570bf5a65dc36b39702cc88da7fc28f2e5bf2d2850e726eac8b770c7de",
+      "draft-trigger-race.mjs": "a2970093eb1638daf9f2e1e21d40df7b4b226b5d04719c0fd82e1a5a61c2bffa"
+    },
+    "readonlyAudit": [
+      {
+        "sql": "select cocal_delete_private.deployment_ready() deletion_ready,cocal_attachment_private.deployment_ready() attachment_ready",
+        "params": [],
+        "rows": [
+          {
+            "deletion_ready": true,
+            "attachment_ready": true
+          }
+        ]
+      },
+      {
+        "sql": "select u.id document_id,u.deletion_state,(select count(*)::int from extracted_document_drafts d where d.uploaded_document_id=u.id) drafts,(select count(*)::int from cocal_delete_private.operations o where o.document_id=u.id) operations,(select count(*)::int from audit_logs a where a.entity_id=u.id and a.action='document_delete_prepared') delete_audits,(select count(*)::int from emission_activities e where e.project_id=u.project_id) activities,(select count(*)::int from calculation_results c where c.project_id=u.project_id) calculations from uploaded_documents u where exists(select 1 from extracted_document_drafts d where d.uploaded_document_id=u.id and d.id=any($1::uuid[])) or exists(select 1 from cocal_delete_private.operations o where o.document_id=u.id and o.request_id=any($2::text[])) order by u.id",
+        "params": [
+          [
+            "c0810462-1679-4f8b-87f3-8356cc89cca0",
+            "e2fe9595-dda5-42a5-99e5-91a3809c24eb",
+            "c0810462-1679-4f8b-87f3-8356cc89cca0"
+          ],
+          [
+            "05c3ecdf-d454-457e-b4e0-aa5e0105efe8",
+            "c6ddce82-67d1-457e-9159-5aa50dec760f"
+          ]
+        ],
+        "rows": [
+          {
+            "document_id": "3e7699c0-c160-45f0-9f96-d2c6cc61f58a",
+            "deletion_state": "active",
+            "drafts": 1,
+            "operations": 0,
+            "delete_audits": 0,
+            "activities": 1,
+            "calculations": 0
+          },
+          {
+            "document_id": "64d0ba23-e25f-4498-8777-db6037aeff91",
+            "deletion_state": "pending",
+            "drafts": 0,
+            "operations": 1,
+            "delete_audits": 1,
+            "activities": 1,
+            "calculations": 0
+          }
+        ]
+      }
+    ]
+  },
+  "newP1P2": [],
+  "notRun": [
+    "UPDATE between draft triggers native concurrency",
+    "Other unnamed lock combinations",
+    "Managed Supabase/PostgREST/JWT/Storage/Edge",
+    "Storage bytes and real OCR",
+    "Native browser/chooser and actual React foreground refresh",
+    "Cloud migration/deployment or release acceptance"
+  ],
+  "queuedOnly": [
+    "High precision source witness numeric representation",
+    "Historical is_latest and effective-view current-value convention"
+  ],
+  "sourceEdited": false,
+  "gitWrites": false,
+  "cloudTouched": false,
+  "release": "HOLD",
+  "receiptSource": "Dedicated owner-restricted runtime; ACL verified by independent reviewer",
+  "originalReceiptSha256": "9e254cbf74992a43d29383c19f7ff81bd85005469f208ee12acd0b4f3a940f32",
+  "browserScopeNote": "Reviewer did not run browser. Root subsequently ran explicitly99c233d synthetic browser only; managed/native chooser/save still NOT_RUN."
+}

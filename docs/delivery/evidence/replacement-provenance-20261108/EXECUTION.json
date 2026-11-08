@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-08T10:22:44.140Z",
+  "programSHA": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+  "toolSHA": "08162ca307f9336b635b77e7682de750e814a5f0",
+  "pr": "https://github.com/juliushsu/CoCalLab/pull/35",
+  "release": "HOLD",
+  "environment": {
+    "host": "Windows PC",
+    "node": "24.22.1",
+    "pglite": "0.5.13; synthetic Auth/Storage catalog",
+    "nativePostgreSQL": "17.11 UTF8 on dedicated127.0.0.1:55439",
+    "nativeDriver": "pg8.16.3",
+    "existing5432Touched": false,
+    "cloudTouched": false
+  },
+  "testGroups": [
+    {
+      "name": "initial full isolated integration",
+      "source": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+      "command": "PGLITE_RUNTIME_ROOT=<TOOL_ROOT>/sql-runtime node --test --test-concurrency=1 backend/tests/integration/*.test.js",
+      "tests": 390,
+      "pass": 386,
+      "fail": 2,
+      "skip": 2,
+      "status": "FAILED_THEN_NARROWLY_FIXED",
+      "evidence": "initial-full-integration-99c233d.txt",
+      "reason": "Both actual rejects returned new provenance error before existing mapping error; old tests preserved."
+    },
+    {
+      "name": "affected full files after mapping contract repair",
+      "source": "9481fa3 + exact002 worktree hashD91770E8...; subsequently committed0405097",
+      "commandReceipt": "mapping-contract-command.json",
+      "pass": 41,
+      "fail": 0,
+      "skip": 0,
+      "evidence": "mapping-contract-targets.txt",
+      "overlap": "Includes new SQL13 and two pre-existing SQL files; not41+13."
+    },
+    {
+      "name": "independent final review",
+      "evidence": "independent-review.json",
+      "newP1P2": false,
+      "overlap": "SQL13, HTTP3, backend4, FE12 are targets/subsets, not additive full totals."
+    },
+    {
+      "name": "backend unit",
+      "command": "node --test backend/tests/*.test.js",
+      "pass": 44,
+      "fail": 0,
+      "evidence": "backend-unit.txt"
+    },
+    {
+      "name": "frontend unit/type/lint",
+      "evidence": "author-ui-execution-summary.json",
+      "pass": 241,
+      "fail": 0,
+      "typecheck": "PASS",
+      "lint": "PASS",
+      "capture": "actual tool receipts; not raw stdout files"
+    },
+    {
+      "name": "production frontend build",
+      "command": "node node_modules/vite/bin/vite.js build",
+      "status": "PASS",
+      "warning": "existing bundle chunks >500kB",
+      "evidence": "frontend-build.txt"
+    },
+    {
+      "name": "native R1 final",
+      "passNamed": 4,
+      "actualLockObservations": 3,
+      "source": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+      "root": "native-green-0405097.json",
+      "independent": "native-independent-green-0405097.json",
+      "baseline": "native-red-da5.json",
+      "baselineIndependent": "native-independent-red-da5.json",
+      "overlap": "Same4 cases independently rerun; do not report8."
+    },
+    {
+      "name": "target guard",
+      "pass": 2,
+      "fail": 0,
+      "evidence": "native-guard.txt"
+    },
+    {
+      "name": "native static Deno preflight",
+      "checkedSHA": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+      "checks": 16,
+      "bundles": 16,
+      "summary": "../deployment-preflight-20261107-99c233de70f0/failure-summary.json",
+      "sourceEquivalence": "../../../../deployment/uat/candidates/040509777bb1/source-equivalence.json",
+      "notRuntime": true
+    },
+    {
+      "name": "synthetic browser and authorized export files",
+      "source": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+      "tool": "9481fa3969f9fc3af9529267183b8ea1845fb83f",
+      "evidence": "preview-api-observations.json",
+      "browser": "Chrome via CUA; actual UI interactions",
+      "result": "100→120/recalc/report; original100 unchanged; tabclosed/relogin recovered original request; exclude120/notzero",
+      "notNativeSave": true
+    },
+    {
+      "name": "final-source SDK demonstration and browser snapshot read",
+      "source": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+      "tool": "08162ca307f9336b635b77e7682de750e814a5f0",
+      "evidence": "final-preview-smoke-0405097.json",
+      "browserEvidence": "final-report-120-dom.txt",
+      "screenshot": "final-lineage-0405097.jpg",
+      "actual": "SDK100→120→exclude; original100 report/row unchanged;3reports/6authorized files; same original request recovery. Chrome log-in/read120report and disclosure. Dedicated4216 restarted only, prior evidence retained.",
+      "notRun": "final-source tab-close UI recovery was not repeated;99 browser and040 SDK recovery are separate"
+    }
+  ],
+  "ci": {
+    "id": 42470929989,
+    "head_sha": "08162ca307f9336b635b77e7682de750e814a5f0",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "pull_request",
+    "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42470929989",
+    "run_attempt": 1,
+    "created_at": "2026-11-08T10:19:25Z",
+    "updated_at": "2026-11-08T10:28:48Z",
+    "job_id": 128701259469,
+    "backend": {
+      "tests": 44,
+      "pass": 44,
+      "fail": 0
+    },
+    "isolatedIntegration": {
+      "tests": 390,
+      "pass": 388,
+      "fail": 0,
+      "skipped": 2
+    },
+    "frontend": {
+      "tests": 241,
+      "pass": 241,
+      "fail": 0
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "notRun": "Two PGlite one-connection concurrency placeholders remain skipped; native named evidence is separate.",
+    "source": "08162ca307f9336b635b77e7682de750e814a5f0",
+    "evidence": "github-ci-excerpt.txt",
+    "rawLogSource": "<TOOL_ROOT>/replacement-provenance-20261108/github-42470929989-128701259469-raw.txt",
+    "rawLogSha256": "2435aba95e14865c3bbb2df3499d5dc89964b94cda551ef743728152d7201622"
+  },
+  "notRun": [
+    "UPDATE between two draft triggers concurrency",
+    "Other unnamed native lock combinations",
+    "Managed Supabase JWT/PostgREST/Storage bytes/Edge/ESZIP",
+    "Native chooser and browser download/save permissions",
+    "Current002+003 full backup/restore or cloud migration/NOT VALID historic validation",
+    "19+1 representative-user acceptance"
+  ],
+  "sourceLogCopies": [
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/integration-99c233d.log",
+      "rawSha256": "c25f6b856c8a693a502edfda6aed4d5c279386e327a847209287c621d242a606",
+      "published": "initial-full-integration-99c233d.txt",
+      "publishedSha256": "392feadac15203337eb97805ef7943de57e6f031a9b75b835f1dbf4d8b045f63",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    },
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/mapping-contract-targets-20261108101522390.log",
+      "rawSha256": "f111a0cce7750f95aa12171b83d222dfa7747b1b2ce2f0fcf67ab451331b8173",
+      "published": "mapping-contract-targets.txt",
+      "publishedSha256": "f111a0cce7750f95aa12171b83d222dfa7747b1b2ce2f0fcf67ab451331b8173",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    },
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/mapping-contract-targets-20261108101522390.log.json",
+      "rawSha256": "28a24ba45ed1e0062558b4dc44563c8c13c190efde61a8ff6a636d3f16891c29",
+      "published": "mapping-contract-command.json",
+      "publishedSha256": "28a24ba45ed1e0062558b4dc44563c8c13c190efde61a8ff6a636d3f16891c29",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    },
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/backend-unit-9481fa3.log",
+      "rawSha256": "5d92c8cef10afe039f8f88873ad9f1914e848d49ea958174120a955b8e919ca8",
+      "published": "backend-unit.txt",
+      "publishedSha256": "e0cbf071f4236ff69931bb7d6e0ba80da19afaff7d02ee33c099ce343e6ef216",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    },
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/build-99c233d.log",
+      "rawSha256": "5089fc3d94a6512148f17366e8f10a01b92ab890da80b25c538439923c41186f",
+      "published": "frontend-build.txt",
+      "publishedSha256": "b520c321f33b2857d69404305909c17c4ab09defd334df0cb07e422b04c2a60a",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    },
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/native-guard-9481fa3.log",
+      "rawSha256": "19fd56dfe9feb878ae62299bd4980072c571c9d29d57fd3baaf3bafd68fba3a9",
+      "published": "native-guard.txt",
+      "publishedSha256": "ea689b83354af1e0970f4f6b1b438e1a0b0b911c95e71f0d9ff9261c0c4a54f3",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    },
+    {
+      "source": "<TOOL_ROOT>/replacement-provenance-20261108/AUTHOR_SQL_EXECUTION_RECEIPT.json",
+      "rawSha256": "c54e680fd3fbb61533b12f94649dafa6815167493365b65f4be7dc2830249b19",
+      "published": "author-sql-execution-summary.json",
+      "publishedSha256": "c54e680fd3fbb61533b12f94649dafa6815167493365b65f4be7dc2830249b19",
+      "normalization": "ANSI removed, CRLF normalized, workspace paths substituted; raw retained outside Git; trailing display whitespace normalized"
+    }
+  ]
+}
