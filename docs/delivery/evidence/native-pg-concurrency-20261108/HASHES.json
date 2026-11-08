@@ -39,6 +39,11 @@
     },
     {
       "file": "HELP.txt",
+      "bytes": 223,
+      "sha256": "22dc9f7ab81fca25e9bd1a32cc2dfce720f02650613c6100827dd434d9987dba"
+    },
+    {
+      "file": "HELP_FIRST_TWO.txt",
       "bytes": 168,
       "sha256": "664267e68c8573ccd2e49af44b27faaca3d087bba8a22a218957ee9eeb871f6a"
     },
