@@ -1,0 +1,1411 @@
+{
+  "schemaVersion": 1,
+  "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "sourceRun": "20261108060154015-4430f35e",
+  "sourceReceiptSha256": "4e0004d1d92bdb254a4a54a951c1efcd4c4637057213a6a396f94e0e56deedac",
+  "started": "2026-11-08T06:28:40.370Z",
+  "status": "LOCAL_NATIVE_RECOVERY_NAMED_CHECKS_PASS",
+  "synthetic": true,
+  "host": "127.0.0.1",
+  "port": 55439,
+  "driver": "8.16.3",
+  "originalDatabase": "cocal_sql_race_20261108060154015_4430f35e",
+  "sourceDatabase": "cocal_recovery_source_20261108062840367_7b9aab37",
+  "restoreDatabase": "cocal_recovery_restore_20261108062840367_7b9aab37",
+  "partialDatabase": "cocal_recovery_partial_20261108062840367_7b9aab37",
+  "checks": [
+    {
+      "name": "fresh_clone_matches_unchanged_candidate",
+      "status": "PASS"
+    },
+    {
+      "name": "real_trusted_publisher_and_pre_dump_verified_read_lookup",
+      "status": "PASS"
+    },
+    {
+      "name": "all_table_rows_sequences_and_stable_catalog_match_before_probes",
+      "status": "PASS"
+    },
+    {
+      "name": "restored_source_fingerprints_remain_ready",
+      "status": "PASS",
+      "readiness": {
+        "deletion_ready": true,
+        "attachment_ready": true
+      }
+    },
+    {
+      "name": "restored_verified_read_lookup_replay_tenant_role_and_private_proof_guards",
+      "status": "PASS",
+      "denied": [
+        {
+          "code": "42501",
+          "message": "report_scope_or_actor_denied"
+        },
+        {
+          "code": "42501",
+          "message": "report_scope_or_actor_denied"
+        },
+        {
+          "code": "42501",
+          "message": "permission denied for function read_verified_report_snapshot"
+        },
+        {
+          "code": "42501",
+          "message": "permission denied for schema cocal_report_private"
+        },
+        {
+          "code": "42501",
+          "message": "permission denied for schema cocal_report_private"
+        },
+        {
+          "code": "42501",
+          "message": "permission denied for schema cocal_report_private"
+        }
+      ],
+      "zeroAdditionalRowsOrAudit": true
+    },
+    {
+      "name": "schema_only_partial_restore_cannot_pass_full_verifier",
+      "status": "PASS"
+    },
+    {
+      "name": "public_rows_without_private_proof_refuse_verified_report_read",
+      "status": "PASS"
+    },
+    {
+      "name": "source_clone_and_archive_unchanged_after_restore_probes",
+      "status": "PASS"
+    },
+    {
+      "name": "original_candidate_database_unchanged",
+      "status": "PASS"
+    }
+  ],
+  "binaries": [
+    {
+      "name": "pg_dump.exe",
+      "sha256": "eaa2d00935e0dd55a6ad7aa2f106d013dcb4e793b7e7d2c6df64bf5b60fbdcd7",
+      "version": "pg_dump (PostgreSQL) 17.11",
+      "officialArchiveEntryMatch": true
+    },
+    {
+      "name": "pg_restore.exe",
+      "sha256": "b91271bd574183dadd17b7dc996dd793805de3eab676e7f9991a067360edf4ce",
+      "version": "pg_restore (PostgreSQL) 17.11",
+      "officialArchiveEntryMatch": true
+    }
+  ],
+  "notRun": [
+    "Managed Supabase/cloud backup and restore",
+    "Storage object bytes: synthetic catalog only",
+    "Cross-cluster roles, secrets, credentials and infrastructure recovery",
+    "Real JWT/PostgREST/Storage/Edge/browser acceptance"
+  ],
+  "cloudTouched": false,
+  "existing5432Touched": false,
+  "archiveParentAclVerified": true,
+  "originalBefore": {
+    "tables": [
+      {
+        "name": "cocal_activity_private.replacements",
+        "rows": 1,
+        "sha256": "1d27b259498bc8d353b1a90bc82a7aa89c32a8e2e7ea085d151d8a23ae3e87b8"
+      },
+      {
+        "name": "cocal_attachment_private.source_baseline",
+        "rows": 18,
+        "sha256": "1d84cc6d6edeae3a6abcb5b08868d06c95f4b66c1cb8604afdb7e63a8d1bcc31"
+      },
+      {
+        "name": "cocal_attachment_private.verifications",
+        "rows": 2,
+        "sha256": "a7cc5f2648428fcef52afc1b806a8a3073bf8b50852b92533f23627d3b1b97e1"
+      },
+      {
+        "name": "cocal_delete_private.operations",
+        "rows": 3,
+        "sha256": "bf04189278daf0dd75d347f8a0bdf21edfb5fed10cc1dd3e7260b505534db353"
+      },
+      {
+        "name": "cocal_delete_private.processing_leases",
+        "rows": 1,
+        "sha256": "a4a318ca5bb612de1b283b0d42acd4bd0aea7cb50049f72a449d0c7960d04d4f"
+      },
+      {
+        "name": "cocal_delete_private.source_baseline",
+        "rows": 24,
+        "sha256": "aa95fd96a6c94f58771c9a48ecf943e20ff07a2568e605d4996a874263a28761"
+      },
+      {
+        "name": "cocal_manual_private.confirmation_requests",
+        "rows": 1,
+        "sha256": "03eb8043634b2181e38375f3cec555541e00254ea375692a37fdc72b9ac8c6c9"
+      },
+      {
+        "name": "cocal_recalc_private.activity_requests",
+        "rows": 9,
+        "sha256": "63ca7dba185f27882d541aa5f9b46f09168f4670d19d84e493d54998784a2def"
+      },
+      {
+        "name": "cocal_recalc_private.requests",
+        "rows": 5,
+        "sha256": "5badc337ed1b8d3e51c829f424eb1776a690ec0ec3c2497512932b24bc0e2eba"
+      },
+      {
+        "name": "cocal_report_private.snapshots",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "cocal_storage_private.deployment_baseline",
+        "rows": 28,
+        "sha256": "fd72ee66e491e4f05a5a559cf9ed4d730796e5583287403b378cc44f16b3a53f"
+      },
+      {
+        "name": "public.action_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_applications",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_audit_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_certificates",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_claim_rules",
+        "rows": 5,
+        "sha256": "3395a358dd00f1776da4d53df3d7ea544d9cedc2e7ee60572d744cc170eba0d5"
+      },
+      {
+        "name": "public.ai_audit_results",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.audit_logs",
+        "rows": 19,
+        "sha256": "20e749d145eafea535f350a9dddf7a49aab133bc4a91130cff3400b090d206ae"
+      },
+      {
+        "name": "public.calculation_results",
+        "rows": 5,
+        "sha256": "2148f3d6f67471e5c78a53438258bd1b4b675d71e9fbd9a9d07661fbac36de57"
+      },
+      {
+        "name": "public.carbon_adjustment_items",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.emission_activities",
+        "rows": 10,
+        "sha256": "611669eb32ec7e901aa9f605a4555bd584a3faee9dfade2f217068258f16c13f"
+      },
+      {
+        "name": "public.emission_activity_classifications",
+        "rows": 20,
+        "sha256": "07d46532fbd7e273fec4c0a8f1271ab67af60877ee51eadc5facebf599eda55d"
+      },
+      {
+        "name": "public.emission_factors",
+        "rows": 8,
+        "sha256": "f360b428c4984b1f4deda2db174587d66251e2429b295740da7ba4a9ce4a130d"
+      },
+      {
+        "name": "public.extracted_document_drafts",
+        "rows": 2,
+        "sha256": "35aaa1f882c90a28a453cd64d10826dcd0e7d781284359ff664d2b912b32c94b"
+      },
+      {
+        "name": "public.legal_entities",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.organization_members",
+        "rows": 8,
+        "sha256": "1d0c705f06cf00953eff59fb2fc979f6f42081e36f0939ee46ea1924852dc722"
+      },
+      {
+        "name": "public.organizations",
+        "rows": 8,
+        "sha256": "c56d254bbd62925b8a80c5ac8a988725e0918b6d642f9034e3ae4c9382c6ce4a"
+      },
+      {
+        "name": "public.projects",
+        "rows": 8,
+        "sha256": "54a991998b66da733d73e680a809ef047c2cabecbdb2285c8d3997b4b87730c7"
+      },
+      {
+        "name": "public.report_generations",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.report_snapshot_requests_v2",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.seed_pack_registry",
+        "rows": 1,
+        "sha256": "95fcf83776ac69f005076ccf3d2467248af8a3be8659a9e0948a86563d8f4f2c"
+      },
+      {
+        "name": "public.seed_pack_reseed_runs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.sites",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.subscriptions",
+        "rows": 8,
+        "sha256": "5bc9fa69051780942cf52d93c768f64aef29d7c56144819a963215d79a99cc57"
+      },
+      {
+        "name": "public.uploaded_documents",
+        "rows": 5,
+        "sha256": "234b115fe48abd4a4dc85feb6b295c8f7fa64ad951f87dcd86f0ca300f00b1ee"
+      },
+      {
+        "name": "storage.buckets",
+        "rows": 3,
+        "sha256": "79f6765aadbe34e95412f71c0ef805d6ea7cd406529e4b20ef36ed045f28ab25"
+      },
+      {
+        "name": "storage.objects",
+        "rows": 4,
+        "sha256": "056afdbe08e7a67b78d16986723af01b2effaaf49c4a8e157a975935685ed6aa"
+      }
+    ],
+    "catalog": {
+      "schemas": {
+        "rows": 10,
+        "sha256": "2df1149253c0e9b366cadb86ad90cc45f607f2a3b70cbe62a9a436282843a74a"
+      },
+      "relations": {
+        "rows": 41,
+        "sha256": "4babeada73324b3a12b1e6ee6c21dfa6ca8a729ed5f7da9cdec220d866daa0df"
+      },
+      "columns": {
+        "rows": 637,
+        "sha256": "b3b5579e69ad9fc849faaa2b8f35e2795741408f75d666a378c4b8f0b12b67b3"
+      },
+      "constraints": {
+        "rows": 171,
+        "sha256": "bb452aff313e37a0cbc6e163746cc3edb2a462bb9a35a3f1c2e4fb108e751b04"
+      },
+      "policies": {
+        "rows": 71,
+        "sha256": "b8dfc33b8c189dc1eddeecef6eaa2f8958f7003962c9dc342668cd48b197e768"
+      },
+      "functions": {
+        "rows": 216,
+        "sha256": "bf2059eee73c4bd79e9534e316df6ad0fe825f2e387a7834d64f483d81921df5"
+      },
+      "triggers": {
+        "rows": 47,
+        "sha256": "3b4de6ade0ac6f82ec10b58773efc7a3e1b333dc8bf8967f7d2732055ae5f1a1"
+      },
+      "indexes": {
+        "rows": 117,
+        "sha256": "f01093a5526adfd36be39454eab01bc364dccac1c4cd33f143dcf7f1e0418566"
+      },
+      "views": {
+        "rows": 3,
+        "sha256": "f379b1d099d861b15d7869270f9be62d72259e2e8a49d65965ef8635393aa58b"
+      },
+      "enums": {
+        "rows": 94,
+        "sha256": "45c3cc7be931bd4649ffa97b966a14674ab4dd63125692bce94d14fe5e8f7d56"
+      },
+      "sequences": {
+        "rows": 1,
+        "sha256": "55d9e66d3f16eafd5f955879b6ac4175e3188c6c428680cbccf52c417d6ff5fe"
+      },
+      "extensions": {
+        "rows": 3,
+        "sha256": "6e695439b9fabe1a1617fb16dd1fdb397f03e2be6f86271fb1d981417f9937a9"
+      },
+      "defaultPrivileges": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "sequenceOwnership": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "partitionDefinitions": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "inheritance": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "sequences": {
+      "cocal_recalc_private.completion_order": {
+        "sha256": "20d5f9cc1cbf959ddb743a3eb40b8fcef05ca6225e9ddf0d0c45b3f5735569bc"
+      }
+    },
+    "notValid": [
+      {
+        "schema": "public",
+        "table": "action_logs",
+        "name": "action_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_applications",
+        "name": "adjustment_applications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_audit_logs",
+        "name": "adjustment_audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_certificates",
+        "name": "adjustment_certificates_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "ai_audit_results",
+        "name": "ai_audit_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "audit_logs",
+        "name": "audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "calculation_results",
+        "name": "calculation_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "carbon_adjustment_items",
+        "name": "carbon_adjustment_items_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activities",
+        "name": "emission_activities_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activity_classifications",
+        "name": "emission_activity_classifications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "extracted_document_drafts",
+        "name": "extracted_document_drafts_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_site_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "report_generations",
+        "name": "report_generations_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "sites",
+        "name": "sites_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "uploaded_documents",
+        "name": "uploaded_documents_project_tenant_fk",
+        "validated": false
+      }
+    ],
+    "sha256": "6202ed0c8788a989bf8b65cc5f089809ec22bbe172b701182b83b14db2441f4c"
+  },
+  "report": {
+    "organizationId": "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+    "projectId": "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+    "reportId": "4856c70e-aa81-4f85-a7d5-9daeccf8217e",
+    "requestId": "31953381-49cf-4168-a287-3fe355dc629b",
+    "status": "completed",
+    "integrityStatus": "server_verified",
+    "grossKg": 60,
+    "activityIds": [
+      "d63feb1e-42a7-4736-be2c-55787833f8e5"
+    ],
+    "calculationIds": [
+      "651618ad-ed65-4d0d-9d4b-0550b6ffe490"
+    ],
+    "predecessorActivityId": "e24553b6-bf5d-4191-9d39-4120f4628701",
+    "calculationAuthority": {
+      "request_id": "69c59702-205e-4adb-852e-ebbfae8e03a2",
+      "completion_order": 4
+    }
+  },
+  "sourceSnapshot": {
+    "tables": [
+      {
+        "name": "cocal_activity_private.replacements",
+        "rows": 1,
+        "sha256": "1d27b259498bc8d353b1a90bc82a7aa89c32a8e2e7ea085d151d8a23ae3e87b8"
+      },
+      {
+        "name": "cocal_attachment_private.source_baseline",
+        "rows": 18,
+        "sha256": "1d84cc6d6edeae3a6abcb5b08868d06c95f4b66c1cb8604afdb7e63a8d1bcc31"
+      },
+      {
+        "name": "cocal_attachment_private.verifications",
+        "rows": 2,
+        "sha256": "a7cc5f2648428fcef52afc1b806a8a3073bf8b50852b92533f23627d3b1b97e1"
+      },
+      {
+        "name": "cocal_delete_private.operations",
+        "rows": 3,
+        "sha256": "bf04189278daf0dd75d347f8a0bdf21edfb5fed10cc1dd3e7260b505534db353"
+      },
+      {
+        "name": "cocal_delete_private.processing_leases",
+        "rows": 1,
+        "sha256": "a4a318ca5bb612de1b283b0d42acd4bd0aea7cb50049f72a449d0c7960d04d4f"
+      },
+      {
+        "name": "cocal_delete_private.source_baseline",
+        "rows": 24,
+        "sha256": "aa95fd96a6c94f58771c9a48ecf943e20ff07a2568e605d4996a874263a28761"
+      },
+      {
+        "name": "cocal_manual_private.confirmation_requests",
+        "rows": 1,
+        "sha256": "03eb8043634b2181e38375f3cec555541e00254ea375692a37fdc72b9ac8c6c9"
+      },
+      {
+        "name": "cocal_recalc_private.activity_requests",
+        "rows": 9,
+        "sha256": "63ca7dba185f27882d541aa5f9b46f09168f4670d19d84e493d54998784a2def"
+      },
+      {
+        "name": "cocal_recalc_private.requests",
+        "rows": 5,
+        "sha256": "5badc337ed1b8d3e51c829f424eb1776a690ec0ec3c2497512932b24bc0e2eba"
+      },
+      {
+        "name": "cocal_report_private.snapshots",
+        "rows": 1,
+        "sha256": "1fc291a1c48686b4badffe05fa25d8e8b4c8a85aa2b123d474b9b788d4cc3200"
+      },
+      {
+        "name": "cocal_storage_private.deployment_baseline",
+        "rows": 28,
+        "sha256": "fd72ee66e491e4f05a5a559cf9ed4d730796e5583287403b378cc44f16b3a53f"
+      },
+      {
+        "name": "public.action_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_applications",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_audit_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_certificates",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_claim_rules",
+        "rows": 5,
+        "sha256": "3395a358dd00f1776da4d53df3d7ea544d9cedc2e7ee60572d744cc170eba0d5"
+      },
+      {
+        "name": "public.ai_audit_results",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.audit_logs",
+        "rows": 21,
+        "sha256": "4094b9f75f8474755a8c5283c2c31ed6d62651a9635d4d3ed3481d3c3068e263"
+      },
+      {
+        "name": "public.calculation_results",
+        "rows": 5,
+        "sha256": "2148f3d6f67471e5c78a53438258bd1b4b675d71e9fbd9a9d07661fbac36de57"
+      },
+      {
+        "name": "public.carbon_adjustment_items",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.emission_activities",
+        "rows": 10,
+        "sha256": "611669eb32ec7e901aa9f605a4555bd584a3faee9dfade2f217068258f16c13f"
+      },
+      {
+        "name": "public.emission_activity_classifications",
+        "rows": 20,
+        "sha256": "07d46532fbd7e273fec4c0a8f1271ab67af60877ee51eadc5facebf599eda55d"
+      },
+      {
+        "name": "public.emission_factors",
+        "rows": 8,
+        "sha256": "f360b428c4984b1f4deda2db174587d66251e2429b295740da7ba4a9ce4a130d"
+      },
+      {
+        "name": "public.extracted_document_drafts",
+        "rows": 2,
+        "sha256": "35aaa1f882c90a28a453cd64d10826dcd0e7d781284359ff664d2b912b32c94b"
+      },
+      {
+        "name": "public.legal_entities",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.organization_members",
+        "rows": 9,
+        "sha256": "4a38b0a6b0724f3c680cb2e7d59b66f8010ffb59a142f069593c9f4d0c19a105"
+      },
+      {
+        "name": "public.organizations",
+        "rows": 8,
+        "sha256": "c56d254bbd62925b8a80c5ac8a988725e0918b6d642f9034e3ae4c9382c6ce4a"
+      },
+      {
+        "name": "public.projects",
+        "rows": 8,
+        "sha256": "54a991998b66da733d73e680a809ef047c2cabecbdb2285c8d3997b4b87730c7"
+      },
+      {
+        "name": "public.report_generations",
+        "rows": 1,
+        "sha256": "494d4879871a873dae547523b192bbd8689c759df83e4bf4f750ded9864e1751"
+      },
+      {
+        "name": "public.report_snapshot_requests_v2",
+        "rows": 1,
+        "sha256": "6b5bc8e32db70ac8623bb1256f0b95d0c47edd5860cf8d338d3a92903a34983e"
+      },
+      {
+        "name": "public.seed_pack_registry",
+        "rows": 1,
+        "sha256": "95fcf83776ac69f005076ccf3d2467248af8a3be8659a9e0948a86563d8f4f2c"
+      },
+      {
+        "name": "public.seed_pack_reseed_runs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.sites",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.subscriptions",
+        "rows": 8,
+        "sha256": "5bc9fa69051780942cf52d93c768f64aef29d7c56144819a963215d79a99cc57"
+      },
+      {
+        "name": "public.uploaded_documents",
+        "rows": 5,
+        "sha256": "234b115fe48abd4a4dc85feb6b295c8f7fa64ad951f87dcd86f0ca300f00b1ee"
+      },
+      {
+        "name": "storage.buckets",
+        "rows": 3,
+        "sha256": "79f6765aadbe34e95412f71c0ef805d6ea7cd406529e4b20ef36ed045f28ab25"
+      },
+      {
+        "name": "storage.objects",
+        "rows": 4,
+        "sha256": "056afdbe08e7a67b78d16986723af01b2effaaf49c4a8e157a975935685ed6aa"
+      }
+    ],
+    "catalog": {
+      "schemas": {
+        "rows": 10,
+        "sha256": "2df1149253c0e9b366cadb86ad90cc45f607f2a3b70cbe62a9a436282843a74a"
+      },
+      "relations": {
+        "rows": 41,
+        "sha256": "4babeada73324b3a12b1e6ee6c21dfa6ca8a729ed5f7da9cdec220d866daa0df"
+      },
+      "columns": {
+        "rows": 637,
+        "sha256": "b3b5579e69ad9fc849faaa2b8f35e2795741408f75d666a378c4b8f0b12b67b3"
+      },
+      "constraints": {
+        "rows": 171,
+        "sha256": "bb452aff313e37a0cbc6e163746cc3edb2a462bb9a35a3f1c2e4fb108e751b04"
+      },
+      "policies": {
+        "rows": 71,
+        "sha256": "b8dfc33b8c189dc1eddeecef6eaa2f8958f7003962c9dc342668cd48b197e768"
+      },
+      "functions": {
+        "rows": 216,
+        "sha256": "bf2059eee73c4bd79e9534e316df6ad0fe825f2e387a7834d64f483d81921df5"
+      },
+      "triggers": {
+        "rows": 47,
+        "sha256": "3b4de6ade0ac6f82ec10b58773efc7a3e1b333dc8bf8967f7d2732055ae5f1a1"
+      },
+      "indexes": {
+        "rows": 117,
+        "sha256": "f01093a5526adfd36be39454eab01bc364dccac1c4cd33f143dcf7f1e0418566"
+      },
+      "views": {
+        "rows": 3,
+        "sha256": "f379b1d099d861b15d7869270f9be62d72259e2e8a49d65965ef8635393aa58b"
+      },
+      "enums": {
+        "rows": 94,
+        "sha256": "45c3cc7be931bd4649ffa97b966a14674ab4dd63125692bce94d14fe5e8f7d56"
+      },
+      "sequences": {
+        "rows": 1,
+        "sha256": "55d9e66d3f16eafd5f955879b6ac4175e3188c6c428680cbccf52c417d6ff5fe"
+      },
+      "extensions": {
+        "rows": 3,
+        "sha256": "6e695439b9fabe1a1617fb16dd1fdb397f03e2be6f86271fb1d981417f9937a9"
+      },
+      "defaultPrivileges": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "sequenceOwnership": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "partitionDefinitions": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "inheritance": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "sequences": {
+      "cocal_recalc_private.completion_order": {
+        "sha256": "20d5f9cc1cbf959ddb743a3eb40b8fcef05ca6225e9ddf0d0c45b3f5735569bc"
+      }
+    },
+    "notValid": [
+      {
+        "schema": "public",
+        "table": "action_logs",
+        "name": "action_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_applications",
+        "name": "adjustment_applications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_audit_logs",
+        "name": "adjustment_audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_certificates",
+        "name": "adjustment_certificates_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "ai_audit_results",
+        "name": "ai_audit_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "audit_logs",
+        "name": "audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "calculation_results",
+        "name": "calculation_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "carbon_adjustment_items",
+        "name": "carbon_adjustment_items_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activities",
+        "name": "emission_activities_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activity_classifications",
+        "name": "emission_activity_classifications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "extracted_document_drafts",
+        "name": "extracted_document_drafts_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_site_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "report_generations",
+        "name": "report_generations_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "sites",
+        "name": "sites_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "uploaded_documents",
+        "name": "uploaded_documents_project_tenant_fk",
+        "validated": false
+      }
+    ],
+    "sha256": "e81920702f030f512fa1c99bd6deb339ce23b49600e422664c6c7c3d6d417ecc"
+  },
+  "archive": {
+    "location": "<DEDICATED_RUNTIME>/recovery/20261108062840367-7b9aab37/database.dump",
+    "bytes": 591588,
+    "sha256": "aa3dbb0de61ac27e78a9f89b2b8fb18c957c02a7386f2ebd41fe5d68df8bc47e",
+    "format": "custom",
+    "ownerRestrictedParentInherited": true,
+    "actualFileAclVerified": true,
+    "access": [
+      {
+        "principalClass": "CURRENT_USER",
+        "type": "Allow",
+        "rights": "FullControl",
+        "inherited": true
+      }
+    ]
+  },
+  "restoredSnapshot": {
+    "tables": [
+      {
+        "name": "cocal_activity_private.replacements",
+        "rows": 1,
+        "sha256": "1d27b259498bc8d353b1a90bc82a7aa89c32a8e2e7ea085d151d8a23ae3e87b8"
+      },
+      {
+        "name": "cocal_attachment_private.source_baseline",
+        "rows": 18,
+        "sha256": "1d84cc6d6edeae3a6abcb5b08868d06c95f4b66c1cb8604afdb7e63a8d1bcc31"
+      },
+      {
+        "name": "cocal_attachment_private.verifications",
+        "rows": 2,
+        "sha256": "a7cc5f2648428fcef52afc1b806a8a3073bf8b50852b92533f23627d3b1b97e1"
+      },
+      {
+        "name": "cocal_delete_private.operations",
+        "rows": 3,
+        "sha256": "bf04189278daf0dd75d347f8a0bdf21edfb5fed10cc1dd3e7260b505534db353"
+      },
+      {
+        "name": "cocal_delete_private.processing_leases",
+        "rows": 1,
+        "sha256": "a4a318ca5bb612de1b283b0d42acd4bd0aea7cb50049f72a449d0c7960d04d4f"
+      },
+      {
+        "name": "cocal_delete_private.source_baseline",
+        "rows": 24,
+        "sha256": "aa95fd96a6c94f58771c9a48ecf943e20ff07a2568e605d4996a874263a28761"
+      },
+      {
+        "name": "cocal_manual_private.confirmation_requests",
+        "rows": 1,
+        "sha256": "03eb8043634b2181e38375f3cec555541e00254ea375692a37fdc72b9ac8c6c9"
+      },
+      {
+        "name": "cocal_recalc_private.activity_requests",
+        "rows": 9,
+        "sha256": "63ca7dba185f27882d541aa5f9b46f09168f4670d19d84e493d54998784a2def"
+      },
+      {
+        "name": "cocal_recalc_private.requests",
+        "rows": 5,
+        "sha256": "5badc337ed1b8d3e51c829f424eb1776a690ec0ec3c2497512932b24bc0e2eba"
+      },
+      {
+        "name": "cocal_report_private.snapshots",
+        "rows": 1,
+        "sha256": "1fc291a1c48686b4badffe05fa25d8e8b4c8a85aa2b123d474b9b788d4cc3200"
+      },
+      {
+        "name": "cocal_storage_private.deployment_baseline",
+        "rows": 28,
+        "sha256": "fd72ee66e491e4f05a5a559cf9ed4d730796e5583287403b378cc44f16b3a53f"
+      },
+      {
+        "name": "public.action_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_applications",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_audit_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_certificates",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_claim_rules",
+        "rows": 5,
+        "sha256": "3395a358dd00f1776da4d53df3d7ea544d9cedc2e7ee60572d744cc170eba0d5"
+      },
+      {
+        "name": "public.ai_audit_results",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.audit_logs",
+        "rows": 21,
+        "sha256": "4094b9f75f8474755a8c5283c2c31ed6d62651a9635d4d3ed3481d3c3068e263"
+      },
+      {
+        "name": "public.calculation_results",
+        "rows": 5,
+        "sha256": "2148f3d6f67471e5c78a53438258bd1b4b675d71e9fbd9a9d07661fbac36de57"
+      },
+      {
+        "name": "public.carbon_adjustment_items",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.emission_activities",
+        "rows": 10,
+        "sha256": "611669eb32ec7e901aa9f605a4555bd584a3faee9dfade2f217068258f16c13f"
+      },
+      {
+        "name": "public.emission_activity_classifications",
+        "rows": 20,
+        "sha256": "07d46532fbd7e273fec4c0a8f1271ab67af60877ee51eadc5facebf599eda55d"
+      },
+      {
+        "name": "public.emission_factors",
+        "rows": 8,
+        "sha256": "f360b428c4984b1f4deda2db174587d66251e2429b295740da7ba4a9ce4a130d"
+      },
+      {
+        "name": "public.extracted_document_drafts",
+        "rows": 2,
+        "sha256": "35aaa1f882c90a28a453cd64d10826dcd0e7d781284359ff664d2b912b32c94b"
+      },
+      {
+        "name": "public.legal_entities",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.organization_members",
+        "rows": 9,
+        "sha256": "4a38b0a6b0724f3c680cb2e7d59b66f8010ffb59a142f069593c9f4d0c19a105"
+      },
+      {
+        "name": "public.organizations",
+        "rows": 8,
+        "sha256": "c56d254bbd62925b8a80c5ac8a988725e0918b6d642f9034e3ae4c9382c6ce4a"
+      },
+      {
+        "name": "public.projects",
+        "rows": 8,
+        "sha256": "54a991998b66da733d73e680a809ef047c2cabecbdb2285c8d3997b4b87730c7"
+      },
+      {
+        "name": "public.report_generations",
+        "rows": 1,
+        "sha256": "494d4879871a873dae547523b192bbd8689c759df83e4bf4f750ded9864e1751"
+      },
+      {
+        "name": "public.report_snapshot_requests_v2",
+        "rows": 1,
+        "sha256": "6b5bc8e32db70ac8623bb1256f0b95d0c47edd5860cf8d338d3a92903a34983e"
+      },
+      {
+        "name": "public.seed_pack_registry",
+        "rows": 1,
+        "sha256": "95fcf83776ac69f005076ccf3d2467248af8a3be8659a9e0948a86563d8f4f2c"
+      },
+      {
+        "name": "public.seed_pack_reseed_runs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.sites",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.subscriptions",
+        "rows": 8,
+        "sha256": "5bc9fa69051780942cf52d93c768f64aef29d7c56144819a963215d79a99cc57"
+      },
+      {
+        "name": "public.uploaded_documents",
+        "rows": 5,
+        "sha256": "234b115fe48abd4a4dc85feb6b295c8f7fa64ad951f87dcd86f0ca300f00b1ee"
+      },
+      {
+        "name": "storage.buckets",
+        "rows": 3,
+        "sha256": "79f6765aadbe34e95412f71c0ef805d6ea7cd406529e4b20ef36ed045f28ab25"
+      },
+      {
+        "name": "storage.objects",
+        "rows": 4,
+        "sha256": "056afdbe08e7a67b78d16986723af01b2effaaf49c4a8e157a975935685ed6aa"
+      }
+    ],
+    "catalog": {
+      "schemas": {
+        "rows": 10,
+        "sha256": "2df1149253c0e9b366cadb86ad90cc45f607f2a3b70cbe62a9a436282843a74a"
+      },
+      "relations": {
+        "rows": 41,
+        "sha256": "4babeada73324b3a12b1e6ee6c21dfa6ca8a729ed5f7da9cdec220d866daa0df"
+      },
+      "columns": {
+        "rows": 637,
+        "sha256": "b3b5579e69ad9fc849faaa2b8f35e2795741408f75d666a378c4b8f0b12b67b3"
+      },
+      "constraints": {
+        "rows": 171,
+        "sha256": "bb452aff313e37a0cbc6e163746cc3edb2a462bb9a35a3f1c2e4fb108e751b04"
+      },
+      "policies": {
+        "rows": 71,
+        "sha256": "b8dfc33b8c189dc1eddeecef6eaa2f8958f7003962c9dc342668cd48b197e768"
+      },
+      "functions": {
+        "rows": 216,
+        "sha256": "bf2059eee73c4bd79e9534e316df6ad0fe825f2e387a7834d64f483d81921df5"
+      },
+      "triggers": {
+        "rows": 47,
+        "sha256": "3b4de6ade0ac6f82ec10b58773efc7a3e1b333dc8bf8967f7d2732055ae5f1a1"
+      },
+      "indexes": {
+        "rows": 117,
+        "sha256": "f01093a5526adfd36be39454eab01bc364dccac1c4cd33f143dcf7f1e0418566"
+      },
+      "views": {
+        "rows": 3,
+        "sha256": "f379b1d099d861b15d7869270f9be62d72259e2e8a49d65965ef8635393aa58b"
+      },
+      "enums": {
+        "rows": 94,
+        "sha256": "45c3cc7be931bd4649ffa97b966a14674ab4dd63125692bce94d14fe5e8f7d56"
+      },
+      "sequences": {
+        "rows": 1,
+        "sha256": "55d9e66d3f16eafd5f955879b6ac4175e3188c6c428680cbccf52c417d6ff5fe"
+      },
+      "extensions": {
+        "rows": 3,
+        "sha256": "6e695439b9fabe1a1617fb16dd1fdb397f03e2be6f86271fb1d981417f9937a9"
+      },
+      "defaultPrivileges": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "sequenceOwnership": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "partitionDefinitions": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "inheritance": {
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    "sequences": {
+      "cocal_recalc_private.completion_order": {
+        "sha256": "20d5f9cc1cbf959ddb743a3eb40b8fcef05ca6225e9ddf0d0c45b3f5735569bc"
+      }
+    },
+    "notValid": [
+      {
+        "schema": "public",
+        "table": "action_logs",
+        "name": "action_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_applications",
+        "name": "adjustment_applications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_audit_logs",
+        "name": "adjustment_audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_certificates",
+        "name": "adjustment_certificates_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "ai_audit_results",
+        "name": "ai_audit_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "audit_logs",
+        "name": "audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "calculation_results",
+        "name": "calculation_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "carbon_adjustment_items",
+        "name": "carbon_adjustment_items_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activities",
+        "name": "emission_activities_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activity_classifications",
+        "name": "emission_activity_classifications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "extracted_document_drafts",
+        "name": "extracted_document_drafts_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_site_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "report_generations",
+        "name": "report_generations_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "sites",
+        "name": "sites_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "uploaded_documents",
+        "name": "uploaded_documents_project_tenant_fk",
+        "validated": false
+      }
+    ],
+    "sha256": "e81920702f030f512fa1c99bd6deb339ce23b49600e422664c6c7c3d6d417ecc"
+  },
+  "partialRestore": {
+    "status": "EXPECTED_REJECTION",
+    "differences": [
+      {
+        "section": "rows",
+        "key": "cocal_activity_private.replacements",
+        "expected": "1d27b259498bc8d353b1a90bc82a7aa89c32a8e2e7ea085d151d8a23ae3e87b8",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_attachment_private.source_baseline",
+        "expected": "1d84cc6d6edeae3a6abcb5b08868d06c95f4b66c1cb8604afdb7e63a8d1bcc31",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_attachment_private.verifications",
+        "expected": "a7cc5f2648428fcef52afc1b806a8a3073bf8b50852b92533f23627d3b1b97e1",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_delete_private.operations",
+        "expected": "bf04189278daf0dd75d347f8a0bdf21edfb5fed10cc1dd3e7260b505534db353",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_delete_private.processing_leases",
+        "expected": "a4a318ca5bb612de1b283b0d42acd4bd0aea7cb50049f72a449d0c7960d04d4f",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_delete_private.source_baseline",
+        "expected": "aa95fd96a6c94f58771c9a48ecf943e20ff07a2568e605d4996a874263a28761",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_manual_private.confirmation_requests",
+        "expected": "03eb8043634b2181e38375f3cec555541e00254ea375692a37fdc72b9ac8c6c9",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_recalc_private.activity_requests",
+        "expected": "63ca7dba185f27882d541aa5f9b46f09168f4670d19d84e493d54998784a2def",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_recalc_private.requests",
+        "expected": "5badc337ed1b8d3e51c829f424eb1776a690ec0ec3c2497512932b24bc0e2eba",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_report_private.snapshots",
+        "expected": "1fc291a1c48686b4badffe05fa25d8e8b4c8a85aa2b123d474b9b788d4cc3200",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "cocal_storage_private.deployment_baseline",
+        "expected": "fd72ee66e491e4f05a5a559cf9ed4d730796e5583287403b378cc44f16b3a53f",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.adjustment_claim_rules",
+        "expected": "3395a358dd00f1776da4d53df3d7ea544d9cedc2e7ee60572d744cc170eba0d5",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.audit_logs",
+        "expected": "4094b9f75f8474755a8c5283c2c31ed6d62651a9635d4d3ed3481d3c3068e263",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.calculation_results",
+        "expected": "2148f3d6f67471e5c78a53438258bd1b4b675d71e9fbd9a9d07661fbac36de57",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.emission_activities",
+        "expected": "611669eb32ec7e901aa9f605a4555bd584a3faee9dfade2f217068258f16c13f",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.emission_activity_classifications",
+        "expected": "07d46532fbd7e273fec4c0a8f1271ab67af60877ee51eadc5facebf599eda55d",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.emission_factors",
+        "expected": "f360b428c4984b1f4deda2db174587d66251e2429b295740da7ba4a9ce4a130d",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.extracted_document_drafts",
+        "expected": "35aaa1f882c90a28a453cd64d10826dcd0e7d781284359ff664d2b912b32c94b",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.organization_members",
+        "expected": "4a38b0a6b0724f3c680cb2e7d59b66f8010ffb59a142f069593c9f4d0c19a105",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.organizations",
+        "expected": "c56d254bbd62925b8a80c5ac8a988725e0918b6d642f9034e3ae4c9382c6ce4a",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.projects",
+        "expected": "54a991998b66da733d73e680a809ef047c2cabecbdb2285c8d3997b4b87730c7",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.report_generations",
+        "expected": "494d4879871a873dae547523b192bbd8689c759df83e4bf4f750ded9864e1751",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.report_snapshot_requests_v2",
+        "expected": "6b5bc8e32db70ac8623bb1256f0b95d0c47edd5860cf8d338d3a92903a34983e",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.seed_pack_registry",
+        "expected": "95fcf83776ac69f005076ccf3d2467248af8a3be8659a9e0948a86563d8f4f2c",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.subscriptions",
+        "expected": "5bc9fa69051780942cf52d93c768f64aef29d7c56144819a963215d79a99cc57",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "public.uploaded_documents",
+        "expected": "234b115fe48abd4a4dc85feb6b295c8f7fa64ad951f87dcd86f0ca300f00b1ee",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "storage.buckets",
+        "expected": "79f6765aadbe34e95412f71c0ef805d6ea7cd406529e4b20ef36ed045f28ab25",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "rows",
+        "key": "storage.objects",
+        "expected": "056afdbe08e7a67b78d16986723af01b2effaaf49c4a8e157a975935685ed6aa",
+        "actual": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "section": "sequences",
+        "key": "cocal_recalc_private.completion_order",
+        "expected": "20d5f9cc1cbf959ddb743a3eb40b8fcef05ca6225e9ddf0d0c45b3f5735569bc",
+        "actual": "4a6870493a60550f2130bb752a28888890608e59e01fec1138899a0f3d1fe120"
+      }
+    ],
+    "privateProofRead": {
+      "code": "P0001",
+      "message": "REPORT_SNAPSHOT_UNVERIFIED",
+      "tenantScopeRowsPresent": true
+    }
+  },
+  "finished": "2026-11-08T06:28:47.664Z",
+  "raw_evidence": {
+    "location": "workspace tooling/native-pg17-20261108/recovery-runs/20261108062840367-7b9aab37/result.json",
+    "bytes": 219651,
+    "sha256": "c6aca9ec7c84352a2d5cbc96341c9d3b445e8c9105840d7dc7d57cb1e712fd0b"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "application_source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "tool_source": "a05cec8221568f0d7ac14029509fad726dfefdd2",
+  "files": [
+    {
+      "file": "AUTHOR_RESULT.json",
+      "bytes": 47000,
+      "sha256": "6f40eb66d7f2f128a3b3df0fc723dba427ac29446a0dc7920560ec4ce9981381"
+    },
+    {
+      "file": "EXECUTION.json",
+      "bytes": 2537,
+      "sha256": "326ac366cd8f8fef0f5d01f48a2703a562cc8d3ceaa3e40620e3121b2fd551d1"
+    },
+    {
+      "file": "HELP.txt",
+      "bytes": 150,
+      "sha256": "9e55d4742e277fb9bdfcc698e990f352c18141d69f4f9fc75b6e589d3ddf9eea"
+    },
+    {
+      "file": "INDEPENDENT_AUDIT.json",
+      "bytes": 10214,
+      "sha256": "dd3799eb4f9c80542b27731e6cdf522d687fa5ecee2a75b6730622649c34b495"
+    },
+    {
+      "file": "INDEPENDENT_RESULT.json",
+      "bytes": 47000,
+      "sha256": "450cab2ac788af528f1a97d367bdf0643675feca0b807323a305141d57596afd"
+    },
+    {
+      "file": "INITIAL_ACL_VERIFIER_FAILURE.json",
+      "bytes": 25334,
+      "sha256": "95e7c24a880faaa8947ed8ef993048ffc7db7ce4ef3a3aee96637ebe28d81335"
+    },
+    {
+      "file": "PR33_CI.json",
+      "bytes": 2793,
+      "sha256": "191aa81d7ad3bab21eb4df22cda1ba36abed0d7f0bd949b256c981c550bfd792"
+    },
+    {
+      "file": "PR34_IMPLEMENTATION_CI.json",
+      "bytes": 2705,
+      "sha256": "8b9d50cdd11498a843ae8e4b15e2555b86fbd491335571295cde81701738d3ca"
+    },
+    {
+      "file": "RECOVERY_BINARY_HASHES.json",
+      "bytes": 601,
+      "sha256": "2f8251c198ebcba675f3d766484c8327ef06cd516896de725e78f4783a1e1a9b"
+    },
+    {
+      "file": "SQL_CLIENT_TIMELINE.json",
+      "bytes": 172987,
+      "sha256": "86f55d0bb64fc4598278f25b34b93981c739625651d11d398138fa96908f513c"
+    },
+    {
+      "file": "STARTUP_FAILURE.json",
+      "bytes": 709,
+      "sha256": "21a56f60c69440151d98fa26e8a4637b6e5da40b462ee91a16cb77cee17aee9e"
+    },
+    {
+      "file": "VERIFIER_TESTS.txt",
+      "bytes": 646,
+      "sha256": "c0a7e04a7453d047267377b2646583f975d1df02b8e0fec7a7fca12f97bcdf8c"
+    }
+  ]
+}

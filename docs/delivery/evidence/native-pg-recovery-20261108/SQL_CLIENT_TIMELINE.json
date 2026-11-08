@@ -1,0 +1,4113 @@
+{
+  "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "run": "20261108062802408-02f757c2",
+  "commands": [
+    {
+      "connection": "original-read-only",
+      "sql": "select cocal_delete_private.deployment_ready() ready",
+      "params": [],
+      "started": "2026-11-08T06:28:02.781Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:02.893Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:02.894Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.895Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.897Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.898Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.900Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.902Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.904Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.904Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.905Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.907Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.908Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.909Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.909Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.912Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.914Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.917Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.919Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.922Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.924Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.926Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.930Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.932Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.936Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.939Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.942Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.945Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.948Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.950Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.952Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.956Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.959Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.959Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.960Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.962Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.963Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.965Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.968Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:02.968Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:02.970Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:02.971Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:02.974Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:02.985Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:02.992Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:02.994Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.002Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.003Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.014Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.019Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.024Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:03.028Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.030Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:03.033Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.038Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:03.039Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:03.042Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:03.043Z",
+      "status": "OK"
+    },
+    {
+      "connection": "maintenance",
+      "sql": "select count(*) n from pg_stat_activity where datname=$1",
+      "params": [
+        "cocal_sql_race_20261108060154015_4430f35e"
+      ],
+      "started": "2026-11-08T06:28:03.054Z",
+      "status": "OK"
+    },
+    {
+      "connection": "maintenance",
+      "sql": "create database \"cocal_recovery_source_20261108062802408_02f757c2\" template \"cocal_sql_race_20261108060154015_4430f35e\"",
+      "params": [],
+      "started": "2026-11-08T06:28:03.074Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:03.744Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.744Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.753Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.756Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.758Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.760Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.762Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.764Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.765Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.767Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.769Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.770Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.772Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.774Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.777Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.780Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.783Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.785Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.788Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.790Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.794Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.797Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.802Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.806Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.809Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.813Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.817Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.820Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.824Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.827Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.831Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.835Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.836Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.837Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.839Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.842Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.844Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.848Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:03.849Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:03.852Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.853Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.855Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.867Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.875Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.880Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.890Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.894Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.902Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.907Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.910Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:03.912Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:03.914Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:03.916Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:03.919Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:03.920Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:03.921Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:03.922Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(r) row from cocal_activity_private.replacements r join effective_emission_activities a on a.id=r.activity_id join effective_calculation_results c on c.emission_activity_id=a.id and c.is_latest where a.quantity=120 and c.co2e_kg=60 order by r.created_at limit 1",
+      "params": [],
+      "started": "2026-11-08T06:28:03.927Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:03.931Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:03.932Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:03.932Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select * from report_calculation_inputs($1,$2,$3)",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:03.932Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:03.939Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(p) row from projects p where id=$1",
+      "params": [
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a"
+      ],
+      "started": "2026-11-08T06:28:04.964Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:04.965Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:04.966Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:04.966Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select * from generate_report_snapshot_atomic_v2($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        1,
+        "{\"project_metadata\":{\"project_id\":\"9d5c504a-7a93-4c8b-a656-5ab01ede737a\",\"organization_id\":\"0dfd43a1-ef3d-4e55-a929-43b8a1716cef\",\"workspace_id\":\"0dfd43a1-ef3d-4e55-a929-43b8a1716cef\",\"legal_entity_id\":null,\"site_id\":null,\"project_code\":\"SYNTHETIC-NATIVE\",\"name\":\"SYNTHETIC NATIVE SQL\",\"status\":\"draft\"},\"reporting_period\":{\"start_date\":\"2026-01-01\",\"end_date\":\"2026-12-31\"},\"boundary_summary\":{\"boundary_type\":\"operational_control\",\"included_count\":1,\"excluded_count\":0,\"pending_count\":0},\"workspace_snapshot\":{},\"legal_entity_snapshot\":{},\"site_snapshot\":{},\"boundary_snapshot\":{\"workspace_id\":\"0dfd43a1-ef3d-4e55-a929-43b8a1716cef\",\"workspace_label\":null,\"legal_entity_id\":null,\"legal_entity_label\":null,\"site_id\":null,\"site_label\":null,\"boundary_type\":\"operational_control\",\"reporting_period\":{\"start_date\":\"2026-01-01\",\"end_date\":\"2026-12-31\"}},\"included_activities_summary\":[{\"emission_activity_id\":\"d63feb1e-42a7-4736-be2c-55787833f8e5\",\"activity_code\":\"REVISION-d63feb1e-42a7-4736-be2c-55787833f8e5\",\"activity_name\":\"SYNTHETIC 100kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"final_scope\":2,\"co2e_kg\":60}],\"excluded_items_summary\":[],\"scope_totals\":{\"scope_1\":0,\"scope_2\":60,\"scope_3\":0,\"unknown\":0},\"category_totals\":{\"energy\":60},\"factor_sources_used\":[{\"factor_id\":\"94584998-e798-4850-acc1-0c034620e5ec\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"quality_tier\":\"custom\"}],\"data_gaps_and_warnings\":[],\"ai_summary_placeholder\":{\"zh_tw\":\"AI 健檢摘要待產生\",\"en\":\"AI audit summary pending\",\"ja\":\"AI 監査サマリーは未生成です\"},\"appendix_mappings\":[{\"emission_activity_id\":\"d63feb1e-42a7-4736-be2c-55787833f8e5\",\"source_draft_id\":null,\"source_document_id\":null,\"calculation_result_id\":\"651618ad-ed65-4d0d-9d4b-0550b6ffe490\"}]}",
+        "1ff293ca7ba3a476560fdecb6a547aa7b3d34591a33d1850fb1d2765cdbd7ddd",
+        "2026-01-01",
+        "2026-12-31",
+        1,
+        0,
+        0,
+        "{\"scope_1\":0,\"scope_2\":60,\"scope_3\":0,\"unknown\":0}",
+        "{\"energy\":60}",
+        "[{\"factor_id\":\"94584998-e798-4850-acc1-0c034620e5ec\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"quality_tier\":\"custom\"}]",
+        0,
+        "2026-11-08T06:01:58.16+00:00",
+        "85fb6144-2438-4b7c-a351-9fc45a69e156",
+        "{\"claim_purpose\":\"internal_management\",\"gross_emissions_snapshot\":{\"gross_total_co2e_kg\":60},\"adjustment_summary\":{},\"claim_results\":{},\"adjustment_manifest\":[],\"calculation_authority\":{\"request_id\":\"69c59702-205e-4adb-852e-ebbfae8e03a2\",\"completion_order\":4}}"
+      ],
+      "started": "2026-11-08T06:28:04.966Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:04.983Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'viewer','active')",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "28cb167c-8509-4835-946f-68833f62996f"
+      ],
+      "started": "2026-11-08T06:28:04.983Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:04.984Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:04.984Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:04.984Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(r) row from read_verified_report_snapshot($1,$2,$3,$4) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:04.984Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:04.986Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:04.986Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:04.986Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:04.986Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(r) row from report_snapshot_request_v2($1,$2,$3,$4,$5,$6) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "85fb6144-2438-4b7c-a351-9fc45a69e156",
+        1,
+        "internal_management"
+      ],
+      "started": "2026-11-08T06:28:04.986Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:04.988Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:04.989Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:04.989Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.989Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.989Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.990Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.990Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.990Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.990Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.991Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.991Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.991Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.992Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.992Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.992Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.992Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.992Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.993Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.993Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.993Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.993Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.994Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.994Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.994Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.995Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.995Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.995Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.995Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.996Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.996Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.996Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.996Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.996Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.997Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.997Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.997Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.997Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.997Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.998Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:04.998Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:04.998Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:04.998Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:04.999Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.005Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.008Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.010Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.015Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.016Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:05.021Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.022Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:05.023Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:05.023Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:05.024Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:05.024Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:05.025Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:05.026Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:05.026Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:05.026Z",
+      "status": "OK"
+    },
+    {
+      "binary": "pg_dump.exe",
+      "args": [
+        "--host=127.0.0.1",
+        "--port=55439",
+        "--username=cocal_uat_admin",
+        "--no-password",
+        "--dbname=cocal_recovery_source_20261108062802408_02f757c2",
+        "--format=custom"
+      ],
+      "started": "2026-11-08T06:28:05.041Z",
+      "status": "OK"
+    },
+    {
+      "connection": "maintenance",
+      "sql": "create database \"cocal_recovery_restore_20261108062802408_02f757c2\" template template0 encoding 'UTF8'",
+      "params": [],
+      "started": "2026-11-08T06:28:05.600Z",
+      "status": "OK"
+    },
+    {
+      "binary": "pg_restore.exe",
+      "args": [
+        "--host=127.0.0.1",
+        "--port=55439",
+        "--username=cocal_uat_admin",
+        "--no-password",
+        "--dbname=cocal_recovery_restore_20261108062802408_02f757c2",
+        "--exit-on-error",
+        "<DEDICATED_RUNTIME>\\recovery\\20261108062802408-02f757c2\\database.dump"
+      ],
+      "started": "2026-11-08T06:28:06.130Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:07.143Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.144Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.148Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.151Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.153Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.154Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.157Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.159Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.160Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.162Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.163Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.165Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.167Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.168Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.170Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.173Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.176Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.178Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.181Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.183Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.186Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.189Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.192Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.195Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.197Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.201Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.204Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.207Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.209Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.212Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.216Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.220Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.221Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.222Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.223Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.225Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.227Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.230Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.231Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:07.233Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.234Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.235Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.245Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.253Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.258Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.266Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.270Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.279Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.284Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.288Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:07.290Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.292Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:07.293Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.296Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:07.297Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:07.299Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.299Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select cocal_delete_private.deployment_ready() deletion_ready,cocal_attachment_private.deployment_ready() attachment_ready",
+      "params": [],
+      "started": "2026-11-08T06:28:07.319Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.335Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.335Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.335Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(r) row from read_verified_report_snapshot($1,$2,$3,$4) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:07.335Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.338Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.340Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.340Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.341Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(r) row from report_snapshot_request_v2($1,$2,$3,$4,$5,$6) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "85fb6144-2438-4b7c-a351-9fc45a69e156",
+        1,
+        "internal_management"
+      ],
+      "started": "2026-11-08T06:28:07.341Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.342Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.343Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.343Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.343Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select * from generate_report_snapshot_atomic_v2($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        1,
+        "{\"project_metadata\":{\"project_id\":\"9d5c504a-7a93-4c8b-a656-5ab01ede737a\",\"organization_id\":\"0dfd43a1-ef3d-4e55-a929-43b8a1716cef\",\"workspace_id\":\"0dfd43a1-ef3d-4e55-a929-43b8a1716cef\",\"legal_entity_id\":null,\"site_id\":null,\"project_code\":\"SYNTHETIC-NATIVE\",\"name\":\"SYNTHETIC NATIVE SQL\",\"status\":\"draft\"},\"reporting_period\":{\"start_date\":\"2026-01-01\",\"end_date\":\"2026-12-31\"},\"boundary_summary\":{\"boundary_type\":\"operational_control\",\"included_count\":1,\"excluded_count\":0,\"pending_count\":0},\"workspace_snapshot\":{},\"legal_entity_snapshot\":{},\"site_snapshot\":{},\"boundary_snapshot\":{\"workspace_id\":\"0dfd43a1-ef3d-4e55-a929-43b8a1716cef\",\"workspace_label\":null,\"legal_entity_id\":null,\"legal_entity_label\":null,\"site_id\":null,\"site_label\":null,\"boundary_type\":\"operational_control\",\"reporting_period\":{\"start_date\":\"2026-01-01\",\"end_date\":\"2026-12-31\"}},\"included_activities_summary\":[{\"emission_activity_id\":\"d63feb1e-42a7-4736-be2c-55787833f8e5\",\"activity_code\":\"REVISION-d63feb1e-42a7-4736-be2c-55787833f8e5\",\"activity_name\":\"SYNTHETIC 100kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"final_scope\":2,\"co2e_kg\":60}],\"excluded_items_summary\":[],\"scope_totals\":{\"scope_1\":0,\"scope_2\":60,\"scope_3\":0,\"unknown\":0},\"category_totals\":{\"energy\":60},\"factor_sources_used\":[{\"factor_id\":\"94584998-e798-4850-acc1-0c034620e5ec\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"quality_tier\":\"custom\"}],\"data_gaps_and_warnings\":[],\"ai_summary_placeholder\":{\"zh_tw\":\"AI 健檢摘要待產生\",\"en\":\"AI audit summary pending\",\"ja\":\"AI 監査サマリーは未生成です\"},\"appendix_mappings\":[{\"emission_activity_id\":\"d63feb1e-42a7-4736-be2c-55787833f8e5\",\"source_draft_id\":null,\"source_document_id\":null,\"calculation_result_id\":\"651618ad-ed65-4d0d-9d4b-0550b6ffe490\"}]}",
+        "1ff293ca7ba3a476560fdecb6a547aa7b3d34591a33d1850fb1d2765cdbd7ddd",
+        "2026-01-01",
+        "2026-12-31",
+        1,
+        0,
+        0,
+        "{\"scope_1\":0,\"scope_2\":60,\"scope_3\":0,\"unknown\":0}",
+        "{\"energy\":60}",
+        "[{\"factor_id\":\"94584998-e798-4850-acc1-0c034620e5ec\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"quality_tier\":\"custom\"}]",
+        0,
+        "2026-11-08T06:01:58.16+00:00",
+        "85fb6144-2438-4b7c-a351-9fc45a69e156",
+        "{\"claim_purpose\":\"internal_management\",\"gross_emissions_snapshot\":{\"gross_total_co2e_kg\":60},\"adjustment_summary\":{},\"claim_results\":{},\"adjustment_manifest\":[],\"calculation_authority\":{\"request_id\":\"69c59702-205e-4adb-852e-ebbfae8e03a2\",\"completion_order\":4}}"
+      ],
+      "started": "2026-11-08T06:28:07.343Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.347Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.347Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.347Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.347Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','lookup')",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "69c59702-205e-4adb-852e-ebbfae8e03a2"
+      ],
+      "started": "2026-11-08T06:28:07.347Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T06:28:07.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.352Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select id from report_generations where id=$1",
+      "params": [
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:07.352Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.353Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select user_id from organization_members where organization_id<>$1 and status='active' order by user_id limit 1",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef"
+      ],
+      "started": "2026-11-08T06:28:07.353Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.354Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T06:28:07.354Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "0b517d32-d003-4fe4-b77a-4209a816c5fb"
+      ],
+      "started": "2026-11-08T06:28:07.354Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select id from report_generations where id=$1",
+      "params": [
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:07.354Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.354Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.355Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.355Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "0b517d32-d003-4fe4-b77a-4209a816c5fb"
+      ],
+      "started": "2026-11-08T06:28:07.355Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(r) row from read_verified_report_snapshot($1,$2,$3,$4) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "0b517d32-d003-4fe4-b77a-4209a816c5fb",
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:07.355Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "report_scope_or_actor_denied"
+    },
+    {
+      "connection": "restored",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:07.357Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.357Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.358Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "28cb167c-8509-4835-946f-68833f62996f"
+      ],
+      "started": "2026-11-08T06:28:07.358Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(r) row from read_verified_report_snapshot($1,$2,$3,$4) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "28cb167c-8509-4835-946f-68833f62996f",
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:07.358Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "report_scope_or_actor_denied"
+    },
+    {
+      "connection": "restored",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:07.359Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.359Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T06:28:07.359Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.359Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select * from read_verified_report_snapshot($1,$2,$3,$4)",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:07.359Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "permission denied for function read_verified_report_snapshot"
+    },
+    {
+      "connection": "restored",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:07.360Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.360Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T06:28:07.360Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.360Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select * from cocal_report_private.snapshots",
+      "params": [],
+      "started": "2026-11-08T06:28:07.360Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "permission denied for schema cocal_report_private"
+    },
+    {
+      "connection": "restored",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:07.360Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role anon",
+      "params": [],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select * from cocal_report_private.snapshots",
+      "params": [],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "permission denied for schema cocal_report_private"
+    },
+    {
+      "connection": "restored",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:07.361Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:07.362Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select * from cocal_report_private.snapshots",
+      "params": [],
+      "started": "2026-11-08T06:28:07.362Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "permission denied for schema cocal_report_private"
+    },
+    {
+      "connection": "restored",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:07.362Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:07.362Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.362Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.363Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.363Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.363Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.363Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.365Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.365Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.365Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.368Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.368Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.368Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.368Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.369Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.369Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.369Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.369Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.369Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.370Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.370Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.370Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.370Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.370Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.371Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.371Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.371Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:07.371Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:07.371Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.372Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.373Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.380Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.382Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.385Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.390Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.392Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.397Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.398Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.399Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:07.400Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:07.400Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:07.401Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:07.402Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:07.403Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:07.403Z",
+      "status": "OK"
+    },
+    {
+      "connection": "restored",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:07.403Z",
+      "status": "OK"
+    },
+    {
+      "connection": "maintenance",
+      "sql": "create database \"cocal_recovery_partial_20261108062802408_02f757c2\" template template0 encoding 'UTF8'",
+      "params": [],
+      "started": "2026-11-08T06:28:07.410Z",
+      "status": "OK"
+    },
+    {
+      "binary": "pg_restore.exe",
+      "args": [
+        "--host=127.0.0.1",
+        "--port=55439",
+        "--username=cocal_uat_admin",
+        "--no-password",
+        "--dbname=cocal_recovery_partial_20261108062802408_02f757c2",
+        "--exit-on-error",
+        "--schema-only",
+        "<DEDICATED_RUNTIME>\\recovery\\20261108062802408-02f757c2\\database.dump"
+      ],
+      "started": "2026-11-08T06:28:07.670Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:08.417Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.417Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.422Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.425Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.426Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.427Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.429Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.430Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.431Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.433Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.433Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.434Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.436Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.436Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.439Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.442Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.444Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.446Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.448Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.450Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.452Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.454Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.457Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.460Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.462Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.465Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.468Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.470Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.473Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.475Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.478Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.480Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.481Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.483Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.484Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.487Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.488Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.491Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.492Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:08.494Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.494Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.496Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.506Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.513Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.517Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.524Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.528Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.536Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.540Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.545Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:08.547Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.548Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:08.549Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.552Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:08.553Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:08.554Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:08.555Z",
+      "status": "OK"
+    },
+    {
+      "binary": "pg_restore.exe",
+      "args": [
+        "--host=127.0.0.1",
+        "--port=55439",
+        "--username=cocal_uat_admin",
+        "--no-password",
+        "--dbname=cocal_recovery_partial_20261108062802408_02f757c2",
+        "--exit-on-error",
+        "--data-only",
+        "--schema=public",
+        "--disable-triggers",
+        "<DEDICATED_RUNTIME>\\recovery\\20261108062802408-02f757c2\\database.dump"
+      ],
+      "started": "2026-11-08T06:28:08.566Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:08.701Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T06:28:08.703Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:08.703Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select id from report_generations where id=$1",
+      "params": [
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:08.704Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:08.706Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T06:28:08.706Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T06:28:08.706Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97"
+      ],
+      "started": "2026-11-08T06:28:08.706Z",
+      "status": "OK"
+    },
+    {
+      "connection": "partial",
+      "sql": "select to_jsonb(r) row from read_verified_report_snapshot($1,$2,$3,$4) r",
+      "params": [
+        "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+        "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+        "3e2c5ac8-c107-4e9d-9784-8613e1311d97",
+        "954e448e-7520-4ee4-8e50-3c3a6e466f93"
+      ],
+      "started": "2026-11-08T06:28:08.706Z",
+      "status": "ERROR",
+      "code": "P0001",
+      "message": "REPORT_SNAPSHOT_UNVERIFIED"
+    },
+    {
+      "connection": "partial",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T06:28:08.711Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:08.712Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.712Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.712Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.713Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.713Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.713Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.714Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.714Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.714Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.714Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.715Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.715Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.715Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.715Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.716Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.716Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.716Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.716Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.716Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.716Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.717Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.717Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.717Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.718Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.718Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.718Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.718Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.718Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.718Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.720Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.720Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.720Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.720Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:08.720Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.720Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.722Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.727Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.729Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.731Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.736Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.737Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.741Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.742Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.743Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:08.744Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.744Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:08.744Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.745Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:08.746Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:08.746Z",
+      "status": "OK"
+    },
+    {
+      "connection": "source-clone",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:08.747Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "begin isolation level repeatable read read only",
+      "params": [],
+      "started": "2026-11-08T06:28:08.783Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname name from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.783Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_activity_private\".\"replacements\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.790Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.795Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_attachment_private\".\"verifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.796Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"operations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.799Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"processing_leases\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.801Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_delete_private\".\"source_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.804Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_manual_private\".\"confirmation_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.804Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"activity_requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.806Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_recalc_private\".\"requests\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.807Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_report_private\".\"snapshots\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.810Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"cocal_storage_private\".\"deployment_baseline\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.811Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"action_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.812Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_applications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.815Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.818Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_certificates\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.820Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"adjustment_claim_rules\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.822Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"ai_audit_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.824Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"audit_logs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.826Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"calculation_results\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.829Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"carbon_adjustment_items\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.832Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.835Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_activity_classifications\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.838Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"emission_factors\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.841Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"extracted_document_drafts\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.844Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"legal_entities\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.847Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organization_members\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.850Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"organizations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.853Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"projects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.855Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_generations\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.858Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"report_snapshot_requests_v2\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.861Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_registry\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.861Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"seed_pack_reseed_runs\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.862Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"sites\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.863Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"subscriptions\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.865Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"public\".\"uploaded_documents\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.866Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"buckets\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.869Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select to_jsonb(t)::text row from \"storage\".\"objects\" t",
+      "params": [],
+      "started": "2026-11-08T06:28:08.870Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname name,pg_get_userbyid(n.nspowner) owner,array(select x::text from unnest(coalesce(n.nspacl,acldefault('n',n.nspowner))) x order by x::text) acl from pg_namespace n where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:08.871Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,c.relrowsecurity,c.relforcerowsecurity,c.relreplident,c.relpersistence,pg_get_userbyid(c.relowner) owner,array(select x::text from unnest(coalesce(c.relacl,acldefault((case when c.relkind='S' then 's' else 'r' end)::\"char\",c.relowner))) x order by x::text) acl,c.reloptions from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.872Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname name,a.attnum,a.attname,format_type(a.atttypid,a.atttypmod) type,a.attnotnull,a.attidentity,a.attgenerated,array(select x::text from unnest(coalesce(a.attacl,'{}'::aclitem[])) x order by x::text) acl,pg_get_expr(d.adbin,d.adrelid) default_value from pg_attribute a join pg_class c on c.oid=a.attrelid join pg_namespace n on n.oid=c.relnamespace left join pg_attrdef d on d.adrelid=c.oid and d.adnum=a.attnum where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('r','p','v','m','S') and a.attnum>0 and not a.attisdropped order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.874Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname table_name,x.conname name,x.contype,x.convalidated,x.condeferrable,x.condeferred,pg_get_constraintdef(x.oid,true) definition from pg_constraint x join pg_class c on c.oid=x.conrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.881Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname table_name,p.polname name,p.polcmd,p.polpermissive,array(select case when r=0 then 'public' else pg_get_userbyid(r)::text end from unnest(p.polroles) r order by 1) roles,pg_get_expr(p.polqual,p.polrelid) using_expression,pg_get_expr(p.polwithcheck,p.polrelid) check_expression from pg_policy p join pg_class c on c.oid=p.polrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.889Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,p.proname name,pg_get_function_identity_arguments(p.oid) arguments,pg_get_userbyid(p.proowner) owner,array(select x::text from unnest(coalesce(p.proacl,acldefault('f',p.proowner))) x order by x::text) acl,p.proconfig,p.prosecdef,p.proleakproof,p.provolatile,p.proparallel,p.proisstrict,pg_get_functiondef(p.oid) definition from pg_proc p join pg_namespace n on n.oid=p.pronamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and p.prokind in('f','p') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.893Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname table_name,t.tgname name,t.tgenabled,pg_get_triggerdef(t.oid,true) definition from pg_trigger t join pg_class c on c.oid=t.tgrelid join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and not t.tgisinternal order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.902Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname table_name,i.relname name,pg_get_indexdef(x.indexrelid) definition from pg_index x join pg_class c on c.oid=x.indrelid join pg_namespace n on n.oid=c.relnamespace join pg_class i on i.oid=x.indexrelid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.905Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname name,pg_get_viewdef(c.oid,true) definition from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and c.relkind in('v','m') order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.914Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,t.typname name,e.enumsortorder,e.enumlabel from pg_enum e join pg_type t on t.oid=e.enumtypid join pg_namespace n on n.oid=t.typnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.919Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select schemaname schema,sequencename name,sequenceowner owner,data_type,start_value,min_value,max_value,increment_by,cycle,cache_size from pg_sequences where schemaname in('public','auth','storage') or schemaname like 'cocal\\_%' escape '\\' order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.922Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select e.extname,e.extversion,n.nspname schema from pg_extension e join pg_namespace n on n.oid=e.extnamespace order by 1",
+      "params": [],
+      "started": "2026-11-08T06:28:08.926Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select pg_get_userbyid(d.defaclrole) owner,coalesce(n.nspname,'<GLOBAL>') schema,d.defaclobjtype object_type,array(select x::text from unnest(d.defaclacl) x order by x::text) acl from pg_default_acl d left join pg_namespace n on n.oid=d.defaclnamespace order by 1,2,3",
+      "params": [],
+      "started": "2026-11-08T06:28:08.928Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname sequence_schema,s.relname sequence_name,tn.nspname table_schema,t.relname table_name,a.attname column_name,d.deptype from pg_class s join pg_namespace n on n.oid=s.relnamespace join pg_depend d on d.classid='pg_class'::regclass and d.objid=s.oid and d.refclassid='pg_class'::regclass and d.deptype in('a','i') join pg_class t on t.oid=d.refobjid join pg_namespace tn on tn.oid=t.relnamespace join pg_attribute a on a.attrelid=t.oid and a.attnum=d.refobjsubid where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and s.relkind='S' order by 1,2,3,4,5",
+      "params": [],
+      "started": "2026-11-08T06:28:08.930Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname name,c.relkind,pg_get_partkeydef(c.oid) partition_key,pg_get_expr(c.relpartbound,c.oid) partition_bound from pg_class c join pg_namespace n on n.oid=c.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') and(c.relkind='p' or c.relispartition) order by 1,2",
+      "params": [],
+      "started": "2026-11-08T06:28:08.933Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select n.nspname schema,c.relname name,pn.nspname parent_schema,p.relname parent_name,i.inhseqno from pg_inherits i join pg_class c on c.oid=i.inhrelid join pg_namespace n on n.oid=c.relnamespace join pg_class p on p.oid=i.inhparent join pg_namespace pn on pn.oid=p.relnamespace where (n.nspname in ('public','auth','storage') or n.nspname like 'cocal\\_%' escape '\\') order by 1,2,5",
+      "params": [],
+      "started": "2026-11-08T06:28:08.934Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "select last_value::text,is_called from \"cocal_recalc_private\".\"completion_order\"",
+      "params": [],
+      "started": "2026-11-08T06:28:08.936Z",
+      "status": "OK"
+    },
+    {
+      "connection": "original-read-only-after",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T06:28:08.936Z",
+      "status": "OK"
+    }
+  ]
+}
