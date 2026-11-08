@@ -1,0 +1,8 @@
+{
+  "source": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "method": "Actual TSX transpile with installed TS; ReactDOMServer static render, not browser E2E",
+  "savedReport": "report-generation status label verified",
+  "currentActivity": "query-time status label verified; no report-time claim",
+  "payloadUnchanged": true,
+  "status": "PASS"
+}

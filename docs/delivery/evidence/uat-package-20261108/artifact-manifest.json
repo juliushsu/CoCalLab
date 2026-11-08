@@ -1,0 +1,81 @@
+{
+  "source_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "tool_sha": "5d345281ed11674ba4b1bfea0010a838b08d001d",
+  "files": [
+    {
+      "file": "argument-guard.json",
+      "bytes": 306,
+      "sha256": "f6d259de0eaee004e02a3f70f7e2dde832481fe40f08e6d3c1b20cb9ccc335eb"
+    },
+    {
+      "file": "component-render-check.json",
+      "bytes": 347,
+      "sha256": "9875c114a931a8b4a77c441b140b25b5253ea78d9ae108d102869a10168cc562"
+    },
+    {
+      "file": "current-activity-label.html",
+      "bytes": 1077,
+      "sha256": "610b38a37297c8d730cca8386adb74aaf7ca909717495bfc9c4fc8dff27ed776"
+    },
+    {
+      "file": "disclosure-label-green.txt",
+      "bytes": 1035,
+      "sha256": "9375966f740d5dfcac29c04e0656f510f0db82f2b03c773053042270341a1539"
+    },
+    {
+      "file": "disclosure-label-red.txt",
+      "bytes": 11986,
+      "sha256": "bad78edd913c386f3c873891d67c0d8d6c830c9c96ee396eb35748f5e13d7af3"
+    },
+    {
+      "file": "EXECUTION.json",
+      "bytes": 2805,
+      "sha256": "3c15ead129512f2c6858ebe3e94e24278baefcdf96007a1ca9d334292aa06c33"
+    },
+    {
+      "file": "frontend-artifact-build.txt",
+      "bytes": 9026,
+      "sha256": "16741f6fd484564d37d762af82ab67aa4d1674625cc0fa2d3dc87a22fb8a843a"
+    },
+    {
+      "file": "github-ci-excerpt.txt",
+      "bytes": 1608,
+      "sha256": "98551161570167e984bb79d808089922bb2fb899a34f7d098e2b54950d8799fd"
+    },
+    {
+      "file": "github-ci-result.json",
+      "bytes": 727,
+      "sha256": "b5fd1196f2fcb936dc44b77391a93f7856adf331eed4987d9047390339da08b5"
+    },
+    {
+      "file": "handover-consistency.json",
+      "bytes": 626,
+      "sha256": "a66c95f7f7b645a545984dec63aee6344ae049721f240e6b9bb7ee93981d764b"
+    },
+    {
+      "file": "package-manifest.json",
+      "bytes": 38925,
+      "sha256": "7d3c094c2853fa8ae51fa6b20d34723a68c2f6a30b4f4c13ad0cb4de85447a0f"
+    },
+    {
+      "file": "package-verify.txt",
+      "bytes": 362,
+      "sha256": "538c380811c4de3a7002ef6cfa8d8a6b6de130f23afead1573cb4e16af0206b1"
+    },
+    {
+      "file": "PACKAGE_RECEIPT.json",
+      "bytes": 2194,
+      "sha256": "68917db221aebdd1f2d9489f5a4df9a985039a0f8ef83dad0a595dee7bfda3d2"
+    },
+    {
+      "file": "saved-report-label.html",
+      "bytes": 1104,
+      "sha256": "4d8a118f4a2bae5af9041f80edc655fcf2d066d8e9dc38d9ef31ee15b8638ff0"
+    },
+    {
+      "file": "zip-inspection.json",
+      "bytes": 375,
+      "sha256": "34e56c7c3af77c4e75123aeb3d11fea18673b696f697bff32229be04616b70dd"
+    }
+  ]
+}

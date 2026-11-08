@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "recordedAt": "2026-11-08T12:10:05.401Z",
+  "product_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "tool_sha": "5d345281ed11674ba4b1bfea0010a838b08d001d",
+  "reviewed_core_sha": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+  "review_reply_sha": "e4fd606eff21e0641352aec1f97b51051542a4b7",
+  "status": "LOCAL_PACKAGE_INTEGRITY_PASS_NOT_UAT_ACCEPTANCE",
+  "release": "HOLD",
+  "archive": {
+    "local_path": "<TOOL_ROOT>/uat-package-fd7efcfc6450/CoCalLab-UAT-candidate.zip",
+    "filename": "CoCalLab-UAT-candidate.zip",
+    "bytes": 9024245,
+    "sha256": "06d196296123eb07df6496179302e1bfba90a1335127ae459d38d0e94e590c74"
+  },
+  "manifest_sha256": "7d3c094c2853fa8ae51fa6b20d34723a68c2f6a30b4f4c13ad0cb4de85447a0f",
+  "source_archive_files": 413,
+  "payload_files": 189,
+  "verified_manifest_files": 191,
+  "source_archive_commit_comment": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "migrations": {
+    "tracked": 49,
+    "schema": 46,
+    "held_fixture": 3
+  },
+  "edge_static_count": 16,
+  "edge_compiled_source": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+  "edge_approved_for_future_deploy": 13,
+  "mock_functions_not_for_deploy": 3,
+  "frontend": {
+    "configured": false,
+    "synthetic_adapter": false,
+    "environment_files_read": false,
+    "note": "Blank service settings; rebuild only after approved target exists."
+  },
+  "build": "PASS; real Vite isolated blank configuration, not synthetic adapter",
+  "standalone_verify": "PASS; actual payload/archive bytes rehashed after build",
+  "source_tree_check": "Backend core/SQL/Edge/modules byte-identical to CTO-source-closed040; every Edge compiler dependency blob matched fd7",
+  "cloud_executed": false,
+  "target_project_ref": null,
+  "budget": {
+    "status": "OWNER_CONFIRMED",
+    "cumulative_usd": 20,
+    "retention_days": 14
+  },
+  "resource_execution_authorization": "WAITING_UAT_ENVIRONMENT_AUTHORIZATION",
+  "not_run": [
+    "Real UAT provisioning/deployment/JWT/Storage/Edge",
+    "Native chooser/download save",
+    "UPDATE and other unnamed concurrency",
+    "Current full DB+Storage backup/restore and historical NOT VALID validation",
+    "Representative-user acceptance"
+  ]
+}

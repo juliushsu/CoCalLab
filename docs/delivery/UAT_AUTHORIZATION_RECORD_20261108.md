@@ -30,4 +30,6 @@
 | 升級／復原 | 專用UAT的checkpoint與**另明確指定還原目標**、DB＋Storage備份／核對 | 備份含private ledgers/proofs；物件ID變化不能補簽；不對既有正式DB reset/restore |
 | 到期／費用控制 | 建立前確認console估價與實際計費方式，記T0/expiry與檢查人；Owner一併選停止計費方式與證據保留 | 未有明確核准不自行刪除；不把平台budget alert當hard cap；額外備份資源費用仍須納入20 |
 
+Supabase Dashboard登入帳戶不會自動成為CoCalLab產品測試會員；新ref中的Auth測試帳號與單位角色須按上述核准範圍配置，不能拿公開本機fixture密碼登入真服務。
+
 批准上述精確目標與操作後，先交建環境回執再開始四組驗收。實際ref／入口／PG／Edge版本目前UNKNOWN／NOT_CREATED，不預填PASS。Production、main合併與流量切換不在本次授權申請。

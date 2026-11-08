@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "checks": [
+    "Owner confirmed cumulativeUSD20/14days across active records",
+    "Execution authorization false/target null; no budget revocation claim",
+    "All21 real-service cases BLOCKED/NOT_RUN, no invented environment",
+    "All four delivery-doc relative links resolve"
+  ],
+  "authorization_file_sha256": "284c2d445b6e82e9ddb98512eb93ae902825864478fbbb46f840a4da6f978bed",
+  "case_manifest_sha256": "5bc2b5c19c33ef9fb930a494be3d104e1b9aa0fd340f82d2e1a4c7ee45f24a9e",
+  "review_reply_sha": "e4fd606eff21e0641352aec1f97b51051542a4b7",
+  "source": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d"
+}

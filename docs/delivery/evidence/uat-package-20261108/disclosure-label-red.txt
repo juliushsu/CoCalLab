@@ -1,0 +1,81 @@
+✔ historical snapshot without disclosure contract is explicit and never populated from current activities (1.2948ms)
+✔ excluded headline is not a real zero while an included calculated zero remains zero (0.2049ms)
+✖ HTML/JSON exports disclose saved ancestor corrections with escaping and preserve old snapshots without live backfill (2.741ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 152.8416
+
+✖ failing tests:
+
+test at frontend\readdy-app\tests\replacementDisclosure.test.ts:13:1
+✖ HTML/JSON exports disclose saved ancestor corrections with escaping and preserve old snapshots without live backfill (2.741ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /報告產生時的原收據驗證狀態/. Input:
+
+  '<!doctype html>\n' +
+    `<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"><title>CoCalLab 報告 v2</title><style>body{font:16px/1.6 system-ui,sans-serif;color:#17332e;max-width:960px;margin:40px auto;padding:0 24px}h1,h2{color:#086b60}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid #d5e3df;padding:10px;text-align:left;overflow-wrap:anywhere}th{background:#edf6f3}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f5;padding:16px;font-size:13px}.notice{padding:16px;border-left:4px solid #b67b17;background:#fff6df}@media print{body{margin:0;max-width:none}h2{break-after:avoid}tr{break-inside:avoid}}</style></head><body>\n` +
+    '<h1>CoCalLab 已保存報告快照</h1><p class="notice">此檔案為已保存資料的匯出，不代表完整章節、正式查驗、合規認證或申報核准。缺失或無效數值顯示「未知」；總量包含未分類排放。來源 payload_hash 僅供追溯，本次未重新驗證其雜湊。</p>\n' +
+    '<h2>來源與版本</h2><table><tr><th>報告 ID</th><td>00000000-0000-0000-0000-000000000001</td></tr><tr><th>報告版本</th><td>2</td></tr><tr><th>保存完整性標記（匯出時由伺服器另驗）</th><td>未知</td></tr><tr><th>測試資料標記</th><td>測試資料</td></tr><tr><th>保存的環境標記</th><td>synthetic-local-test</td></tr><tr><th>保存時間</th><td>2026-11-02T00:00:00Z</td></tr><tr><th>組織 ID</th><td>00000000-0000-0000-0000-000000000003</td></tr><tr><th>專案 ID</th><td>00000000-0000-0000-0000-000000000002</td></tr><tr><th>保存的專案名稱</th><td>SYNTHETIC TEST ONLY</td></tr><tr><th>報告期間</th><td>未知 ～ 未知</td></tr><tr><th>來源 payload_hash</th><td>synthetic-test-only-not-a-verified-hash</td></tr></table>\n' +
+    '<h2>排放摘要</h2><table><tr><th>總排放量（含未分類）</th><td>2250 kgCO₂e / 2.25 tCO₂e</td></tr><tr><th>Scope 1</th><td>1500 kgCO₂e / 1.5 tCO₂e</td></tr><tr><th>Scope 2</th><td>500 kgCO₂e / 0.5 tCO₂e</td></tr><tr><th>Scope 3</th><td>0 kgCO₂e / 0 tCO₂e</td></tr><tr><th>未分類排放</th><td>250 kgCO₂e / 0.25 tCO₂e</td></tr></table>\n' +
+    '<h2>分類排放</h2><table><tr><th>electricity</th><td>500 kgCO₂e / 0.5 tCO₂e</td></tr></table>\n' +
+    '<h2>活動與資料缺口</h2><table><tr><th>included_activity_count</th><td>2</td></tr><tr><th>excluded_activity_count</th><td>0</td></tr><tr><th>pending_activity_count</th><td>0</td></tr><tr><th>warning_count</th><td>0</td></tr></table><p>零排放不代表所有活動均完成計算或驗證。</p>\n' +
+    '<h2>保存的邊界資訊</h2><pre>null</pre>\n' +
+    '<h2>保存的人工更正／排除揭露</h2><p class="notice">人工更正／排除：原收據僅為歷史來源，不佐證更正後的數值；版本理由與原件驗證不代表更正值已查證。</p><h3>活動 new</h3><p>原收據驗證狀態：server_verified；原收據僅歷史來源，不佐證更正值。</p><table><tr><th>前版</th><td>old</td></tr><tr><th>後繼</th><td>new</td></tr><tr><th>模式</th><td>人工更正</td></tr><tr><th>理由</th><td>&lt;script&gt;SYNTHETIC correction&lt;/script&gt;</td></tr><tr><th>操作者</th><td>actor</td></tr><tr><th>時間</th><td>2026-11-08T00:00:00Z</td></tr></table><pre>{\n' +
+    '  &quot;quantity&quot;: {\n' +
+    '    &quot;before&quot;: 100,\n' +
+    '    &quot;after&quot;: 120\n' +
+    '  }\n' +
+    '}</pre>\n' +
+    '<h2>原始報告 Payload</h2><p>以下為保存當時的結構化內容，未新增或生成報告章節；數值保留來源欄位單位。</p><pre>{\n' +
+    '  &quot;project_metadata&quot;: {\n' +
+    '    &quot;name&quot;: &quot;SYNTHETIC TEST ONLY&quot;\n' +
+    '  },\n' +
+    '  &quot;note&quot;: &quot;Not a customer report&quot;,\n' +
+    '  &quot;replacement_disclosure_version&quot;: &quot;20261108.replacement.1&quot;,\n' +
+    '  &quot;correction_disclosures&quot;: [\n' +
+    '    {\n' +
+    '      &quot;emission_activity_id&quot;: &quot;new&quot;,\n' +
+    '      &quot;replacement_provenance&quot;: {\n' +
+    '        &quot;version&quot;: &quot;20261108.replacement.1&quot;,\n' +
+    '        &quot;source_usage&quot;: &quot;historical_reference_only&quot;,\n' +
+    '        &quot;receipt_verification_status&quot;: &quot;server_verified&quot;,\n' +
+    '        &quot;steps&quot;: [\n' +
+    '          {\n' +
+    '            &quot;predecessor_activity_id&quot;: &quot;old&quot;,\n' +
+    '            &quot;activity_id&quot;: &quot;new&quot;,\n' +
+    '            &quot;replacement_mode&quot;: &quot;correct&quot;,\n' +
+    '            &quot;reason&quot;: &quot;&lt;script&gt;SYNTHETIC correction&lt;/script&gt;&quot;,\n' +
+    '            &quot;actor_user_id&quot;: &quot;actor&quot;,\n' +
+    '            &quot;occurred_at&quot;: &quot;2026-11-08T00:00:00Z&quot;,\n' +
+    '            &quot;changes&quot;: {\n' +
+    '              &quot;quantity&quot;: {\n' +
+    '                &quot;before&quot;: 100,\n' +
+    '                &quot;after&quot;: 120\n' +
+    '              }\n' +
+    '            }\n' +
+    '          }\n' +
+    '        ]\n' +
+    '      }\n' +
+    '    }\n' +
+    '  ]\n' +
+    '}</pre>\n' +
+    '</body></html>'
+
+      at TestContext.<anonymous> (file:///C:/Users/User/OneDrive/%E6%96%87%E4%BB%B6/ChatGPT/CaCalLab/local-uat/CoCalLab-UAT-LOCAL-01/source/frontend/readdy-app/tests/replacementDisclosure.test.ts:19:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: `<!doctype html>\n<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"><title>CoCalLab 報告 v2</title><style>body{font:16px/1.6 system-ui,sans-serif;color:#17332e;max-width:960px;margin:40px auto;padding:0 24px}h1,h2{color:#086b60}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid #d5e3df;padding:10px;text-align:left;overflow-wrap:anywhere}th{background:#edf6f3}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f5;padding:16px;font-size:13px}.notice{padding:16px;border-left:4px solid #b67b17;background:#fff6df}@media print{body{margin:0;max-width:none}h2{break-after:avoid}tr{break-inside:avoid}}</style></head><body>\n<h1>CoCalLab 已保存報告快照</h1><p class="notice">此檔案為已保存資料的匯出，不代表完整章節、正式查驗、合規認證或申報核准。缺失或無效數值顯示「未知」；總量包含未分類排放。來源 payload_hash 僅供追溯，本次未重新驗證其雜湊。</p>\n<h2>來源與版本</h2><table><tr><th>報告 ID</th><td>00000000-0000-0000-0000-000000000001</td></tr><tr><th>報告版本</th><td>2</td></tr><tr><th>保存完整性標記（匯出時由伺服器另驗）</th><td>未知</td></tr><tr><th>測試資料標記</th><td>測試資料</td></tr><tr><th>保存的環境標記</th><td>synthetic-local-test</td></tr><tr><th>保存時間</th><td>2026-11-02T00:00:00Z</td></tr><tr><th>組織 ID</th><td>00000000-0000-0000-0000-000000000003</td></tr><tr><th>專案 ID</th><td>00000000-0000-0000-0000-000000000002</td></tr><tr><th>保存的專案名稱</th><td>SYNTHETIC TEST ONLY</td></tr><tr><th>報告期間</th><td>未知 ～ 未知</td></tr><tr><th>來源 payload_hash</th><td>synthetic-test-only-not-a-verified-hash</td></tr></table>\n<h2>排放摘要</h2><table><tr><th>總排放量（含未分類）</th><td>2250 kgCO₂e / 2.25 tCO₂e</td></tr><tr><th>Scope 1</th><td>1500 kgCO₂e / 1.5 tCO₂e</td></tr><tr><th>Scope 2</th><td>500 kgCO₂e / 0.5 tCO₂e</td></tr><tr><th>Scope 3</th><td>0 kgCO₂e / 0 tCO₂e</td></tr><tr><th>未分類排放</th><td>250 kgCO₂e / 0.25 tCO₂e</td></tr></table>\n<h2>分類排放</h2><table><tr><th>electricity</th><td>500 kgCO₂e / 0.5 tCO₂e</td></tr></table>\n<h2>活動與資料缺口</h2><table><tr><th>included_activity_count</th><td>2</td></tr><tr><th>excluded_activity_count</th><td>0</td></tr><tr><th>pending_activity_count</th><td>0</td></tr><tr><th>warning_count</th><td>0</td></tr></table><p>零排放不代表所有活動均完成計算或驗證。</p>\n<h2>保存的邊界資訊</h2><pre>null</pre>\n<h2>保存的人工更正／排除揭露</h2><p class="notice">人工更正／排除：原收據僅為歷史來源，不佐證更正後的數值；版本理由與原件驗證不代表更正值已查證。</p><h3>活動 new</h3><p>原收據驗證狀態：server_verified；原收據僅歷史來源，不佐證更正值。</p><table><tr><th>前版</th><td>old</td></tr><tr><th>後繼</th><td>new</td></tr><tr><th>模式</th><td>人工更正</td></tr><tr><th>理由</th><td>&lt;script&gt;SYNTHETIC correction&lt;/script&gt;</td></tr><tr><th>操作者</th><td>actor</td></tr><tr><th>時間</th><td>2026-11-08T00:00:00Z</td></tr></table><pre>{\n  &quot;quantity&quot;: {\n    &quot;before&quot;: 100,\n    &quot;after&quot;: 120\n  }\n}</pre>\n<h2>原始報告 Payload</h2><p>以下為保存當時的結構化內容，未新增或生成報告章節；數值保留來源欄位單位。</p><pre>{\n  &quot;project_metadata&quot;: {\n    &quot;name&quot;: &quot;SYNTHETIC TEST ONLY&quot;\n  },\n  &quot;note&quot;: &quot;Not a customer report&quot;,\n  &quot;replacement_disclosure_version&quot;: &quot;20261108.replacement.1&quot;,\n  &quot;correction_disclosures&quot;: [\n    {\n      &quot;emission_activity_id&quot;: &quot;new&quot;,\n      &quot;replacement_provenance&quot;: {\n        &quot;version&quot;: &quot;20261108.replacement.1&quot;,\n        &quot;source_usage&quot;: &quot;historical_reference_only&quot;,\n        &quot;receipt_verification_status&quot;: &quot;server_verified&quot;,\n        &quot;steps&quot;: [\n          {\n            &quot;predecessor_activity_id&quot;: &quot;old&quot;,\n            &quot;activity_id&quot;: &quot;new&quot;,\n            &quot;replacement_mode&quot;: &quot;correct&quot;,\n            &quot;reason&quot;: &quot;&lt;script&gt;SYNTHETIC correction&lt;/script&gt;&quot;,\n            &quot;actor_user_id&quot;: &quot;actor&quot;,\n            &quot;occurred_at&quot;: &quot;2026-11-08T00:00:00Z&quot;,\n            &quot;changes&quot;: {\n              &quot;quantity&quot;: {\n                &quot;before&quot;: 100,\n                &quot;after&quot;: 120\n              }\n            }\n          }\n        ]\n      }\n    }\n  ]\n}</pre>\n</body></html>`,
+    expected: /報告產生時的原收據驗證狀態/,
+    operator: 'match',
+    diff: 'simple'
+  }

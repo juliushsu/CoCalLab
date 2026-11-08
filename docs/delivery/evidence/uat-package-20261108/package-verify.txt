@@ -1,0 +1,1 @@
+{"status":"LOCAL_PACKAGE_INTEGRITY_PASS_NOT_UAT_ACCEPTANCE","source":"fd7efcfc6450dbf10f54aa97b65fe48e431b277d","files":191,"archiveSha256":"06d196296123eb07df6496179302e1bfba90a1335127ae459d38d0e94e590c74","folder":"C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\uat-package-fd7efcfc6450","cloudTouched":false}
