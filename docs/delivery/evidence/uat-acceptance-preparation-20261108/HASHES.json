@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "tooling_source_sha": "3bf945e2fef243472f9800de5708197c79fa3150",
+  "application_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "files": [
+    {
+      "path": "EXECUTION.json",
+      "bytes": 2357,
+      "sha256": "45313bb99e00bafd5bc99a0a3529437463cc0d16321b33be46f885c3ea590d6f"
+    },
+    {
+      "path": "backend-node-tests.txt",
+      "bytes": 4362,
+      "sha256": "2453d30870f7315e0fde962a52bba12bf7f46df1f1a2e8710a5a20933cf8198c"
+    },
+    {
+      "path": "candidate-manifest.json",
+      "bytes": 1846,
+      "sha256": "5436cf537837e83f7f7a2cd4dcedea3bf16f935aef0ed6841222429d990d342d"
+    },
+    {
+      "path": "fixture-tests.txt",
+      "bytes": 1391,
+      "sha256": "ee1684e6b136f38c306ff8c23fa25e634d1570e6747686905a5f5ab76d50313d"
+    },
+    {
+      "path": "image-decode.json",
+      "bytes": 349,
+      "sha256": "91fdc9f5c8f49cae68e02b73fb28b186c503fbfc09f4cc26579ea4ac27b8f460"
+    },
+    {
+      "path": "local-pg-capability.json",
+      "bytes": 326,
+      "sha256": "5873bd1f4df7177b407e9858f32d7e844508290908e97c1b92bb928114006afd"
+    }
+  ]
+}

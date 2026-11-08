@@ -1,0 +1,16 @@
+[
+  {
+    "file": "SYNTHETIC-100kWh.jpg",
+    "width": 900,
+    "height": 360,
+    "format_guid": "b96b3cae-0728-11d3-9d7b-0000f81ef32e",
+    "result": "DECODED"
+  },
+  {
+    "file": "SYNTHETIC-100kWh.png",
+    "width": 900,
+    "height": 360,
+    "format_guid": "b96b3caf-0728-11d3-9d7b-0000f81ef32e",
+    "result": "DECODED"
+  }
+]

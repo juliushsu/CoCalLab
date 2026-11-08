@@ -1,0 +1,54 @@
+{
+  "synthetic": true,
+  "purpose": "manual native chooser test only; never OCR or business evidence",
+  "files": [
+    {
+      "name": "SYNTHETIC-100kWh.pdf",
+      "bytes": 740,
+      "sha256": "0c6a8243d7377da2708a3847e4b1140117fb222d30a18b4ca914ee3ff9bf6d83",
+      "expected": "valid synthetic PDF; actual upload still requires approval"
+    },
+    {
+      "name": "SYNTHETIC-empty.pdf",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected": "reject; never create successful receipt"
+    },
+    {
+      "name": "SYNTHETIC-invalid.pdf",
+      "bytes": 43,
+      "sha256": "bcc619d616f16e348b05937fabb3b5dcfc71f8e943d297ba83ffdb713c762e78",
+      "expected": "reject; never create successful receipt"
+    },
+    {
+      "name": "SYNTHETIC-100kWh.png",
+      "bytes": 11973,
+      "sha256": "bd4dcbc73f2909563a026d1bb6ae2b434381096dfa9f3e0ea664ff57eea6eddd",
+      "expected": "valid synthetic PNG; actual upload still requires approval",
+      "mimeType": "image/png",
+      "width": 900,
+      "height": 360
+    },
+    {
+      "name": "SYNTHETIC-100kWh.jpg",
+      "bytes": 22151,
+      "sha256": "8422fc3435b5dde750f926314cb987295fcd8f136f2d5639a314d4893ec9ba41",
+      "expected": "valid synthetic JPEG; actual upload still requires approval",
+      "mimeType": "image/jpeg",
+      "width": 900,
+      "height": 360
+    },
+    {
+      "name": "SYNTHETIC-png-named-pdf.pdf",
+      "bytes": 11973,
+      "sha256": "bd4dcbc73f2909563a026d1bb6ae2b434381096dfa9f3e0ea664ff57eea6eddd",
+      "expected": "reject; never create successful receipt"
+    },
+    {
+      "name": "SYNTHETIC-oversize.pdf",
+      "bytes": 10485761,
+      "sha256": "9f41392ecb106baa8b40da864cd422799b4f4d34ddc52383146fac032da8698f",
+      "expected": "reject; never create successful receipt"
+    }
+  ]
+}
