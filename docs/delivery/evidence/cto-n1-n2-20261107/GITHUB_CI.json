@@ -1,0 +1,11 @@
+{
+  "commit": "23f49ada664d4d37290e5712cf068d2c55f8bd89",
+  "program": "33d3613487f42a7e9c5888ae312441e730d3d87e",
+  "id": 42383511177,
+  "name": "Verify source",
+  "status": "completed",
+  "conclusion": "success",
+  "runNumber": 49,
+  "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42383511177",
+  "verifiedAt": "2026-11-07T14:59:47.596Z"
+}

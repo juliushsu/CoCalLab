@@ -1,0 +1,5 @@
+Browser tab: 1290548162, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++				214 button 開啟已保存報告
+~				161 text 盤查期間： 2026-01-01  ～  2026-12-31 。數量與單位由人工輸入；係數不使用正式預設測試值。 建立新可信報告前，請先按「計算並保存」取得目前輸入的通用重算紀錄；人工轉錄確認的即時計算不能取代此步驟。舊報告保留原快照，不會因重新計算自動補簽。 報告快照已保存並重讀核對：60 kgCO₂e = 0.06 tCO₂e。
+The focused UI element is 1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4215/admin/activities?organization_id=ef525573-8253-4379-8721-54d821f3f9c1&projectId=25845d35-190c-401d-aae3-9bb990d10d3c

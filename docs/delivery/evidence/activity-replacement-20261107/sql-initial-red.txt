@@ -1,0 +1,46 @@
+✖ N3 correct replaces effective activity without changing retired predecessor calculation report or proof; 120kWh gives60kg not110kg (2207.5163ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2346.6934
+
+✖ failing tests:
+
+test at backend\tests\integration\activity-replacement-sql.test.js:19:1
+✖ N3 correct replaces effective activity without changing retired predecessor calculation report or proof; 120kWh gives60kg not110kg (2207.5163ms)
+  error: function replace_emission_activity(unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown) does not exist
+      at qe.An (C:\Users\User\OneDrive\文件\ChatGPT\CaCalLab\local-uat\CoCalLab-UAT-LOCAL-01\tooling\sql-runtime\node_modules\@electric-sql\pglite\dist\index.cjs:4:30959)
+      at qe.Fi (C:\Users\User\OneDrive\文件\ChatGPT\CaCalLab\local-uat\CoCalLab-UAT-LOCAL-01\tooling\sql-runtime\node_modules\@electric-sql\pglite\dist\index.cjs:4:28328)
+      at qe.parse (C:\Users\User\OneDrive\文件\ChatGPT\CaCalLab\local-uat\CoCalLab-UAT-LOCAL-01\tooling\sql-runtime\node_modules\@electric-sql\pglite\dist\index.cjs:4:26983)
+      at ae.ni (C:\Users\User\OneDrive\文件\ChatGPT\CaCalLab\local-uat\CoCalLab-UAT-LOCAL-01\tooling\sql-runtime\node_modules\@electric-sql\pglite\dist\index.cjs:15:1789)
+      at C:\Users\User\OneDrive\文件\ChatGPT\CaCalLab\local-uat\CoCalLab-UAT-LOCAL-01\tooling\sql-runtime\node_modules\@electric-sql\pglite\dist\index.cjs:15:1161
+      at wasm://wasm/022aac12:wasm-function[10953]:0x52a5d7
+      at wasm://wasm/022aac12:wasm-function[3598]:0x2159d1
+      at wasm://wasm/022aac12:wasm-function[3640]:0x21ce4a
+      at wasm://wasm/022aac12:wasm-function[3650]:0x21d07f
+      at wasm://wasm/022aac12:wasm-function[9935]:0x4d6fbb {
+    length: 299,
+    severity: 'ERROR',
+    code: '42883',
+    detail: undefined,
+    hint: 'No function matches the given name and argument types. You might need to add explicit type casts.',
+    position: '15',
+    internalPosition: undefined,
+    internalQuery: undefined,
+    where: undefined,
+    schema: undefined,
+    table: undefined,
+    column: undefined,
+    dataType: undefined,
+    constraint: undefined,
+    file: 'parse_func.c',
+    line: '636',
+    routine: 'ParseFuncOrColumn',
+    query: 'select * from replace_emission_activity($1,$2,$3,$4,$5,$6,$7,$8,$9)',
+    params: [ '13230ff6-e685-4534-92f0-bc0e2cc4a409', 'bf9d0622-3b36-472b-bbc1-8f7be1156fb6', '15393eaa-0511-4ac1-bf5e-093977479374', 'a0e6a07a-830e-4c65-83ab-aaae56481e1f', '9e55fb3c-ae3d-4a47-bf7a-421dad019c60', 'correct', 'SYNTHETIC correction', { activity_name: 'SYNTHETIC versioned electricity', activity_date: '2026-01-15', category: 'energy', subcategory: null, activity_type: 'electricity', quantity: 120, unit: 'kWh', data_quality: 'primary', inclusion_status: 'included', exclusion_reason: null, review_note: null, final_scope: 2, status: 'active' }, 'replace' ],
+    queryOptions: undefined
+  }

@@ -39,9 +39,10 @@ serveWithCors(async (request: Request) => {
     });
 
     if (error) {
-      return toErrorEnvelope(request, error, {
-        code: 'ANALYTICS_QUERY_FAILED',
-        httpStatus: 400,
+      const incomplete=error.message?.includes('ANALYTICS_CALCULATION_INCOMPLETE');
+      return toErrorEnvelope(request, incomplete?new Error('目前有效且納入的活動仍有未完成、缺係數或錯誤計算；請先重新計算並保存，未將缺件當成零或部分總量。'):error, {
+        code: incomplete?'ANALYTICS_CALCULATION_INCOMPLETE':'ANALYTICS_QUERY_FAILED',
+        httpStatus: incomplete?409:400,
         requestId,
       });
     }

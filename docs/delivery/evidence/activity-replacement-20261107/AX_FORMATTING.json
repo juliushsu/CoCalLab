@@ -1,0 +1,50 @@
+{
+  "normalization": "Only terminal spaces/tabs removed from published AX text; content unchanged. Raw text retained in dedicated local tooling. Image bytes are unmodified. AX may be incremental/no-change, not full DOM.",
+  "hashes": [
+    {
+      "file": "01-original-activity.txt",
+      "rawSHA256": "5286eb36b1b7bdff0c73c6bfa268b9249949c71c994d9fbb933013dd640a2c28",
+      "publishedSHA256": "e756a8f2fa44ac258ce6183f301b39acbc2fa895f37a4caf06ff03c0574712d2"
+    },
+    {
+      "file": "02-history-and-effective-version.txt",
+      "rawSHA256": "66f3413bc4c2bf859052993eeaa81a2edc9bfadef66a4f3a041184e744c8f05d",
+      "publishedSHA256": "c41593d28fdafa71fd7f73b7d21edc3b67407cb6f34e38abdba36bf18fb87e85"
+    },
+    {
+      "file": "03-report-requires-recalculation.txt",
+      "rawSHA256": "4c3a2a754ef3129b65006647fc5fb93ee37b8587d05d1a8f806238536f387aa1",
+      "publishedSHA256": "4c3a2a754ef3129b65006647fc5fb93ee37b8587d05d1a8f806238536f387aa1"
+    },
+    {
+      "file": "04-corrected-report-60kg.txt",
+      "rawSHA256": "4a0257eb75315770bd3c5a43142638591b7cee5bfd203db654d126e5a3e6772c",
+      "publishedSHA256": "4a0257eb75315770bd3c5a43142638591b7cee5bfd203db654d126e5a3e6772c"
+    },
+    {
+      "file": "05-saved-v2-report.txt",
+      "rawSHA256": "b8f5e6221a230041c08a7905efdcb6fa60fc8b7eaa9eaaac38dd601116b13177",
+      "publishedSHA256": "b8f5e6221a230041c08a7905efdcb6fa60fc8b7eaa9eaaac38dd601116b13177"
+    },
+    {
+      "file": "06-exclusion-retains-120kwh.txt",
+      "rawSHA256": "4bc0c9444510a9338bd1d630f44ab73a19860b57cf0fd883a67fb3558d29631a",
+      "publishedSHA256": "4bc0c9444510a9338bd1d630f44ab73a19860b57cf0fd883a67fb3558d29631a"
+    },
+    {
+      "file": "07-excluded-report-saved.txt",
+      "rawSHA256": "4e10d170e9767c345a0b1a5ecc1a719128fc689e9554e9ac138a14a3947fdce0",
+      "publishedSHA256": "4e10d170e9767c345a0b1a5ecc1a719128fc689e9554e9ac138a14a3947fdce0"
+    },
+    {
+      "file": "08-version-lineage-and-history.txt",
+      "rawSHA256": "b1320fa0914747ccd2948cb462cf7c5447f619a04e4f2b2b4825f15673a477bf",
+      "publishedSHA256": "b1320fa0914747ccd2948cb462cf7c5447f619a04e4f2b2b4825f15673a477bf"
+    },
+    {
+      "file": "09-original-v1-report-preserved.txt",
+      "rawSHA256": "a010ae3521b7fe07a08c144154f01b15eafdd10ca20a347bc7aba956682bfee0",
+      "publishedSHA256": "cd0a212beec77ad4a16473bc49b960100737f49e637516b869c04433506b6ae8"
+    }
+  ]
+}

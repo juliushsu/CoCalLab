@@ -1,0 +1,194 @@
+{
+  "synthetic": true,
+  "sourceCommit": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "sourceDirty": false,
+  "environment": "127.0.0.1:4214/4215 Node real handlers + PGlite + synthetic Auth/Storage; not real Supabase",
+  "scope": {
+    "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1",
+    "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c"
+  },
+  "originalRowsExactlyUnchanged": [
+    {
+      "table": "emission_activities",
+      "id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+      "sha256": "49db460b769ab022da09d0b250a92895f341be1ebaeb0ddabc163ef8ddf4f2f3"
+    },
+    {
+      "table": "calculation_results",
+      "id": "0d430235-b003-4959-8ff8-eaa0c9a2fa49",
+      "sha256": "26ac739804232fd1bfc4da1b31271352ec3637caab340260fa585d4d26cbbe15"
+    },
+    {
+      "table": "calculation_results",
+      "id": "5da8fcd2-a33c-4763-8171-3e9d5b5e37ca",
+      "sha256": "523381efd5e953d1bc1ee9ded88f7ada87f0c497fbb55af0cb5cb55b91a5b508"
+    },
+    {
+      "table": "report_generations",
+      "id": "202e02dd-64cb-4caf-bac5-f9c1cc7a7e05",
+      "sha256": "08d5fe1e765858f9106b639ae3ab0aa2aabdc81d95f8f38c1bf5b5fbac547ddc"
+    },
+    {
+      "table": "uploaded_documents",
+      "id": "6ff76402-af68-43b2-beec-650834b128fb",
+      "sha256": "127754bb820896bff113f131ff454f2173d949e4ae628260049a12c4064506ad"
+    },
+    {
+      "table": "extracted_document_drafts",
+      "id": "9335d576-8305-42ad-9d43-5f4e07969821",
+      "sha256": "21d47ac72cda1fcbdf32e2c7cc6b183f777397132fa61a242b1b36cfb3890bb6"
+    }
+  ],
+  "historyRows": 3,
+  "effectiveRows": 1,
+  "effectiveActivity": {
+    "id": "a0b221b4-98ab-4d22-bee0-1b4fc4805f09",
+    "quantity": 120,
+    "unit": "kWh",
+    "inclusion_status": "excluded",
+    "exclusion_reason": "SYNTHETIC 固定版驗收：此來源不納入本次邊界，保留原120kWh"
+  },
+  "reports": [
+    {
+      "id": "202e02dd-64cb-4caf-bac5-f9c1cc7a7e05",
+      "version": 1,
+      "kg": 50,
+      "included": 1,
+      "excluded": 0,
+      "mappings": [
+        {
+          "source_draft_id": "9335d576-8305-42ad-9d43-5f4e07969821",
+          "source_document_id": "6ff76402-af68-43b2-beec-650834b128fb",
+          "emission_activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+          "calculation_result_id": "0d430235-b003-4959-8ff8-eaa0c9a2fa49"
+        }
+      ]
+    },
+    {
+      "id": "90ab983e-33f8-4a3a-8524-2ba170b95f33",
+      "version": 2,
+      "kg": 60,
+      "included": 1,
+      "excluded": 0,
+      "mappings": [
+        {
+          "source_draft_id": "9335d576-8305-42ad-9d43-5f4e07969821",
+          "source_document_id": "6ff76402-af68-43b2-beec-650834b128fb",
+          "emission_activity_id": "62e057a3-7dcb-4022-ae76-8f751443c393",
+          "calculation_result_id": "9f955a3d-7944-4be6-816f-05665e6bb938"
+        }
+      ]
+    },
+    {
+      "id": "10cedc2e-403e-439b-8559-a46564efd153",
+      "version": 3,
+      "kg": 0,
+      "included": 0,
+      "excluded": 1,
+      "mappings": [
+        {
+          "source_draft_id": "9335d576-8305-42ad-9d43-5f4e07969821",
+          "source_document_id": "6ff76402-af68-43b2-beec-650834b128fb",
+          "emission_activity_id": "a0b221b4-98ab-4d22-bee0-1b4fc4805f09",
+          "calculation_result_id": "7c2befc0-8519-4429-9983-f8c3cf9c4a76"
+        }
+      ]
+    }
+  ],
+  "lineage": {
+    "versions": [
+      {
+        "mode": "original",
+        "reason": null,
+        "created_at": "2026-11-07T15:12:08.863+00:00",
+        "activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+        "is_effective": false,
+        "actor_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "version_index": 1,
+        "successor_activity_id": "62e057a3-7dcb-4022-ae76-8f751443c393",
+        "predecessor_activity_id": null
+      },
+      {
+        "mode": "correct",
+        "reason": "SYNTHETIC 固定版驗收：人工核對原件，將用量更正為120kWh",
+        "created_at": "2026-11-07T15:14:43.647+00:00",
+        "activity_id": "62e057a3-7dcb-4022-ae76-8f751443c393",
+        "is_effective": false,
+        "actor_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "version_index": 2,
+        "successor_activity_id": "a0b221b4-98ab-4d22-bee0-1b4fc4805f09",
+        "predecessor_activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335"
+      },
+      {
+        "mode": "exclude",
+        "reason": "SYNTHETIC 固定版驗收：此來源不納入本次邊界，保留原120kWh",
+        "created_at": "2026-11-07T15:17:15.378+00:00",
+        "activity_id": "a0b221b4-98ab-4d22-bee0-1b4fc4805f09",
+        "is_effective": true,
+        "actor_user_id": "c8b00c34-b80c-450d-aee9-bfe5d1ba1aa7",
+        "version_index": 3,
+        "successor_activity_id": null,
+        "predecessor_activity_id": "62e057a3-7dcb-4022-ae76-8f751443c393"
+      }
+    ],
+    "project_id": "25845d35-190c-401d-aae3-9bb990d10d3c",
+    "activity_id": "b80a9ee1-154c-4df7-b68e-91783efc4335",
+    "organization_id": "ef525573-8253-4379-8721-54d821f3f9c1"
+  },
+  "guiSteps": [
+    "manual review/confirmation and initial50kg report seeded through actual local handlers",
+    "Chrome correct100→120 with reason/name; rawhistory2/effective1",
+    "unrecalculated report409 CALCULATION_AUTHORITY_STALE; explicitly abandoned only local report reference",
+    "Chrome generic recalc1calculated; saved/reloaded60kg=0.06t v2",
+    "Chrome exclude: original120kWh disabled/read-only, reason saved into new successor",
+    "Chrome recalc0calculated/1excluded then savedv3; rawhistory3/effective1",
+    "Chrome original detail retains100kWh and historical50kg, chainv1/v2/v3 with actors/reasons",
+    "Chrome opened preserved originalv1 report after correction/exclusion; still0.05t/50kg"
+  ],
+  "notRun": [
+    "Independent SQL connection contention/40P01",
+    "Real Supabase JWT/PostgREST/Storage/managedEdge/ESZIP",
+    "Native file chooser/download to OS",
+    "Cloud migration/NOT VALID/backup and restore",
+    "React foreground refresh lifecycle/19+1 representative acceptance"
+  ],
+  "checkedAt": "2026-11-07T15:19:40.690Z",
+  "screenshots": [
+    {
+      "file": "01-original-activity.jpg",
+      "sha256": "5d8aed36c771ee2abf2af755c625d32eb90fd588ead449bb18213f68d979a4a1"
+    },
+    {
+      "file": "02-history-and-effective-version.jpg",
+      "sha256": "e3e5a780bb63ab865f9ba5ee25c09ee0fb473fa8e8c9d469df5a7a83d983989a"
+    },
+    {
+      "file": "03-report-requires-recalculation.jpg",
+      "sha256": "20847ac8b646f141bf79e00f41b3fe061fe267e5fc2d92d11967d88a3706a9dd"
+    },
+    {
+      "file": "04-corrected-report-60kg.jpg",
+      "sha256": "537cba4fb23e27ca64145921cf5d3f398081eadc6d7b362788b95baaa5e04c74"
+    },
+    {
+      "file": "05-saved-v2-report.jpg",
+      "sha256": "1c9dc5a5796c537d673064aeaaeef569873cb90894a25c6e032805bfd7378bbe"
+    },
+    {
+      "file": "06-exclusion-retains-120kwh.jpg",
+      "sha256": "60c455ddb5a2f8f7ef103b3ed42edbcde27e6bd6f643d63d7f7bc18de187fb72"
+    },
+    {
+      "file": "07-excluded-report-saved.jpg",
+      "sha256": "93bf1cd1e6775fa6a79468085c0511fb1ab24a45e9bb54c97b5431fa4273663c"
+    },
+    {
+      "file": "08-version-lineage-and-history.jpg",
+      "sha256": "4e885102f4effc0539fb403634db11d4705d05cd225aea2bca3d1574730e2b47"
+    },
+    {
+      "file": "09-original-v1-report-preserved.jpg",
+      "sha256": "a4c4cfce469e6b77562d93614d1a6179d8c9d7d555993bee4b3989598d890c9e"
+    }
+  ]
+}
