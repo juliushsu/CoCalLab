@@ -1,9 +1,12 @@
 // Opt-in native PostgreSQL SQL evidence. Never imported by default unit tests.
 import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import {createRequire} from 'node:module';import {execFileSync} from 'node:child_process';import {fileURLToPath,pathToFileURL} from 'node:url';import assert from 'node:assert/strict';
 import {runBoundaries} from './boundaries.mjs';
+import {runDraftTriggerRace} from './draft-trigger-race.mjs';
 import os from 'node:os';
 const SOURCE='ed6ca9bbfbc5581cdcacf2969340575217fcb8c4';
 const CANDIDATE='da5a0990c8ec82d2b55064dd7e009b771409fa73';
+const DRAFT_FIXED='99c233de70f02b8d3aca5b5e7262526d5bf5312d';
+const DRAFT_SCHEMA_COUNT=46;
 const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
 const tooling=path.resolve(repo,'../tooling/native-pg17-20261108');
 const OMIT=new Set(['202603160008_v1_frontend_fixture_seed.sql','202603180007_v1_staging_fixture_alignment.sql','202604070005_v1_adjustment_fixture_seed.sql']);
@@ -18,10 +21,12 @@ export function targetGuard(launch,root){
  assert.equal(norm(fs.realpathSync(launch.dataPath)),norm(path.join(fs.realpathSync(root),'data')));
 }
 export async function main(args=process.argv.slice(2)){
- if(!args.length){console.log('Usage: node backend/tools/native-pg-concurrency/run.mjs --probe | --run | --candidate '+CANDIDATE+'\nNo flag: no credential read, connection or database creation. Fixed local 127.0.0.1:55439 only.');return;}
- const candidate=args.length===2&&args[0]==='--candidate'&&args[1]===CANDIDATE;
- assert.ok(candidate||(args.length===1&&['--probe','--run'].includes(args[0])),'Only explicit --probe, --run or the approved fixed --candidate SHA is accepted');
- const source=candidate?CANDIDATE:SOURCE;
+ if(!args.length){console.log('Usage: node backend/tools/native-pg-concurrency/run.mjs --probe | --run | --candidate '+CANDIDATE+' | --draft-r1-baseline | --draft-r1-fixed '+DRAFT_FIXED+'\nNo flag: no credential read, connection or database creation. Fixed local 127.0.0.1:55439 only.');return;}
+ const draftBaseline=args.length===1&&args[0]==='--draft-r1-baseline';
+ const draftFixed=Boolean(DRAFT_FIXED)&&args.length===2&&args[0]==='--draft-r1-fixed'&&args[1]===DRAFT_FIXED;
+ const candidate=(args.length===2&&args[0]==='--candidate'&&args[1]===CANDIDATE)||draftBaseline||draftFixed;
+ assert.ok(candidate||(args.length===1&&['--probe','--run'].includes(args[0])),'Only explicit approved native-test modes and pinned source SHAs are accepted');
+ const source=draftFixed?DRAFT_FIXED:candidate?CANDIDATE:SOURCE;
  const meta=JSON.parse(fs.readFileSync(path.join(tooling,'ascii-runtime.json'),'utf8')),root=fs.realpathSync(meta.asciiRuntimeRoot),launch=JSON.parse(fs.readFileSync(path.join(root,'launch.json'),'utf8'));targetGuard(launch,root);
  const require=createRequire(path.join(tooling,'driver/package.json'));assert.equal(require('pg/package.json').version,'8.16.3');const {Client}=require('pg');secret=fs.readFileSync(launch.credentialPath,'utf8').trim();assert.ok(secret.length>=12,'Dedicated credential is empty/invalid');
  const config={host:'127.0.0.1',port:55439,user:'cocal_uat_admin',password:secret,ssl:false,connectionTimeoutMillis:5000,query_timeout:20000,options:'-c statement_timeout=15000 -c lock_timeout=8000'};
@@ -33,7 +38,7 @@ export async function main(args=process.argv.slice(2)){
   if(args[0]==='--probe'){console.log(JSON.stringify({status:'LIVE_GUARDED',source,server,driver:'8.16.3',cloudTouched:false,existing5432Touched:false}));return;}
   const runName=new Date().toISOString().replaceAll(/[^0-9]/g,'')+'-'+id().slice(0,8),database='cocal_sql_race_'+runName.replaceAll('-','_');assert.match(database,/^cocal_sql_race_[0-9]{17}_[0-9a-f]{8}$/);
   out=path.join(tooling,'runs',runName);fs.mkdirSync(out,{recursive:true});
-  report={schemaVersion:1,source,mode:candidate?'approved_lock_order_candidate':'vulnerable_baseline',status:'RUNNING',started:new Date().toISOString(),database,server,driver:'8.16.3',synthetic:true,cloudTouched:false,existing5432Touched:false,storage:'synthetic SQL catalog only; no Storage HTTP/bytes',auth:'SET LOCAL ROLE + synthetic auth.uid; no JWT',migrations:[],omitted:[...OMIT],connections:[],commands:[],cases:[],notRun:['Managed Supabase/PostgREST/JWT/Storage/Edge','Native file chooser/save','Cloud migration/backup/restore','Other lock combinations beyond named cases']};
+  report={schemaVersion:1,source,mode:draftBaseline?'draft_trigger_vulnerable_baseline':draftFixed?'draft_trigger_fixed_candidate':candidate?'approved_lock_order_candidate':'vulnerable_baseline',status:'RUNNING',started:new Date().toISOString(),database,server,driver:'8.16.3',synthetic:true,cloudTouched:false,existing5432Touched:false,storage:'synthetic SQL catalog only; no Storage HTTP/bytes',auth:'SET LOCAL ROLE + synthetic auth.uid; no JWT',migrations:[],omitted:[...OMIT],connections:[],commands:[],cases:[],notRun:['Managed Supabase/PostgREST/JWT/Storage/Edge','Native file chooser/save','Cloud migration/backup/restore','Other lock combinations beyond named cases']};
   const save=()=>fs.writeFileSync(path.join(out,'result.json'),JSON.stringify(report,null,2)+'\n');save();
   await admin.query('CREATE DATABASE "'+database+'" TEMPLATE template0 ENCODING \'UTF8\'');
   const a=await connect(database,'A'),b=await connect(database,'B'),observer=await connect(database,'observer');
@@ -44,13 +49,13 @@ export async function main(args=process.argv.slice(2)){
   const begin=async(q,role='service_role',user)=>{await q('begin');await q('set local role '+role);if(user)await q("select set_config('request.jwt.claim.sub',$1,true)",[user]);};
   const finish=async(q,ok=true)=>q(ok?'commit':'rollback');
   const as=async(q,role,user,fn)=>{await begin(q,role,user);try{const r=await fn();await finish(q);return r;}catch(e){await finish(q,false);throw e;}};
-  const waitLock=async(waiter,blocker,label)=>{const deadline=Date.now()+5000;while(Date.now()<deadline){const row=(await qO('select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1',[waiter])).rows[0];if(row?.wait_event_type==='Lock'&&row.blockers.includes(blocker)){const proof={label,observed:new Date().toISOString(),...row};report.lockObservations??=[];report.lockObservations.push(proof);save();return proof;}await pause(40);}throw Error('LOCK_OBSERVATION_TIMEOUT: '+label);};
+  const waitLock=async(waiter,blocker,label)=>{const deadline=Date.now()+5000;while(Date.now()<deadline){await qO('select pg_stat_clear_snapshot()');const row=(await qO('select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1',[waiter])).rows[0];if(row?.wait_event_type==='Lock'&&row.blockers.includes(blocker)){assert.equal(row.state,'active','Waiting actor statistics must be fresh');const proof={label,observed:new Date().toISOString(),...row};report.lockObservations??=[];report.lockObservations.push(proof);save();return proof;}await pause(40);}throw Error('LOCK_OBSERVATION_TIMEOUT: '+label);};
   // Roles are cluster-wide, while advisory locks are database-scoped. Every
   // run therefore coordinates this bootstrap on the same verified postgres DB.
   await qG('begin');try{await qG('select pg_advisory_xact_lock(20261108,55439)');const roles={authenticated:false,anon:false,service_role:true};for(const [role,bypass]of Object.entries(roles)){const r=(await qG('select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1',[role])).rows[0];if(r){assert.equal(r.rolcanlogin,false);assert.equal(r.rolsuper,false);assert.equal(r.rolbypassrls,bypass);}else await qG('create role '+role+' nologin nosuperuser '+(bypass?'bypassrls':'nobypassrls'));}await qG('commit');}catch(e){await qG('rollback');throw e;}
   await qO("create schema auth;create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;create schema storage;create table storage.buckets(id text primary key,name text not null,public boolean not null default false);create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text not null references storage.buckets(id),name text not null,owner uuid,owner_id text,metadata jsonb,unique(bucket_id,name));alter table storage.objects enable row level security;create function storage.foldername(name text) returns text[] language sql immutable as $$select (string_to_array(name,'/'))[1:array_length(string_to_array(name,'/'),1)-1]$$;grant usage on schema auth,public,storage to authenticated,anon,service_role;");
   const git=args=>execFileSync('git',args,{cwd:repo,encoding:null,maxBuffer:16*1024*1024});assert.equal(git(['cat-file','-t',source]).toString().trim(),'commit');
-  for(const name of git(['ls-tree','-r','--name-only',source,'--','backend/supabase/migrations']).toString().trim().split('\n').filter(x=>x.endsWith('.sql')).sort()){const file=path.basename(name);if(OMIT.has(file))continue;const body=git(['show',source+':'+name]);await qO(body.toString());report.migrations.push({file,sha256:hash(body)});save();}assert.equal(report.migrations.length,candidate?44:43);
+  for(const name of git(['ls-tree','-r','--name-only',source,'--','backend/supabase/migrations']).toString().trim().split('\n').filter(x=>x.endsWith('.sql')).sort()){const file=path.basename(name);if(OMIT.has(file))continue;const body=git(['show',source+':'+name]);await qO(body.toString());report.migrations.push({file,sha256:hash(body)});save();}assert.equal(report.migrations.length,draftFixed?DRAFT_SCHEMA_COUNT:candidate?44:43);
   await qO('grant select,insert,update,delete on all tables in schema public,storage to authenticated,anon,service_role;revoke all on report_snapshot_requests_v2 from authenticated,anon');
   const fixed=path.join(out,'fixed-source');for(const name of git(['ls-tree','-r','--name-only',source,'--','backend/src','backend/package.json']).toString().trim().split('\n').filter(x=>x.endsWith('.js')||x.endsWith('package.json'))){const target=path.join(fixed,name);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,git(['show',source+':'+name]));}
   const {recalculate_project}=await import(pathToFileURL(path.join(fixed,'backend/src/services/recalculate-project.js')).href);
@@ -58,6 +63,10 @@ export async function main(args=process.argv.slice(2)){
   const prepare=async(s,request)=>as(qA,'service_role',s.user,async()=>((await qA("select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','prepare')",[s.org,s.project,s.user,request])).rows[0].result));
   const commitArgs=(s,request,prepared)=>[s.org,s.project,s.user,request,true,'v1.0.0',prepared.input_snapshot,JSON.stringify(recalculate_project({organization_id:s.org,project_id:s.project,activities:prepared.input_snapshot.activities,factors:prepared.input_snapshot.factors}).calculation_results)];
   const commitSql='select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)';
+  if(draftBaseline||draftFixed){
+   await runDraftTriggerRace({qA,qB,qO,begin,finish,as,waitLock,pidA,pidB,pidO:verified[2].pid,fixture,report,save,pause},{fixed:draftFixed});
+   report.status=report.findings?.length?'NATIVE_EVIDENCE_WITH_OPEN_FINDING':'NAMED_NATIVE_CASES_PASS';report.finished=new Date().toISOString();save();console.log(JSON.stringify({status:report.status,source,database,connections:report.connections,cases:report.cases,locks:report.lockObservations.length,evidence:path.relative(repo,out)}));return;
+  }
   const s=await fixture(),request=id(),prepared=await prepare(s,request),argsCommit=commitArgs(s,request,prepared);
   await begin(qA,'service_role',s.user);const first=(await qA(commitSql,argsCommit)).rows[0].result;
   await begin(qB,'service_role',s.user);const pending=qB(commitSql,argsCommit).then(r=>({result:r.rows[0].result}),e=>({error:e}));await waitLock(pidB,pidA,'same_request_commit_B_waits_for_A_rpc_locks');await finish(qA);const second=await pending;if(second.error){await finish(qB,false);throw second.error;}await finish(qB);
