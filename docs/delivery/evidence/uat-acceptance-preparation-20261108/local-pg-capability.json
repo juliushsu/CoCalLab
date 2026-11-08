@@ -1,0 +1,11 @@
+{
+  "check": "READONLY_METADATA_ONLY",
+  "path_commands": [],
+  "legacy_postgres_file_version": "9.5.4",
+  "server_started": false,
+  "port5432_connected": false,
+  "docker_wsl_retried": false,
+  "real_two_connection_test": "NOT_RUN",
+  "candidate_config_pg_major": 17,
+  "candidate_actual_pg_version": "UNKNOWN"
+}

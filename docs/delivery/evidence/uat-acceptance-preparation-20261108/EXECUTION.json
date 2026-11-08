@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "scope": "local synthetic fixture tooling only",
+  "base_document_sha": "a04a562ba869a2d079c3bcec1f9d45643f2b8055",
+  "application_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "targeted": {
+    "command": "node --test backend/tests/manual-uat-fixtures.test.js backend/tests/file-verification.test.js",
+    "pass": 13,
+    "fail": 0,
+    "evidence": "fixture-tests.txt"
+  },
+  "backend": {
+    "command": "node --test <all sorted backend/tests/*.test.js>",
+    "pass": 42,
+    "fail": 0,
+    "evidence": "backend-node-tests.txt"
+  },
+  "initial_command": {
+    "command": "npm --prefix backend test",
+    "result": "NOT_EXECUTED_COMMAND_NOT_FOUND_ON_PATH",
+    "raw_log_available": false,
+    "note": "PowerShell command resolution failed before invoking npm; fallback executes the package test file set via available Node. No installation or PATH change."
+  },
+  "independent_review": {
+    "agent": "review_upload_n",
+    "pass": 7,
+    "fail": 0,
+    "command": "node --test backend/tests/manual-uat-fixtures.test.js",
+    "overlaps_backend": true,
+    "legacy_and_candidate_manifest_byte_comparison": "PASS",
+    "invalid_cli_output_argument": "REJECTED_EXIT_1",
+    "open_proven_findings": [],
+    "not_run": [
+      "Linux/CI at local review time",
+      "symlink/concurrent filesystem race",
+      "native chooser",
+      "real upload/receipt/E2E"
+    ]
+  },
+  "generation": {
+    "candidate_files": 7,
+    "legacy_files": 3,
+    "legacy_cli_runs": 1,
+    "readback_and_rerun": "PASS",
+    "output_outside_git": true,
+    "cloud_calls": false,
+    "recorded_candidate_cli_runs": 2
+  },
+  "image_qa": {
+    "decoded_by": "Windows System.Drawing.Image.FromFile",
+    "visual_inspection": "Both images show SYNTHETIC UAT ONLY, 100 kWh, January 2026 and non-business disclaimer; legible, no clipping",
+    "evidence": "image-decode.json"
+  },
+  "counting": "13 and independent 7 are subsets of backend42; never sum",
+  "not_run": [
+    "frontend type/lint/build this fixture-only batch",
+    "SQL and native Deno this fixture-only batch",
+    "real JWT/Storage/managed Edge",
+    "two independent PostgreSQL connections",
+    "native chooser/save",
+    "cloud migration/restore",
+    "19+1 acceptance"
+  ],
+  "release": "HOLD",
+  "tooling_source_sha": "3bf945e2fef243472f9800de5708197c79fa3150"
+}

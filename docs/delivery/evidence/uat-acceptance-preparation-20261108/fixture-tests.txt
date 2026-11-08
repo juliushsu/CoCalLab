@@ -1,0 +1,21 @@
+✔ portable verifier hashes actual bounded bytes/Blob/stream without a caller hash authority (8.9636ms)
+✔ portable verifier supports canonical PDF/PNG/JPEG signatures and rejects misleading MIME/signature/size (1.909ms)
+✔ portable verifier enforces actual stream maximum even with missing or false Content-Length (0.9637ms)
+✔ portable verifier interruption/timeout fail explicitly, and another attempt can retry original bytes (20.2353ms)
+✔ non-cooperative adapter late body is cancelled after timeout instead of being read/hash-processed (62.1355ms)
+✔ verification service rejects malformed extension substrings before any storage or RPC call (0.7829ms)
+✔ legacy fixture PDF and manifest preserve existing bytes and expectations (1.4697ms)
+✔ candidate PDF, PNG and JPEG are verified from their actual bytes (4.5013ms)
+✔ negative chooser files are refused by actual size/signature checks (1.1911ms)
+✔ materialization reads back unchanged bytes and can safely resume (73.3686ms)
+✔ existing different fixture is preserved before any other files are added (3.3931ms)
+✔ existing different manifest is preserved before any fixture is written (2.324ms)
+✔ CLI only accepts its fixed destinations, never a supplied output path (0.3396ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 198.0301
