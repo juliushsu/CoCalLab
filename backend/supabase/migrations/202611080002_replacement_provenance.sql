@@ -149,10 +149,15 @@ begin
  -- backfill, re-sign or silently enrich an already saved report.
  if not exists(select 1 from cocal_report_private.snapshots s where s.organization_id=p_organization_id and s.project_id=p_project_id and s.request_id=p_request_id) then
   inputs:=cocal_recalc_private.trusted_inputs(p_organization_id,p_project_id);
+  -- Preserve the existing source-mapping error contract before checking the
+  -- disclosures attached to those IDs. Sorted arrays retain duplicates/omissions.
+  if jsonb_typeof(p_payload->'appendix_mappings') is distinct from 'array' then raise exception 'REPORT_SOURCE_MAPPING_MISMATCH';end if;
+  select coalesce(jsonb_agg(a->'id' order by a->>'id'),'[]') into expected from jsonb_array_elements(inputs->'activities') a;
+  select coalesce(jsonb_agg(x->'emission_activity_id' order by x->>'emission_activity_id'),'[]') into actual from jsonb_array_elements(p_payload->'appendix_mappings') x;
+  if actual is distinct from expected then raise exception 'REPORT_SOURCE_MAPPING_MISMATCH';end if;
   select coalesce(jsonb_agg(jsonb_build_object('emission_activity_id',a->'id','replacement_provenance',a->'replacement_provenance') order by a->>'id'),'[]') into disclosures
    from jsonb_array_elements(inputs->'activities') a where a->'replacement_provenance' is distinct from 'null'::jsonb;
   if(version is not null and version<>'20261108.replacement.1') or(disclosures<>'[]'::jsonb and version is distinct from '20261108.replacement.1') then raise exception 'REPORT_REPLACEMENT_DISCLOSURE_VERSION_REQUIRED';end if;
-  if jsonb_typeof(p_payload->'appendix_mappings') is distinct from 'array' then raise exception 'REPORT_SOURCE_MAPPING_MISMATCH';end if;
   select coalesce(jsonb_agg(jsonb_build_object('emission_activity_id',a->'id','replacement_provenance',a->'replacement_provenance') order by a->>'id'),'[]') into expected from jsonb_array_elements(inputs->'activities') a;
   select coalesce(jsonb_agg(jsonb_build_object('emission_activity_id',x->'emission_activity_id','replacement_provenance',coalesce(x->'replacement_provenance','null'::jsonb)) order by x->>'emission_activity_id'),'[]') into actual from jsonb_array_elements(p_payload->'appendix_mappings') x;
   if actual is distinct from expected then raise exception 'REPORT_REPLACEMENT_PROVENANCE_MISMATCH';end if;
