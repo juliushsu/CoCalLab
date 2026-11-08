@@ -5,7 +5,7 @@ import {runDraftTriggerRace} from './draft-trigger-race.mjs';
 import os from 'node:os';
 const SOURCE='ed6ca9bbfbc5581cdcacf2969340575217fcb8c4';
 const CANDIDATE='da5a0990c8ec82d2b55064dd7e009b771409fa73';
-const DRAFT_FIXED='99c233de70f02b8d3aca5b5e7262526d5bf5312d';
+const DRAFT_FIXED='040509777bb1cb60589a01ce7ec176a4ec54cee7';
 const DRAFT_SCHEMA_COUNT=46;
 const repo=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
 const tooling=path.resolve(repo,'../tooling/native-pg17-20261108');
