@@ -1,5 +1,7 @@
 # Claude 定向複審入口：F1／F2／N4-R1
 
+> 此輪回覆 e4fd606 已收件並經CTO裁定，入口保留為歷史，不需再次轉交／重審。來源結案與剩餘UAT見 SOURCE_CLOSURE_20261108.md；僅等待具體環境操作授權。
+
 只讀 [PR35](https://github.com/juliushsu/CoCalLab/pull/35)，固定產品 **`040509777bb1cb60589a01ce7ec176a4ec54cee7`**；工具固定 `08162ca307f9336b635b77e7682de750e814a5f0`，後續只有交付文件。請勿改用移動 branch HEAD，不修改程式／帳戶／雲端。發布 HOLD。本入口由 Owner 轉交，Codex 未代送 Claude 或發 PR 留言。
 
 先讀 [CTO 本輪裁定及交付](REPLACEMENT_PROVENANCE_FIX_DELIVERY_20261108.md)。保留的歷史回覆：[N1／N3](CLAUDE_N1_N3_REVIEW_REPLY_20261108.md) 固定 b5772f4、[N4](CLAUDE_N4_LOCK_ORDER_REVIEW_REPLY_20261108.md) 固定4b00925。N1／N2／N5 沿 CTO 來源關閉；N4 只關已驗具名排程。不要重新展開 H0、舊授權裁定或整案安全稽核。
