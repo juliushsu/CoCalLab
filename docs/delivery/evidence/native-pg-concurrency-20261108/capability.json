@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "server": {
+    "version": "PostgreSQL 17.11 on x86_64-windows, compiled by msvc-19.44.35229, 64-bit",
+    "port": "55439",
+    "listen": "127.0.0.1",
+    "encoding": "UTF8"
+  },
+  "connections": [
+    {
+      "pid": 100116,
+      "label": "connection-A"
+    },
+    {
+      "pid": 68756,
+      "label": "connection-B"
+    }
+  ],
+  "database": "cocal_concurrency_20261108",
+  "scope": "new dedicated local synthetic SQL only; no managed Supabase",
+  "credentials": "restricted local password.txt, never output",
+  "sql_race_acceptance": "NOT_RUN",
+  "existing5432Touched": false,
+  "cloudTouched": false
+}

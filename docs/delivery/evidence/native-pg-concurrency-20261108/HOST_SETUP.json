@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "first_initdb": {
+    "result": "FAIL",
+    "data_path_class": "CJK workspace path",
+    "error": "FATAL: invalid byte sequence for encoding UTF8: 0xa4",
+    "cluster_created": false,
+    "automatic_initdb_failure_cleanup": true,
+    "log": "restricted workspace tooling/native-pg17-20261108/private-local-test/initdb.txt"
+  },
+  "second_initdb": {
+    "result": "PASS",
+    "runtime_path_class": "fresh ASCII-only OS temp directory, current-user-only ACL",
+    "server_encoding": "UTF8",
+    "postgres_version": "17.11",
+    "password_storage": "restricted untracked password.txt; content never output",
+    "system_install": false,
+    "windows_service": false,
+    "global_path_change": false
+  },
+  "two_distinct_backend_pids": "basic connection capability only; lock-race tests not yet executed",
+  "cloud_resources": false,
+  "existing_port_5432_touched": false
+}

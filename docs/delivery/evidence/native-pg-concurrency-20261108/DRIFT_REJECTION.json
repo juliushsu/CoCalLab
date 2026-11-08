@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "scope": "dedicated native local schema-only DB",
+  "fault": "transaction-local owner alteration of document_deletion_request search_path; not production",
+  "entry_ready_before": true,
+  "ready_while_drifted": false,
+  "migration_rejected": {
+    "code": "P0001",
+    "message": "Existing deletion source drift; do not rebaseline unknown source"
+  },
+  "rollback_restored_whole_catalog": true,
+  "ready_after_rollback": true,
+  "unrelated_fingerprints_rebaselined": false
+}

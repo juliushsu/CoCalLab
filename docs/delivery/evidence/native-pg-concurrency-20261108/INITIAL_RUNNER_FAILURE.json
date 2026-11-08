@@ -1,0 +1,15 @@
+{
+  "run": "20261108054714828-103b6cde",
+  "status": "BLOCKED_OR_FAILED",
+  "error": {
+    "code": "22P02",
+    "message": "invalid input syntax for type json"
+  },
+  "cases": [],
+  "source": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "database": "cocal_sql_race_20261108054714828_103b6cde",
+  "raw_bytes": 414018,
+  "raw_sha256": "15ddb5aa1a34dfef63357fed03dc4303273a815d03d9a1b766206dc5825b4931",
+  "classification": "test-runner SQL parameter serialization defect; pg encodes JS arrays as PostgreSQL arrays; explicit JSON.stringify fixes jsonb wire type. No product SQL changed, no reset/drop.",
+  "raw_location": "workspace tooling/native-pg17-20261108/runs/20261108054714828-103b6cde/result.json"
+}

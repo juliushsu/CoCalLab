@@ -1,5 +1,7 @@
 # 固定候選部署前置 — 本機準備，非部署授權
 
+> New native SQL lock-order candidate (2026-11-08): [da5 delivery and real-PG evidence](../docs/delivery/NATIVE_POSTGRES_CONCURRENCY_20261108.md), [47-source manifest](uat/candidates/da5a0990c8ec/README.md). The ed6 UAT addendum and ba2/9eb sections below retain their historical scope; no cloud authorization is implied.
+
 > Current entry (2026-11-08): [ed6 N1/N3 real UAT acceptance addendum](../docs/delivery/REAL_UAT_CANDIDATE_ACCEPTANCE_20261108.md) and [ed6 candidate templates](uat/candidates/ed6ca9bbfbc5/README.md). The ba2/9eb sections below preserve historical evidence, not current deployment authorization or status. Owner choice/budget/retention are already recorded; cloud execution remains on hold.
 
 應用固定 **ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde**，PR28；正式UAT基準仍7dccd545。此目錄只提供可審閱設定與migration inventory，不連結project、不部署、不執行migration/seed/reset。後續文件／工具提交不改應用固定版本。

@@ -1,0 +1,3662 @@
+{
+  "run": "20261108055311112-a6428ffe",
+  "source": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "commands": [
+    {
+      "connection": "observer",
+      "sql": "select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1",
+      "params": [
+        "authenticated"
+      ],
+      "started": "2026-11-08T05:53:11.573Z",
+      "finished": "2026-11-08T05:53:11.576Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1",
+      "params": [
+        "anon"
+      ],
+      "started": "2026-11-08T05:53:11.576Z",
+      "finished": "2026-11-08T05:53:11.576Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1",
+      "params": [
+        "service_role"
+      ],
+      "started": "2026-11-08T05:53:11.576Z",
+      "finished": "2026-11-08T05:53:11.577Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "create schema auth;create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;create schema storage;create table storage.buckets(id text primary key,name text not null,public boolean not null default false);create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text not null references storage.buckets(id),name text not null,owner uuid,owner_id text,metadata jsonb,unique(bucket_id,name));alter table storage.objects enable row level security;create function storage.foldername(name text) returns text[] language sql immutable as $$select (string_to_array(name,'/'))[1:array_length(string_to_array(name,'/'),1)-1]$$;grant usage on schema auth,public,storage to authenticated,anon,service_role;",
+      "params": [],
+      "started": "2026-11-08T05:53:11.577Z",
+      "finished": "2026-11-08T05:53:11.650Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:11.747Z",
+      "finished": "2026-11-08T05:53:11.902Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160001_v1_core_schema.sql",
+        "sha256": "c57662f2e5c9802ce8a9fd92f4d892600c6c32a9e5d48fa592c871a6dc8c5b0a"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:11.937Z",
+      "finished": "2026-11-08T05:53:11.947Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160002_v1_hardening_atomic_rpc.sql",
+        "sha256": "06596af1e83e811cd75cb99985d4466a5391000c174e5eca599ec8aac9d56488"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:11.979Z",
+      "finished": "2026-11-08T05:53:11.979Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160003_v1_hardening_document_atomic_rpc.sql",
+        "sha256": "1ce309ac4cee191407633efa1fad61b3f86c7a6601d2eece29775c95f1ed021c"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.012Z",
+      "finished": "2026-11-08T05:53:12.013Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160004_v1_hardening_recalculate_atomic_rpc.sql",
+        "sha256": "915f42af129caacbf3d303b32044d36563ec48ef09ac856ae7198fe776fe607e"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.051Z",
+      "finished": "2026-11-08T05:53:12.052Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160005_v1_hardening_generate_report_atomic_rpc.sql",
+        "sha256": "41b9a0152376c091b0c8c8b78fd3eeec988b8466ef925a7a2973695155c75a0a"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.086Z",
+      "finished": "2026-11-08T05:53:12.087Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160006_v1_hardening_run_ai_audit_atomic_rpc.sql",
+        "sha256": "d6780dc277b9c1b3307cb7b23358128254cf387b6ed7a548b14d9ac79d2fdf07"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.119Z",
+      "finished": "2026-11-08T05:53:12.120Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160007_v1_hardening_classify_atomic_rpc.sql",
+        "sha256": "c5200592fff450eb779fc28e5027b55a13dc127fc2cb865d679236e6c09ad385"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.155Z",
+      "finished": "2026-11-08T05:53:12.155Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160009_v1_p0_process_document_atomic_fix.sql",
+        "sha256": "df2394818e238ddea003375e0957f95ae75adb45ea77e8aeee206386fce79221"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.189Z",
+      "finished": "2026-11-08T05:53:12.190Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160010_v1_p0_classify_atomic_fix.sql",
+        "sha256": "69c2809fa0b2e7847cd744fe62c9334f04bcc55557637b6c05c2356417e2ad2d"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.222Z",
+      "finished": "2026-11-08T05:53:12.224Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603160011_v1_p0_confirm_atomic_fix.sql",
+        "sha256": "4e0af1ec523f5277ef7cc9747656de058b4031a30479ff1472113860ae7323f6"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.256Z",
+      "finished": "2026-11-08T05:53:12.269Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180001_v1_staging_hardening_columns.sql",
+        "sha256": "ec09e37e3793c8e59de18550b4150bca5266b95362db5bd6a0c5fdd90e4cc330"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.304Z",
+      "finished": "2026-11-08T05:53:12.310Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180002_v1_staging_action_logs.sql",
+        "sha256": "8cd370317344589b4f86c99a62498f8e843bfdef8f60f5a2050d01acf76a6eee"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.342Z",
+      "finished": "2026-11-08T05:53:12.344Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180003_v1_staging_purge_dry_run.sql",
+        "sha256": "0fa12f4bfc4c90f247bd0c5c959724c096f250fd70a044d740dcba9646296e54"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.377Z",
+      "finished": "2026-11-08T05:53:12.378Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180004_v1_staging_purge_function.sql",
+        "sha256": "5b4cff65fb0700b3285c94444c6d00cc926b792d60f5fe149e50450b9c64e289"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.412Z",
+      "finished": "2026-11-08T05:53:12.415Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180005_v1_staging_storage_isolation.sql",
+        "sha256": "10fe15af02bb4b7c5430b2ce4b28a3f409cc495e534dd22014dc65eda613ffb8"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.450Z",
+      "finished": "2026-11-08T05:53:12.453Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180006_v1_staging_hardening_followup.sql",
+        "sha256": "b1d0b6c734e491689be9772c1a7287c181f120327084987418ee71bd8de8531b"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.489Z",
+      "finished": "2026-11-08T05:53:12.490Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180008_v1_p1_org_membership_alignment.sql",
+        "sha256": "f50f7bd2c5f6f4c731e0b7392252e1f858568bcb86d3954925d865d7b0fccec3"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.524Z",
+      "finished": "2026-11-08T05:53:12.526Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202603180009_v1_member_management_rpc.sql",
+        "sha256": "3ea6e40fbd1dabddc7e90a5c194a17d9020ab6dee037909b8e837b4852183a44"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.560Z",
+      "finished": "2026-11-08T05:53:12.562Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202604070001_v1_org_read_chain_fix.sql",
+        "sha256": "6b850d64b9cb35fbdbe2cd83eb9e34bcf33112de1a2ec6a0128679a59b9ef208"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.597Z",
+      "finished": "2026-11-08T05:53:12.610Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202604070002_v1_analytics_classification_backbone.sql",
+        "sha256": "405f6fafff39143cd08444b025ff27f67de94e9574bb11070f7a10130a21efb1"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.645Z",
+      "finished": "2026-11-08T05:53:12.691Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202604070003_v1_adjustments_and_report_integration.sql",
+        "sha256": "f3db51ce05d05f3ae9073bd03018c1bdcf0534f19b64efb973201b33ee168567"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.728Z",
+      "finished": "2026-11-08T05:53:12.735Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202604070004_v1_adjustment_rule_engine_and_purge_update.sql",
+        "sha256": "deb5f4c611d67f63ebad3c6c1f1f39fdbc655b22b78125c33de24c166b6bb390"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.772Z",
+      "finished": "2026-11-08T05:53:12.781Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202604070006_v1_canonical_seed_pack_governance.sql",
+        "sha256": "feecbc41fb8e6984e8b6ae071a1b3678252b0d27413b53555d32d52417421c26"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.817Z",
+      "finished": "2026-11-08T05:53:12.855Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202605080001_phase1_boundary_governance_staging.sql",
+        "sha256": "320123171cd8a8bce5eea7a31687c82561057f2d8ec6139aa5b23be2d5bb5fa6"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.889Z",
+      "finished": "2026-11-08T05:53:12.890Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202610310001_organization_profile_update.sql",
+        "sha256": "44b0e230025d91a905be5f12656ff913d159ec9b208c8c87d5bdbc4ca4f46da3"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.927Z",
+      "finished": "2026-11-08T05:53:12.928Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202610310002_project_identity_guard.sql",
+        "sha256": "590ed6dad872a16c24dc8e63e74b20273c104073a8bf172bd675d3b4be467db4"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:12.965Z",
+      "finished": "2026-11-08T05:53:12.966Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202610310003_atomic_rpc_service_role_only.sql",
+        "sha256": "ef285acba8bbc9dab65c95a55bb294ed6deb01551c55f01f4134db693a6bc482"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.002Z",
+      "finished": "2026-11-08T05:53:13.012Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202610310004_tenant_relationship_integrity.sql",
+        "sha256": "7345c2c7ea5a22daae7b037aa2f473da0468de9ce270036f9fb1bf057e269ed1"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.046Z",
+      "finished": "2026-11-08T05:53:13.226Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202610310005_project_lookup_acl.sql",
+        "sha256": "b595612111f760a7e9bb8c27f8db6d5b6a52f03c6ed59884f87e33198a98bce5"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.260Z",
+      "finished": "2026-11-08T05:53:13.261Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202610310006_action_logs_read_boundary.sql",
+        "sha256": "6c7dec851605323ef46ada4d0868703f849caf15bd35cf2e57988194a5fdedb7"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.293Z",
+      "finished": "2026-11-08T05:53:13.299Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611020001_secure_upload_storage.sql",
+        "sha256": "87b109ea0fd1124d7715b51812762e802c85f7c59cdc03c0cda6e061a8d4c8a7"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.332Z",
+      "finished": "2026-11-08T05:53:13.343Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611020002_storage_receipt_review_fixes.sql",
+        "sha256": "d3b6760ba0bcb873aa464a82b363545a3d0256f7c5d91cdd3998a82a674911d8"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.376Z",
+      "finished": "2026-11-08T05:53:13.382Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611060001_report_snapshot_atomic_v2.sql",
+        "sha256": "a952b36d0a0e621d711f9ca30ccd2e60ad578939d158a96a9bca1880e75922f0"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.415Z",
+      "finished": "2026-11-08T05:53:13.419Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611060002_manual_transcription_v1.sql",
+        "sha256": "25db5353b20eaf38fef2e63017c97f99c8ada7ae481ecb6161cfd1d70cfb7b7d"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.452Z",
+      "finished": "2026-11-08T05:53:13.474Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611060003_server_attachment_verification.sql",
+        "sha256": "2382e8abf661003aca6551342d9b3b193930ae0e1aee61cb207f163031d10beb"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.507Z",
+      "finished": "2026-11-08T05:53:13.515Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611060004_recalculation_requests.sql",
+        "sha256": "69d292cffb7185e5c51b1704617a9c2177a41984771dde173d6a9a613941b815"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.549Z",
+      "finished": "2026-11-08T05:53:13.581Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611060005_controlled_document_deletion.sql",
+        "sha256": "48140e5037fb54ad69b2d71dd114fc80bd1272c9d1f1aa1922c3cc01f2f2a82f"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.615Z",
+      "finished": "2026-11-08T05:53:13.623Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611060006_report_snapshot_integrity.sql",
+        "sha256": "eb079b1550078be4656de6abae2570f6bbad6f3c9e3c3ac53e54f59f66201a3f"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.657Z",
+      "finished": "2026-11-08T05:53:13.665Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611070001_calculation_source_authority.sql",
+        "sha256": "e36b2acb0c1cd6f3e22603c02b71addb83ff84abb5b6da816f0d35b4614503a8"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.699Z",
+      "finished": "2026-11-08T05:53:13.715Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611070002_manual_processing_fences.sql",
+        "sha256": "7bdcaccdb940f222a2e1f6c4f45238a20f04b189d296bdb4e15e3999e819ed6c"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.752Z",
+      "finished": "2026-11-08T05:53:13.754Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611070003_report_source_retention.sql",
+        "sha256": "ef5d90af38303f96d93f7866c085b5a9f4e4cd57f2dc673e55042f573375f0fb"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.790Z",
+      "finished": "2026-11-08T05:53:13.798Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611070004_manual_document_confirmation_boundary.sql",
+        "sha256": "64c88774d0cc15eca86956a377abe7280f4433fc3f719eeabf97f63382236fb3"
+      }
+    },
+    {
+      "connection": "observer",
+      "params": [],
+      "started": "2026-11-08T05:53:13.835Z",
+      "finished": "2026-11-08T05:53:13.857Z",
+      "status": "OK",
+      "sql_source": {
+        "git_sha": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+        "path": "backend/supabase/migrations/202611070005_activity_replacements.sql",
+        "sha256": "95ee70942c4410864f2bc65a18a558098c3abd2f432d67709aa188e6ce63583a"
+      }
+    },
+    {
+      "connection": "observer",
+      "sql": "grant select,insert,update,delete on all tables in schema public,storage to authenticated,anon,service_role;revoke all on report_snapshot_requests_v2 from authenticated,anon",
+      "params": [],
+      "started": "2026-11-08T05:53:13.859Z",
+      "finished": "2026-11-08T05:53:13.870Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "native-synthetic-7c61b384-8237-40ac-abf7-feaa6486b991"
+      ],
+      "started": "2026-11-08T05:53:14.930Z",
+      "finished": "2026-11-08T05:53:14.933Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927"
+      ],
+      "started": "2026-11-08T05:53:14.933Z",
+      "finished": "2026-11-08T05:53:14.935Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991"
+      ],
+      "started": "2026-11-08T05:53:14.935Z",
+      "finished": "2026-11-08T05:53:14.937Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "a5c0443b-bc8f-4573-bac6-787ede765765",
+        "7c61b384-8237-40ac-abf7-feaa6486b991"
+      ],
+      "started": "2026-11-08T05:53:14.937Z",
+      "finished": "2026-11-08T05:53:14.942Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:14.943Z",
+      "finished": "2026-11-08T05:53:14.943Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:14.943Z",
+      "finished": "2026-11-08T05:53:14.943Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927"
+      ],
+      "started": "2026-11-08T05:53:14.943Z",
+      "finished": "2026-11-08T05:53:14.943Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "a5c0443b-bc8f-4573-bac6-787ede765765",
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927",
+        "46c58fa7-a087-4c53-b2a1-99602ceab96b",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "61861508-c8c6-4275-bb81-230132b95a3f"
+      ],
+      "started": "2026-11-08T05:53:14.943Z",
+      "finished": "2026-11-08T05:53:14.958Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:14.958Z",
+      "finished": "2026-11-08T05:53:14.959Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "1d7c2a93-3fa6-41fc-9228-cf84ad01d54f",
+        "7c61b384-8237-40ac-abf7-feaa6486b991"
+      ],
+      "started": "2026-11-08T05:53:14.959Z",
+      "finished": "2026-11-08T05:53:14.962Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:14.962Z",
+      "finished": "2026-11-08T05:53:14.962Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:14.962Z",
+      "finished": "2026-11-08T05:53:14.962Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927"
+      ],
+      "started": "2026-11-08T05:53:14.962Z",
+      "finished": "2026-11-08T05:53:14.963Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','prepare')",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "a5c0443b-bc8f-4573-bac6-787ede765765",
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927",
+        "a97d4e40-fee7-4670-bcbc-eb6cd9b11dc1"
+      ],
+      "started": "2026-11-08T05:53:14.963Z",
+      "finished": "2026-11-08T05:53:14.989Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:14.989Z",
+      "finished": "2026-11-08T05:53:14.989Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:14.990Z",
+      "finished": "2026-11-08T05:53:14.990Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:14.990Z",
+      "finished": "2026-11-08T05:53:14.990Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927"
+      ],
+      "started": "2026-11-08T05:53:14.990Z",
+      "finished": "2026-11-08T05:53:14.991Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "a5c0443b-bc8f-4573-bac6-787ede765765",
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927",
+        "a97d4e40-fee7-4670-bcbc-eb6cd9b11dc1",
+        true,
+        "v1.0.0",
+        {
+          "factors": [
+            {
+              "id": "1d7c2a93-3fa6-41fc-9228-cf84ad01d54f",
+              "env": "staging",
+              "unit": "kWh",
+              "status": "active",
+              "is_test": true,
+              "version": 1,
+              "category": "energy",
+              "valid_to": null,
+              "factor_key": "SYNTHETIC-NATIVE",
+              "source_url": null,
+              "valid_from": "2026-01-01",
+              "factor_name": "SYNTHETIC ONLY",
+              "source_name": "SYNTHETIC TEST",
+              "subcategory": null,
+              "quality_tier": "custom",
+              "activity_type": "electricity",
+              "source_region": "TW",
+              "ch4_kg_per_unit": null,
+              "co2_kg_per_unit": null,
+              "n2o_kg_per_unit": null,
+              "organization_id": "7c61b384-8237-40ac-abf7-feaa6486b991",
+              "co2e_kg_per_unit": 0.5,
+              "source_reference": null
+            }
+          ],
+          "sources": {
+            "drafts": [],
+            "documents": []
+          },
+          "activities": [
+            {
+              "id": "46c58fa7-a087-4c53-b2a1-99602ceab96b",
+              "unit": "kWh",
+              "status": "active",
+              "category": "energy",
+              "quantity": 100,
+              "project_id": "a5c0443b-bc8f-4573-bac6-787ede765765",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_date": "2026-01-15",
+              "activity_type": "electricity",
+              "organization_id": "7c61b384-8237-40ac-abf7-feaa6486b991",
+              "source_draft_id": null,
+              "suggested_scope": 2,
+              "exclusion_reason": null,
+              "inclusion_status": "included",
+              "source_document_id": null
+            }
+          ]
+        },
+        "[{\"organization_id\":\"7c61b384-8237-40ac-abf7-feaa6486b991\",\"project_id\":\"a5c0443b-bc8f-4573-bac6-787ede765765\",\"emission_activity_id\":\"46c58fa7-a087-4c53-b2a1-99602ceab96b\",\"calc_version\":1,\"status\":\"calculated\",\"is_latest\":true,\"co2e_kg\":50,\"co2_kg\":null,\"ch4_kg\":null,\"n2o_kg\":null,\"factor_id\":\"1d7c2a93-3fa6-41fc-9228-cf84ad01d54f\",\"factor_snapshot\":{\"factor_id\":\"1d7c2a93-3fa6-41fc-9228-cf84ad01d54f\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"unit\":\"kWh\",\"co2e_kg_per_unit\":0.5,\"co2_kg_per_unit\":null,\"ch4_kg_per_unit\":null,\"n2o_kg_per_unit\":null,\"quality_tier\":\"custom\",\"resolved_at\":\"2026-11-08T05:53:14.990Z\"},\"input_snapshot\":{\"quantity\":100,\"unit\":\"kWh\",\"normalized_quantity\":100,\"normalized_unit\":\"kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"activity_type\":\"electricity\"},\"formula_version\":\"v1.0.0\",\"warnings\":[],\"error_code\":null,\"calculated_at\":\"2026-11-08T05:53:14.990Z\"}]"
+      ],
+      "started": "2026-11-08T05:53:14.991Z",
+      "finished": "2026-11-08T05:53:15.004Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.004Z",
+      "finished": "2026-11-08T05:53:15.004Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.004Z",
+      "finished": "2026-11-08T05:53:15.004Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927"
+      ],
+      "started": "2026-11-08T05:53:15.004Z",
+      "finished": "2026-11-08T05:53:15.005Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "a5c0443b-bc8f-4573-bac6-787ede765765",
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927",
+        "a97d4e40-fee7-4670-bcbc-eb6cd9b11dc1",
+        true,
+        "v1.0.0",
+        {
+          "factors": [
+            {
+              "id": "1d7c2a93-3fa6-41fc-9228-cf84ad01d54f",
+              "env": "staging",
+              "unit": "kWh",
+              "status": "active",
+              "is_test": true,
+              "version": 1,
+              "category": "energy",
+              "valid_to": null,
+              "factor_key": "SYNTHETIC-NATIVE",
+              "source_url": null,
+              "valid_from": "2026-01-01",
+              "factor_name": "SYNTHETIC ONLY",
+              "source_name": "SYNTHETIC TEST",
+              "subcategory": null,
+              "quality_tier": "custom",
+              "activity_type": "electricity",
+              "source_region": "TW",
+              "ch4_kg_per_unit": null,
+              "co2_kg_per_unit": null,
+              "n2o_kg_per_unit": null,
+              "organization_id": "7c61b384-8237-40ac-abf7-feaa6486b991",
+              "co2e_kg_per_unit": 0.5,
+              "source_reference": null
+            }
+          ],
+          "sources": {
+            "drafts": [],
+            "documents": []
+          },
+          "activities": [
+            {
+              "id": "46c58fa7-a087-4c53-b2a1-99602ceab96b",
+              "unit": "kWh",
+              "status": "active",
+              "category": "energy",
+              "quantity": 100,
+              "project_id": "a5c0443b-bc8f-4573-bac6-787ede765765",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_date": "2026-01-15",
+              "activity_type": "electricity",
+              "organization_id": "7c61b384-8237-40ac-abf7-feaa6486b991",
+              "source_draft_id": null,
+              "suggested_scope": 2,
+              "exclusion_reason": null,
+              "inclusion_status": "included",
+              "source_document_id": null
+            }
+          ]
+        },
+        "[{\"organization_id\":\"7c61b384-8237-40ac-abf7-feaa6486b991\",\"project_id\":\"a5c0443b-bc8f-4573-bac6-787ede765765\",\"emission_activity_id\":\"46c58fa7-a087-4c53-b2a1-99602ceab96b\",\"calc_version\":1,\"status\":\"calculated\",\"is_latest\":true,\"co2e_kg\":50,\"co2_kg\":null,\"ch4_kg\":null,\"n2o_kg\":null,\"factor_id\":\"1d7c2a93-3fa6-41fc-9228-cf84ad01d54f\",\"factor_snapshot\":{\"factor_id\":\"1d7c2a93-3fa6-41fc-9228-cf84ad01d54f\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"unit\":\"kWh\",\"co2e_kg_per_unit\":0.5,\"co2_kg_per_unit\":null,\"ch4_kg_per_unit\":null,\"n2o_kg_per_unit\":null,\"quality_tier\":\"custom\",\"resolved_at\":\"2026-11-08T05:53:14.990Z\"},\"input_snapshot\":{\"quantity\":100,\"unit\":\"kWh\",\"normalized_quantity\":100,\"normalized_unit\":\"kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"activity_type\":\"electricity\"},\"formula_version\":\"v1.0.0\",\"warnings\":[],\"error_code\":null,\"calculated_at\":\"2026-11-08T05:53:14.990Z\"}]"
+      ],
+      "started": "2026-11-08T05:53:15.005Z",
+      "finished": "2026-11-08T05:53:15.082Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.005Z",
+      "finished": "2026-11-08T05:53:15.007Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.052Z",
+      "finished": "2026-11-08T05:53:15.054Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.056Z",
+      "finished": "2026-11-08T05:53:15.056Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.083Z",
+      "finished": "2026-11-08T05:53:15.083Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.084Z",
+      "finished": "2026-11-08T05:53:15.084Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.084Z",
+      "finished": "2026-11-08T05:53:15.085Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927"
+      ],
+      "started": "2026-11-08T05:53:15.085Z",
+      "finished": "2026-11-08T05:53:15.085Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','lookup')",
+      "params": [
+        "7c61b384-8237-40ac-abf7-feaa6486b991",
+        "a5c0443b-bc8f-4573-bac6-787ede765765",
+        "8ce14fe2-dedd-4e3a-99f7-785f2db28927",
+        "a97d4e40-fee7-4670-bcbc-eb6cd9b11dc1"
+      ],
+      "started": "2026-11-08T05:53:15.085Z",
+      "finished": "2026-11-08T05:53:15.094Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.094Z",
+      "finished": "2026-11-08T05:53:15.094Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select (select count(*) from calculation_results where project_id=$1) calculations,(select max(calc_version) from calculation_results where project_id=$1) max_version,(select count(*) from audit_logs where project_id=$1 and action='recalculate_project_atomic') audits",
+      "params": [
+        "a5c0443b-bc8f-4573-bac6-787ede765765"
+      ],
+      "started": "2026-11-08T05:53:15.094Z",
+      "finished": "2026-11-08T05:53:15.095Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "native-synthetic-a623e54e-469e-4996-beaa-39b15e12aaba"
+      ],
+      "started": "2026-11-08T05:53:15.097Z",
+      "finished": "2026-11-08T05:53:15.098Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.098Z",
+      "finished": "2026-11-08T05:53:15.098Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba"
+      ],
+      "started": "2026-11-08T05:53:15.098Z",
+      "finished": "2026-11-08T05:53:15.099Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "a623e54e-469e-4996-beaa-39b15e12aaba"
+      ],
+      "started": "2026-11-08T05:53:15.099Z",
+      "finished": "2026-11-08T05:53:15.099Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.099Z",
+      "finished": "2026-11-08T05:53:15.099Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.099Z",
+      "finished": "2026-11-08T05:53:15.099Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.099Z",
+      "finished": "2026-11-08T05:53:15.100Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757",
+        "77468013-e59b-4512-a2fa-fd590b7f96ab",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "016ff209-52af-4c54-896e-e2c656b873a5"
+      ],
+      "started": "2026-11-08T05:53:15.100Z",
+      "finished": "2026-11-08T05:53:15.102Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.102Z",
+      "finished": "2026-11-08T05:53:15.102Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "31dbed35-d96a-4fbc-a62a-b3f2dc6805ab",
+        "a623e54e-469e-4996-beaa-39b15e12aaba"
+      ],
+      "started": "2026-11-08T05:53:15.102Z",
+      "finished": "2026-11-08T05:53:15.103Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.103Z",
+      "finished": "2026-11-08T05:53:15.103Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.103Z",
+      "finished": "2026-11-08T05:53:15.103Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.103Z",
+      "finished": "2026-11-08T05:53:15.103Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','prepare')",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757",
+        "f659ec48-442d-4574-b455-66bea71ecaca"
+      ],
+      "started": "2026-11-08T05:53:15.103Z",
+      "finished": "2026-11-08T05:53:15.105Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.105Z",
+      "finished": "2026-11-08T05:53:15.105Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.105Z",
+      "finished": "2026-11-08T05:53:15.106Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.106Z",
+      "finished": "2026-11-08T05:53:15.106Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.106Z",
+      "finished": "2026-11-08T05:53:15.106Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757",
+        "77468013-e59b-4512-a2fa-fd590b7f96ab",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 200,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "4293c35d-ce16-4088-8d5f-4c977fcccb98"
+      ],
+      "started": "2026-11-08T05:53:15.106Z",
+      "finished": "2026-11-08T05:53:15.117Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.117Z",
+      "finished": "2026-11-08T05:53:15.117Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.117Z",
+      "finished": "2026-11-08T05:53:15.117Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.117Z",
+      "finished": "2026-11-08T05:53:15.117Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757",
+        "f659ec48-442d-4574-b455-66bea71ecaca",
+        true,
+        "v1.0.0",
+        {
+          "factors": [
+            {
+              "id": "31dbed35-d96a-4fbc-a62a-b3f2dc6805ab",
+              "env": "staging",
+              "unit": "kWh",
+              "status": "active",
+              "is_test": true,
+              "version": 1,
+              "category": "energy",
+              "valid_to": null,
+              "factor_key": "SYNTHETIC-NATIVE",
+              "source_url": null,
+              "valid_from": "2026-01-01",
+              "factor_name": "SYNTHETIC ONLY",
+              "source_name": "SYNTHETIC TEST",
+              "subcategory": null,
+              "quality_tier": "custom",
+              "activity_type": "electricity",
+              "source_region": "TW",
+              "ch4_kg_per_unit": null,
+              "co2_kg_per_unit": null,
+              "n2o_kg_per_unit": null,
+              "organization_id": "a623e54e-469e-4996-beaa-39b15e12aaba",
+              "co2e_kg_per_unit": 0.5,
+              "source_reference": null
+            }
+          ],
+          "sources": {
+            "drafts": [],
+            "documents": []
+          },
+          "activities": [
+            {
+              "id": "77468013-e59b-4512-a2fa-fd590b7f96ab",
+              "unit": "kWh",
+              "status": "active",
+              "category": "energy",
+              "quantity": 100,
+              "project_id": "9bccdbd5-a83d-41af-8631-d775fae56679",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_date": "2026-01-15",
+              "activity_type": "electricity",
+              "organization_id": "a623e54e-469e-4996-beaa-39b15e12aaba",
+              "source_draft_id": null,
+              "suggested_scope": 2,
+              "exclusion_reason": null,
+              "inclusion_status": "included",
+              "source_document_id": null
+            }
+          ]
+        },
+        "[{\"organization_id\":\"a623e54e-469e-4996-beaa-39b15e12aaba\",\"project_id\":\"9bccdbd5-a83d-41af-8631-d775fae56679\",\"emission_activity_id\":\"77468013-e59b-4512-a2fa-fd590b7f96ab\",\"calc_version\":1,\"status\":\"calculated\",\"is_latest\":true,\"co2e_kg\":50,\"co2_kg\":null,\"ch4_kg\":null,\"n2o_kg\":null,\"factor_id\":\"31dbed35-d96a-4fbc-a62a-b3f2dc6805ab\",\"factor_snapshot\":{\"factor_id\":\"31dbed35-d96a-4fbc-a62a-b3f2dc6805ab\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"unit\":\"kWh\",\"co2e_kg_per_unit\":0.5,\"co2_kg_per_unit\":null,\"ch4_kg_per_unit\":null,\"n2o_kg_per_unit\":null,\"quality_tier\":\"custom\",\"resolved_at\":\"2026-11-08T05:53:15.105Z\"},\"input_snapshot\":{\"quantity\":100,\"unit\":\"kWh\",\"normalized_quantity\":100,\"normalized_unit\":\"kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"activity_type\":\"electricity\"},\"formula_version\":\"v1.0.0\",\"warnings\":[],\"error_code\":null,\"calculated_at\":\"2026-11-08T05:53:15.105Z\"}]"
+      ],
+      "started": "2026-11-08T05:53:15.117Z",
+      "finished": "2026-11-08T05:53:15.124Z",
+      "status": "ERROR",
+      "code": "P0001",
+      "message": "RECALCULATION_INPUT_CHANGED"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.117Z",
+      "finished": "2026-11-08T05:53:15.118Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.119Z",
+      "finished": "2026-11-08T05:53:15.121Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T05:53:15.124Z",
+      "finished": "2026-11-08T05:53:15.124Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select count(*) n from calculation_results where project_id=$1",
+      "params": [
+        "9bccdbd5-a83d-41af-8631-d775fae56679"
+      ],
+      "started": "2026-11-08T05:53:15.124Z",
+      "finished": "2026-11-08T05:53:15.125Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.125Z",
+      "finished": "2026-11-08T05:53:15.125Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.125Z",
+      "finished": "2026-11-08T05:53:15.125Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.125Z",
+      "finished": "2026-11-08T05:53:15.125Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','prepare')",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757",
+        "b0dbc4d5-0249-4353-895d-b53ee6c35d33"
+      ],
+      "started": "2026-11-08T05:53:15.125Z",
+      "finished": "2026-11-08T05:53:15.127Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.127Z",
+      "finished": "2026-11-08T05:53:15.127Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.127Z",
+      "finished": "2026-11-08T05:53:15.127Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.127Z",
+      "finished": "2026-11-08T05:53:15.127Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "2f473b52-44d5-4af0-8443-a1e66c42c757"
+      ],
+      "started": "2026-11-08T05:53:15.127Z",
+      "finished": "2026-11-08T05:53:15.127Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)",
+      "params": [
+        "a623e54e-469e-4996-beaa-39b15e12aaba",
+        "9bccdbd5-a83d-41af-8631-d775fae56679",
+        "2f473b52-44d5-4af0-8443-a1e66c42c757",
+        "b0dbc4d5-0249-4353-895d-b53ee6c35d33",
+        true,
+        "v1.0.0",
+        {
+          "factors": [
+            {
+              "id": "31dbed35-d96a-4fbc-a62a-b3f2dc6805ab",
+              "env": "staging",
+              "unit": "kWh",
+              "status": "active",
+              "is_test": true,
+              "version": 1,
+              "category": "energy",
+              "valid_to": null,
+              "factor_key": "SYNTHETIC-NATIVE",
+              "source_url": null,
+              "valid_from": "2026-01-01",
+              "factor_name": "SYNTHETIC ONLY",
+              "source_name": "SYNTHETIC TEST",
+              "subcategory": null,
+              "quality_tier": "custom",
+              "activity_type": "electricity",
+              "source_region": "TW",
+              "ch4_kg_per_unit": null,
+              "co2_kg_per_unit": null,
+              "n2o_kg_per_unit": null,
+              "organization_id": "a623e54e-469e-4996-beaa-39b15e12aaba",
+              "co2e_kg_per_unit": 0.5,
+              "source_reference": null
+            }
+          ],
+          "sources": {
+            "drafts": [],
+            "documents": []
+          },
+          "activities": [
+            {
+              "id": "77468013-e59b-4512-a2fa-fd590b7f96ab",
+              "unit": "kWh",
+              "status": "active",
+              "category": "energy",
+              "quantity": 200,
+              "project_id": "9bccdbd5-a83d-41af-8631-d775fae56679",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_date": "2026-01-15",
+              "activity_type": "electricity",
+              "organization_id": "a623e54e-469e-4996-beaa-39b15e12aaba",
+              "source_draft_id": null,
+              "suggested_scope": 2,
+              "exclusion_reason": null,
+              "inclusion_status": "included",
+              "source_document_id": null
+            }
+          ]
+        },
+        "[{\"organization_id\":\"a623e54e-469e-4996-beaa-39b15e12aaba\",\"project_id\":\"9bccdbd5-a83d-41af-8631-d775fae56679\",\"emission_activity_id\":\"77468013-e59b-4512-a2fa-fd590b7f96ab\",\"calc_version\":1,\"status\":\"calculated\",\"is_latest\":true,\"co2e_kg\":100,\"co2_kg\":null,\"ch4_kg\":null,\"n2o_kg\":null,\"factor_id\":\"31dbed35-d96a-4fbc-a62a-b3f2dc6805ab\",\"factor_snapshot\":{\"factor_id\":\"31dbed35-d96a-4fbc-a62a-b3f2dc6805ab\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"unit\":\"kWh\",\"co2e_kg_per_unit\":0.5,\"co2_kg_per_unit\":null,\"ch4_kg_per_unit\":null,\"n2o_kg_per_unit\":null,\"quality_tier\":\"custom\",\"resolved_at\":\"2026-11-08T05:53:15.128Z\"},\"input_snapshot\":{\"quantity\":200,\"unit\":\"kWh\",\"normalized_quantity\":200,\"normalized_unit\":\"kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"activity_type\":\"electricity\"},\"formula_version\":\"v1.0.0\",\"warnings\":[],\"error_code\":null,\"calculated_at\":\"2026-11-08T05:53:15.128Z\"}]"
+      ],
+      "started": "2026-11-08T05:53:15.128Z",
+      "finished": "2026-11-08T05:53:15.132Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.132Z",
+      "finished": "2026-11-08T05:53:15.132Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select co2e_kg from calculation_results where id=$1",
+      "params": [
+        "cb6f761e-fc73-4538-b79b-43e5b5d9d7b1"
+      ],
+      "started": "2026-11-08T05:53:15.132Z",
+      "finished": "2026-11-08T05:53:15.133Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "ffa36f46-b485-4759-8f18-53aae3c18713",
+        "native-synthetic-ffa36f46-b485-4759-8f18-53aae3c18713"
+      ],
+      "started": "2026-11-08T05:53:15.135Z",
+      "finished": "2026-11-08T05:53:15.136Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "ffa36f46-b485-4759-8f18-53aae3c18713",
+        "008eb0da-ac1d-406f-968f-bf0e26abd520"
+      ],
+      "started": "2026-11-08T05:53:15.136Z",
+      "finished": "2026-11-08T05:53:15.136Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "ffa36f46-b485-4759-8f18-53aae3c18713"
+      ],
+      "started": "2026-11-08T05:53:15.136Z",
+      "finished": "2026-11-08T05:53:15.136Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "afe0c0ce-587c-48ec-905f-6bd1861f5da2",
+        "ffa36f46-b485-4759-8f18-53aae3c18713"
+      ],
+      "started": "2026-11-08T05:53:15.136Z",
+      "finished": "2026-11-08T05:53:15.137Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.137Z",
+      "finished": "2026-11-08T05:53:15.137Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.137Z",
+      "finished": "2026-11-08T05:53:15.137Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "008eb0da-ac1d-406f-968f-bf0e26abd520"
+      ],
+      "started": "2026-11-08T05:53:15.137Z",
+      "finished": "2026-11-08T05:53:15.137Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "ffa36f46-b485-4759-8f18-53aae3c18713",
+        "afe0c0ce-587c-48ec-905f-6bd1861f5da2",
+        "008eb0da-ac1d-406f-968f-bf0e26abd520",
+        "8bea1359-8e98-41fa-a930-62af820621b4",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "88ce5f4e-c7de-41a1-84bb-10a90d029dfa"
+      ],
+      "started": "2026-11-08T05:53:15.137Z",
+      "finished": "2026-11-08T05:53:15.140Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.140Z",
+      "finished": "2026-11-08T05:53:15.140Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "d5fed832-955a-416c-b1c5-a488996150e9",
+        "ffa36f46-b485-4759-8f18-53aae3c18713"
+      ],
+      "started": "2026-11-08T05:53:15.140Z",
+      "finished": "2026-11-08T05:53:15.140Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)",
+      "params": [
+        "staging-receipts",
+        "staging/afe0c0ce-587c-48ec-905f-6bd1861f5da2/f38c7dbb-f877-4c24-9869-5c4838d269b6.pdf",
+        "008eb0da-ac1d-406f-968f-bf0e26abd520",
+        {
+          "size": 73,
+          "mimetype": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.141Z",
+      "finished": "2026-11-08T05:53:15.144Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into uploaded_documents(id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test) values($1,$2,$3,$4,$5,$6,'SYNTHETIC-NATIVE.pdf','application/pdf',$7,$8,'receipt','pending','active','staging',true)",
+      "params": [
+        "f38c7dbb-f877-4c24-9869-5c4838d269b6",
+        "ffa36f46-b485-4759-8f18-53aae3c18713",
+        "afe0c0ce-587c-48ec-905f-6bd1861f5da2",
+        "008eb0da-ac1d-406f-968f-bf0e26abd520",
+        "staging-receipts",
+        "staging/afe0c0ce-587c-48ec-905f-6bd1861f5da2/f38c7dbb-f877-4c24-9869-5c4838d269b6.pdf",
+        73,
+        "0bb229e03027a0f3852993e6b3ba7e05a2d2c8c6fe69b6f80082b5f66212ff21"
+      ],
+      "started": "2026-11-08T05:53:15.145Z",
+      "finished": "2026-11-08T05:53:15.146Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.146Z",
+      "finished": "2026-11-08T05:53:15.147Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.147Z",
+      "finished": "2026-11-08T05:53:15.147Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "008eb0da-ac1d-406f-968f-bf0e26abd520"
+      ],
+      "started": "2026-11-08T05:53:15.147Z",
+      "finished": "2026-11-08T05:53:15.147Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from document_deletion_request($1,$2,'prepare')",
+      "params": [
+        "008eb0da-ac1d-406f-968f-bf0e26abd520",
+        {
+          "organization_id": "ffa36f46-b485-4759-8f18-53aae3c18713",
+          "project_id": "afe0c0ce-587c-48ec-905f-6bd1861f5da2",
+          "document_id": "f38c7dbb-f877-4c24-9869-5c4838d269b6",
+          "request_id": "35c2503b-28f9-4c50-a972-f86d1c8b28fe",
+          "storage_bucket": "staging-receipts",
+          "storage_path": "staging/afe0c0ce-587c-48ec-905f-6bd1861f5da2/f38c7dbb-f877-4c24-9869-5c4838d269b6.pdf",
+          "original_filename": "SYNTHETIC-NATIVE.pdf",
+          "document_type": "receipt",
+          "file_size_bytes": 73,
+          "mime_type": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.147Z",
+      "finished": "2026-11-08T05:53:15.160Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.160Z",
+      "finished": "2026-11-08T05:53:15.160Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T05:53:15.160Z",
+      "finished": "2026-11-08T05:53:15.160Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "008eb0da-ac1d-406f-968f-bf0e26abd520"
+      ],
+      "started": "2026-11-08T05:53:15.160Z",
+      "finished": "2026-11-08T05:53:15.160Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "insert into extracted_document_drafts(id,organization_id,project_id,uploaded_document_id,extraction_provider,raw_payload,normalized_payload,status,is_latest,env,is_test) values($1,$2,$3,$4,'SYNTHETIC_NATIVE_OCR_FIXTURE','{}',$5,'pending_review',true,'staging',true) returning *",
+      "params": [
+        "a1a9b72f-d127-470e-9d99-79c094233ebd",
+        "ffa36f46-b485-4759-8f18-53aae3c18713",
+        "afe0c0ce-587c-48ec-905f-6bd1861f5da2",
+        "f38c7dbb-f877-4c24-9869-5c4838d269b6",
+        {
+          "quantity": 100,
+          "unit": "kWh",
+          "activity_date": "2026-01-15"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.160Z",
+      "finished": "2026-11-08T05:53:15.168Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "DOCUMENT_DELETION_FENCED"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.160Z",
+      "finished": "2026-11-08T05:53:15.161Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.163Z",
+      "finished": "2026-11-08T05:53:15.165Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T05:53:15.168Z",
+      "finished": "2026-11-08T05:53:15.168Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select deletion_state,(select count(*) from extracted_document_drafts where uploaded_document_id=$1) drafts,(select count(*) from cocal_delete_private.operations where document_id=$1) operations from uploaded_documents where id=$1",
+      "params": [
+        "f38c7dbb-f877-4c24-9869-5c4838d269b6"
+      ],
+      "started": "2026-11-08T05:53:15.168Z",
+      "finished": "2026-11-08T05:53:15.169Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "53279e29-d910-4137-a82a-64b558b7f272",
+        "native-synthetic-53279e29-d910-4137-a82a-64b558b7f272"
+      ],
+      "started": "2026-11-08T05:53:15.171Z",
+      "finished": "2026-11-08T05:53:15.172Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "53279e29-d910-4137-a82a-64b558b7f272",
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a"
+      ],
+      "started": "2026-11-08T05:53:15.172Z",
+      "finished": "2026-11-08T05:53:15.173Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "53279e29-d910-4137-a82a-64b558b7f272"
+      ],
+      "started": "2026-11-08T05:53:15.173Z",
+      "finished": "2026-11-08T05:53:15.173Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "c37c33c6-3640-47ab-b4f9-c663271c2dd7",
+        "53279e29-d910-4137-a82a-64b558b7f272"
+      ],
+      "started": "2026-11-08T05:53:15.173Z",
+      "finished": "2026-11-08T05:53:15.173Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.173Z",
+      "finished": "2026-11-08T05:53:15.173Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.173Z",
+      "finished": "2026-11-08T05:53:15.173Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a"
+      ],
+      "started": "2026-11-08T05:53:15.173Z",
+      "finished": "2026-11-08T05:53:15.174Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "53279e29-d910-4137-a82a-64b558b7f272",
+        "c37c33c6-3640-47ab-b4f9-c663271c2dd7",
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a",
+        "92c18227-5938-4cbe-8b8d-9e4b8dfc3d92",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "818c4455-6d64-48dc-8546-2be37d88f878"
+      ],
+      "started": "2026-11-08T05:53:15.174Z",
+      "finished": "2026-11-08T05:53:15.176Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.176Z",
+      "finished": "2026-11-08T05:53:15.176Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "cad0835f-a630-4e52-a720-f5681ceb0ec7",
+        "53279e29-d910-4137-a82a-64b558b7f272"
+      ],
+      "started": "2026-11-08T05:53:15.176Z",
+      "finished": "2026-11-08T05:53:15.176Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)",
+      "params": [
+        "staging-receipts",
+        "staging/c37c33c6-3640-47ab-b4f9-c663271c2dd7/9c51eb81-dd4c-4a0a-be38-9335e339dc7f.pdf",
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a",
+        {
+          "size": 73,
+          "mimetype": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.176Z",
+      "finished": "2026-11-08T05:53:15.177Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into uploaded_documents(id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test) values($1,$2,$3,$4,$5,$6,'SYNTHETIC-NATIVE.pdf','application/pdf',$7,$8,'receipt','pending','active','staging',true)",
+      "params": [
+        "9c51eb81-dd4c-4a0a-be38-9335e339dc7f",
+        "53279e29-d910-4137-a82a-64b558b7f272",
+        "c37c33c6-3640-47ab-b4f9-c663271c2dd7",
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a",
+        "staging-receipts",
+        "staging/c37c33c6-3640-47ab-b4f9-c663271c2dd7/9c51eb81-dd4c-4a0a-be38-9335e339dc7f.pdf",
+        73,
+        "bd6ea15a27444d72ee616bfbee5e878331236d12e46ddc466dd9da884dbf13df"
+      ],
+      "started": "2026-11-08T05:53:15.177Z",
+      "finished": "2026-11-08T05:53:15.178Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.178Z",
+      "finished": "2026-11-08T05:53:15.178Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T05:53:15.178Z",
+      "finished": "2026-11-08T05:53:15.178Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a"
+      ],
+      "started": "2026-11-08T05:53:15.178Z",
+      "finished": "2026-11-08T05:53:15.178Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "insert into extracted_document_drafts(id,organization_id,project_id,uploaded_document_id,extraction_provider,raw_payload,normalized_payload,status,is_latest,env,is_test) values($1,$2,$3,$4,'SYNTHETIC_NATIVE_OCR_FIXTURE','{}',$5,'pending_review',true,'staging',true) returning *",
+      "params": [
+        "be12d362-4681-4b2e-9f66-fda35b5b553b",
+        "53279e29-d910-4137-a82a-64b558b7f272",
+        "c37c33c6-3640-47ab-b4f9-c663271c2dd7",
+        "9c51eb81-dd4c-4a0a-be38-9335e339dc7f",
+        {
+          "quantity": 100,
+          "unit": "kWh",
+          "activity_date": "2026-01-15"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.178Z",
+      "finished": "2026-11-08T05:53:15.183Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.183Z",
+      "finished": "2026-11-08T05:53:15.183Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.183Z",
+      "finished": "2026-11-08T05:53:15.183Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a"
+      ],
+      "started": "2026-11-08T05:53:15.183Z",
+      "finished": "2026-11-08T05:53:15.183Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from document_deletion_request($1,$2,'prepare')",
+      "params": [
+        "a0251e76-63dd-40f4-a73c-37217ee7c79a",
+        {
+          "organization_id": "53279e29-d910-4137-a82a-64b558b7f272",
+          "project_id": "c37c33c6-3640-47ab-b4f9-c663271c2dd7",
+          "document_id": "9c51eb81-dd4c-4a0a-be38-9335e339dc7f",
+          "request_id": "c011eefa-7adb-43cc-857c-034d42a6a05b",
+          "storage_bucket": "staging-receipts",
+          "storage_path": "staging/c37c33c6-3640-47ab-b4f9-c663271c2dd7/9c51eb81-dd4c-4a0a-be38-9335e339dc7f.pdf",
+          "original_filename": "SYNTHETIC-NATIVE.pdf",
+          "document_type": "receipt",
+          "file_size_bytes": 73,
+          "mime_type": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.183Z",
+      "finished": "2026-11-08T05:53:15.238Z",
+      "status": "ERROR",
+      "code": "P0001",
+      "message": "DOCUMENT_HAS_REFERENCES"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.183Z",
+      "finished": "2026-11-08T05:53:15.184Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.225Z",
+      "finished": "2026-11-08T05:53:15.226Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.228Z",
+      "finished": "2026-11-08T05:53:15.228Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T05:53:15.239Z",
+      "finished": "2026-11-08T05:53:15.239Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select deletion_state,(select count(*) from extracted_document_drafts where uploaded_document_id=$1) drafts,(select count(*) from cocal_delete_private.operations where document_id=$1) operations from uploaded_documents where id=$1",
+      "params": [
+        "9c51eb81-dd4c-4a0a-be38-9335e339dc7f"
+      ],
+      "started": "2026-11-08T05:53:15.239Z",
+      "finished": "2026-11-08T05:53:15.239Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "native-synthetic-ca37468b-cca1-4343-8744-bc7e770cea54"
+      ],
+      "started": "2026-11-08T05:53:15.241Z",
+      "finished": "2026-11-08T05:53:15.242Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0"
+      ],
+      "started": "2026-11-08T05:53:15.242Z",
+      "finished": "2026-11-08T05:53:15.242Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "ca37468b-cca1-4343-8744-bc7e770cea54"
+      ],
+      "started": "2026-11-08T05:53:15.242Z",
+      "finished": "2026-11-08T05:53:15.242Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+        "ca37468b-cca1-4343-8744-bc7e770cea54"
+      ],
+      "started": "2026-11-08T05:53:15.242Z",
+      "finished": "2026-11-08T05:53:15.243Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.243Z",
+      "finished": "2026-11-08T05:53:15.243Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.243Z",
+      "finished": "2026-11-08T05:53:15.243Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0"
+      ],
+      "started": "2026-11-08T05:53:15.243Z",
+      "finished": "2026-11-08T05:53:15.243Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0",
+        "718d8f54-e5af-4897-8751-9887668712e4",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "1b54bbfd-4cfa-4814-94d4-8c85b8820fd2"
+      ],
+      "started": "2026-11-08T05:53:15.243Z",
+      "finished": "2026-11-08T05:53:15.245Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.245Z",
+      "finished": "2026-11-08T05:53:15.245Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "d0dd8233-5bab-438c-aa95-792efde1b184",
+        "ca37468b-cca1-4343-8744-bc7e770cea54"
+      ],
+      "started": "2026-11-08T05:53:15.245Z",
+      "finished": "2026-11-08T05:53:15.246Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)",
+      "params": [
+        "staging-receipts",
+        "staging/e0f31b18-9f1f-4ee1-856e-3f08facd190c/d5bc46a1-0989-4149-9651-cbb0e8bc65fd.pdf",
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0",
+        {
+          "size": 73,
+          "mimetype": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.246Z",
+      "finished": "2026-11-08T05:53:15.247Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into uploaded_documents(id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test) values($1,$2,$3,$4,$5,$6,'SYNTHETIC-NATIVE.pdf','application/pdf',$7,$8,'receipt','pending','active','staging',true)",
+      "params": [
+        "d5bc46a1-0989-4149-9651-cbb0e8bc65fd",
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0",
+        "staging-receipts",
+        "staging/e0f31b18-9f1f-4ee1-856e-3f08facd190c/d5bc46a1-0989-4149-9651-cbb0e8bc65fd.pdf",
+        73,
+        "d46db9cae43e3870e678e9f9f1557bb3c1514780711966473c8d96d67bce2094"
+      ],
+      "started": "2026-11-08T05:53:15.247Z",
+      "finished": "2026-11-08T05:53:15.247Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into extracted_document_drafts(id,organization_id,project_id,uploaded_document_id,extraction_provider,raw_payload,normalized_payload,status,is_latest,env,is_test) values($1,$2,$3,$4,'SYNTHETIC_NATIVE_OCR_FIXTURE','{}',$5,'pending_review',true,'staging',true) returning *",
+      "params": [
+        "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+        "d5bc46a1-0989-4149-9651-cbb0e8bc65fd",
+        {
+          "quantity": 100,
+          "unit": "kWh",
+          "activity_date": "2026-01-15"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.248Z",
+      "finished": "2026-11-08T05:53:15.249Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select to_jsonb(d)-array['created_at','updated_at','reviewed_at','classified_at'] source from extracted_document_drafts d where id=$1",
+      "params": [
+        "deab6db5-91b8-4c95-a938-4a76663ab3f1"
+      ],
+      "started": "2026-11-08T05:53:15.249Z",
+      "finished": "2026-11-08T05:53:15.249Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.249Z",
+      "finished": "2026-11-08T05:53:15.249Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.249Z",
+      "finished": "2026-11-08T05:53:15.250Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0"
+      ],
+      "started": "2026-11-08T05:53:15.250Z",
+      "finished": "2026-11-08T05:53:15.250Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from commit_draft_confirmation($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      "params": [
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+        "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0",
+        "0763ff51-b4e4-4133-b11d-b7ee963ea511",
+        {
+          "decision": "confirmed",
+          "overrides": {
+            "activity_name": "SYNTHETIC NATIVE reviewed",
+            "activity_type": "electricity",
+            "category": "energy",
+            "final_scope": 2,
+            "inclusion_status": "included"
+          }
+        },
+        {
+          "activity_name": "SYNTHETIC NATIVE reviewed",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2,
+          "source_document_id": "d5bc46a1-0989-4149-9651-cbb0e8bc65fd",
+          "source_draft_id": "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+          "normalized_quantity": 100,
+          "normalized_unit": "kWh"
+        },
+        {
+          "status": "pending_factor",
+          "co2e_kg": null,
+          "warnings": [
+            "SYNTHETIC NATIVE SQL pending factor"
+          ],
+          "input_snapshot": {
+            "synthetic": true
+          },
+          "factor_snapshot": {},
+          "formula_version": "v1.0.0"
+        },
+        {
+          "id": "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+          "env": "staging",
+          "status": "pending_review",
+          "is_test": true,
+          "is_latest": true,
+          "project_id": "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+          "parsed_unit": null,
+          "raw_payload": {},
+          "review_note": null,
+          "parsed_vendor": null,
+          "organization_id": "ca37468b-cca1-4343-8744-bc7e770cea54",
+          "parsed_quantity": null,
+          "suggested_scope": null,
+          "confidence_score": null,
+          "extraction_version": 1,
+          "normalized_payload": {
+            "unit": "kWh",
+            "quantity": 100,
+            "activity_date": "2026-01-15"
+          },
+          "suggested_category": null,
+          "extraction_provider": "SYNTHETIC_NATIVE_OCR_FIXTURE",
+          "reviewed_by_user_id": null,
+          "uploaded_document_id": "d5bc46a1-0989-4149-9651-cbb0e8bc65fd",
+          "classification_status": "unclassified",
+          "suggested_activity_date": null
+        }
+      ],
+      "started": "2026-11-08T05:53:15.250Z",
+      "finished": "2026-11-08T05:53:15.259Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.259Z",
+      "finished": "2026-11-08T05:53:15.259Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.259Z",
+      "finished": "2026-11-08T05:53:15.259Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0"
+      ],
+      "started": "2026-11-08T05:53:15.259Z",
+      "finished": "2026-11-08T05:53:15.259Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from commit_draft_confirmation($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      "params": [
+        "ca37468b-cca1-4343-8744-bc7e770cea54",
+        "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+        "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+        "e8138b6e-aa21-43bd-9f67-cb8e39b83ed0",
+        "0763ff51-b4e4-4133-b11d-b7ee963ea511",
+        {
+          "decision": "confirmed",
+          "overrides": {
+            "activity_name": "SYNTHETIC NATIVE reviewed",
+            "activity_type": "electricity",
+            "category": "energy",
+            "final_scope": 2,
+            "inclusion_status": "included"
+          }
+        },
+        {
+          "activity_name": "SYNTHETIC NATIVE reviewed",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2,
+          "source_document_id": "d5bc46a1-0989-4149-9651-cbb0e8bc65fd",
+          "source_draft_id": "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+          "normalized_quantity": 100,
+          "normalized_unit": "kWh"
+        },
+        {
+          "status": "pending_factor",
+          "co2e_kg": null,
+          "warnings": [
+            "SYNTHETIC NATIVE SQL pending factor"
+          ],
+          "input_snapshot": {
+            "synthetic": true
+          },
+          "factor_snapshot": {},
+          "formula_version": "v1.0.0"
+        },
+        {
+          "id": "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+          "env": "staging",
+          "status": "pending_review",
+          "is_test": true,
+          "is_latest": true,
+          "project_id": "e0f31b18-9f1f-4ee1-856e-3f08facd190c",
+          "parsed_unit": null,
+          "raw_payload": {},
+          "review_note": null,
+          "parsed_vendor": null,
+          "organization_id": "ca37468b-cca1-4343-8744-bc7e770cea54",
+          "parsed_quantity": null,
+          "suggested_scope": null,
+          "confidence_score": null,
+          "extraction_version": 1,
+          "normalized_payload": {
+            "unit": "kWh",
+            "quantity": 100,
+            "activity_date": "2026-01-15"
+          },
+          "suggested_category": null,
+          "extraction_provider": "SYNTHETIC_NATIVE_OCR_FIXTURE",
+          "reviewed_by_user_id": null,
+          "uploaded_document_id": "d5bc46a1-0989-4149-9651-cbb0e8bc65fd",
+          "classification_status": "unclassified",
+          "suggested_activity_date": null
+        }
+      ],
+      "started": "2026-11-08T05:53:15.259Z",
+      "finished": "2026-11-08T05:53:15.310Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.259Z",
+      "finished": "2026-11-08T05:53:15.260Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.303Z",
+      "finished": "2026-11-08T05:53:15.304Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.306Z",
+      "finished": "2026-11-08T05:53:15.306Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.310Z",
+      "finished": "2026-11-08T05:53:15.310Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select (select count(*) from emission_activities where source_draft_id=$1) activities,(select count(*) from calculation_results where emission_activity_id=$2) calculations,(select count(*) from audit_logs where entity_id=$1 and action='confirm_draft_atomic') audits,(select count(*) from cocal_manual_private.confirmation_requests where draft_id=$1) requests",
+      "params": [
+        "deab6db5-91b8-4c95-a938-4a76663ab3f1",
+        "76e34796-82c3-4ef4-878f-12100fcb904d"
+      ],
+      "started": "2026-11-08T05:53:15.310Z",
+      "finished": "2026-11-08T05:53:15.313Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "native-synthetic-0d1c9e11-ab9b-444e-93f9-9179d1b7a70d"
+      ],
+      "started": "2026-11-08T05:53:15.316Z",
+      "finished": "2026-11-08T05:53:15.316Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.316Z",
+      "finished": "2026-11-08T05:53:15.317Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d"
+      ],
+      "started": "2026-11-08T05:53:15.317Z",
+      "finished": "2026-11-08T05:53:15.317Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d"
+      ],
+      "started": "2026-11-08T05:53:15.317Z",
+      "finished": "2026-11-08T05:53:15.317Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.317Z",
+      "finished": "2026-11-08T05:53:15.317Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.317Z",
+      "finished": "2026-11-08T05:53:15.318Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.318Z",
+      "finished": "2026-11-08T05:53:15.318Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "854cadea-1953-4618-b541-7f3d30590351"
+      ],
+      "started": "2026-11-08T05:53:15.318Z",
+      "finished": "2026-11-08T05:53:15.321Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.321Z",
+      "finished": "2026-11-08T05:53:15.322Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "6596021d-b008-42e6-9817-65deee40544a",
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d"
+      ],
+      "started": "2026-11-08T05:53:15.322Z",
+      "finished": "2026-11-08T05:53:15.322Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.322Z",
+      "finished": "2026-11-08T05:53:15.322Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.322Z",
+      "finished": "2026-11-08T05:53:15.322Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.322Z",
+      "finished": "2026-11-08T05:53:15.323Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','prepare')",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "e96ac652-c6a0-49d6-b1ec-89f2722b77fd"
+      ],
+      "started": "2026-11-08T05:53:15.323Z",
+      "finished": "2026-11-08T05:53:15.324Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.324Z",
+      "finished": "2026-11-08T05:53:15.325Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.325Z",
+      "finished": "2026-11-08T05:53:15.325Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.325Z",
+      "finished": "2026-11-08T05:53:15.325Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.325Z",
+      "finished": "2026-11-08T05:53:15.325Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "e96ac652-c6a0-49d6-b1ec-89f2722b77fd",
+        true,
+        "v1.0.0",
+        {
+          "factors": [
+            {
+              "id": "6596021d-b008-42e6-9817-65deee40544a",
+              "env": "staging",
+              "unit": "kWh",
+              "status": "active",
+              "is_test": true,
+              "version": 1,
+              "category": "energy",
+              "valid_to": null,
+              "factor_key": "SYNTHETIC-NATIVE",
+              "source_url": null,
+              "valid_from": "2026-01-01",
+              "factor_name": "SYNTHETIC ONLY",
+              "source_name": "SYNTHETIC TEST",
+              "subcategory": null,
+              "quality_tier": "custom",
+              "activity_type": "electricity",
+              "source_region": "TW",
+              "ch4_kg_per_unit": null,
+              "co2_kg_per_unit": null,
+              "n2o_kg_per_unit": null,
+              "organization_id": "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+              "co2e_kg_per_unit": 0.5,
+              "source_reference": null
+            }
+          ],
+          "sources": {
+            "drafts": [],
+            "documents": []
+          },
+          "activities": [
+            {
+              "id": "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+              "unit": "kWh",
+              "status": "active",
+              "category": "energy",
+              "quantity": 100,
+              "project_id": "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_date": "2026-01-15",
+              "activity_type": "electricity",
+              "organization_id": "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+              "source_draft_id": null,
+              "suggested_scope": 2,
+              "exclusion_reason": null,
+              "inclusion_status": "included",
+              "source_document_id": null
+            }
+          ]
+        },
+        "[{\"organization_id\":\"0d1c9e11-ab9b-444e-93f9-9179d1b7a70d\",\"project_id\":\"6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4\",\"emission_activity_id\":\"8163694d-bcee-461f-963c-bc4dbbb6f0a8\",\"calc_version\":1,\"status\":\"calculated\",\"is_latest\":true,\"co2e_kg\":50,\"co2_kg\":null,\"ch4_kg\":null,\"n2o_kg\":null,\"factor_id\":\"6596021d-b008-42e6-9817-65deee40544a\",\"factor_snapshot\":{\"factor_id\":\"6596021d-b008-42e6-9817-65deee40544a\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"unit\":\"kWh\",\"co2e_kg_per_unit\":0.5,\"co2_kg_per_unit\":null,\"ch4_kg_per_unit\":null,\"n2o_kg_per_unit\":null,\"quality_tier\":\"custom\",\"resolved_at\":\"2026-11-08T05:53:15.325Z\"},\"input_snapshot\":{\"quantity\":100,\"unit\":\"kWh\",\"normalized_quantity\":100,\"normalized_unit\":\"kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"activity_type\":\"electricity\"},\"formula_version\":\"v1.0.0\",\"warnings\":[],\"error_code\":null,\"calculated_at\":\"2026-11-08T05:53:15.325Z\"}]"
+      ],
+      "started": "2026-11-08T05:53:15.325Z",
+      "finished": "2026-11-08T05:53:15.330Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.330Z",
+      "finished": "2026-11-08T05:53:15.330Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select to_jsonb(a) activity,(select to_jsonb(c) from calculation_results c where id=$2) calculation from emission_activities a where id=$1",
+      "params": [
+        "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+        "49540ac8-2348-442a-8f5d-242b47d7c034"
+      ],
+      "started": "2026-11-08T05:53:15.330Z",
+      "finished": "2026-11-08T05:53:15.331Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.331Z",
+      "finished": "2026-11-08T05:53:15.331Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.331Z",
+      "finished": "2026-11-08T05:53:15.331Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.331Z",
+      "finished": "2026-11-08T05:53:15.331Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from replace_emission_activity($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+        "c85864d4-f09e-43c8-a2ab-565714a73e71",
+        "correct",
+        "SYNTHETIC NATIVE correction",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 120,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "replace"
+      ],
+      "started": "2026-11-08T05:53:15.331Z",
+      "finished": "2026-11-08T05:53:15.338Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.338Z",
+      "finished": "2026-11-08T05:53:15.339Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.339Z",
+      "finished": "2026-11-08T05:53:15.339Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.339Z",
+      "finished": "2026-11-08T05:53:15.339Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from replace_emission_activity($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+        "432695c4-32e3-4ac3-9fe6-c400225f775b",
+        "correct",
+        "SYNTHETIC competing correction",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 130,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "replace"
+      ],
+      "started": "2026-11-08T05:53:15.339Z",
+      "finished": "2026-11-08T05:53:15.344Z",
+      "status": "ERROR",
+      "code": "P0001",
+      "message": "ACTIVITY_REPLACEMENT_SUPERSEDED"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.339Z",
+      "finished": "2026-11-08T05:53:15.340Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.342Z",
+      "finished": "2026-11-08T05:53:15.342Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T05:53:15.344Z",
+      "finished": "2026-11-08T05:53:15.344Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.344Z",
+      "finished": "2026-11-08T05:53:15.344Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.344Z",
+      "finished": "2026-11-08T05:53:15.344Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.344Z",
+      "finished": "2026-11-08T05:53:15.344Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from replace_emission_activity($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+        "c85864d4-f09e-43c8-a2ab-565714a73e71",
+        "correct",
+        "SYNTHETIC NATIVE correction",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 120,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "replace"
+      ],
+      "started": "2026-11-08T05:53:15.344Z",
+      "finished": "2026-11-08T05:53:15.348Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.348Z",
+      "finished": "2026-11-08T05:53:15.348Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.348Z",
+      "finished": "2026-11-08T05:53:15.348Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.348Z",
+      "finished": "2026-11-08T05:53:15.348Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.348Z",
+      "finished": "2026-11-08T05:53:15.349Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from recalculation_request_v2($1,$2,$3,$4,true,'v1.0.0','prepare')",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "0f7eca2c-513a-46ee-9712-780801609bbb"
+      ],
+      "started": "2026-11-08T05:53:15.349Z",
+      "finished": "2026-11-08T05:53:15.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.351Z",
+      "finished": "2026-11-08T05:53:15.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.351Z",
+      "finished": "2026-11-08T05:53:15.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.351Z",
+      "finished": "2026-11-08T05:53:15.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75"
+      ],
+      "started": "2026-11-08T05:53:15.351Z",
+      "finished": "2026-11-08T05:53:15.351Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from commit_recalculation_v2($1,$2,$3,$4,$5,$6,$7,$8)",
+      "params": [
+        "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+        "f383db01-65f9-4b41-8db8-cc461e2b5e75",
+        "0f7eca2c-513a-46ee-9712-780801609bbb",
+        true,
+        "v1.0.0",
+        {
+          "factors": [
+            {
+              "id": "6596021d-b008-42e6-9817-65deee40544a",
+              "env": "staging",
+              "unit": "kWh",
+              "status": "active",
+              "is_test": true,
+              "version": 1,
+              "category": "energy",
+              "valid_to": null,
+              "factor_key": "SYNTHETIC-NATIVE",
+              "source_url": null,
+              "valid_from": "2026-01-01",
+              "factor_name": "SYNTHETIC ONLY",
+              "source_name": "SYNTHETIC TEST",
+              "subcategory": null,
+              "quality_tier": "custom",
+              "activity_type": "electricity",
+              "source_region": "TW",
+              "ch4_kg_per_unit": null,
+              "co2_kg_per_unit": null,
+              "n2o_kg_per_unit": null,
+              "organization_id": "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+              "co2e_kg_per_unit": 0.5,
+              "source_reference": null
+            }
+          ],
+          "sources": {
+            "drafts": [],
+            "documents": []
+          },
+          "activities": [
+            {
+              "id": "49a48742-6501-4840-b171-cbeb2e88e5d1",
+              "unit": "kWh",
+              "status": "active",
+              "category": "energy",
+              "quantity": 120,
+              "project_id": "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4",
+              "final_scope": 2,
+              "subcategory": null,
+              "activity_date": "2026-01-15",
+              "activity_type": "electricity",
+              "organization_id": "0d1c9e11-ab9b-444e-93f9-9179d1b7a70d",
+              "source_draft_id": null,
+              "suggested_scope": 2,
+              "exclusion_reason": null,
+              "inclusion_status": "included",
+              "source_document_id": null
+            }
+          ]
+        },
+        "[{\"organization_id\":\"0d1c9e11-ab9b-444e-93f9-9179d1b7a70d\",\"project_id\":\"6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4\",\"emission_activity_id\":\"49a48742-6501-4840-b171-cbeb2e88e5d1\",\"calc_version\":1,\"status\":\"calculated\",\"is_latest\":true,\"co2e_kg\":60,\"co2_kg\":null,\"ch4_kg\":null,\"n2o_kg\":null,\"factor_id\":\"6596021d-b008-42e6-9817-65deee40544a\",\"factor_snapshot\":{\"factor_id\":\"6596021d-b008-42e6-9817-65deee40544a\",\"factor_key\":\"SYNTHETIC-NATIVE\",\"factor_name\":\"SYNTHETIC ONLY\",\"source_name\":\"SYNTHETIC TEST\",\"source_reference\":null,\"source_url\":null,\"version\":1,\"unit\":\"kWh\",\"co2e_kg_per_unit\":0.5,\"co2_kg_per_unit\":null,\"ch4_kg_per_unit\":null,\"n2o_kg_per_unit\":null,\"quality_tier\":\"custom\",\"resolved_at\":\"2026-11-08T05:53:15.351Z\"},\"input_snapshot\":{\"quantity\":120,\"unit\":\"kWh\",\"normalized_quantity\":120,\"normalized_unit\":\"kWh\",\"activity_date\":\"2026-01-15\",\"category\":\"energy\",\"subcategory\":null,\"activity_type\":\"electricity\"},\"formula_version\":\"v1.0.0\",\"warnings\":[],\"error_code\":null,\"calculated_at\":\"2026-11-08T05:53:15.351Z\"}]"
+      ],
+      "started": "2026-11-08T05:53:15.351Z",
+      "finished": "2026-11-08T05:53:15.355Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.355Z",
+      "finished": "2026-11-08T05:53:15.356Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select to_jsonb(a) activity,(select to_jsonb(c) from calculation_results c where id=$2) calculation from emission_activities a where id=$1",
+      "params": [
+        "8163694d-bcee-461f-963c-bc4dbbb6f0a8",
+        "49540ac8-2348-442a-8f5d-242b47d7c034"
+      ],
+      "started": "2026-11-08T05:53:15.356Z",
+      "finished": "2026-11-08T05:53:15.356Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select (select count(*) from cocal_activity_private.replacements where project_id=$1) replacements,(select count(*) from effective_emission_activities where project_id=$1) effective,(select co2e_kg from effective_calculation_results where project_id=$1 and is_latest) co2e_kg",
+      "params": [
+        "6f3fca12-dbbd-49cc-ae06-9fd8ae73f9f4"
+      ],
+      "started": "2026-11-08T05:53:15.357Z",
+      "finished": "2026-11-08T05:53:15.359Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+        "native-synthetic-3e0a76bc-d32e-4931-a586-bf517a7be2a8"
+      ],
+      "started": "2026-11-08T05:53:15.361Z",
+      "finished": "2026-11-08T05:53:15.362Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:15.362Z",
+      "finished": "2026-11-08T05:53:15.363Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8"
+      ],
+      "started": "2026-11-08T05:53:15.363Z",
+      "finished": "2026-11-08T05:53:15.363Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "9db54ef8-e520-45f8-aed0-61f3bad5a8cb",
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8"
+      ],
+      "started": "2026-11-08T05:53:15.363Z",
+      "finished": "2026-11-08T05:53:15.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.364Z",
+      "finished": "2026-11-08T05:53:15.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.364Z",
+      "finished": "2026-11-08T05:53:15.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:15.364Z",
+      "finished": "2026-11-08T05:53:15.364Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+        "9db54ef8-e520-45f8-aed0-61f3bad5a8cb",
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        "699ad97e-31eb-43ed-9ba5-4f3394681c82",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "bb0aec98-8b5f-4e0c-b950-43610bcdc69b"
+      ],
+      "started": "2026-11-08T05:53:15.364Z",
+      "finished": "2026-11-08T05:53:15.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.366Z",
+      "finished": "2026-11-08T05:53:15.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "7d7a32f1-15c8-424e-9628-c4e1563f31c8",
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8"
+      ],
+      "started": "2026-11-08T05:53:15.366Z",
+      "finished": "2026-11-08T05:53:15.366Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)",
+      "params": [
+        "staging-receipts",
+        "staging/9db54ef8-e520-45f8-aed0-61f3bad5a8cb/96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f.pdf",
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        {
+          "size": 73,
+          "mimetype": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.366Z",
+      "finished": "2026-11-08T05:53:15.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.367Z",
+      "finished": "2026-11-08T05:53:15.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.367Z",
+      "finished": "2026-11-08T05:53:15.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:15.367Z",
+      "finished": "2026-11-08T05:53:15.367Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from begin_upload_verification($1,$2)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        {
+          "organization_id": "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+          "project_id": "9db54ef8-e520-45f8-aed0-61f3bad5a8cb",
+          "document_id": "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+          "request_id": "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+          "storage_bucket": "staging-receipts",
+          "storage_path": "staging/9db54ef8-e520-45f8-aed0-61f3bad5a8cb/96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f.pdf",
+          "original_filename": "SYNTHETIC-NATIVE.pdf",
+          "document_type": "receipt",
+          "file_size_bytes": 73,
+          "mime_type": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.367Z",
+      "finished": "2026-11-08T05:53:15.373Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.373Z",
+      "finished": "2026-11-08T05:53:15.374Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.374Z",
+      "finished": "2026-11-08T05:53:15.374Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.374Z",
+      "finished": "2026-11-08T05:53:15.374Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:15.374Z",
+      "finished": "2026-11-08T05:53:15.374Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from complete_upload_verification($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+        "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+        "6bdf0a3e79fbeb5eafc8902184f7e79a911b6bed1cde81be20e0572b34c4edc2",
+        73,
+        "application/pdf"
+      ],
+      "started": "2026-11-08T05:53:15.375Z",
+      "finished": "2026-11-08T05:53:15.378Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.378Z",
+      "finished": "2026-11-08T05:53:15.378Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "create function public.native_race_barrier() returns trigger language plpgsql as $$begin if new.id='96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f'::uuid and old.deletion_state='active' and new.deletion_state='pending' then perform pg_advisory_xact_lock(2026110801);end if;return new;end$$;create trigger native_race_barrier before update on public.uploaded_documents for each row execute function public.native_race_barrier()",
+      "params": [],
+      "started": "2026-11-08T05:53:15.378Z",
+      "finished": "2026-11-08T05:53:15.389Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.389Z",
+      "finished": "2026-11-08T05:53:15.390Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_advisory_xact_lock($1)",
+      "params": [
+        2026110801
+      ],
+      "started": "2026-11-08T05:53:15.390Z",
+      "finished": "2026-11-08T05:53:15.390Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.390Z",
+      "finished": "2026-11-08T05:53:15.390Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.390Z",
+      "finished": "2026-11-08T05:53:15.390Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:15.390Z",
+      "finished": "2026-11-08T05:53:15.391Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select * from document_deletion_request($1,$2,'prepare')",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        {
+          "organization_id": "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+          "project_id": "9db54ef8-e520-45f8-aed0-61f3bad5a8cb",
+          "document_id": "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+          "request_id": "808bac4e-9c39-4f54-b73f-244fdf709cca",
+          "storage_bucket": "staging-receipts",
+          "storage_path": "staging/9db54ef8-e520-45f8-aed0-61f3bad5a8cb/96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f.pdf",
+          "original_filename": "SYNTHETIC-NATIVE.pdf",
+          "document_type": "receipt",
+          "file_size_bytes": 73,
+          "mime_type": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T05:53:15.391Z",
+      "finished": "2026-11-08T05:53:16.463Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        17332
+      ],
+      "started": "2026-11-08T05:53:15.391Z",
+      "finished": "2026-11-08T05:53:15.391Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        17332
+      ],
+      "started": "2026-11-08T05:53:15.445Z",
+      "finished": "2026-11-08T05:53:15.446Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:15.448Z",
+      "finished": "2026-11-08T05:53:15.448Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:15.448Z",
+      "finished": "2026-11-08T05:53:15.448Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:15.448Z",
+      "finished": "2026-11-08T05:53:15.449Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from create_manual_transcription_atomic($1,$2,$3,$4,$5,$6,$7)",
+      "params": [
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+        "9db54ef8-e520-45f8-aed0-61f3bad5a8cb",
+        "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+        "acb6f782-a614-4531-b549-1643611307f7",
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        "4e3766b2-cfc1-4121-a5b0-8832aa7d0bf1",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2,
+          "subcategory": null,
+          "review_note": "SYNTHETIC NATIVE manual entry",
+          "exclusion_reason": null,
+          "period_start": null,
+          "period_end": null,
+          "source_locator": "SYNTHETIC page 1",
+          "source_text": null
+        }
+      ],
+      "started": "2026-11-08T05:53:15.449Z",
+      "finished": "2026-11-08T05:53:16.462Z",
+      "status": "ERROR",
+      "code": "40P01",
+      "message": "deadlock detected"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.449Z",
+      "finished": "2026-11-08T05:53:15.449Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        48600
+      ],
+      "started": "2026-11-08T05:53:15.490Z",
+      "finished": "2026-11-08T05:53:15.491Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:15.494Z",
+      "finished": "2026-11-08T05:53:15.494Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=any($1::int[])",
+      "params": [
+        [
+          17332,
+          48600
+        ]
+      ],
+      "started": "2026-11-08T05:53:15.494Z",
+      "finished": "2026-11-08T05:53:15.495Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T05:53:16.462Z",
+      "finished": "2026-11-08T05:53:16.462Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T05:53:16.463Z",
+      "finished": "2026-11-08T05:53:16.464Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T05:53:16.464Z",
+      "finished": "2026-11-08T05:53:16.464Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T05:53:16.464Z",
+      "finished": "2026-11-08T05:53:16.464Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d"
+      ],
+      "started": "2026-11-08T05:53:16.464Z",
+      "finished": "2026-11-08T05:53:16.464Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from create_manual_transcription_atomic($1,$2,$3,$4,$5,$6,$7)",
+      "params": [
+        "3e0a76bc-d32e-4931-a586-bf517a7be2a8",
+        "9db54ef8-e520-45f8-aed0-61f3bad5a8cb",
+        "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+        "acb6f782-a614-4531-b549-1643611307f7",
+        "b20d2521-33d8-4a9d-82b3-186c631dba1d",
+        "4e3766b2-cfc1-4121-a5b0-8832aa7d0bf1",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2,
+          "subcategory": null,
+          "review_note": "SYNTHETIC NATIVE manual entry",
+          "exclusion_reason": null,
+          "period_start": null,
+          "period_end": null,
+          "source_locator": "SYNTHETIC page 1",
+          "source_text": null
+        }
+      ],
+      "started": "2026-11-08T05:53:16.464Z",
+      "finished": "2026-11-08T05:53:16.466Z",
+      "status": "ERROR",
+      "code": "42501",
+      "message": "DOCUMENT_DELETION_FENCED"
+    },
+    {
+      "connection": "observer",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T05:53:16.466Z",
+      "finished": "2026-11-08T05:53:16.466Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select deletion_state,(select count(*) from extracted_document_drafts where uploaded_document_id=$1) drafts,(select count(*) from cocal_delete_private.operations where document_id=$1) operations,(select count(*) from audit_logs where project_id=$2 and action='create_manual_transcription_atomic') manual_audits,(select count(*) from audit_logs where project_id=$2 and action='document_delete_prepared') delete_audits from uploaded_documents where id=$1",
+      "params": [
+        "96ad2bd8-921f-4bc8-9b7c-f566dd8f9f9f",
+        "9db54ef8-e520-45f8-aed0-61f3bad5a8cb"
+      ],
+      "started": "2026-11-08T05:53:16.466Z",
+      "finished": "2026-11-08T05:53:16.468Z",
+      "status": "OK"
+    }
+  ]
+}

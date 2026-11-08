@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "baseline_application": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "candidate_application": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "tooling_source": "b7bf83d4ea0e038262af1e9f9988e83db91dac84",
+  "branch": "codex/native-pg-concurrency-20261108",
+  "source_scope": {
+    "unchanged_product_paths": [
+      "frontend/readdy-app/src",
+      "backend/src",
+      "backend/supabase/functions",
+      "modules"
+    ],
+    "new_migration": "backend/supabase/migrations/202611080001_document_lock_order.sql",
+    "comparison": "git diff fixed trees"
+  },
+  "tool_files": [
+    {
+      "file": "run.mjs",
+      "sha256": "1e49a406ff4419097aff8305b07a0a8e7e52f25e14b5b262a5496732d19f8081"
+    },
+    {
+      "file": "boundaries.mjs",
+      "sha256": "2d4b2699f8be37a5e76f2df6e1f06271e209d85c4cb28d9a899395b2b7de4ba2"
+    },
+    {
+      "file": "guard.test.mjs",
+      "sha256": "09060e75a7609e87644d8d725422dbe749731b1bacffe057d0f8008bf111372e"
+    },
+    {
+      "file": "README.md",
+      "sha256": "bf2a75dcc417ca4d662c1e46b2fd35817a0c15fb02d925a08808b81d6bd27eef"
+    }
+  ],
+  "validation": {
+    "native_candidate": {
+      "pass": 8,
+      "lock_observations": 9,
+      "evidence": "CANDIDATE_N4.json"
+    },
+    "independent_candidate": {
+      "pass": 8,
+      "lock_observations": 9,
+      "overlaps": true,
+      "evidence": "INDEPENDENT_CANDIDATE_AUDIT.json"
+    },
+    "baseline": {
+      "pass": 6,
+      "open_finding": "N4 genuine40P01; not all-pass",
+      "evidence": "BASELINE_N4.json"
+    },
+    "related_regression": {
+      "total": 72,
+      "pass": 71,
+      "fail": 0,
+      "skip": "PGlite single connection; native schedules separately evidenced",
+      "evidence": "RELATED_REGRESSIONS.txt"
+    },
+    "guard": {
+      "pass": 2,
+      "fail": 0,
+      "evidence": "GUARD_TESTS.txt"
+    },
+    "catalog_acl": "LOCK_MIGRATION_NATIVE.json",
+    "drift_rejection": "DRIFT_REJECTION.json"
+  },
+  "counting": "Independent repeats/environments not added",
+  "native_server": {
+    "version": "17.11",
+    "host": "127.0.0.1",
+    "port": 55439,
+    "existing5432_touched": false,
+    "credentials_disclosed": false,
+    "windows_service": false
+  },
+  "cloud_writes": false,
+  "new_fees": false,
+  "main_merged": false,
+  "release": "HOLD",
+  "cto_decision": "WAITING_CTO_AFTER_TARGETED_CLAUDE",
+  "not_run": [
+    "Other lock schedules/service load",
+    "Supabase Auth/JWT/Storage HTTP/managed Edge",
+    "Network packet loss",
+    "NOT VALID data audit",
+    "Cloud migration/backup/restore",
+    "Native chooser/save",
+    "19+1 acceptance",
+    "Frontend/type/lint/build rerun locally in this SQL-only batch"
+  ]
+}

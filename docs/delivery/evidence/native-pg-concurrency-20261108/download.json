@@ -1,0 +1,10 @@
+{
+  "source": "https://get.enterprisedb.com/postgresql/postgresql-17.11-5-windows-x64-binaries.zip",
+  "checksumSource": "https://get.enterprisedb.com/postgresql/postgresql-17.11-5-windows-x64-binaries.zip.sha256",
+  "expectedSha256": "80379b2c04d51c30225532e0ae04509899141e9957ed096fe749d7fd9df8f82f",
+  "actualSha256": "80379b2c04d51c30225532e0ae04509899141e9957ed096fe749d7fd9df8f82f",
+  "bytes": 381531864,
+  "verified": true,
+  "executed": false,
+  "scope": "dedicated local synthetic SQL runtime, not Supabase UAT"
+}

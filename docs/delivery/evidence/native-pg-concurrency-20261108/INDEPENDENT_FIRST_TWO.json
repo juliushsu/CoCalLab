@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent review_export",
+  "recordedAt": "2026-11-08T05:52:49.684Z",
+  "source": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "run": "20261108054933334-4d1b0357",
+  "runCommand": "node backend/tools/native-pg-concurrency/run.mjs --run",
+  "database": "cocal_sql_race_20261108054933334_4d1b0357",
+  "runnerSha256ReadBeforeRun": "9acaf5a24e1a1e4fa00e0264f3475f9c6881cc639187d5ff60444a916d603caf",
+  "runResultSha256": "fb19307f092f31e5c6ac48df61712d895addaeb3214ab867dbac17b3b02852bd",
+  "result": "PASS",
+  "synthetic": true,
+  "server": {
+    "version": 170011,
+    "address": "127.0.0.1/32",
+    "port": 55439,
+    "dataDirectoryMatchedDedicatedRuntime": true
+  },
+  "connections": [
+    {
+      "label": "A",
+      "pid": 96380
+    },
+    {
+      "label": "B",
+      "pid": 100668
+    },
+    {
+      "label": "observer",
+      "pid": 27748
+    }
+  ],
+  "lockObservations": [
+    {
+      "label": "same_request_commit_B_waits_for_A_rpc_locks",
+      "observed": "2026-11-08T05:49:37.058Z",
+      "pid": 100668,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        96380
+      ]
+    },
+    {
+      "label": "stale_recalculation_B_waits_for_controlled_edit_A",
+      "observed": "2026-11-08T05:49:37.129Z",
+      "pid": 100668,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        96380
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "same_request_recalculation_and_committed_reply_discard_lookup",
+      "status": "PASS",
+      "actorPids": [
+        96380,
+        100668
+      ],
+      "observerPid": 27748,
+      "counts": {
+        "calculations": "1",
+        "max_version": 1,
+        "audits": "1"
+      },
+      "notes": "A completed actual RPC but held outer transaction until B Lock was observed; no extra row/advisory locks were injected. Saved reply deliberately discarded at application level, not TCP packet loss."
+    },
+    {
+      "name": "concurrent_controlled_edit_rejects_old_input_and_fresh_retry",
+      "status": "PASS",
+      "errorCode": "P0001",
+      "error": "RECALCULATION_INPUT_CHANGED",
+      "freshCo2eKg": 100
+    }
+  ],
+  "sqlFailure": [
+    {
+      "connection": "B",
+      "code": "P0001",
+      "message": "RECALCULATION_INPUT_CHANGED"
+    }
+  ],
+  "rollback": [
+    {
+      "connection": "B",
+      "status": "OK"
+    }
+  ],
+  "readOnlyAudit": {
+    "transaction": [
+      "begin read only",
+      "rollback"
+    ],
+    "guardSql": "select current_database() db,current_setting('server_version_num')::int version,current_setting('data_directory') directory,inet_server_port() port,inet_server_addr()::text address",
+    "guardResult": {
+      "db": "cocal_sql_race_20261108054933334_4d1b0357",
+      "version": 170011,
+      "port": 55439,
+      "address": "127.0.0.1/32",
+      "dataDirectoryMatchedDedicatedRuntime": true
+    },
+    "sql": "select a.quantity,r.saved_result is null and r.completed_at is null and r.completion_order is null as failed_request_uncommitted,(select count(*)::int from calculation_results c where c.project_id=$1) calculations,(select count(*)::int from calculation_results c where c.project_id=$1 and c.is_latest) latest_calculations,(select count(*)::int from audit_logs l where l.project_id=$1 and l.action='recalculate_project_atomic') recalc_audits,(select count(*)::int from cocal_recalc_private.requests x where x.project_id=$1 and x.saved_result is not null) completed_requests from emission_activities a join cocal_recalc_private.requests r on r.project_id=a.project_id and r.request_id=$2 where a.project_id=$1",
+    "params": [
+      "1c298898-239d-4d0d-a19a-66e8d3138be2",
+      "00f5de63-3816-4b05-b1b1-6c5d8d09d3dc"
+    ],
+    "actual": {
+      "quantity": "200.00000000",
+      "failed_request_uncommitted": true,
+      "calculations": 1,
+      "latest_calculations": 1,
+      "recalc_audits": 1,
+      "completed_requests": 1
+    },
+    "assertions": [
+      "source quantity remains 200",
+      "failed old request saved_result/completed_at/completion_order remain NULL",
+      "one fresh calculation and one latest result",
+      "one successful recalculation audit",
+      "one completed request"
+    ]
+  },
+  "notRun": [
+    "Managed Supabase/PostgREST/JWT/Storage/Edge",
+    "Native file chooser/save",
+    "Cloud migration/backup/restore",
+    "Other lock combinations beyond named cases",
+    "Delete/reference, N1 confirmation, N3 replacement and N4 deadlock interleavings (runner not implemented yet)"
+  ],
+  "scope": "Only first two recalculation cases; no N4 closure, no TCP packet-loss claim, no cloud/managed Auth/Storage acceptance"
+}
