@@ -1,0 +1,18 @@
+{
+  "product_sha": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+  "compiler_checked_sha": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+  "code_paths_compared": [
+    "backend/src",
+    "backend/supabase/functions",
+    "frontend/readdy-app/src",
+    "modules"
+  ],
+  "git_diff_empty": true,
+  "difference": "Only SQL publisher validation order; exact migration hashes above. Static check/bundle evidence executed for99c233d, not rerun or relabelled as040.",
+  "config_reference": "deployment/uat/candidates/ed6ca9bbfbc5/full-config.cli-2.122.1.toml.example",
+  "config_sha256": "396344d37ddfb4e1f6c5a51290049884ba33b66a2a697a44ad708d133fe6aafc",
+  "gateway_verify_jwt_true_count": 16,
+  "config_parser_executed_for": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "target_project_ref": null,
+  "cloud_executed": false
+}

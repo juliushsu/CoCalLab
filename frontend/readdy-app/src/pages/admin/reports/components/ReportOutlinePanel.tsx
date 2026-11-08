@@ -1,5 +1,6 @@
 import type {ReportSavedSnapshot} from '../../../../types/report';
 import {buildReportOutline} from '../../../../services/reportOutline';
+import ReplacementDisclosurePanel from './ReplacementDisclosurePanel';
 
 export default function ReportOutlinePanel({snapshot}:{snapshot?:ReportSavedSnapshot|null}){
   const outline=buildReportOutline(snapshot);
@@ -11,6 +12,7 @@ export default function ReportOutlinePanel({snapshot}:{snapshot?:ReportSavedSnap
       <ol className="mt-4 grid gap-2 text-sm text-gray-700 sm:grid-cols-2">{outline.chapters.map(chapter=><li key={chapter.key}>{chapter.order}. {chapter.title}</li>)}</ol>
     </>:<>
       <p className="mt-3 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">{outline.provenance}；保存環境：{outline.environment}。內容依保存資料呈現，不回填示範值。</p>
+      <ReplacementDisclosurePanel payload={snapshot?.payload}/>
       {outline.notes.length>0&&<ul role="alert" className="mt-3 list-disc space-y-1 pl-5 text-sm text-red-700">{outline.notes.map(note=><li key={note}>{note}</li>)}</ul>}
       <div className="mt-4 space-y-3">{outline.chapters.map(chapter=><details key={chapter.key} open={chapter.order===1||chapter.order===4} className="rounded-lg border border-gray-200 p-4">
         <summary className="cursor-pointer font-medium text-gray-900">{chapter.order}. {chapter.title}<span className="ml-3 text-xs font-normal text-gray-500">保存欄位與缺件（非章節完成狀態）</span></summary>

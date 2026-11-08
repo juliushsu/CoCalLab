@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "roots": [
+    "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+  ],
+  "modules": [
+    {
+      "kind": "external",
+      "specifier": "c:\\Users\\User\\OneDrive\\%E6%96%87%E4%BB%B6\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+    }
+  ],
+  "redirects": {},
+  "npmPackages": {
+    "@supabase/auth-js@2.69.1": {
+      "name": "@supabase/auth-js",
+      "version": "2.69.1",
+      "dependencies": [
+        "@supabase/node-fetch@2.6.15"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\auth-js\\2.69.1"
+    },
+    "@supabase/functions-js@2.4.4": {
+      "name": "@supabase/functions-js",
+      "version": "2.4.4",
+      "dependencies": [
+        "@supabase/node-fetch@2.6.15"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\functions-js\\2.4.4"
+    },
+    "@supabase/node-fetch@2.6.15": {
+      "name": "@supabase/node-fetch",
+      "version": "2.6.15",
+      "dependencies": [
+        "whatwg-url@5.0.0"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\node-fetch\\2.6.15"
+    },
+    "@supabase/postgrest-js@1.19.4": {
+      "name": "@supabase/postgrest-js",
+      "version": "1.19.4",
+      "dependencies": [
+        "@supabase/node-fetch@2.6.15"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\postgrest-js\\1.19.4"
+    },
+    "@supabase/realtime-js@2.11.2": {
+      "name": "@supabase/realtime-js",
+      "version": "2.11.2",
+      "dependencies": [
+        "@supabase/node-fetch@2.6.15",
+        "@types/phoenix@1.6.8",
+        "@types/ws@8.18.2",
+        "ws@8.22.1"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\realtime-js\\2.11.2"
+    },
+    "@supabase/storage-js@2.7.1": {
+      "name": "@supabase/storage-js",
+      "version": "2.7.1",
+      "dependencies": [
+        "@supabase/node-fetch@2.6.15"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\storage-js\\2.7.1"
+    },
+    "@supabase/supabase-js@2.49.4": {
+      "name": "@supabase/supabase-js",
+      "version": "2.49.4",
+      "dependencies": [
+        "@supabase/auth-js@2.69.1",
+        "@supabase/functions-js@2.4.4",
+        "@supabase/node-fetch@2.6.15",
+        "@supabase/postgrest-js@1.19.4",
+        "@supabase/realtime-js@2.11.2",
+        "@supabase/storage-js@2.7.1"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@supabase\\supabase-js\\2.49.4"
+    },
+    "@types/node@22.12.0": {
+      "name": "@types/node",
+      "version": "22.12.0",
+      "dependencies": [
+        "undici-types@6.20.0"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@types\\node\\22.12.0"
+    },
+    "@types/phoenix@1.6.8": {
+      "name": "@types/phoenix",
+      "version": "1.6.8",
+      "dependencies": [],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@types\\phoenix\\1.6.8"
+    },
+    "@types/ws@8.18.2": {
+      "name": "@types/ws",
+      "version": "8.18.2",
+      "dependencies": [
+        "@types/node@22.12.0"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\@types\\ws\\8.18.2"
+    },
+    "tr46@0.0.3": {
+      "name": "tr46",
+      "version": "0.0.3",
+      "dependencies": [],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\tr46\\0.0.3"
+    },
+    "undici-types@6.20.0": {
+      "name": "undici-types",
+      "version": "6.20.0",
+      "dependencies": [],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\undici-types\\6.20.0"
+    },
+    "webidl-conversions@3.0.1": {
+      "name": "webidl-conversions",
+      "version": "3.0.1",
+      "dependencies": [],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\webidl-conversions\\3.0.1"
+    },
+    "whatwg-url@5.0.0": {
+      "name": "whatwg-url",
+      "version": "5.0.0",
+      "dependencies": [
+        "tr46@0.0.3",
+        "webidl-conversions@3.0.1"
+      ],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\whatwg-url\\5.0.0"
+    },
+    "ws@8.22.1": {
+      "name": "ws",
+      "version": "8.22.1",
+      "dependencies": [],
+      "registryUrl": "https://registry.npmjs.org/",
+      "localPath": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-cache\\npm\\registry.npmjs.org\\ws\\8.22.1"
+    }
+  }
+}

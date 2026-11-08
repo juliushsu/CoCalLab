@@ -1,0 +1,3 @@
+Browser tab: 1290549180, Title: "CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔", URL: "http://127.0.0.1:4217/admin/reports/a2a5278b-6815-418d-85f9-68484932bb28?organization_id=481fc117-6ee3-4189-8ef7-d8b2d589cace&project_id=9703e9ea-f7b5-4f23-a51d-797063d99a1f".
+There has been no change in the accessibility tree.
+The focused UI element is 1 AXWebArea CaCalLab 架構凍結版 | 碳計算實驗室產品架構文檔, URL: 127.0.0.1:4217/admin/reports/a2a5278b-6815-418d-85f9-68484932bb28?organization_id=481fc117-6ee3-4189-8ef7-d8b2d589cace&project_id=9703e9ea-f7b5-4f23-a51d-797063d99a1f

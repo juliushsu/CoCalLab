@@ -1,0 +1,18 @@
+{
+  "started": "2026-11-08T10:15:22.392Z",
+  "finished": "2026-11-08T10:16:54.529Z",
+  "head": "9481fa3969f9fc3af9529267183b8ea1845fb83f",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "backend/tests/integration/cto-p2-source-authority-sql.test.js",
+    "backend/tests/integration/report-integrity-sql.test.js",
+    "backend/tests/integration/replacement-provenance-sql.test.js"
+  ],
+  "exitCode": 0,
+  "signal": null,
+  "migration": "backend/supabase/migrations/202611080002_replacement_provenance.sql",
+  "sha256": "d91770e861d39c6d4eaea96306c50cddd0b59af88c6ac983acb8fd4f3da180a9",
+  "stdoutAndStderr": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\replacement-provenance-20261108\\mapping-contract-targets-20261108101522390.log"
+}

@@ -1,0 +1,10 @@
+✔ dedicated target guard rejects foreign hosts ports paths and users (6.0257ms)
+✔ unknown and multi-argument invocations fail before connection setup (1.5983ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 118.554

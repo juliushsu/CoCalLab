@@ -1,0 +1,280 @@
+{
+  "export_format_version": "cocallab-report-snapshot-v1",
+  "emissions_unit": "kgCO2e (source snapshot; adjustment fields retain their explicit units)",
+  "replacement_disclosure": {
+    "state": "recorded",
+    "message": "人工更正／排除：原收據僅為歷史來源，不佐證更正後的數值；版本理由與原件驗證不代表更正值已查證。",
+    "disclosures": [
+      {
+        "emission_activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+        "replacement_provenance": {
+          "steps": [
+            {
+              "reason": "SYNTHETIC 現場人工複核：100 更正為 120；原收據僅為歷史來源",
+              "changes": {
+                "quantity": {
+                  "after": 120,
+                  "before": 100
+                },
+                "normalized_unit": {
+                  "after": null,
+                  "before": "kWh"
+                },
+                "normalized_quantity": {
+                  "after": null,
+                  "before": 100
+                }
+              },
+              "activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+              "occurred_at": "2026-11-08T10:08:27.849+00:00",
+              "actor_user_id": "b244105c-b363-446a-b6f6-525ee6a41683",
+              "replacement_mode": "correct",
+              "predecessor_activity_id": "6364fd0b-0533-4117-8c2e-47f09563455b"
+            }
+          ],
+          "version": "20261108.replacement.1",
+          "source_usage": "historical_reference_only",
+          "receipt_verification_status": "server_verified"
+        }
+      }
+    ]
+  },
+  "snapshot": {
+    "id": "a1c26efd-6d29-4eef-96fd-d31ef20a26df",
+    "organization_id": "35a023b2-f547-4d0e-9bcb-07c323924dec",
+    "project_id": "5cb41138-5644-46c4-b6cc-892f427f74a4",
+    "status": "completed",
+    "integrity_status": "server_verified",
+    "report_version": 2,
+    "created_at": "2026-11-08T10:08:44.669Z",
+    "payload": {
+      "scope_totals": {
+        "scope_1": 0,
+        "scope_2": 120,
+        "scope_3": 0,
+        "unknown": 0
+      },
+      "site_snapshot": {},
+      "category_totals": {
+        "energy": 120
+      },
+      "boundary_summary": {
+        "boundary_type": "operational_control",
+        "pending_count": 0,
+        "excluded_count": 0,
+        "included_count": 1
+      },
+      "project_metadata": {
+        "name": "SYNTHETIC local workflow",
+        "status": "draft",
+        "site_id": null,
+        "project_id": "5cb41138-5644-46c4-b6cc-892f427f74a4",
+        "project_code": "SYNTHETIC-LOCAL",
+        "workspace_id": "35a023b2-f547-4d0e-9bcb-07c323924dec",
+        "legal_entity_id": null,
+        "organization_id": "35a023b2-f547-4d0e-9bcb-07c323924dec"
+      },
+      "reporting_period": {
+        "end_date": "2026-12-31",
+        "start_date": "2026-01-01"
+      },
+      "appendix_mappings": [
+        {
+          "source_draft_id": "3ad1d613-cf42-49f4-8f25-d0fc1969d2ec",
+          "source_document_id": "15cbfe54-b1cc-4162-a51a-f452c1d658a6",
+          "emission_activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+          "calculation_result_id": "da12063f-6706-4bda-89a5-4fd4698f6701",
+          "replacement_provenance": {
+            "steps": [
+              {
+                "reason": "SYNTHETIC 現場人工複核：100 更正為 120；原收據僅為歷史來源",
+                "changes": {
+                  "quantity": {
+                    "after": 120,
+                    "before": 100
+                  },
+                  "normalized_unit": {
+                    "after": null,
+                    "before": "kWh"
+                  },
+                  "normalized_quantity": {
+                    "after": null,
+                    "before": 100
+                  }
+                },
+                "activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+                "occurred_at": "2026-11-08T10:08:27.849+00:00",
+                "actor_user_id": "b244105c-b363-446a-b6f6-525ee6a41683",
+                "replacement_mode": "correct",
+                "predecessor_activity_id": "6364fd0b-0533-4117-8c2e-47f09563455b"
+              }
+            ],
+            "version": "20261108.replacement.1",
+            "source_usage": "historical_reference_only",
+            "receipt_verification_status": "server_verified"
+          }
+        }
+      ],
+      "boundary_snapshot": {
+        "site_id": null,
+        "site_label": null,
+        "workspace_id": "35a023b2-f547-4d0e-9bcb-07c323924dec",
+        "boundary_type": "operational_control",
+        "legal_entity_id": null,
+        "workspace_label": "SYNTHETIC LOCAL ONLY",
+        "reporting_period": {
+          "end_date": "2026-12-31",
+          "start_date": "2026-01-01"
+        },
+        "legal_entity_label": null
+      },
+      "workspace_snapshot": {
+        "slug": "synthetic-local-35a023b2-f547-4d0e-9bcb-07c323924dec",
+        "workspace_id": "35a023b2-f547-4d0e-9bcb-07c323924dec",
+        "workspace_label": "SYNTHETIC LOCAL ONLY"
+      },
+      "factor_sources_used": [
+        {
+          "version": 1,
+          "factor_id": "9e2bb817-8909-4326-8e36-05cc179c4725",
+          "factor_key": "SYNTHETIC-1",
+          "source_url": null,
+          "factor_name": "SYNTHETIC custom factor",
+          "source_name": "SYNTHETIC TEST ONLY",
+          "quality_tier": "custom",
+          "source_reference": null
+        }
+      ],
+      "legal_entity_snapshot": {},
+      "ai_summary_placeholder": {
+        "en": "AI audit summary pending",
+        "ja": "AI 監査サマリーは未生成です",
+        "zh_tw": "AI 健檢摘要待產生"
+      },
+      "correction_disclosures": [
+        {
+          "emission_activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+          "replacement_provenance": {
+            "steps": [
+              {
+                "reason": "SYNTHETIC 現場人工複核：100 更正為 120；原收據僅為歷史來源",
+                "changes": {
+                  "quantity": {
+                    "after": 120,
+                    "before": 100
+                  },
+                  "normalized_unit": {
+                    "after": null,
+                    "before": "kWh"
+                  },
+                  "normalized_quantity": {
+                    "after": null,
+                    "before": 100
+                  }
+                },
+                "activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+                "occurred_at": "2026-11-08T10:08:27.849+00:00",
+                "actor_user_id": "b244105c-b363-446a-b6f6-525ee6a41683",
+                "replacement_mode": "correct",
+                "predecessor_activity_id": "6364fd0b-0533-4117-8c2e-47f09563455b"
+              }
+            ],
+            "version": "20261108.replacement.1",
+            "source_usage": "historical_reference_only",
+            "receipt_verification_status": "server_verified"
+          }
+        }
+      ],
+      "data_gaps_and_warnings": [],
+      "excluded_items_summary": [],
+      "included_activities_summary": [
+        {
+          "co2e_kg": 120,
+          "category": "energy",
+          "final_scope": 2,
+          "subcategory": null,
+          "activity_code": "REVISION-5402dbff-8655-4497-a2d2-dd324e7bae64",
+          "activity_date": "2026-01-15",
+          "activity_name": "SYNTHETIC 保留原版100kWh",
+          "emission_activity_id": "5402dbff-8655-4497-a2d2-dd324e7bae64"
+        }
+      ],
+      "replacement_disclosure_version": "20261108.replacement.1"
+    },
+    "payload_hash": "862dade08135efbd59a05d78493e49f54fad9a18674bd675d98136b44d730a58",
+    "reporting_period_start": "2026-01-01",
+    "reporting_period_end": "2026-12-31",
+    "included_activity_count": 1,
+    "excluded_activity_count": 0,
+    "pending_activity_count": 0,
+    "scope_totals": {
+      "scope_1": 0,
+      "scope_2": 120,
+      "scope_3": 0,
+      "unknown": 0
+    },
+    "category_totals": {
+      "energy": 120
+    },
+    "factor_sources": [
+      {
+        "version": 1,
+        "factor_id": "9e2bb817-8909-4326-8e36-05cc179c4725",
+        "factor_key": "SYNTHETIC-1",
+        "source_url": null,
+        "factor_name": "SYNTHETIC custom factor",
+        "source_name": "SYNTHETIC TEST ONLY",
+        "quality_tier": "custom",
+        "source_reference": null
+      }
+    ],
+    "warning_count": 0,
+    "based_on_calculated_at": "2026-11-08T10:08:44.668Z",
+    "is_test": true,
+    "env": "staging",
+    "legal_entity_snapshot": {},
+    "site_snapshot": {},
+    "boundary_snapshot": {
+      "site_id": null,
+      "site_label": null,
+      "workspace_id": "35a023b2-f547-4d0e-9bcb-07c323924dec",
+      "boundary_type": "operational_control",
+      "legal_entity_id": null,
+      "workspace_label": "SYNTHETIC LOCAL ONLY",
+      "reporting_period": {
+        "end_date": "2026-12-31",
+        "start_date": "2026-01-01"
+      },
+      "legal_entity_label": null
+    },
+    "gross_emissions_snapshot": {
+      "scope_totals": {
+        "scope_1": 0,
+        "scope_2": 120,
+        "scope_3": 0,
+        "unknown": 0
+      },
+      "category_totals": {
+        "energy": 120
+      },
+      "gross_total_co2e_kg": 120
+    },
+    "adjustment_summary": {
+      "claim_purpose": "internal_management",
+      "application_count": 0,
+      "eligible_total_tco2e": 0,
+      "requested_total_tco2e": 0,
+      "disallowed_total_tco2e": 0
+    },
+    "claim_results": {
+      "claim_purpose": "internal_management",
+      "gross_co2e_kg": 120,
+      "claim_net_co2e_kg": 120,
+      "eligible_deduction_kg": 0,
+      "inventory_impact_mode": "claim_only",
+      "eligible_deduction_tco2e": 0
+    },
+    "claim_purpose": "internal_management",
+    "adjustment_manifest": []
+  }
+}

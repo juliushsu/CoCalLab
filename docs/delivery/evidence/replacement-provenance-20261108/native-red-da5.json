@@ -1,0 +1,997 @@
+{
+  "schemaVersion": 1,
+  "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "run": "20261108095006843-8aba9a46",
+  "mode": "draft_trigger_vulnerable_baseline",
+  "status": "NATIVE_EVIDENCE_WITH_OPEN_FINDING",
+  "started": "2026-11-08T09:50:06.845Z",
+  "finished": "2026-11-08T09:50:11.741Z",
+  "database": "cocal_sql_race_20261108095006843_8aba9a46",
+  "server": {
+    "db": "postgres",
+    "username": "cocal_uat_admin",
+    "version": 170011,
+    "encoding": "UTF8",
+    "data_directory": "<DEDICATED_RUNTIME>/data",
+    "listen": "127.0.0.1",
+    "address": "127.0.0.1/32",
+    "port": 55439,
+    "pid": 30020
+  },
+  "driver": "8.16.3",
+  "synthetic": true,
+  "cloudTouched": false,
+  "existing5432Touched": false,
+  "auth": "SET LOCAL ROLE + synthetic auth.uid; no JWT",
+  "storage": "synthetic SQL catalog only; no Storage HTTP/bytes",
+  "migrations": [
+    {
+      "file": "202603160001_v1_core_schema.sql",
+      "sha256": "c57662f2e5c9802ce8a9fd92f4d892600c6c32a9e5d48fa592c871a6dc8c5b0a"
+    },
+    {
+      "file": "202603160002_v1_hardening_atomic_rpc.sql",
+      "sha256": "06596af1e83e811cd75cb99985d4466a5391000c174e5eca599ec8aac9d56488"
+    },
+    {
+      "file": "202603160003_v1_hardening_document_atomic_rpc.sql",
+      "sha256": "1ce309ac4cee191407633efa1fad61b3f86c7a6601d2eece29775c95f1ed021c"
+    },
+    {
+      "file": "202603160004_v1_hardening_recalculate_atomic_rpc.sql",
+      "sha256": "915f42af129caacbf3d303b32044d36563ec48ef09ac856ae7198fe776fe607e"
+    },
+    {
+      "file": "202603160005_v1_hardening_generate_report_atomic_rpc.sql",
+      "sha256": "41b9a0152376c091b0c8c8b78fd3eeec988b8466ef925a7a2973695155c75a0a"
+    },
+    {
+      "file": "202603160006_v1_hardening_run_ai_audit_atomic_rpc.sql",
+      "sha256": "d6780dc277b9c1b3307cb7b23358128254cf387b6ed7a548b14d9ac79d2fdf07"
+    },
+    {
+      "file": "202603160007_v1_hardening_classify_atomic_rpc.sql",
+      "sha256": "c5200592fff450eb779fc28e5027b55a13dc127fc2cb865d679236e6c09ad385"
+    },
+    {
+      "file": "202603160009_v1_p0_process_document_atomic_fix.sql",
+      "sha256": "df2394818e238ddea003375e0957f95ae75adb45ea77e8aeee206386fce79221"
+    },
+    {
+      "file": "202603160010_v1_p0_classify_atomic_fix.sql",
+      "sha256": "69c2809fa0b2e7847cd744fe62c9334f04bcc55557637b6c05c2356417e2ad2d"
+    },
+    {
+      "file": "202603160011_v1_p0_confirm_atomic_fix.sql",
+      "sha256": "4e0af1ec523f5277ef7cc9747656de058b4031a30479ff1472113860ae7323f6"
+    },
+    {
+      "file": "202603180001_v1_staging_hardening_columns.sql",
+      "sha256": "ec09e37e3793c8e59de18550b4150bca5266b95362db5bd6a0c5fdd90e4cc330"
+    },
+    {
+      "file": "202603180002_v1_staging_action_logs.sql",
+      "sha256": "8cd370317344589b4f86c99a62498f8e843bfdef8f60f5a2050d01acf76a6eee"
+    },
+    {
+      "file": "202603180003_v1_staging_purge_dry_run.sql",
+      "sha256": "0fa12f4bfc4c90f247bd0c5c959724c096f250fd70a044d740dcba9646296e54"
+    },
+    {
+      "file": "202603180004_v1_staging_purge_function.sql",
+      "sha256": "5b4cff65fb0700b3285c94444c6d00cc926b792d60f5fe149e50450b9c64e289"
+    },
+    {
+      "file": "202603180005_v1_staging_storage_isolation.sql",
+      "sha256": "10fe15af02bb4b7c5430b2ce4b28a3f409cc495e534dd22014dc65eda613ffb8"
+    },
+    {
+      "file": "202603180006_v1_staging_hardening_followup.sql",
+      "sha256": "b1d0b6c734e491689be9772c1a7287c181f120327084987418ee71bd8de8531b"
+    },
+    {
+      "file": "202603180008_v1_p1_org_membership_alignment.sql",
+      "sha256": "f50f7bd2c5f6f4c731e0b7392252e1f858568bcb86d3954925d865d7b0fccec3"
+    },
+    {
+      "file": "202603180009_v1_member_management_rpc.sql",
+      "sha256": "3ea6e40fbd1dabddc7e90a5c194a17d9020ab6dee037909b8e837b4852183a44"
+    },
+    {
+      "file": "202604070001_v1_org_read_chain_fix.sql",
+      "sha256": "6b850d64b9cb35fbdbe2cd83eb9e34bcf33112de1a2ec6a0128679a59b9ef208"
+    },
+    {
+      "file": "202604070002_v1_analytics_classification_backbone.sql",
+      "sha256": "405f6fafff39143cd08444b025ff27f67de94e9574bb11070f7a10130a21efb1"
+    },
+    {
+      "file": "202604070003_v1_adjustments_and_report_integration.sql",
+      "sha256": "f3db51ce05d05f3ae9073bd03018c1bdcf0534f19b64efb973201b33ee168567"
+    },
+    {
+      "file": "202604070004_v1_adjustment_rule_engine_and_purge_update.sql",
+      "sha256": "deb5f4c611d67f63ebad3c6c1f1f39fdbc655b22b78125c33de24c166b6bb390"
+    },
+    {
+      "file": "202604070006_v1_canonical_seed_pack_governance.sql",
+      "sha256": "feecbc41fb8e6984e8b6ae071a1b3678252b0d27413b53555d32d52417421c26"
+    },
+    {
+      "file": "202605080001_phase1_boundary_governance_staging.sql",
+      "sha256": "320123171cd8a8bce5eea7a31687c82561057f2d8ec6139aa5b23be2d5bb5fa6"
+    },
+    {
+      "file": "202610310001_organization_profile_update.sql",
+      "sha256": "44b0e230025d91a905be5f12656ff913d159ec9b208c8c87d5bdbc4ca4f46da3"
+    },
+    {
+      "file": "202610310002_project_identity_guard.sql",
+      "sha256": "590ed6dad872a16c24dc8e63e74b20273c104073a8bf172bd675d3b4be467db4"
+    },
+    {
+      "file": "202610310003_atomic_rpc_service_role_only.sql",
+      "sha256": "ef285acba8bbc9dab65c95a55bb294ed6deb01551c55f01f4134db693a6bc482"
+    },
+    {
+      "file": "202610310004_tenant_relationship_integrity.sql",
+      "sha256": "7345c2c7ea5a22daae7b037aa2f473da0468de9ce270036f9fb1bf057e269ed1"
+    },
+    {
+      "file": "202610310005_project_lookup_acl.sql",
+      "sha256": "b595612111f760a7e9bb8c27f8db6d5b6a52f03c6ed59884f87e33198a98bce5"
+    },
+    {
+      "file": "202610310006_action_logs_read_boundary.sql",
+      "sha256": "6c7dec851605323ef46ada4d0868703f849caf15bd35cf2e57988194a5fdedb7"
+    },
+    {
+      "file": "202611020001_secure_upload_storage.sql",
+      "sha256": "87b109ea0fd1124d7715b51812762e802c85f7c59cdc03c0cda6e061a8d4c8a7"
+    },
+    {
+      "file": "202611020002_storage_receipt_review_fixes.sql",
+      "sha256": "d3b6760ba0bcb873aa464a82b363545a3d0256f7c5d91cdd3998a82a674911d8"
+    },
+    {
+      "file": "202611060001_report_snapshot_atomic_v2.sql",
+      "sha256": "a952b36d0a0e621d711f9ca30ccd2e60ad578939d158a96a9bca1880e75922f0"
+    },
+    {
+      "file": "202611060002_manual_transcription_v1.sql",
+      "sha256": "25db5353b20eaf38fef2e63017c97f99c8ada7ae481ecb6161cfd1d70cfb7b7d"
+    },
+    {
+      "file": "202611060003_server_attachment_verification.sql",
+      "sha256": "2382e8abf661003aca6551342d9b3b193930ae0e1aee61cb207f163031d10beb"
+    },
+    {
+      "file": "202611060004_recalculation_requests.sql",
+      "sha256": "69d292cffb7185e5c51b1704617a9c2177a41984771dde173d6a9a613941b815"
+    },
+    {
+      "file": "202611060005_controlled_document_deletion.sql",
+      "sha256": "48140e5037fb54ad69b2d71dd114fc80bd1272c9d1f1aa1922c3cc01f2f2a82f"
+    },
+    {
+      "file": "202611060006_report_snapshot_integrity.sql",
+      "sha256": "eb079b1550078be4656de6abae2570f6bbad6f3c9e3c3ac53e54f59f66201a3f"
+    },
+    {
+      "file": "202611070001_calculation_source_authority.sql",
+      "sha256": "e36b2acb0c1cd6f3e22603c02b71addb83ff84abb5b6da816f0d35b4614503a8"
+    },
+    {
+      "file": "202611070002_manual_processing_fences.sql",
+      "sha256": "7bdcaccdb940f222a2e1f6c4f45238a20f04b189d296bdb4e15e3999e819ed6c"
+    },
+    {
+      "file": "202611070003_report_source_retention.sql",
+      "sha256": "ef5d90af38303f96d93f7866c085b5a9f4e4cd57f2dc673e55042f573375f0fb"
+    },
+    {
+      "file": "202611070004_manual_document_confirmation_boundary.sql",
+      "sha256": "64c88774d0cc15eca86956a377abe7280f4433fc3f719eeabf97f63382236fb3"
+    },
+    {
+      "file": "202611070005_activity_replacements.sql",
+      "sha256": "95ee70942c4410864f2bc65a18a558098c3abd2f432d67709aa188e6ce63583a"
+    },
+    {
+      "file": "202611080001_document_lock_order.sql",
+      "sha256": "279aade972a485f0d267d13d57eeda6df47f8fefd16b10974aa8416f79f0a1d9"
+    }
+  ],
+  "omitted": [
+    "202603160008_v1_frontend_fixture_seed.sql",
+    "202603180007_v1_staging_fixture_alignment.sql",
+    "202604070005_v1_adjustment_fixture_seed.sql"
+  ],
+  "connections": [
+    {
+      "label": "A",
+      "pid": 99084
+    },
+    {
+      "label": "B",
+      "pid": 52260
+    },
+    {
+      "label": "observer",
+      "pid": 71488
+    }
+  ],
+  "cases": [
+    {
+      "name": "N4_R1_between_ordinary_draft_triggers",
+      "status": "REPRODUCED_OPEN_FINDING",
+      "errorCode": "40P01",
+      "originalDraftId": "0ca191c1-22f3-4814-be0c-dad5d13757f5",
+      "originalDeleteRequestId": "013b1ab0-029f-4129-85b1-5c810f979ded"
+    }
+  ],
+  "lockObservations": [
+    {
+      "label": "R1_SYNTHETIC_barrier_between_deletion_and_manual_triggers",
+      "observed": "2026-11-08T09:50:10.709Z",
+      "pid": 99084,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "advisory",
+      "blockers": [
+        71488
+      ]
+    },
+    {
+      "label": "R1_baseline_delete_waits_for_ordinary_document_fence",
+      "observed": "2026-11-08T09:50:10.754Z",
+      "pid": 52260,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "advisory",
+      "blockers": [
+        99084
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "N4-R1",
+      "status": "OPEN_REPRODUCED_40P01",
+      "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+      "cycle": {
+        "released": "2026-11-08T09:50:10.757Z",
+        "observed": "2026-11-08T09:50:10.786Z",
+        "rows": [
+          {
+            "pid": 99084,
+            "state": "active",
+            "wait_event_type": "Lock",
+            "wait_event": "transactionid",
+            "blockers": [
+              52260
+            ]
+          },
+          {
+            "pid": 52260,
+            "state": "active",
+            "wait_event_type": "Lock",
+            "wait_event": "advisory",
+            "blockers": [
+              99084
+            ]
+          }
+        ],
+        "observerNotInCycle": true
+      },
+      "victim": {
+        "label": "delete_prepare",
+        "pid": 52260,
+        "code": "40P01",
+        "message": "deadlock detected",
+        "where": "SQL statement \"SELECT pg_advisory_xact_lock(hashtextextended('document-delete:'||doc::text,0))\"\nPL/pgSQL function public.document_deletion_request(uuid,jsonb,text) line 10 at PERFORM",
+        "detail": "Process 52260 waits for ExclusiveLock on advisory lock [49187,892374706,33435641,1]; blocked by process 99084.\nProcess 99084 waits for ShareLock on transaction 9322; blocked by process 52260."
+      },
+      "winner": "ordinary_draft",
+      "triggerOrder": [
+        "deletion_draft_reference",
+        "n4_r1_between_draft_triggers",
+        "protect_manual_draft",
+        "report_retain_draft",
+        "trg_extracted_document_drafts_updated_at"
+      ],
+      "syntheticBarrier": {
+        "triggerSql": "create function public.n4_r1_draft_barrier() returns trigger language plpgsql as $$begin if new.id='0ca191c1-22f3-4814-be0c-dad5d13757f5'::uuid then perform pg_advisory_xact_lock(2026110803);end if;return new;end$$;create trigger n4_r1_between_draft_triggers before insert or update on public.extracted_document_drafts for each row execute function public.n4_r1_draft_barrier()",
+        "released": "2026-11-08T09:50:10.757Z",
+        "observerPid": 71488
+      },
+      "state": {
+        "drafts": "1",
+        "operations": "0",
+        "activities": "1",
+        "calculations": "0",
+        "delete_audits": "0",
+        "deletion_state": "active"
+      }
+    }
+  ],
+  "commands": [
+    {
+      "connection": "guard",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T09:50:07.205Z",
+      "finished": "2026-11-08T09:50:07.205Z",
+      "status": "OK"
+    },
+    {
+      "connection": "guard",
+      "sql": "select pg_advisory_xact_lock(20261108,55439)",
+      "params": [],
+      "started": "2026-11-08T09:50:07.205Z",
+      "finished": "2026-11-08T09:50:07.208Z",
+      "status": "OK"
+    },
+    {
+      "connection": "guard",
+      "sql": "select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1",
+      "params": [
+        "authenticated"
+      ],
+      "started": "2026-11-08T09:50:07.208Z",
+      "finished": "2026-11-08T09:50:07.221Z",
+      "status": "OK"
+    },
+    {
+      "connection": "guard",
+      "sql": "select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1",
+      "params": [
+        "anon"
+      ],
+      "started": "2026-11-08T09:50:07.221Z",
+      "finished": "2026-11-08T09:50:07.222Z",
+      "status": "OK"
+    },
+    {
+      "connection": "guard",
+      "sql": "select rolcanlogin,rolsuper,rolbypassrls from pg_roles where rolname=$1",
+      "params": [
+        "service_role"
+      ],
+      "started": "2026-11-08T09:50:07.222Z",
+      "finished": "2026-11-08T09:50:07.222Z",
+      "status": "OK"
+    },
+    {
+      "connection": "guard",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T09:50:07.222Z",
+      "finished": "2026-11-08T09:50:07.223Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "create schema auth;create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;create schema storage;create table storage.buckets(id text primary key,name text not null,public boolean not null default false);create table storage.objects(id uuid primary key default gen_random_uuid(),bucket_id text not null references storage.buckets(id),name text not null,owner uuid,owner_id text,metadata jsonb,unique(bucket_id,name));alter table storage.objects enable row level security;create function storage.foldername(name text) returns text[] language sql immutable as $$select (string_to_array(name,'/'))[1:array_length(string_to_array(name,'/'),1)-1]$$;grant usage on schema auth,public,storage to authenticated,anon,service_role;",
+      "params": [],
+      "started": "2026-11-08T09:50:07.223Z",
+      "finished": "2026-11-08T09:50:07.315Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 hardening: process-document atomic RPC\n-- Generated at 2026-03-16\n\ncreate or replace function process_document_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_uploaded_document_id uuid,\n  p_raw_payload jsonb,\n  p_normalized_payload jsonb,\n  p_status draft_status,\n  p_confidence_score numeric,\n  p_provider text,\n  p_model text,\n  p_request_id text default null\n)\nreturns table (\n  draft_id uuid,\n  status draft_status,\n  normalized_payload jsonb\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_draft_id uuid;\nbegin\n  update extracted_document_drafts\n  set is_latest = false\n  where uploaded_document_id = p_uploaded_document_id\n    and is_latest = true;\n\n  insert into extracted_document_drafts (\n    organization_id,\n    project_id,\n    uploaded_document_id,\n    raw_payload,\n    normalized_payload,\n    status,\n    confidence_score,\n    is_latest\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_uploaded_document_id,\n    coalesce(p_raw_payload, '{}'::jsonb),\n    coalesce(p_normalized_payload, '{}'::jsonb),\n    p_status,\n    p_confidence_score,\n    true\n  )\n  returning id into v_draft_id;\n\n  update uploaded_documents\n  set ocr_status = 'succeeded'\n  where id = p_uploaded_document_id\n    and organization_id = p_organization_id\n    and project_id = p_project_id;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    'edge_function',\n    'process_document_atomic',\n    'extracted_document_draft',\n    v_draft_id,\n    'recorded',\n    jsonb_build_object(\n      'uploaded_document_id', p_uploaded_document_id,\n      'provider', p_provider,\n      'model', p_model,\n      'request_id', p_request_id\n    )\n  );\n\n  return query\n  select\n    v_draft_id,\n    p_status,\n    coalesce(p_normalized_payload, '{}'::jsonb);\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.682Z",
+      "finished": "2026-11-08T09:50:07.683Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 hardening: recalculate-project atomic RPC\n-- Generated at 2026-03-16\n\ncreate or replace function recalculate_project_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_actor_user_id uuid,\n  p_calculation_results jsonb,\n  p_request_id text default null\n)\nreturns table (\n  project_id uuid,\n  processed_activities integer,\n  calculated_count integer,\n  pending_factor_count integer,\n  excluded_count integer,\n  error_count integer\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_payload jsonb := coalesce(p_calculation_results, '[]'::jsonb);\n  v_item jsonb;\n  v_activity_ids uuid[] := '{}';\n  v_processed integer := 0;\n  v_calculated integer := 0;\n  v_pending integer := 0;\n  v_excluded integer := 0;\n  v_error integer := 0;\nbegin\n  if jsonb_typeof(v_payload) <> 'array' then\n    raise exception 'calculation_results_payload_must_be_array';\n  end if;\n\n  for v_item in select * from jsonb_array_elements(v_payload)\n  loop\n    v_processed := v_processed + 1;\n\n    if coalesce(v_item->>'status', 'calculated') = 'calculated' then\n      v_calculated := v_calculated + 1;\n    elsif coalesce(v_item->>'status', 'calculated') = 'pending_factor' then\n      v_pending := v_pending + 1;\n    elsif coalesce(v_item->>'status', 'calculated') = 'superseded' then\n      v_excluded := v_excluded + 1;\n    elsif coalesce(v_item->>'status', 'calculated') = 'error' then\n      v_error := v_error + 1;\n    end if;\n\n    v_activity_ids := array_append(v_activity_ids, (v_item->>'emission_activity_id')::uuid);\n  end loop;\n\n  if array_length(v_activity_ids, 1) is not null then\n    update calculation_results\n    set is_latest = false\n    where emission_activity_id = any(v_activity_ids)\n      and is_latest = true;\n\n    insert into calculation_results (\n      organization_id,\n      project_id,\n      emission_activity_id,\n      calc_version,\n      status,\n      is_latest,\n      co2e_kg,\n      co2_kg,\n      ch4_kg,\n      n2o_kg,\n      factor_id,\n      factor_snapshot,\n      input_snapshot,\n      formula_version,\n      warnings,\n      error_code,\n      calculated_at\n    )\n    select\n      p_organization_id,\n      p_project_id,\n      (item->>'emission_activity_id')::uuid,\n      coalesce((item->>'calc_version')::integer, 1),\n      coalesce((item->>'status')::calculation_status, 'calculated'),\n      true,\n      (item->>'co2e_kg')::numeric,\n      (item->>'co2_kg')::numeric,\n      (item->>'ch4_kg')::numeric,\n      (item->>'n2o_kg')::numeric,\n      (item->>'factor_id')::uuid,\n      coalesce(item->'factor_snapshot', '{}'::jsonb),\n      coalesce(item->'input_snapshot', '{}'::jsonb),\n      coalesce(item->>'formula_version', 'v1.0.0'),\n      coalesce(item->'warnings', '[]'::jsonb),\n      item->>'error_code',\n      coalesce((item->>'calculated_at')::timestamptz, now())\n    from jsonb_array_elements(v_payload) item;\n  end if;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_user_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    after_state,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_actor_user_id,\n    'edge_function',\n    'recalculate_project_atomic',\n    'project',\n    p_project_id,\n    'recorded',\n    jsonb_build_object(\n      'processed_activities', v_processed,\n      'calculated_count', v_calculated,\n      'pending_factor_count', v_pending,\n      'excluded_count', v_excluded,\n      'error_count', v_error\n    ),\n    jsonb_build_object('request_id', p_request_id)\n  );\n\n  return query\n  select\n    p_project_id,\n    v_processed,\n    v_calculated,\n    v_pending,\n    v_excluded,\n    v_error;\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.718Z",
+      "finished": "2026-11-08T09:50:07.719Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 hardening: generate-report atomic RPC\n-- Generated at 2026-03-16\n\ncreate or replace function generate_report_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_generated_by_user_id uuid,\n  p_report_version integer,\n  p_payload jsonb,\n  p_payload_hash text,\n  p_reporting_period_start date,\n  p_reporting_period_end date,\n  p_included_activity_count integer,\n  p_excluded_activity_count integer,\n  p_pending_activity_count integer,\n  p_scope_totals jsonb,\n  p_category_totals jsonb,\n  p_factor_sources jsonb,\n  p_warning_count integer,\n  p_based_on_calculated_at timestamptz,\n  p_request_id text default null\n)\nreturns table (\n  report_generation_id uuid,\n  status report_status\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_report_generation_id uuid;\nbegin\n  if p_payload is null or jsonb_typeof(p_payload) <> 'object' then\n    raise exception 'report_payload_required';\n  end if;\n\n  insert into report_generations (\n    organization_id,\n    project_id,\n    generated_by_user_id,\n    status,\n    report_version,\n    payload,\n    payload_hash,\n    reporting_period_start,\n    reporting_period_end,\n    included_activity_count,\n    excluded_activity_count,\n    pending_activity_count,\n    scope_totals,\n    category_totals,\n    factor_sources,\n    warning_count,\n    based_on_calculated_at\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_generated_by_user_id,\n    'completed',\n    p_report_version,\n    p_payload,\n    p_payload_hash,\n    p_reporting_period_start,\n    p_reporting_period_end,\n    p_included_activity_count,\n    p_excluded_activity_count,\n    p_pending_activity_count,\n    coalesce(p_scope_totals, '{}'::jsonb),\n    coalesce(p_category_totals, '{}'::jsonb),\n    coalesce(p_factor_sources, '[]'::jsonb),\n    coalesce(p_warning_count, 0),\n    p_based_on_calculated_at\n  )\n  returning id into v_report_generation_id;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_user_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    after_state,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_generated_by_user_id,\n    'edge_function',\n    'generate_report_atomic',\n    'report_generation',\n    v_report_generation_id,\n    'recorded',\n    jsonb_build_object(\n      'report_version', p_report_version,\n      'warning_count', coalesce(p_warning_count, 0)\n    ),\n    jsonb_build_object('request_id', p_request_id)\n  );\n\n  return query select v_report_generation_id, 'completed'::report_status;\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.754Z",
+      "finished": "2026-11-08T09:50:07.755Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 hardening: run-ai-audit atomic RPC\n-- Generated at 2026-03-16\n\ncreate or replace function run_ai_audit_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_report_generation_id uuid,\n  p_run_by_user_id uuid,\n  p_model_provider text,\n  p_model_name text,\n  p_model_version text,\n  p_input_snapshot jsonb,\n  p_completeness_flags jsonb,\n  p_anomaly_flags jsonb,\n  p_exclusion_review_flags jsonb,\n  p_hotspot_ranking jsonb,\n  p_summary_text jsonb,\n  p_recommended_actions jsonb,\n  p_token_usage jsonb,\n  p_confidence_score numeric,\n  p_request_id text default null\n)\nreturns table (\n  ai_audit_result_id uuid,\n  status ai_audit_status\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_ai_audit_result_id uuid;\nbegin\n  if p_summary_text is null or jsonb_typeof(p_summary_text) <> 'object' then\n    raise exception 'summary_text_required';\n  end if;\n\n  if not (p_summary_text ? 'zh_tw' and p_summary_text ? 'en' and p_summary_text ? 'ja') then\n    raise exception 'summary_text_i18n_required';\n  end if;\n\n  insert into ai_audit_results (\n    organization_id,\n    project_id,\n    report_generation_id,\n    run_by_user_id,\n    model_provider,\n    model_name,\n    model_version,\n    status,\n    input_snapshot,\n    completeness_flags,\n    anomaly_flags,\n    exclusion_review_flags,\n    hotspot_ranking,\n    summary_text,\n    recommended_actions,\n    token_usage,\n    confidence_score\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_report_generation_id,\n    p_run_by_user_id,\n    p_model_provider,\n    p_model_name,\n    p_model_version,\n    'completed',\n    p_input_snapshot,\n    coalesce(p_completeness_flags, '[]'::jsonb),\n    coalesce(p_anomaly_flags, '[]'::jsonb),\n    coalesce(p_exclusion_review_flags, '[]'::jsonb),\n    coalesce(p_hotspot_ranking, '[]'::jsonb),\n    p_summary_text,\n    coalesce(p_recommended_actions, '[]'::jsonb),\n    coalesce(p_token_usage, '{}'::jsonb),\n    p_confidence_score\n  )\n  returning id into v_ai_audit_result_id;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_user_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    after_state,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_run_by_user_id,\n    'edge_function',\n    'run_ai_audit_atomic',\n    'ai_audit_result',\n    v_ai_audit_result_id,\n    'recorded',\n    jsonb_build_object(\n      'report_generation_id', p_report_generation_id,\n      'model_name', p_model_name\n    ),\n    jsonb_build_object('request_id', p_request_id)\n  );\n\n  return query select v_ai_audit_result_id, 'completed'::ai_audit_status;\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.790Z",
+      "finished": "2026-11-08T09:50:07.792Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 hardening: classify-document atomic RPC\n-- Generated at 2026-03-16\n\ncreate or replace function classify_document_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_draft_id uuid,\n  p_classification_status classification_status,\n  p_suggested_category text,\n  p_suggested_scope smallint,\n  p_confidence_score numeric,\n  p_review_note text,\n  p_provider text,\n  p_model text,\n  p_request_id text default null\n)\nreturns table (\n  draft_id uuid,\n  classification_status classification_status,\n  suggested_category text,\n  suggested_scope smallint,\n  confidence_score numeric,\n  review_note text\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_draft_id uuid;\n  v_classification_status classification_status;\n  v_suggested_category text;\n  v_suggested_scope smallint;\n  v_confidence_score numeric;\n  v_review_note text;\nbegin\n  update extracted_document_drafts\n  set\n    classification_status = p_classification_status,\n    suggested_category = p_suggested_category,\n    suggested_scope = p_suggested_scope,\n    confidence_score = p_confidence_score,\n    review_note = p_review_note,\n    status = 'pending_review'\n  where id = p_draft_id\n    and organization_id = p_organization_id\n    and project_id = p_project_id\n  returning\n    id,\n    classification_status,\n    suggested_category,\n    suggested_scope,\n    confidence_score,\n    review_note\n  into\n    v_draft_id,\n    v_classification_status,\n    v_suggested_category,\n    v_suggested_scope,\n    v_confidence_score,\n    v_review_note;\n\n  if v_draft_id is null then\n    raise exception 'draft_not_found';\n  end if;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    after_state,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    'edge_function',\n    'classify_document_atomic',\n    'extracted_document_draft',\n    v_draft_id,\n    'recorded',\n    jsonb_build_object(\n      'classification_status', v_classification_status,\n      'suggested_category', v_suggested_category,\n      'suggested_scope', v_suggested_scope,\n      'confidence_score', v_confidence_score,\n      'review_note', v_review_note\n    ),\n    jsonb_build_object(\n      'provider', p_provider,\n      'model', p_model,\n      'request_id', p_request_id\n    )\n  );\n\n  return query\n  select\n    v_draft_id,\n    v_classification_status,\n    v_suggested_category,\n    v_suggested_scope,\n    v_confidence_score,\n    v_review_note;\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.828Z",
+      "finished": "2026-11-08T09:50:07.829Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 P0 fix: process_document_atomic extraction_version auto increment\n\ncreate or replace function process_document_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_uploaded_document_id uuid,\n  p_raw_payload jsonb,\n  p_normalized_payload jsonb,\n  p_status draft_status,\n  p_confidence_score numeric,\n  p_provider text,\n  p_model text,\n  p_request_id text default null\n)\nreturns table (\n  draft_id uuid,\n  status draft_status,\n  normalized_payload jsonb\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_draft_id uuid;\n  v_next_extraction_version integer;\nbegin\n  select coalesce(max(edd.extraction_version), 0) + 1\n  into v_next_extraction_version\n  from extracted_document_drafts edd\n  where edd.uploaded_document_id = p_uploaded_document_id;\n\n  update extracted_document_drafts edd\n  set is_latest = false\n  where edd.uploaded_document_id = p_uploaded_document_id\n    and edd.is_latest = true;\n\n  insert into extracted_document_drafts (\n    organization_id,\n    project_id,\n    uploaded_document_id,\n    extraction_version,\n    raw_payload,\n    normalized_payload,\n    status,\n    confidence_score,\n    is_latest\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    p_uploaded_document_id,\n    v_next_extraction_version,\n    coalesce(p_raw_payload, '{}'::jsonb),\n    coalesce(p_normalized_payload, '{}'::jsonb),\n    p_status,\n    p_confidence_score,\n    true\n  )\n  returning id into v_draft_id;\n\n  update uploaded_documents ud\n  set ocr_status = 'succeeded'\n  where ud.id = p_uploaded_document_id\n    and ud.organization_id = p_organization_id\n    and ud.project_id = p_project_id;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    'edge_function',\n    'process_document_atomic',\n    'extracted_document_draft',\n    v_draft_id,\n    'recorded',\n    jsonb_build_object(\n      'uploaded_document_id', p_uploaded_document_id,\n      'extraction_version', v_next_extraction_version,\n      'provider', p_provider,\n      'model', p_model,\n      'request_id', p_request_id\n    )\n  );\n\n  return query\n  select\n    v_draft_id,\n    p_status,\n    coalesce(p_normalized_payload, '{}'::jsonb);\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.862Z",
+      "finished": "2026-11-08T09:50:07.863Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab V1 P0 fix: classify_document_atomic ambiguous column fix\n\ncreate or replace function classify_document_atomic(\n  p_organization_id uuid,\n  p_project_id uuid,\n  p_draft_id uuid,\n  p_classification_status classification_status,\n  p_suggested_category text,\n  p_suggested_scope smallint,\n  p_confidence_score numeric,\n  p_review_note text,\n  p_provider text,\n  p_model text,\n  p_request_id text default null\n)\nreturns table (\n  draft_id uuid,\n  classification_status classification_status,\n  suggested_category text,\n  suggested_scope smallint,\n  confidence_score numeric,\n  review_note text\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_draft_id uuid;\n  v_out_classification_status classification_status;\n  v_out_suggested_category text;\n  v_out_suggested_scope smallint;\n  v_out_confidence_score numeric;\n  v_out_review_note text;\nbegin\n  update extracted_document_drafts as edd\n  set\n    classification_status = p_classification_status,\n    suggested_category = p_suggested_category,\n    suggested_scope = p_suggested_scope,\n    confidence_score = p_confidence_score,\n    review_note = p_review_note,\n    status = 'pending_review'\n  where edd.id = p_draft_id\n    and edd.organization_id = p_organization_id\n    and edd.project_id = p_project_id\n  returning\n    edd.id,\n    edd.classification_status,\n    edd.suggested_category,\n    edd.suggested_scope,\n    edd.confidence_score,\n    edd.review_note\n  into\n    v_draft_id,\n    v_out_classification_status,\n    v_out_suggested_category,\n    v_out_suggested_scope,\n    v_out_confidence_score,\n    v_out_review_note;\n\n  if v_draft_id is null then\n    raise exception 'draft_not_found';\n  end if;\n\n  insert into audit_logs (\n    organization_id,\n    project_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    after_state,\n    metadata\n  )\n  values (\n    p_organization_id,\n    p_project_id,\n    'edge_function',\n    'classify_document_atomic',\n    'extracted_document_draft',\n    v_draft_id,\n    'recorded',\n    jsonb_build_object(\n      'classification_status', v_out_classification_status,\n      'suggested_category', v_out_suggested_category,\n      'suggested_scope', v_out_suggested_scope,\n      'confidence_score', v_out_confidence_score,\n      'review_note', v_out_review_note\n    ),\n    jsonb_build_object(\n      'provider', p_provider,\n      'model', p_model,\n      'request_id', p_request_id\n    )\n  );\n\n  return query\n  select\n    v_draft_id,\n    v_out_classification_status,\n    v_out_suggested_category,\n    v_out_suggested_scope,\n    v_out_confidence_score,\n    v_out_review_note;\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.898Z",
+      "finished": "2026-11-08T09:50:07.899Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab staging hardening columns\n-- Scope: core tables used by closed beta write flows\n\nalter table if exists organizations\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists organization_members\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists subscriptions\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists projects\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists uploaded_documents\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists extracted_document_drafts\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists emission_activities\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists calculation_results\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists report_generations\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists ai_audit_results\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\nalter table if exists audit_logs\n  add column if not exists is_test boolean not null default true,\n  add column if not exists env text not null default 'staging';\n\ncreate index if not exists organizations_env_idx on organizations (env, is_test);\ncreate index if not exists projects_env_idx on projects (env, is_test);\ncreate index if not exists uploaded_documents_env_idx on uploaded_documents (env, is_test);\ncreate index if not exists extracted_document_drafts_env_idx on extracted_document_drafts (env, is_test);\ncreate index if not exists emission_activities_env_idx on emission_activities (env, is_test);\ncreate index if not exists calculation_results_env_idx on calculation_results (env, is_test);\ncreate index if not exists report_generations_env_idx on report_generations (env, is_test);\ncreate index if not exists ai_audit_results_env_idx on ai_audit_results (env, is_test);\ncreate index if not exists audit_logs_env_idx on audit_logs (env, is_test);\n",
+      "params": [],
+      "started": "2026-11-08T09:50:07.968Z",
+      "finished": "2026-11-08T09:50:07.981Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab staging closed-beta action logs\n\ncreate table if not exists action_logs (\n  id uuid primary key default gen_random_uuid(),\n  user_id uuid,\n  organization_id uuid references organizations(id) on delete set null,\n  project_id uuid references projects(id) on delete set null,\n  action text not null,\n  table_name text not null,\n  record_id text not null,\n  env text not null default 'staging',\n  is_test boolean not null default true,\n  metadata jsonb not null default '{}'::jsonb,\n  created_at timestamptz not null default now()\n);\n\ncreate index if not exists action_logs_user_created_idx on action_logs (user_id, created_at desc);\ncreate index if not exists action_logs_org_proj_created_idx on action_logs (organization_id, project_id, created_at desc);\ncreate index if not exists action_logs_env_created_idx on action_logs (env, is_test, created_at desc);\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.016Z",
+      "finished": "2026-11-08T09:50:08.023Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- Dry-run helper for staging data purge\n\ncreate or replace function purge_staging_data_dry_run()\nreturns table (table_name text, row_count bigint)\nlanguage sql\nsecurity definer\nset search_path = public\nas $$\n  select 'action_logs'::text as table_name, count(*)::bigint as row_count from action_logs where env = 'staging' or is_test = true\n  union all\n  select 'ai_audit_results', count(*)::bigint from ai_audit_results where env = 'staging' or is_test = true\n  union all\n  select 'report_generations', count(*)::bigint from report_generations where env = 'staging' or is_test = true\n  union all\n  select 'calculation_results', count(*)::bigint from calculation_results where env = 'staging' or is_test = true\n  union all\n  select 'emission_activities', count(*)::bigint from emission_activities where env = 'staging' or is_test = true\n  union all\n  select 'extracted_document_drafts', count(*)::bigint from extracted_document_drafts where env = 'staging' or is_test = true\n  union all\n  select 'uploaded_documents', count(*)::bigint from uploaded_documents where env = 'staging' or is_test = true\n  union all\n  select 'projects', count(*)::bigint from projects where env = 'staging' or is_test = true\n  union all\n  select 'subscriptions', count(*)::bigint from subscriptions where env = 'staging' or is_test = true\n  union all\n  select 'organization_members', count(*)::bigint from organization_members where env = 'staging' or is_test = true\n  union all\n  select 'organizations', count(*)::bigint from organizations where env = 'staging' or is_test = true\n  union all\n  select 'audit_logs', count(*)::bigint from audit_logs where env = 'staging' or is_test = true;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.058Z",
+      "finished": "2026-11-08T09:50:08.059Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- One-click purge for staging closed-beta records\n\ncreate or replace function purge_staging_data()\nreturns table (table_name text, deleted_count bigint)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_count bigint;\nbegin\n  delete from action_logs where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'action_logs'::text, v_count;\n\n  delete from ai_audit_results where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'ai_audit_results'::text, v_count;\n\n  delete from report_generations where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'report_generations'::text, v_count;\n\n  delete from calculation_results where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'calculation_results'::text, v_count;\n\n  delete from emission_activities where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'emission_activities'::text, v_count;\n\n  delete from extracted_document_drafts where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'extracted_document_drafts'::text, v_count;\n\n  delete from uploaded_documents where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'uploaded_documents'::text, v_count;\n\n  delete from projects where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'projects'::text, v_count;\n\n  delete from subscriptions where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'subscriptions'::text, v_count;\n\n  delete from organization_members where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'organization_members'::text, v_count;\n\n  delete from organizations where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'organizations'::text, v_count;\n\n  delete from audit_logs where env = 'staging' or is_test = true;\n  get diagnostics v_count = row_count;\n  return query select 'audit_logs'::text, v_count;\nend;\n$$;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.095Z",
+      "finished": "2026-11-08T09:50:08.097Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- Staging storage isolation: dedicated buckets + path policies\n\ninsert into storage.buckets (id, name, public)\nvalues\n  ('staging-receipts', 'staging-receipts', false),\n  ('staging-attachments', 'staging-attachments', false)\non conflict (id) do nothing;\n\n-- storage.objects RLS is managed by Supabase storage service and is already enabled.\n\ndrop policy if exists stg_receipts_insert_auth on storage.objects;\ncreate policy stg_receipts_insert_auth\non storage.objects\nfor insert\nto authenticated\nwith check (\n  bucket_id = 'staging-receipts'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_receipts_select_auth on storage.objects;\ncreate policy stg_receipts_select_auth\non storage.objects\nfor select\nto authenticated\nusing (\n  bucket_id = 'staging-receipts'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_receipts_update_auth on storage.objects;\ncreate policy stg_receipts_update_auth\non storage.objects\nfor update\nto authenticated\nusing (\n  bucket_id = 'staging-receipts'\n  and (storage.foldername(name))[1] = 'staging'\n)\nwith check (\n  bucket_id = 'staging-receipts'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_receipts_delete_auth on storage.objects;\ncreate policy stg_receipts_delete_auth\non storage.objects\nfor delete\nto authenticated\nusing (\n  bucket_id = 'staging-receipts'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_attachments_insert_auth on storage.objects;\ncreate policy stg_attachments_insert_auth\non storage.objects\nfor insert\nto authenticated\nwith check (\n  bucket_id = 'staging-attachments'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_attachments_select_auth on storage.objects;\ncreate policy stg_attachments_select_auth\non storage.objects\nfor select\nto authenticated\nusing (\n  bucket_id = 'staging-attachments'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_attachments_update_auth on storage.objects;\ncreate policy stg_attachments_update_auth\non storage.objects\nfor update\nto authenticated\nusing (\n  bucket_id = 'staging-attachments'\n  and (storage.foldername(name))[1] = 'staging'\n)\nwith check (\n  bucket_id = 'staging-attachments'\n  and (storage.foldername(name))[1] = 'staging'\n);\n\ndrop policy if exists stg_attachments_delete_auth on storage.objects;\ncreate policy stg_attachments_delete_auth\non storage.objects\nfor delete\nto authenticated\nusing (\n  bucket_id = 'staging-attachments'\n  and (storage.foldername(name))[1] = 'staging'\n);\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.134Z",
+      "finished": "2026-11-08T09:50:08.138Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- P1 staging fix: organization creation must create active owner membership.\n-- Scope: staging bugfix only, no product feature expansion.\n\ncreate or replace function create_organization_with_owner(\n  p_slug citext,\n  p_legal_name text,\n  p_display_name text,\n  p_tax_id text default null,\n  p_country_code char(2) default 'TW',\n  p_timezone text default 'Asia/Taipei'\n)\nreturns table (\n  organization_id uuid,\n  membership_id uuid,\n  role member_role,\n  membership_status member_status\n)\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_user_id uuid;\n  v_org_id uuid;\n  v_member_id uuid;\nbegin\n  v_user_id := auth.uid();\n\n  if v_user_id is null then\n    raise exception 'auth_required';\n  end if;\n\n  insert into organizations (\n    slug,\n    legal_name,\n    display_name,\n    tax_id,\n    country_code,\n    timezone,\n    status,\n    env,\n    is_test\n  )\n  values (\n    p_slug,\n    p_legal_name,\n    p_display_name,\n    p_tax_id,\n    coalesce(p_country_code, 'TW'),\n    coalesce(p_timezone, 'Asia/Taipei'),\n    'active',\n    'staging',\n    true\n  )\n  returning id into v_org_id;\n\n  insert into organization_members (\n    organization_id,\n    user_id,\n    role,\n    status,\n    joined_at,\n    env,\n    is_test\n  )\n  values (\n    v_org_id,\n    v_user_id,\n    'owner',\n    'active',\n    now(),\n    'staging',\n    true\n  )\n  on conflict (organization_id, user_id)\n  do update set\n    role = 'owner',\n    status = 'active',\n    joined_at = coalesce(organization_members.joined_at, excluded.joined_at),\n    env = 'staging',\n    is_test = true,\n    updated_at = now()\n  returning id into v_member_id;\n\n  insert into audit_logs (\n    organization_id,\n    actor_user_id,\n    actor_type,\n    action,\n    entity_type,\n    entity_id,\n    status,\n    metadata,\n    env,\n    is_test\n  )\n  values (\n    v_org_id,\n    v_user_id,\n    'user',\n    'create_organization_with_owner',\n    'organization',\n    v_org_id,\n    'recorded',\n    jsonb_build_object(\n      'membership_id', v_member_id,\n      'membership_role', 'owner',\n      'membership_status', 'active'\n    ),\n    'staging',\n    true\n  );\n\n  return query\n  select\n    v_org_id,\n    v_member_id,\n    'owner'::member_role,\n    'active'::member_status;\nend;\n$$;\n\ncreate or replace function ensure_organization_owner_membership()\nreturns trigger\nlanguage plpgsql\nsecurity definer\nset search_path = public\nas $$\ndeclare\n  v_user_id uuid;\nbegin\n  v_user_id := auth.uid();\n\n  if v_user_id is null then\n    return new;\n  end if;\n\n  insert into organization_members (\n    organization_id,\n    user_id,\n    role,\n    status,\n    joined_at,\n    env,\n    is_test\n  )\n  values (\n    new.id,\n    v_user_id,\n    'owner',\n    'active',\n    now(),\n    coalesce(new.env, 'staging'),\n    coalesce(new.is_test, true)\n  )\n  on conflict (organization_id, user_id)\n  do update set\n    role = 'owner',\n    status = 'active',\n    joined_at = coalesce(organization_members.joined_at, excluded.joined_at),\n    env = coalesce(new.env, 'staging'),\n    is_test = coalesce(new.is_test, true),\n    updated_at = now();\n\n  return new;\nend;\n$$;\n\ndrop trigger if exists trg_organizations_auto_owner_membership on organizations;\ncreate trigger trg_organizations_auto_owner_membership\nafter insert on organizations\nfor each row\nexecute function ensure_organization_owner_membership();\n\nrevoke all on function create_organization_with_owner(citext, text, text, text, char(2), text)\n  from public, anon;\ngrant execute on function create_organization_with_owner(citext, text, text, text, char(2), text)\n  to authenticated, service_role;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.213Z",
+      "finished": "2026-11-08T09:50:08.215Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- Org read-chain hardening for Project create selector\n-- Goal: provide a canonical, JWT-based organization list API path.\n\ncreate index if not exists organization_members_user_status_org_idx\n  on organization_members (user_id, status, organization_id);\n\ncreate or replace function list_my_organizations()\nreturns table (\n  organization_id uuid,\n  slug citext,\n  display_name text,\n  legal_name text,\n  organization_status organization_status,\n  member_role member_role,\n  member_status member_status,\n  project_writable boolean,\n  created_at timestamptz\n)\nlanguage sql\nstable\nsecurity definer\nset search_path = public\nas $$\n  select\n    o.id as organization_id,\n    o.slug,\n    o.display_name,\n    o.legal_name,\n    o.status as organization_status,\n    om.role as member_role,\n    om.status as member_status,\n    organization_is_writable(o.id) as project_writable,\n    o.created_at\n  from organization_members om\n  join organizations o on o.id = om.organization_id\n  where om.user_id = auth.uid()\n    and om.status = 'active'\n    and o.status <> 'archived'\n  order by o.created_at desc;\n$$;\n\nrevoke all on function list_my_organizations() from public, anon;\ngrant execute on function list_my_organizations() to authenticated, service_role;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.290Z",
+      "finished": "2026-11-08T09:50:08.292Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- CaCalLab canonical seed pack governance (staging-first)\n\ncreate table if not exists seed_pack_registry (\n  scenario_code text primary key,\n  seed_pack_version text not null,\n  schema_version text not null,\n  title text not null,\n  description text,\n  is_active boolean not null default true,\n  is_canonical boolean not null default true,\n  metadata jsonb not null default '{}'::jsonb,\n  created_at timestamptz not null default now(),\n  updated_at timestamptz not null default now()\n);\n\ncreate table if not exists seed_pack_reseed_runs (\n  id uuid primary key default gen_random_uuid(),\n  scenario_code text not null references seed_pack_registry(scenario_code) on delete restrict,\n  seed_pack_version text not null,\n  run_type text not null,\n  status text not null,\n  initiated_by text,\n  summary jsonb not null default '{}'::jsonb,\n  started_at timestamptz not null default now(),\n  completed_at timestamptz\n);\n\ncreate index if not exists seed_pack_reseed_runs_scenario_started_idx\n  on seed_pack_reseed_runs (scenario_code, started_at desc);\n\ndrop trigger if exists trg_seed_pack_registry_updated_at on seed_pack_registry;\ncreate trigger trg_seed_pack_registry_updated_at\nbefore update on seed_pack_registry\nfor each row execute function set_updated_at();\n\ninsert into seed_pack_registry (\n  scenario_code,\n  seed_pack_version,\n  schema_version,\n  title,\n  description,\n  is_active,\n  is_canonical,\n  metadata\n)\nvalues (\n  'stg_core_closed_beta',\n  'v2026.04.07',\n  '202604070006',\n  'Staging Core Closed Beta Canonical Pack',\n  'Canonical staging seed for documents, activities, calculations, analytics, reports, and adjustments.',\n  true,\n  true,\n  jsonb_build_object(\n    'organization_id', 'a1111111-1111-4111-8111-111111111111',\n    'primary_project_id', 'a3333333-1111-4111-8111-111111111111',\n    'secondary_project_id', 'a3333333-2222-4222-8222-222222222222',\n    'report_generation_id', 'a9000000-1111-4111-8111-111111111111',\n    'adjustment_item_id', 'b1111111-1111-4111-8111-111111111111'\n  )\n)\non conflict (scenario_code)\ndo update set\n  seed_pack_version = excluded.seed_pack_version,\n  schema_version = excluded.schema_version,\n  title = excluded.title,\n  description = excluded.description,\n  is_active = excluded.is_active,\n  is_canonical = excluded.is_canonical,\n  metadata = excluded.metadata,\n  updated_at = now();\n\n-- Align canonical rule baseline so eligibility API is consistent with report summary seed.\nupdate adjustment_claim_rules\nset\n  max_deduction_ratio = 0.8,\n  updated_at = now()\nwhere rule_code = 'stg_rule_tw_internal_re_2026'\n  and jurisdiction_code = 'TW'\n  and claim_purpose = 'internal_management'\n  and adjustment_type = 'renewable_electricity_attribute';\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.498Z",
+      "finished": "2026-11-08T09:50:08.507Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- Enable workspace profile editing through the existing user-JWT/RLS client.\n-- No grants, service-role elevation, lifecycle changes, or tenant reassignment.\n-- Source-only migration: apply only after isolated database validation and approval.\n\ncreate or replace function guard_organization_profile_update()\nreturns trigger\nlanguage plpgsql\nsecurity invoker\nset search_path = pg_catalog, public\nas $$\nbegin\n  -- Use the actual database role, not caller-controlled request JWT settings.\n  -- Existing SECURITY DEFINER maintenance functions execute as their owner and\n  -- retain their current authority; this trigger does not grant that authority.\n  if current_user in ('authenticated', 'anon') then\n    if (to_jsonb(new) - array[\n      'legal_name', 'display_name', 'tax_id', 'country_code', 'timezone', 'updated_at'\n    ]) is distinct from (to_jsonb(old) - array[\n      'legal_name', 'display_name', 'tax_id', 'country_code', 'timezone', 'updated_at'\n    ]) then\n      raise exception 'Only organization profile fields may be updated'\n        using errcode = '42501';\n    end if;\n  end if;\n  return new;\nend;\n$$;\n\n-- PostgreSQL orders same-event triggers alphabetically. This guard runs before\n-- trg_organizations_updated_at; updated_at is ignored so either order is safe.\ndrop trigger if exists trg_organizations_profile_fields_guard on organizations;\ncreate trigger trg_organizations_profile_fields_guard\nbefore update on organizations\nfor each row execute function guard_organization_profile_update();\n\n-- SELECT continues to use the existing active-membership policy. UPDATE is\n-- limited to owner/admin of the same old/new organization and writable plan.\ndrop policy if exists organizations_profile_update_policy on organizations;\ncreate policy organizations_profile_update_policy\n  on organizations for update to authenticated\n  using (\n    is_active_org_member(id, array['owner', 'admin']::member_role[])\n    and organization_is_writable(id)\n  )\n  with check (\n    is_active_org_member(id, array['owner', 'admin']::member_role[])\n    and organization_is_writable(id)\n  );\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.622Z",
+      "finished": "2026-11-08T09:50:08.623Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- Keep project identity and tenant binding stable during user-JWT updates.\n-- Existing profile/lifecycle policies, grants and maintenance authority are unchanged.\n-- Apply only after isolated validation and the normal deployment approval.\ncreate or replace function guard_project_identity_update()\nreturns trigger\nlanguage plpgsql\nsecurity invoker\nset search_path = pg_catalog, public\nas $$\nbegin\n  -- The database role is authoritative; caller-controlled JWT settings are not.\n  if current_user in ('authenticated', 'anon')\n     and (new.id is distinct from old.id\n       or new.organization_id is distinct from old.organization_id) then\n    raise exception 'Project identity and organization binding cannot be changed'\n      using errcode = '42501';\n  end if;\n  return new;\nend;\n$$;\n\ndrop trigger if exists trg_projects_identity_guard on projects;\ncreate trigger trg_projects_identity_guard\nbefore update on projects\nfor each row execute function guard_project_identity_update();\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.658Z",
+      "finished": "2026-11-08T09:50:08.659Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- These six internal write RPCs are invoked only by Edge service-role handlers.\n-- Handlers check JWT/member access and separately enforce subscription policy.\n-- SECURITY DEFINER bodies must not be callable by clients that bypass those checks.\n-- Revoke direct client execution; leave frontend member/create-org RPCs unchanged.\n-- Source migration only: deployment still requires the normal approval boundary.\nbegin;\n\nrevoke all on function confirm_draft_atomic(uuid, uuid, uuid, text, draft_status, text, timestamptz, jsonb, jsonb, uuid, text)\n  from public, anon, authenticated;\ngrant execute on function confirm_draft_atomic(uuid, uuid, uuid, text, draft_status, text, timestamptz, jsonb, jsonb, uuid, text)\n  to service_role;\n\nrevoke all on function process_document_atomic(uuid, uuid, uuid, jsonb, jsonb, draft_status, numeric, text, text, text)\n  from public, anon, authenticated;\ngrant execute on function process_document_atomic(uuid, uuid, uuid, jsonb, jsonb, draft_status, numeric, text, text, text)\n  to service_role;\n\nrevoke all on function recalculate_project_atomic(uuid, uuid, uuid, jsonb, text)\n  from public, anon, authenticated;\ngrant execute on function recalculate_project_atomic(uuid, uuid, uuid, jsonb, text)\n  to service_role;\n\nrevoke all on function generate_report_atomic(uuid, uuid, uuid, integer, jsonb, text, date, date, integer, integer, integer, jsonb, jsonb, jsonb, integer, timestamptz, text)\n  from public, anon, authenticated;\ngrant execute on function generate_report_atomic(uuid, uuid, uuid, integer, jsonb, text, date, date, integer, integer, integer, jsonb, jsonb, jsonb, integer, timestamptz, text)\n  to service_role;\n\nrevoke all on function run_ai_audit_atomic(uuid, uuid, uuid, uuid, text, text, text, jsonb, jsonb, jsonb, jsonb, jsonb, jsonb, jsonb, jsonb, numeric, text)\n  from public, anon, authenticated;\ngrant execute on function run_ai_audit_atomic(uuid, uuid, uuid, uuid, text, text, text, jsonb, jsonb, jsonb, jsonb, jsonb, jsonb, jsonb, jsonb, numeric, text)\n  to service_role;\n\nrevoke all on function classify_document_atomic(uuid, uuid, uuid, classification_status, text, smallint, numeric, text, text, text, text)\n  from public, anon, authenticated;\ngrant execute on function classify_document_atomic(uuid, uuid, uuid, classification_status, text, smallint, numeric, text, text, text, text)\n  to service_role;\n\ncommit;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.697Z",
+      "finished": "2026-11-08T09:50:08.698Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- UUID-to-tenant/boundary lookups are internal maintenance helpers.\n-- Current frontend uses JWT/RLS table reads and has no direct helper consumers.\n-- Leave membership-aware can_access_* / is_workspace_member RPCs and RLS unchanged.\n-- Source-only change; live ACLs and deployment require separate acceptance.\nbegin;\n\nrevoke all on function get_project_workspace_id(uuid) from public, anon, authenticated;\ngrant execute on function get_project_workspace_id(uuid) to service_role;\n\nrevoke all on function get_project_legal_entity_id(uuid) from public, anon, authenticated;\ngrant execute on function get_project_legal_entity_id(uuid) to service_role;\n\nrevoke all on function get_project_site_id(uuid) from public, anon, authenticated;\ngrant execute on function get_project_site_id(uuid) to service_role;\n\ncommit;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.779Z",
+      "finished": "2026-11-08T09:50:08.781Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- Orphan/unscoped action logs remain available only to existing privileged readers.\n-- Retain log rows and existing ON DELETE SET NULL behavior; do not add grants.\n-- Deployment and live-policy verification remain separate acceptance steps.\nbegin;\n\ndrop policy if exists action_logs_select_policy on public.action_logs;\ncreate policy action_logs_select_policy\n  on public.action_logs for select to authenticated\n  using (\n    organization_id is not null\n    and is_active_org_member(organization_id)\n  );\n\ncommit;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:08.819Z",
+      "finished": "2026-11-08T09:50:08.820Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "-- SOURCE CANDIDATE ONLY. Native PG reproduced the delete/MANUAL lock inversion.\n-- Acquire the existing project lock before document/receipt locks. No cloud apply.\nbegin;\n\ndo $$begin\n if not cocal_delete_private.deployment_ready() then\n  raise exception 'Existing deletion source drift; do not rebaseline unknown source';\n end if;\nend;$$;\n\ndo $$declare change record;definition text;begin\n for change in select * from(values\n  ('public.document_deletion_request(uuid,jsonb,text)',\n   'perform cocal_attachment_private.assert_write(org,project,p_actor_user_id);',\n   'perform 1 from public.projects p where p.id=project and p.organization_id=org for no key update;'),\n  ('public.finalize_document_deletion(uuid,jsonb)',\n   'perform cocal_attachment_private.assert_write((p_input->>''organization_id'')::uuid,(p_input->>''project_id'')::uuid,p_actor_user_id);',\n   'perform 1 from public.projects p where p.id=(p_input->>''project_id'')::uuid and p.organization_id=(p_input->>''organization_id'')::uuid for no key update;'),\n  ('public.release_document_processing(uuid,uuid)',\n   'if lease.actor_user_id is distinct from p_actor_user_id then raise exception ''DOCUMENT_PROCESSING_LEASE_DENIED'' using errcode=''42501'';end if;',\n   'perform 1 from public.projects p where p.id=lease.project_id and p.organization_id=lease.organization_id for no key update;')\n ) as changes(signature,anchor,project_lock) loop\n  definition:=pg_get_functiondef(change.signature::regprocedure);\n  if length(definition)-length(replace(definition,change.anchor,''))<>length(change.anchor) then\n   raise exception 'Unrecognized approved document-lock definition: %',change.signature;\n  end if;\n  -- Preserve actor/scope checks, return values, archival and retry semantics.\n  -- Lease cleanup deliberately retains its original actor check: revoking a\n  -- membership must not prevent its captured service actor from releasing work.\n  execute replace(definition,change.anchor,change.anchor||E'\\n '||change.project_lock);\n end loop;\nend;$$;\n\n-- The entry assertion proved the whole old catalog. Refresh only the three\n-- explicitly patched function bodies; retain every other fingerprint and ACL.\ndo $$declare changed integer;begin\n update cocal_delete_private.source_baseline b set fingerprint=c.fingerprint\n from cocal_delete_private.catalog_state() c\n where b.kind=c.kind and b.object_key=c.object_key and b.kind='function'\n and b.object_key in('public.document_deletion_request(uuid,jsonb,text)',\n  'public.finalize_document_deletion(uuid,jsonb)',\n  'public.release_document_processing(uuid,uuid)');\n get diagnostics changed=row_count;\n if changed<>3 then raise exception 'Approved document-lock baseline count mismatch';end if;\n if not cocal_delete_private.deployment_ready() then\n  raise exception 'Deletion source drift after approved document-lock change';\n end if;\nend;$$;\n\ncommit;\n",
+      "params": [],
+      "started": "2026-11-08T09:50:09.502Z",
+      "finished": "2026-11-08T09:50:09.530Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "grant select,insert,update,delete on all tables in schema public,storage to authenticated,anon,service_role;revoke all on report_snapshot_requests_v2 from authenticated,anon",
+      "params": [],
+      "started": "2026-11-08T09:50:09.532Z",
+      "finished": "2026-11-08T09:50:09.535Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organizations(id,slug,legal_name,display_name,env,is_test) values($1,$2,'SYNTHETIC NATIVE SQL','SYNTHETIC NATIVE SQL','staging',true)",
+      "params": [
+        "198743af-89b9-4eaf-90cf-a215e9752833",
+        "native-synthetic-198743af-89b9-4eaf-90cf-a215e9752833"
+      ],
+      "started": "2026-11-08T09:50:10.604Z",
+      "finished": "2026-11-08T09:50:10.608Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into organization_members(organization_id,user_id,role,status) values($1,$2,'editor','active')",
+      "params": [
+        "198743af-89b9-4eaf-90cf-a215e9752833",
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2"
+      ],
+      "started": "2026-11-08T09:50:10.608Z",
+      "finished": "2026-11-08T09:50:10.611Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into subscriptions(organization_id,plan_code,status,period_start,period_end) values($1,'SYNTHETIC','active','2020-01-01','2099-01-01')",
+      "params": [
+        "198743af-89b9-4eaf-90cf-a215e9752833"
+      ],
+      "started": "2026-11-08T09:50:10.611Z",
+      "finished": "2026-11-08T09:50:10.613Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into projects(id,organization_id,project_code,name,reporting_start_date,reporting_end_date,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC NATIVE SQL','2026-01-01','2026-12-31','staging',true)",
+      "params": [
+        "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86",
+        "198743af-89b9-4eaf-90cf-a215e9752833"
+      ],
+      "started": "2026-11-08T09:50:10.613Z",
+      "finished": "2026-11-08T09:50:10.618Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T09:50:10.618Z",
+      "finished": "2026-11-08T09:50:10.618Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T09:50:10.618Z",
+      "finished": "2026-11-08T09:50:10.618Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2"
+      ],
+      "started": "2026-11-08T09:50:10.618Z",
+      "finished": "2026-11-08T09:50:10.619Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select * from save_manual_activity_atomic($1,$2,$3,$4,$5,$6)",
+      "params": [
+        "198743af-89b9-4eaf-90cf-a215e9752833",
+        "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86",
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2",
+        "9962f662-ed72-43c1-85a6-38a45221a2e2",
+        {
+          "activity_name": "SYNTHETIC 100kWh",
+          "activity_date": "2026-01-15",
+          "category": "energy",
+          "activity_type": "electricity",
+          "quantity": 100,
+          "unit": "kWh",
+          "inclusion_status": "included",
+          "final_scope": 2
+        },
+        "436d1afd-7b79-4a31-871e-710cb09d543d"
+      ],
+      "started": "2026-11-08T09:50:10.619Z",
+      "finished": "2026-11-08T09:50:10.635Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T09:50:10.635Z",
+      "finished": "2026-11-08T09:50:10.635Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into emission_factors(id,organization_id,factor_key,factor_name,source_name,category,activity_type,unit,co2e_kg_per_unit,valid_from,version,quality_tier,status,env,is_test) values($1,$2,'SYNTHETIC-NATIVE','SYNTHETIC ONLY','SYNTHETIC TEST','energy','electricity','kWh',0.5,'2026-01-01',1,'custom','active','staging',true)",
+      "params": [
+        "b1c55b1a-07b6-4632-8291-9c8be5d879f8",
+        "198743af-89b9-4eaf-90cf-a215e9752833"
+      ],
+      "started": "2026-11-08T09:50:10.635Z",
+      "finished": "2026-11-08T09:50:10.638Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into storage.objects(bucket_id,name,owner_id,metadata) values($1,$2,$3,$4)",
+      "params": [
+        "staging-receipts",
+        "staging/543fcc8f-0ab1-4c03-9dd4-66b1ac840f86/016982c4-478e-4c82-a341-4e6adc76994e.pdf",
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2",
+        {
+          "size": 29,
+          "mimetype": "application/pdf"
+        }
+      ],
+      "started": "2026-11-08T09:50:10.639Z",
+      "finished": "2026-11-08T09:50:10.643Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "insert into uploaded_documents(id,organization_id,project_id,uploaded_by_user_id,storage_bucket,storage_path,original_filename,mime_type,file_size_bytes,sha256_hash,document_type,ocr_status,status,env,is_test) values($1,$2,$3,$4,$5,$6,'SYNTHETIC-N4-R1.pdf','application/pdf',$7,$8,'receipt','pending','active','staging',true)",
+      "params": [
+        "016982c4-478e-4c82-a341-4e6adc76994e",
+        "198743af-89b9-4eaf-90cf-a215e9752833",
+        "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86",
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2",
+        "staging-receipts",
+        "staging/543fcc8f-0ab1-4c03-9dd4-66b1ac840f86/016982c4-478e-4c82-a341-4e6adc76994e.pdf",
+        29,
+        "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      ],
+      "started": "2026-11-08T09:50:10.643Z",
+      "finished": "2026-11-08T09:50:10.647Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select (select count(*) from extracted_document_drafts where uploaded_document_id=$1) drafts,(select count(*) from cocal_delete_private.operations where document_id=$1) operations,(select count(*) from emission_activities where project_id=$2) activities,(select count(*) from calculation_results where project_id=$2) calculations,(select count(*) from audit_logs where project_id=$2 and action='document_delete_prepared') delete_audits,(select deletion_state from uploaded_documents where id=$1) deletion_state",
+      "params": [
+        "016982c4-478e-4c82-a341-4e6adc76994e",
+        "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86"
+      ],
+      "started": "2026-11-08T09:50:10.647Z",
+      "finished": "2026-11-08T09:50:10.651Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "create function public.n4_r1_draft_barrier() returns trigger language plpgsql as $$begin if new.id='0ca191c1-22f3-4814-be0c-dad5d13757f5'::uuid then perform pg_advisory_xact_lock(2026110803);end if;return new;end$$;create trigger n4_r1_between_draft_triggers before insert or update on public.extracted_document_drafts for each row execute function public.n4_r1_draft_barrier()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.651Z",
+      "finished": "2026-11-08T09:50:10.652Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select tgname from pg_trigger where tgrelid='public.extracted_document_drafts'::regclass and not tgisinternal and (tgtype&2)=2 order by tgname",
+      "params": [],
+      "started": "2026-11-08T09:50:10.652Z",
+      "finished": "2026-11-08T09:50:10.652Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T09:50:10.652Z",
+      "finished": "2026-11-08T09:50:10.652Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_advisory_xact_lock($1)",
+      "params": [
+        2026110803
+      ],
+      "started": "2026-11-08T09:50:10.652Z",
+      "finished": "2026-11-08T09:50:10.653Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T09:50:10.653Z",
+      "finished": "2026-11-08T09:50:10.653Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "set local role authenticated",
+      "params": [],
+      "started": "2026-11-08T09:50:10.653Z",
+      "finished": "2026-11-08T09:50:10.653Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2"
+      ],
+      "started": "2026-11-08T09:50:10.653Z",
+      "finished": "2026-11-08T09:50:10.653Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "insert into extracted_document_drafts(id,organization_id,project_id,uploaded_document_id,extraction_provider,raw_payload,normalized_payload,status,is_latest,env,is_test) values($1,$2,$3,$4,'SYNTHETIC_NATIVE_OCR_FIXTURE','{}',$5,'pending_review',true,'staging',true) returning id",
+      "params": [
+        "0ca191c1-22f3-4814-be0c-dad5d13757f5",
+        "198743af-89b9-4eaf-90cf-a215e9752833",
+        "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86",
+        "016982c4-478e-4c82-a341-4e6adc76994e",
+        {
+          "quantity": 100,
+          "unit": "kWh",
+          "activity_date": "2026-01-15"
+        }
+      ],
+      "started": "2026-11-08T09:50:10.653Z",
+      "finished": "2026-11-08T09:50:11.736Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_stat_clear_snapshot()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.653Z",
+      "finished": "2026-11-08T09:50:10.654Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        99084
+      ],
+      "started": "2026-11-08T09:50:10.654Z",
+      "finished": "2026-11-08T09:50:10.658Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_stat_clear_snapshot()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.708Z",
+      "finished": "2026-11-08T09:50:10.708Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        99084
+      ],
+      "started": "2026-11-08T09:50:10.708Z",
+      "finished": "2026-11-08T09:50:10.709Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "begin",
+      "params": [],
+      "started": "2026-11-08T09:50:10.711Z",
+      "finished": "2026-11-08T09:50:10.712Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "set local role service_role",
+      "params": [],
+      "started": "2026-11-08T09:50:10.712Z",
+      "finished": "2026-11-08T09:50:10.712Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select set_config('request.jwt.claim.sub',$1,true)",
+      "params": [
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2"
+      ],
+      "started": "2026-11-08T09:50:10.712Z",
+      "finished": "2026-11-08T09:50:10.712Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "select * from document_deletion_request($1,$2,'prepare')",
+      "params": [
+        "88f13105-18ee-4639-9ca9-ceb6a25093b2",
+        {
+          "organization_id": "198743af-89b9-4eaf-90cf-a215e9752833",
+          "project_id": "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86",
+          "document_id": "016982c4-478e-4c82-a341-4e6adc76994e",
+          "request_id": "013b1ab0-029f-4129-85b1-5c810f979ded",
+          "storage_bucket": "staging-receipts",
+          "storage_path": "staging/543fcc8f-0ab1-4c03-9dd4-66b1ac840f86/016982c4-478e-4c82-a341-4e6adc76994e.pdf"
+        }
+      ],
+      "started": "2026-11-08T09:50:10.712Z",
+      "finished": "2026-11-08T09:50:11.731Z",
+      "status": "ERROR",
+      "code": "40P01",
+      "message": "deadlock detected"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_stat_clear_snapshot()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.712Z",
+      "finished": "2026-11-08T09:50:10.713Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        52260
+      ],
+      "started": "2026-11-08T09:50:10.713Z",
+      "finished": "2026-11-08T09:50:10.713Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_stat_clear_snapshot()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.753Z",
+      "finished": "2026-11-08T09:50:10.754Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=$1",
+      "params": [
+        52260
+      ],
+      "started": "2026-11-08T09:50:10.754Z",
+      "finished": "2026-11-08T09:50:10.754Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T09:50:10.756Z",
+      "finished": "2026-11-08T09:50:10.757Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_stat_clear_snapshot()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.757Z",
+      "finished": "2026-11-08T09:50:10.757Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=any($1::int[])",
+      "params": [
+        [
+          99084,
+          52260
+        ]
+      ],
+      "started": "2026-11-08T09:50:10.757Z",
+      "finished": "2026-11-08T09:50:10.758Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pg_stat_clear_snapshot()",
+      "params": [],
+      "started": "2026-11-08T09:50:10.785Z",
+      "finished": "2026-11-08T09:50:10.786Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select pid,state,wait_event_type,wait_event,pg_blocking_pids(pid) blockers from pg_stat_activity where pid=any($1::int[])",
+      "params": [
+        [
+          99084,
+          52260
+        ]
+      ],
+      "started": "2026-11-08T09:50:10.786Z",
+      "finished": "2026-11-08T09:50:10.786Z",
+      "status": "OK"
+    },
+    {
+      "connection": "B",
+      "sql": "rollback",
+      "params": [],
+      "started": "2026-11-08T09:50:11.731Z",
+      "finished": "2026-11-08T09:50:11.731Z",
+      "status": "OK"
+    },
+    {
+      "connection": "A",
+      "sql": "commit",
+      "params": [],
+      "started": "2026-11-08T09:50:11.736Z",
+      "finished": "2026-11-08T09:50:11.737Z",
+      "status": "OK"
+    },
+    {
+      "connection": "observer",
+      "sql": "select (select count(*) from extracted_document_drafts where uploaded_document_id=$1) drafts,(select count(*) from cocal_delete_private.operations where document_id=$1) operations,(select count(*) from emission_activities where project_id=$2) activities,(select count(*) from calculation_results where project_id=$2) calculations,(select count(*) from audit_logs where project_id=$2 and action='document_delete_prepared') delete_audits,(select deletion_state from uploaded_documents where id=$1) deletion_state",
+      "params": [
+        "016982c4-478e-4c82-a341-4e6adc76994e",
+        "543fcc8f-0ab1-4c03-9dd4-66b1ac840f86"
+      ],
+      "started": "2026-11-08T09:50:11.737Z",
+      "finished": "2026-11-08T09:50:11.739Z",
+      "status": "OK"
+    }
+  ],
+  "commandExcerptNotice": "Large schema/bootstrap commands omitted; exact migration hashes above. All native raw SQL commands retained at local runtime evidence path; this is a published excerpt.",
+  "commandsOmitted": 23,
+  "rawResultSha256": "a0e32c24cc69e63418babc0f94239140e8fdc55a03a1250951f0f6f30e1825e9",
+  "localRawEvidence": "<TOOL_ROOT>/native-pg17-20261108/runs/20261108095006843-8aba9a46/result.json",
+  "notRun": [
+    "Managed Supabase/PostgREST/JWT/Storage/Edge",
+    "Native file chooser/save",
+    "Cloud migration/backup/restore",
+    "Other lock combinations beyond named cases"
+  ]
+}

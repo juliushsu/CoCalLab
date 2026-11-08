@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-08T10:04:11.878Z",
+  "captureKind": "Retrospective structured summary of actual tool execution transcript; not a raw full stdout log. No reruns performed.",
+  "commandPrefix": "PGLITE_RUNTIME_ROOT=<existing ../tooling/sql-runtime>",
+  "baselineCommand": "REPLACEMENT_PROVENANCE_BASELINE=1 node --test --test-concurrency=1 backend/tests/integration/replacement-provenance-sql.test.js",
+  "baselineMigrationThrough": "202611080001_document_lock_order.sql",
+  "runs": [
+    {
+      "toolChunk": "63de0b",
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "exitCode": 1,
+      "results": [
+        "F1 inherited confidence actual0.97 expectedNULL",
+        "F2 legacy exclude MANUAL_VERIFIED_RECEIPT_REQUIRED",
+        "recover RPC missing42883"
+      ],
+      "rawStdout": "Tool transcript output was truncated; full stdout was not redirected to a file."
+    },
+    {
+      "toolChunk": "1df4ce",
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "exitCode": 0,
+      "durationMs": 5919.9392
+    },
+    {
+      "toolSession": 82765,
+      "toolChunks": [
+        "d43c0d",
+        "50eba0",
+        "e6eb6c"
+      ],
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "exitCode": 0,
+      "durationMs": 23013.5131
+    },
+    {
+      "toolSession": 6818,
+      "toolChunks": [
+        "6f4cd3",
+        "3cb455"
+      ],
+      "tests": 13,
+      "pass": 12,
+      "fail": 1,
+      "exitCode": 1,
+      "durationMs": 27109.0537,
+      "failure": "Test fixture archived receipt without archived_at; uploaded_documents_archived_at_chk23514. No product failure.",
+      "testShaAtFailure": "843ECE14DFD4B82C71B91EFC390B7BB0A3665DA5FE5553A2BE18D1964C28C8C1"
+    },
+    {
+      "toolChunk": "a43547",
+      "command": "node --test --test-concurrency=1 --test-name-pattern='exclude still|server recovery remains' backend/tests/integration/replacement-provenance-sql.test.js",
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "exitCode": 0,
+      "durationMs": 4183.9224,
+      "fixtureCorrection": "Archived fixture now sets archived_at=now(); also asserts recovery does not increase audit count."
+    }
+  ],
+  "finalFullCommand": "node --test --test-concurrency=1 backend/tests/integration/replacement-provenance-sql.test.js",
+  "frozen": {
+    "migration": "backend/supabase/migrations/202611080002_replacement_provenance.sql",
+    "migrationSha256": "D8C78ACA649B9078D3A51A69F045BD6C6BC9E354F51359EDCCF1BF490B310AEA",
+    "test": "backend/tests/integration/replacement-provenance-sql.test.js",
+    "testSha256": "32750CB14476429005FF79F240A6B4F749CA222EE2DE086B7515528BADB0C34F"
+  },
+  "independentRun": "Reviewer separately reported13/13SQL and3/3HTTP; use reviewer own receipt as primary independent evidence.",
+  "limits": [
+    "Source/SQL synthetic fixtures only; no managed Supabase/JWT/Storage/Edge/cloud validation",
+    "Repeated subsets overlap; counts must not be added together"
+  ]
+}

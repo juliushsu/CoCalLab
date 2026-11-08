@@ -1,0 +1,918 @@
+[
+  {
+    "label": "version-supabase-cli",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\supabase-2.122.1\\supabase.exe",
+    "args": [
+      "--version"
+    ],
+    "started": "2026-11-08T10:06:41.885Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "version-deno",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "--version"
+    ],
+    "started": "2026-11-08T10:06:42.257Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-adjustment-rule-result",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:42.335Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-adjustment-rule-result",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:42.379Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-adjustment-rule-result",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\adjustment-rule-result.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\adjustment-rule-result\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:42.404Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-analytics-emissions",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:42.963Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-analytics-emissions",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:43.008Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-analytics-emissions",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\analytics-emissions.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\analytics-emissions\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:43.032Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-classify-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\classify-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:43.540Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-classify-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\classify-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:43.593Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-classify-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\classify-document.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\classify-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:43.620Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-confirm-draft",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:44.097Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-confirm-draft",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:44.144Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-confirm-draft",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\confirm-draft.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\confirm-draft\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:44.165Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-create-organization",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\create-organization\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:44.646Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-create-organization",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\create-organization\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:44.689Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-create-organization",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\create-organization.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\create-organization\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:44.711Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-delete-uploaded-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:45.134Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-delete-uploaded-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:45.178Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-delete-uploaded-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\delete-uploaded-document.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\delete-uploaded-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:45.199Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-enforce-subscription-status",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:45.662Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-enforce-subscription-status",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:45.718Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-enforce-subscription-status",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\enforce-subscription-status.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\enforce-subscription-status\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:45.746Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-export-report-snapshot",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:46.199Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-export-report-snapshot",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:46.255Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-export-report-snapshot",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\export-report-snapshot.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\export-report-snapshot\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:46.277Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-generate-report",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\generate-report\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:46.738Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-generate-report",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\generate-report\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:46.783Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-generate-report",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\generate-report.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\generate-report\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:46.807Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-manual-transcription",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:47.249Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-manual-transcription",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:47.304Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-manual-transcription",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\manual-transcription.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\manual-transcription\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:47.326Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-process-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\process-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:47.840Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-process-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\process-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:47.889Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-process-document",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\process-document.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\process-document\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:47.915Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-recalculate-project",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:48.382Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-recalculate-project",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:48.445Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-recalculate-project",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\recalculate-project.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\recalculate-project\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:48.470Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-replace-emission-activity",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\replace-emission-activity\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:48.923Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-replace-emission-activity",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\replace-emission-activity\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:48.970Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-replace-emission-activity",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\replace-emission-activity.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\replace-emission-activity\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:48.994Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-run-ai-audit",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:49.471Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-run-ai-audit",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:49.525Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-run-ai-audit",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\run-ai-audit.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\run-ai-audit\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:49.553Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-save-manual-activity",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:50.047Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-save-manual-activity",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:50.100Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-save-manual-activity",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\save-manual-activity.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\save-manual-activity\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:50.122Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "check-verify-upload-receipt",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "check",
+      "--all",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--cached-only",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:50.560Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "graph-verify-upload-receipt",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "info",
+      "--json",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:50.608Z",
+    "exitCode": 0,
+    "error": null
+  },
+  {
+    "label": "bundle-verify-upload-receipt",
+    "binary": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\deno-2.9.8\\deno.exe",
+    "args": [
+      "bundle",
+      "--no-config",
+      "--node-modules-dir=none",
+      "--allow-import=esm.sh,registry.npmjs.org",
+      "--lock=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\docs\\delivery\\evidence\\deployment-preflight-20261107-99c233de70f0\\deno.lock",
+      "--frozen-lockfile",
+      "--platform=deno",
+      "--packages=bundle",
+      "--format=esm",
+      "--sourcemap=external",
+      "--output=C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\bundles\\verify-upload-receipt.js",
+      "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\deployment-20261107\\99c233de70f02b8d3aca5b5e7262526d5bf5312d\\source\\backend\\supabase\\functions\\verify-upload-receipt\\index.ts"
+    ],
+    "started": "2026-11-08T10:06:50.634Z",
+    "exitCode": 0,
+    "error": null
+  }
+]

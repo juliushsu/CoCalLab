@@ -58,3 +58,25 @@ named schedule. It also checks ordinary-role RPC refusal, wrong-actor lease
 release, the original service actor's cleanup after membership revocation,
 finalize/replay and a finalize/MANUAL lock wait. This is bounded regression
 evidence; it does not prove every possible lock ordering is free of deadlocks.
+
+## Narrow N4-R1 draft-trigger schedule
+
+```powershell
+node backend/tools/native-pg-concurrency/run.mjs --draft-r1-baseline
+node backend/tools/native-pg-concurrency/run.mjs --draft-r1-fixed 040509777bb1cb60589a01ce7ec176a4ec54cee7
+```
+
+These modes run only the new named ordinary-draft schedule, not the prior eight
+cases. Baseline loads da5's44 schema migrations; fixed loads040's46 (49 tracked
+minus the same3 held fixtures). Both create fresh dedicated databases and retain
+all results. The test-only barrier trigger is explicitly between
+deletion_draft_reference and protect_manual_draft, and releases before observing
+the natural actor-only cycle. Baseline requires a real40P01; fixed requires the
+early project row lock, existing DOCUMENT_HAS_REFERENCES rejection, no duplicate
+delete audit, rollback/original-ID recovery, role/scope/subscription denials and
+an unchanged-ID legitimate UPDATE. Every observer poll clears the statistics
+snapshot and verifies active Lock/blocker PIDs.
+
+Four green named cases include only **sequential** UPDATE/rebind validation.
+UPDATE concurrency between the two triggers and other lock combinations remain
+NOT_RUN. The same restrictions on targets, credentials, cloud and5432 apply.

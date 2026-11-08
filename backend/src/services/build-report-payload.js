@@ -172,6 +172,10 @@ export function build_report_payload({ project, activities, calculation_results,
   };
 
   return {
+    replacement_disclosure_version: '20261108.replacement.1',
+    correction_disclosures: activities.filter(activity => activity.replacement_provenance != null)
+      .map(activity => ({emission_activity_id: activity.id, replacement_provenance: activity.replacement_provenance}))
+      .sort((left, right) => left.emission_activity_id.localeCompare(right.emission_activity_id)),
     project_metadata: {
       project_id: project.id,
       organization_id: project.organization_id,
@@ -220,6 +224,7 @@ export function build_report_payload({ project, activities, calculation_results,
       source_draft_id: activity.source_draft_id,
       source_document_id: activity.source_document_id,
       calculation_result_id: calculationByActivityId.get(activity.id)?.id || null,
+      ...(activity.replacement_provenance == null ? {} : {replacement_provenance: activity.replacement_provenance}),
     })),
   };
 }

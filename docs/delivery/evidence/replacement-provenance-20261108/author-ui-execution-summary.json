@@ -1,0 +1,42 @@
+{
+  "captureKind": "Retrospective summary of actual tool transcripts, not saved raw stdout; no invented files or reruns",
+  "source": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+  "tests": [
+    {
+      "command": "node --test tests/*.test.ts",
+      "cwd": "frontend/readdy-app",
+      "pass": 241,
+      "fail": 0,
+      "toolChunk": "113e62",
+      "exit": 0
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --project tsconfig.app.json",
+      "cwd": "frontend/readdy-app",
+      "toolChunk": "9dacd6",
+      "exit": 0
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+      "cwd": "frontend/readdy-app",
+      "toolChunk": "f113a4",
+      "exit": 0
+    },
+    {
+      "command": "node --test backend/tests/replacement-disclosure.test.js backend/tests/activity-replacement-contract.test.js",
+      "stage": "prior baseline before JS/FE repair",
+      "toolChunk": "b0e4ca",
+      "pass": 2,
+      "fail": 2,
+      "exit": 1
+    },
+    {
+      "stage": "523b502 excluded headline source witness",
+      "toolChunk": "eec70d",
+      "actual": "0 kgCO₂e / 0 tCO₂e",
+      "expected": "已排除／不計入",
+      "exit": 1
+    }
+  ],
+  "note": "Targets overlap independent4/12 and full FE241. Do not add counts."
+}

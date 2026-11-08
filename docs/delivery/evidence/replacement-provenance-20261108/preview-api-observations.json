@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-11-08T10:12:46.836Z",
+  "programSHA": "99c233de70f02b8d3aca5b5e7262526d5bf5312d",
+  "toolSHA": "9481fa3969f9fc3af9529267183b8ea1845fb83f",
+  "synthetic": true,
+  "loopbackOnly": "http://127.0.0.1:4216",
+  "syntheticFactorKgPerKwh": 1,
+  "scope": {
+    "organization_id": "35a023b2-f547-4d0e-9bcb-07c323924dec",
+    "project_id": "5cb41138-5644-46c4-b6cc-892f427f74a4"
+  },
+  "reports": [
+    {
+      "id": "4b82fada-2136-4bd2-a712-85e6dee8d83a",
+      "kg": 100,
+      "integrity": "server_verified"
+    },
+    {
+      "id": "a1c26efd-6d29-4eef-96fd-d31ef20a26df",
+      "kg": 120,
+      "integrity": "server_verified"
+    }
+  ],
+  "originalRequestRecovered": "b0695b09-beea-42a6-9638-6ba876df6a24",
+  "recoveryStatus": "historical",
+  "originalActivityId": "6364fd0b-0533-4117-8c2e-47f09563455b",
+  "correctedActivityId": "5402dbff-8655-4497-a2d2-dd324e7bae64",
+  "activityRowsBeforeAndAfterReadOnlyRecovery": 3,
+  "recoveryAndExportsPreservedAllRows": true,
+  "reportRowsSha256": "5b8501193b95810afae5b4bb7ffd88329769e529422c86fd81d2b7d6b18c53c4",
+  "activityRowsSha256": "a5c0ad914a93665e9354fe7e354d08a6629409a2ef2ccd3a213c925bad64b56e",
+  "effectiveExcluded": {
+    "id": "2e61bc85-f76c-4741-8c1e-6ce43761da7f",
+    "quantity": 120,
+    "unit": "kWh",
+    "confidence_score": null
+  },
+  "notRun": [
+    "native chooser/save/download permissions",
+    "managed Auth JWT Storage Edge",
+    "legacy exclusion browser path (SQL13/HTTP3 only)",
+    "other concurrency schedules"
+  ]
+}

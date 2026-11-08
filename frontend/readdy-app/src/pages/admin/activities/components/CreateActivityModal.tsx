@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {saveManualActivity,manualContext,type ManualInput,type ManualProject} from '@/services/manualWorkflow';
 import {activityReference,clearManualReference} from '@/services/manualRecovery';
-import {replacementFormIntent,replacementOperation,replacementReferenceForm} from '@/services/activityReplacement';
-import {replacementReference,readReplacementReferences,clearReplacementReference,captureReplacementReferences,abandonCapturedReplacementReference,type ReplacementReference} from '@/services/activityReplacementRecovery';
+import {replacementFormIntent,replacementOperation,replacementReferenceForm,recoverReplacementOperation} from '@/services/activityReplacement';
+import {replacementReference,readReplacementReferences,clearReplacementReference,captureReplacementReferences,abandonCapturedReplacementReference,retainRecoveredReplacementReference,type ReplacementReference} from '@/services/activityReplacementRecovery';
 import {readActivityLineage} from '@/services/activityLineage';
 import type {EmissionActivity} from '@/types/activity';
 import { useTranslation } from 'react-i18next';
@@ -82,9 +82,14 @@ export default function CreateActivityModal({ activity,projectId, organizationId
       if(activity){
         if(!r.data)throw new Error('原活動不可存取，未建立取代。');
         setCaptures(captureReplacementReferences(sessionStorage,scope,userId,id));
+        const recovered=await recoverReplacementOperation(getSupabaseClient(),scope,userId,id,isCurrent);
+        if(!mounted||!isCurrent())return;
+        if(recovered.reference){retainRecoveredReplacementReference(sessionStorage,scope,userId,recovered.reference);setNotice('已由伺服器查回原請求 '+recovered.reference.requestId+'；沿用保存意圖，不新建版本。');}
+        else if(recovered.status==='superseded')setNotice('此活動已由另一操作取代；不揭露他人的操作意圖，也不可建立新請求。');
+        else setNotice('伺服器未找到此操作者的保存取代；核對目前有效末端後才可建立新請求。');
         const refs=readReplacementReferences(sessionStorage,scope,userId,id),family=await readActivityLineage(getSupabaseClient(),scope,id,isCurrent);
         if(!mounted||!isCurrent())return;
-        setCanReplace(family.versions.find(row=>row.activity_id===id)?.is_effective===true);setReferences(refs);
+        setCanReplace(recovered.status==='not_found'&&family.versions.find(row=>row.activity_id===id)?.is_effective===true);setReferences(refs);
         if(refs.length===1){const ref=refs[0];setReference(ref);setMode(ref.intent.mode);setReason(ref.intent.reason);setForm(prior=>replacementReferenceForm(ref.intent,prior));}
       }
     }catch(cause){if(mounted&&isCurrent())setError(cause instanceof Error?cause.message:'恢復建檔參考失敗。');}

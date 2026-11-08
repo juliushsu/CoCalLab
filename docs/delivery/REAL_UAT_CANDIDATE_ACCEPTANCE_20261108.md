@@ -1,5 +1,7 @@
 # 現版隔離 UAT 驗收入口 — 2026-11-08
 
+> 最新候選為 PR35／產品 `040509777bb1cb60589a01ce7ec176a4ec54cee7`：[F1／F2／N4-R1交付](REPLACEMENT_PROVENANCE_FIX_DELIVERY_20261108.md)。依CTO，N1／N2／N5來源關閉、N4僅具名排程；新差異等待定向複審，發布HOLD。49來源migration＝46schema＋3歷史fixture HOLD；本機040具名原生並行已有證據，真服務及現版完整復原未驗。下文保留原ddcc／ed6時點，不將當時的OPEN／NOT_RUN或PASS移用為最新裁定；前往NEXT_ACTION接續。
+
 > 後續證據（2026-11-08）：[da5原生SQL鎖序修復](NATIVE_POSTGRES_CONCURRENCY_20261108.md)與[本機SQL備份/復原](NATIVE_SQL_RECOVERY_DELIVERY_20261108.md)已交付；原生PG能力已新增。下文保留ddcc/ed6當時狀態，雲端/真服務門檻不變。
 
 **RELEASE HOLD；本文件是待授權的執行清單，不是部署或驗收通過。** 正式 UAT 基準仍為 `7dccd5452152f2495d10ad1437d5d03215166065`。本輪只補本機合成選檔產物、工具測試與現版對照，不改應用、SQL、權限、選單或既有功能。
