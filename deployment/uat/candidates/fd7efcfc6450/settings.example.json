@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "status": "CANDIDATE_TEMPLATE_ONLY_NO_CLOUD_AUTHORIZATION",
+  "application_source_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "reference_uat_baseline": "7dccd5452152f2495d10ad1437d5d03215166065",
+  "cloud_read_authorized": true,
+  "target_project_ref": null,
+  "frontend": {
+    "planned_local_origin": "http://127.0.0.1:4211",
+    "active": false,
+    "public_env_names": [
+      "VITE_PUBLIC_SUPABASE_URL",
+      "VITE_PUBLIC_SUPABASE_ANON_KEY"
+    ],
+    "values": "OWNER_SUPPLIED_AFTER_ENVIRONMENT_APPROVAL; never use the synthetic adapter for real-service acceptance"
+  },
+  "auth": {
+    "site_url": "http://127.0.0.1:4211",
+    "additional_redirect_urls": [
+      "http://127.0.0.1:4211/login"
+    ],
+    "supported_flow": "existing password sign-in only",
+    "oauth_magic_link_recovery": "NOT_IMPLEMENTED_OR_NOT_VERIFIED; no invented /auth/callback",
+    "require_explicit_target_approval": true
+  },
+  "edge": {
+    "verify_jwt": true,
+    "verify_jwt_false_authorized": false,
+    "cors_allowed_origins": [
+      "http://127.0.0.1:4211"
+    ],
+    "env": {
+      "APP_ENV": "staging",
+      "REPORT_EXPORT_POLICY": "tenant_write_v1"
+    },
+    "secret_env_names": [
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "SUPABASE_SERVICE_ROLE_KEY"
+    ],
+    "managed_runtime_actual_version": "UNKNOWN",
+    "reference_edge_runtime": "1.78.1",
+    "reference_runtime_execution": "NOT_RUN",
+    "config_note": "No wildcard, no gateway bypass to work around 401, no cloud config changes. Exact UAT domain replaces/adds origins only after approval.",
+    "reference_deno_crate_version": "2.1.4 (edge-runtime v1.78.1 source metadata only; not observed managed runtime)",
+    "function_count": 16
+  },
+  "toolchain": {
+    "supabase_cli": "2.122.1",
+    "deno_cli": "2.9.8",
+    "purpose": "local dependency resolution/check/bundle; not managed Edge equivalence",
+    "frontend_sdk": "2.57.4",
+    "edge_sdk_import": "npm:@supabase/supabase-js@2.49.4",
+    "node_type_reference": "npm:@types/node@22.12.0"
+  },
+  "migration": {
+    "source_count": 49,
+    "source_execution": "NOT_RUN_ON_CLOUD",
+    "historical_fixture_files": [
+      "202603160008_v1_frontend_fixture_seed.sql",
+      "202603180007_v1_staging_fixture_alignment.sql",
+      "202604070005_v1_adjustment_fixture_seed.sql"
+    ],
+    "fixture_policy": "Pure historical DML: exclude from proposed fresh-UAT application; preserve source/history. Do not fabricate CLI migration history or use this exclusion on an existing project.",
+    "not_valid": "Inventory and validate separately; migration success is not validation"
+  },
+  "cloud_read_scope": "Prior limited readonly inventory retained. Owner budget USD20 cumulative/14days confirmed. New cloud execution waits for exact environment/operation authorization; no resource/billing/retention clock started by this agent.",
+  "cloud_resource_creation_authorized": false,
+  "local_synthetic_preview": {
+    "frontend": "http://127.0.0.1:4217",
+    "api": "http://127.0.0.1:4216",
+    "real_uat_equivalence": false,
+    "application_source_sha": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+    "note": "Existing local synthetic backend remains040; frontend text may hot-reload. Do not claim it is a managed deployed candidate. Fixed unconfigured artifact is packaged separately."
+  },
+  "release": "HOLD",
+  "deployment_warning": "Existing projects must recalculate before new reports; old in-flight recalculation may fail. No automatic recalc, history re-attestation or overwrite.",
+  "new_database_objects": [
+    "cocal_manual_private.confirmation_requests (004)",
+    "source-witness confirmation RPCs (004)",
+    "cocal_activity_private.replacements / service-only replace_emission_activity / tenant-scoped lineage and effective views (005)",
+    "202611080001: early project lock for deletion request/finalize/processing-release; same APIs and ACLs",
+    "202611080002: private authoritative provenance; actor-bound service-only recover_activity_replacement; checked report publisher and preserved legacy exclusion",
+    "202611080003: ordinary draft INSERT/UPDATE project lock before document lock"
+  ],
+  "local_native_postgresql": {
+    "version": "17.11",
+    "host": "127.0.0.1",
+    "port": 55439,
+    "scope": "dedicated synthetic SQL concurrency only; not managed Supabase",
+    "source_migration_execution": "46 schema on fresh native test DB only; never cloud",
+    "not_valid_validation": "NOT_RUN",
+    "formal_uat_equivalence": false
+  },
+  "existing_project_warning": "Recalculate explicitly before a new report; old in-flight recalc may fail. Do not auto recalc, change historical latest flags, reseal or overwrite reports.",
+  "budget_authorization": {
+    "status": "OWNER_CONFIRMED",
+    "cumulative_usd": 20,
+    "retention_days": 14,
+    "resource_execution_authorized": false,
+    "record": "../../authorization-status.json"
+  },
+  "report_receipt_status_label": "報告產生時的原收據驗證狀態",
+  "source_closure": {
+    "reviewed_product": "040509777bb1cb60589a01ce7ec176a4ec54cee7",
+    "review_reply": "e4fd606eff21e0641352aec1f97b51051542a4b7",
+    "ctodirective": "User-provided ruling: source closed; N4-R1 INSERT named only; remaining real service UAT open",
+    "new_scope": "Only report-generation-time presentation; no SQL/handler/permission changes"
+  }
+}

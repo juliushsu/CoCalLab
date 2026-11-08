@@ -1,0 +1,64 @@
+vite v7.3.3 building client environment for production...
+transforming...
+✓ 253 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/index.html                                        1.91 kB │ gzip:   0.96 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/index-BhgGpPpX.css                        56.06 kB │ gzip:   9.02 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/staging-diP2eecp.js                        0.11 kB │ gzip:   0.12 kB │ map:     1.26 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/NotFound-BAc_d4z5.js                       0.78 kB │ gzip:   0.44 kB │ map:     1.37 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EmptyState-a7Ul5Bby.js                     1.24 kB │ gzip:   0.56 kB │ map:     3.53 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ReadonlyBanner-RyO7tZuY.js                 1.38 kB │ gzip:   0.57 kB │ map:     2.89 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ErrorState-CNQ_csAw.js                     1.48 kB │ gzip:   0.68 kB │ map:     3.63 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ReplacementDisclosurePanel-ZH1O8pWu.js     1.50 kB │ gzip:   0.87 kB │ map:     2.87 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/analyticsService-Dox42_q4.js               1.63 kB │ gzip:   0.83 kB │ map:     7.71 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/useSubscriptionStatus-DdSQSVK4.js          1.66 kB │ gzip:   0.87 kB │ map:     8.17 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ConfirmDialog-DAmQv9dv.js                  1.90 kB │ gzip:   0.92 kB │ map:     5.78 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/replacementDisclosure-DbhqJfso.js          2.13 kB │ gzip:   1.11 kB │ map:     5.36 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/entityUpdateContract-D_8HSg68.js           2.25 kB │ gzip:   0.94 kB │ map:     5.97 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/activityLineage-DYxPv9L4.js                2.32 kB │ gzip:   1.13 kB │ map:     6.15 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/edgeFunction-DKWNjTwl.js                   2.53 kB │ gzip:   1.19 kB │ map:     9.03 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/GovernanceBanner-v8jvcotX.js               2.57 kB │ gzip:   0.97 kB │ map:     6.07 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/organizationService-DvfrlLnj.js            2.67 kB │ gzip:   0.95 kB │ map:    10.88 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/StatusBadge-Bd1xAeT9.js                    2.78 kB │ gzip:   0.78 kB │ map:     6.12 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/useTranslation-pN6Lt4he.js                 2.96 kB │ gzip:   1.49 kB │ map:    12.31 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/LoginPage-BoXfDpQR.js                      3.09 kB │ gzip:   1.26 kB │ map:     7.30 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EditOrganizationPage-B1vQbqXW.js           3.40 kB │ gzip:   1.81 kB │ map:     9.41 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EditProjectPage--7CKLRDb.js                4.22 kB │ gzip:   1.92 kB │ map:    10.99 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EmissionsAnalyticsPage-txa_PEaF.js         5.28 kB │ gzip:   2.24 kB │ map:    12.77 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/OrganizationListPage-Bdz-Gjz9.js           5.34 kB │ gzip:   1.85 kB │ map:    12.96 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ReportCenterPage-CupSfQNG.js               6.42 kB │ gzip:   2.33 kB │ map:    16.05 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/projectService-ciEz2Tvx.js                 7.04 kB │ gzip:   2.58 kB │ map:    20.57 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ProjectListPage-38dbdcd8.js                8.31 kB │ gzip:   2.68 kB │ map:    21.60 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/CreateOrganizationPage-CQBRaOwN.js         8.61 kB │ gzip:   3.11 kB │ map:    20.01 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ReportOutlinePanel-Jtt_LXh0.js            11.45 kB │ gzip:   4.78 kB │ map:    23.88 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ProjectOverviewPage-DNlwttPI.js           11.98 kB │ gzip:   2.94 kB │ map:    24.70 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EmissionFactorsPage-CyOGVoYX.js           12.50 kB │ gzip:   3.25 kB │ map:    26.78 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/CreateProjectPage-COmUniu0.js             12.62 kB │ gzip:   3.15 kB │ map:    29.81 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/documentService-DbeSKdXg.js               12.96 kB │ gzip:   5.06 kB │ map:    44.35 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/UploadedDocumentListPage-CSbhkPtO.js      13.62 kB │ gzip:   4.36 kB │ map:    33.74 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/DocumentUploadPage-8IhSWmhP.js            14.09 kB │ gzip:   4.29 kB │ map:    40.20 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/SubscriptionManagementPage-BYX4Ygm3.js    14.50 kB │ gzip:   3.41 kB │ map:    35.21 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EmissionActivityDetailPage-WDGNibSb.js    15.87 kB │ gzip:   5.59 kB │ map:    39.44 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ManualTranscriptionPage-CLkxbblZ.js       15.97 kB │ gzip:   6.63 kB │ map:    39.15 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/OrganizationMembersPage-jA9Ux9qo.js       18.23 kB │ gzip:   4.58 kB │ map:    47.54 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/AdminLayout-svGECd_k.js                   20.74 kB │ gzip:   6.93 kB │ map:    57.45 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ReportGenerationHistoryPage-BSHwhqpw.js   22.01 kB │ gzip:   6.09 kB │ map:    59.42 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/documentLibrary-Cu16oBS2.js               22.84 kB │ gzip:   7.01 kB │ map:    66.53 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ExtractedDraftReviewPage-TAkpCk0B.js      24.22 kB │ gzip:   6.76 kB │ map:    64.30 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/ReportPreviewPage-BXJaIEov.js             25.84 kB │ gzip:   9.01 kB │ map:    75.56 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/FactorSourcesPage-BB7fzmUD.js             26.84 kB │ gzip:   5.88 kB │ map:    60.19 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/CarbonAdjustmentsPage-B5KRiYvP.js         33.01 kB │ gzip:   8.07 kB │ map:    88.41 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/page-D8sSe5EC.js                          39.57 kB │ gzip:   9.20 kB │ map:    71.44 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/EmissionActivitiesListPage-Bb9ejZtq.js    63.76 kB │ gzip:  18.26 kB │ map:   168.18 kB
+../../../tooling/uat-package-fd7efcfc6450/payload/frontend-unconfigured/assets/index-8AxdeaEj.js                        502.36 kB │ gzip: 158.34 kB │ map: 1,883.72 kB
+✓ built in 4.13s
+
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

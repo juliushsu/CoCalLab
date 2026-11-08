@@ -1,0 +1,16 @@
+✔ historical snapshot without disclosure contract is explicit and never populated from current activities (1.1703ms)
+✔ excluded headline is not a real zero while an included calculated zero remains zero (0.2222ms)
+✔ HTML/JSON exports disclose saved ancestor corrections with escaping and preserve old snapshots without live backfill (2.1094ms)
+✔ only exact completed persisted report identity can export and private row fields are excluded (3.0843ms)
+✔ HTML includes source and readable stored summary with kg-to-tonnes once including unclassified emissions (0.6234ms)
+✔ HTML escapes stored payload/category text, disables active content, and filenames stay deterministic and safe (0.4527ms)
+✔ unsupported formats cannot masquerade as downloads and null/invalid quantities remain unknown (0.2939ms)
+✔ uppercase UUID route identity can export while another report/project/tenant remains rejected (0.2688ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 151.5606

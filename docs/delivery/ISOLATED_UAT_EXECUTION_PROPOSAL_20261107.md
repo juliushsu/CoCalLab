@@ -1,5 +1,7 @@
 # 隔離環境整合驗收方案 — 2026-11-07
 
+> 授權更正（2026-11-08）：Owner已確認本次新增累計USD20／保留14天；下文舊每月USD35或其他歷史估價不是目前授權，也不是本輪重新查價。來源關閉已登錄；目前具體方案見 UAT_AUTHORIZATION_RECORD_20261108.md 及 UAT_FIXED_CANDIDATE_20261108.md。僅雲端環境與操作範圍待核准，不重問預算／Claude裁定。
+
 **WAITING_OWNER／NOT_CREATED／NOT_RUN；發布HOLD。** 供一次核准，未建立或修改資源。正式UAT仍7dccd545；候選固定程式SHA為ba2c7a56cdd6bfcfc7076543bf68d9c38ab5fdde，見[本輪交付](INTEGRATION_ACCEPTANCE_DELIVERY_20261107.md)，不使用移動branch HEAD。[初始相依基線](INTEGRATION_CANDIDATE_BASELINE_20261107.md)。
 
 ## 已知資源與選項

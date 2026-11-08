@@ -1,0 +1,80 @@
+{
+  "source_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "tool_sha": "5d345281ed11674ba4b1bfea0010a838b08d001d",
+  "related_tests": {
+    "command": "node --test frontend/readdy-app/tests/replacementDisclosure.test.ts frontend/readdy-app/tests/reportExport.test.ts",
+    "pass": 8,
+    "fail": 0,
+    "red": "2PASS/1FAIL before report-time label repair; preserved in disclosure-label-red.txt",
+    "evidence": "disclosure-label-green.txt"
+  },
+  "typecheck": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit --project tsconfig.app.json",
+    "exit": 0,
+    "toolChunk": "b63350",
+    "capture": "Tool receipt; no stdout on success"
+  },
+  "lint": {
+    "command": "node node_modules/eslint/bin/eslint.js src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "exit": 0,
+    "toolChunk": "c35e1f",
+    "capture": "Tool receipt; no stdout on success"
+  },
+  "build": {
+    "status": "PASS",
+    "evidence": "frontend-artifact-build.txt"
+  },
+  "component_render": {
+    "status": "PASS",
+    "evidence": "component-render-check.json",
+    "not_browser": true
+  },
+  "package": {
+    "status": "PASS",
+    "evidence": "PACKAGE_RECEIPT.json",
+    "standalone_verify": "package-verify.txt",
+    "zip_actual_inspection": "zip-inspection.json"
+  },
+  "ci": {
+    "id": 42478675372,
+    "head_sha": "5d345281ed11674ba4b1bfea0010a838b08d001d",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42478675372",
+    "job_id": 128725607769,
+    "created_at": "2026-11-08T12:06:21Z",
+    "updated_at": "2026-11-08T12:17:58Z",
+    "backend": {
+      "pass": 44,
+      "fail": 0
+    },
+    "isolated_integration": {
+      "tests": 390,
+      "pass": 388,
+      "fail": 0,
+      "skipped": 2
+    },
+    "frontend": {
+      "pass": 241,
+      "fail": 0
+    },
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "build": "PASS",
+    "not_run": "Two PGlite independent-connection placeholders remain skipped; source-closed native INSERT evidence is separate. No true-service UAT.",
+    "rawLogSource": "<TOOL_ROOT>/uat-candidate-20261108/github-42478675372-raw.txt",
+    "rawLogSha256": "fc13e43c70b20027326f858738d38140f995277ad933e9d6bd32295a599181bf",
+    "evidence": "github-ci-excerpt.txt"
+  },
+  "not_run": [
+    "Real UAT provisioning/deployment/JWT/Storage/Edge",
+    "Native chooser/download save",
+    "UPDATE and other unnamed concurrency",
+    "Current full DB+Storage backup/restore and historical NOT VALID validation",
+    "Representative-user acceptance"
+  ],
+  "not_rerun_locally": [
+    "Closed SQL/HTTP/native suites were not rerun locally to re-open source review. Automatic CI independently ran the full existing suite and is recorded above.",
+    "Claude re-review of the samee4 response"
+  ]
+}

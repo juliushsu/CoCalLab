@@ -1,0 +1,24 @@
+Run42478675372/job128725607769/source5d345281ed11674ba4b1bfea0010a838b08d001d. Successful job. Selected lines only, ANSI stripped; full masked log retained outside Git.
+2026-11-08T12:06:36.1319287Z ##[group]Run npm test
+2026-11-08T12:06:38.1325956Z ℹ tests 44
+2026-11-08T12:06:38.1327110Z ℹ pass 44
+2026-11-08T12:06:38.1327631Z ℹ fail 0
+2026-11-08T12:06:38.1329312Z ℹ skipped 0
+2026-11-08T12:06:38.1330509Z ℹ duration_ms 1844.272099
+2026-11-08T12:11:21.3118992Z ﹣ independent SQL-connection reference/delete lock-wait races (0.805253ms) # NOT_RUN: PGlite has one serialized SQL connection; sequential ordering tests are not concurrency evidence
+2026-11-08T12:15:22.7678394Z ﹣ independent SQL-connection lock-wait/concurrent commit behavior (0.754182ms) # NOT_RUN: local PGlite fixture has one serialized connection; Promise.all is not independent SQL concurrency evidence
+2026-11-08T12:17:35.3663546Z ℹ tests 390
+2026-11-08T12:17:35.3664233Z ℹ pass 388
+2026-11-08T12:17:35.3664451Z ℹ fail 0
+2026-11-08T12:17:35.3664905Z ℹ skipped 2
+2026-11-08T12:17:35.3665369Z ℹ duration_ms 656401.974613
+2026-11-08T12:17:35.3782934Z ##[group]Run npm test
+2026-11-08T12:17:38.7216555Z ℹ tests 241
+2026-11-08T12:17:38.7218226Z ℹ pass 241
+2026-11-08T12:17:38.7219067Z ℹ fail 0
+2026-11-08T12:17:38.7219573Z ℹ skipped 0
+2026-11-08T12:17:38.7220036Z ℹ duration_ms 3204.02193
+2026-11-08T12:17:38.7405980Z ##[group]Run npm run type-check
+2026-11-08T12:17:45.5404005Z ##[group]Run npm run lint
+2026-11-08T12:17:48.9248397Z ##[group]Run npm run build
+2026-11-08T12:17:53.4245971Z ✓ built in 4.01s

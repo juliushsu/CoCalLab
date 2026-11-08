@@ -1,0 +1,7 @@
+{
+  "command": "node deployment/uat/prepare-fixed-package.mjs verify --project-ref DO_NOT_CONNECT",
+  "exit": 2,
+  "meaning": "Unsupported remote/extra arguments reject without modifying package; this is only an offline CLI argument guard",
+  "package_manifest_unchanged": true,
+  "cloud_touched": false
+}

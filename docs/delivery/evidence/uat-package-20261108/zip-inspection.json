@@ -1,0 +1,11 @@
+{
+  "source_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "source_archive_files": 413,
+  "forbidden_source_paths": 0,
+  "final_zip_entries": 189,
+  "manifest_payload_files": 189,
+  "zip_opened_and_read": true,
+  "cloud_touched": false,
+  "source_archive_count_matches_manifest": true,
+  "source_archive_git_commit_comment": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d"
+}

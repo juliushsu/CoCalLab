@@ -1,5 +1,5 @@
 import { canonicalUuid } from './navigationScope.ts';
-import {savedReplacementDisclosure} from './replacementDisclosure.ts';
+import {savedReplacementDisclosure,REPORT_RECEIPT_STATUS_LABEL} from './replacementDisclosure.ts';
 
 /** Persisted snapshot allowlist: saved correction actors remain in payload; no live joins or internal errors. */
 export const REPORT_EXPORT_FIELDS = [
@@ -65,7 +65,7 @@ export function buildReportExport(snapshot:ReportExportSnapshot,format:ReportExp
 <h2>分類排放</h2>${categories.length ? `<table>${categories.map(([category,value])=>row(category,emissions(value))).join('')}</table>` : '<p>未知：未提供分類明細。</p>'}
 <h2>活動與資料缺口</h2><table>${['included_activity_count','excluded_activity_count','pending_activity_count','warning_count'].map(field=>row(field,Number.isInteger(safe[field]) && quantity(safe[field]) !== null ? safe[field] : '未知')).join('')}</table><p>零排放不代表所有活動均完成計算或驗證。</p>
 <h2>保存的邊界資訊</h2><pre>${escapeReportHtml(pretty(boundary))}</pre>
-<h2>保存的人工更正／排除揭露</h2><p class="notice">${escapeReportHtml(disclosure.message)}</p>${disclosure.disclosures.map(entry=>`<h3>活動 ${escapeReportHtml(entry.emission_activity_id)}</h3><p>原收據驗證狀態：${escapeReportHtml(entry.replacement_provenance.receipt_verification_status??'未記錄／無原收據')}；原收據僅歷史來源，不佐證更正值。</p>${entry.replacement_provenance.steps.map(step=>`<table>${row('前版',step.predecessor_activity_id)}${row('後繼',step.activity_id)}${row('模式',step.replacement_mode==='correct'?'人工更正':'人工排除')}${row('理由',step.reason)}${row('操作者',step.actor_user_id)}${row('時間',step.occurred_at)}</table><pre>${escapeReportHtml(pretty(step.changes))}</pre>`).join('')}`).join('')}
+<h2>保存的人工更正／排除揭露</h2><p class="notice">${escapeReportHtml(disclosure.message)}</p>${disclosure.disclosures.map(entry=>`<h3>活動 ${escapeReportHtml(entry.emission_activity_id)}</h3><p>${escapeReportHtml(REPORT_RECEIPT_STATUS_LABEL)}：${escapeReportHtml(entry.replacement_provenance.receipt_verification_status??'未記錄／無原收據')}；原收據僅歷史來源，不佐證更正值。</p>${entry.replacement_provenance.steps.map(step=>`<table>${row('前版',step.predecessor_activity_id)}${row('後繼',step.activity_id)}${row('模式',step.replacement_mode==='correct'?'人工更正':'人工排除')}${row('理由',step.reason)}${row('操作者',step.actor_user_id)}${row('時間',step.occurred_at)}</table><pre>${escapeReportHtml(pretty(step.changes))}</pre>`).join('')}`).join('')}
 <h2>原始報告 Payload</h2><p>以下為保存當時的結構化內容，未新增或生成報告章節；數值保留來源欄位單位。</p><pre>${escapeReportHtml(pretty(safe.payload))}</pre>
 </body></html>`;
   return {filename,mimeType:'text/html;charset=utf-8',content};

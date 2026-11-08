@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "recorded_on": "2026-11-08",
+  "budget": {
+    "status": "OWNER_CONFIRMED",
+    "currency": "USD",
+    "incremental_cumulative_limit": 20,
+    "is_monthly_limit": false,
+    "is_provider_hard_cap": false,
+    "retention_days": 14,
+    "scope": "One independent Micro UAT in the existing approved paid organization; all incremental UAT compute/storage/egress/authorized backups and charged taxes count toward the cumulative limit.",
+    "evidence": {
+      "kind": "Owner reply in this chat",
+      "question_reference": "call_627d6e5bd6db410eb35930efb5ee1274",
+      "exact_answer": "本次新增費用累計 US$20、保留 14 天"
+    },
+    "change_requires_owner": true
+  },
+  "resource_execution": {
+    "status": "WAITING_UAT_ENVIRONMENT_AUTHORIZATION",
+    "authorized": false,
+    "planned_name": "CoCalLab-UAT-CLOUD-01",
+    "organization_id": null,
+    "region_proposal": "ap-northeast-1",
+    "compute_proposal": "Micro",
+    "new_project_ref": null,
+    "do_not_modify_existing_ref": "wynqnvidepzzcwutexvn",
+    "reason": "Budget/retention conditions are confirmed; latest CTO requires completion of this local package then a concrete UAT environment operation authorization. No new budget decision or Claude review is required for the local deliverables."
+  },
+  "agent_actions": {
+    "created_cloud_resources": 0,
+    "cloud_changes": false,
+    "new_paid_items_enabled": false,
+    "billing_start_at": null,
+    "retention_start_at": null,
+    "retention_expires_at": null,
+    "provider_bill_status": "NOT_QUERIED_THIS_LOCAL_ONLY_BATCH"
+  },
+  "time_and_cost_control": {
+    "retention_start_event": "First authorized UAT resource creation; record actual UTC timestamp and expiry+14days before deployment",
+    "cost_start_event": "Provider actual resource billing start, not document/session date",
+    "included_cost_categories": [
+      "incremental compute",
+      "storage",
+      "egress",
+      "authorized backup charges",
+      "charged taxes"
+    ],
+    "guard": "Before provisioning, verify console estimate fits cumulative US$20 and14days; unknown pricing/add-ons or forecast/actual exceedance stops the affected paid action for Owner decision. This record does not enforce a provider hard cap.",
+    "expiry": "No automatic deletion authorized. Before creation, approve the exact stop-billing/pause/delete and backup-retention actions for this disposable target; preserve evidence. At expiry stop tests/new work and execute only that approved target-specific plan."
+  },
+  "not_authorized": [
+    "Cloud resource/bucket/account creation or configuration until concrete environment approval",
+    "Cloud migration/seed/reset/restore and real upload until exact test scope approval",
+    "Production/main merge/traffic switch",
+    "Paid OCR/AI, external data transfer, paid PITR/add-ons outside the approved scope"
+  ],
+  "release": "HOLD"
+}
