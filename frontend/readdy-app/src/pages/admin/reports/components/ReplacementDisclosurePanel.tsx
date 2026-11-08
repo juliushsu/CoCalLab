@@ -1,0 +1,5 @@
+import {savedReplacementDisclosure} from '../../../../services/replacementDisclosure';
+export default function ReplacementDisclosurePanel({payload}:{payload:unknown}){
+ const saved=savedReplacementDisclosure(payload);
+ return <section aria-label="保存的人工更正揭露" className="my-4 rounded border border-amber-300 bg-amber-50 p-4 text-sm"><h3 className="font-semibold">保存的人工更正／排除揭露</h3><p className="mt-2">{saved.message}</p>{saved.disclosures.map(entry=><div className="mt-3 rounded border bg-white p-3" key={entry.emission_activity_id}><p>活動：{entry.emission_activity_id}；原收據驗證狀態：{entry.replacement_provenance.receipt_verification_status??'未記錄／無原收據'}（不佐證更正值）</p>{entry.replacement_provenance.steps.map(step=><div key={step.activity_id} className="mt-2 border-t pt-2"><p>前版：{step.predecessor_activity_id} → 後繼：{step.activity_id}；{step.replacement_mode==='correct'?'人工更正':'人工排除'}</p><p>理由：{step.reason}；操作者：{step.actor_user_id}；時間：{step.occurred_at}</p><pre className="overflow-auto whitespace-pre-wrap">{JSON.stringify(step.changes,null,2)}</pre></div>)}</div>)}</section>;
+}

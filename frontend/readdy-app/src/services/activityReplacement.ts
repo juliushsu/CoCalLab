@@ -40,5 +40,27 @@ export async function replacementOperation(client:SupabaseClient,scope:IntakeSco
  const result=parseReplacementResult(response.data.data,scope,reference);if(result.operation_status==='not_found')return result;
  const read=await client.from('emission_activities').select('*').eq('id',result.activity_id!).eq('organization_id',scope.organizationId).eq('project_id',scope.projectId).maybeSingle();if(!isCurrent())throw new Error('登入或專案已切換；舊取代結果不採用。');
  const row=read.data;if(read.error||!object(row)||row.id!==result.activity_id||row.organization_id!==scope.organizationId||row.project_id!==scope.projectId||typeof row.quantity!=='number'||!Number.isFinite(row.quantity)||row.quantity<0||typeof row.unit!=='string'||!row.unit.trim()||intent.mode==='correct'&&Object.entries(intent.input).some(([key,value])=>row[key]!==value)||intent.mode==='exclude'&&(row.inclusion_status!=='excluded'||row.exclusion_reason!==intent.reason))throw new Error('未讀回符合本次取代的新活動；保留原請求，不能當作成功。');
- return {...result,activity:row};
+ // Historical rows stay immutable in storage; their inherited OCR confidence
+ // is not evidence for a manually replaced value in this client read model.
+ return {...result,activity:{...row,confidence_score:null}};
+}
+
+/** Recover server authority after the tab's session journal was lost; never invent an ID. */
+export async function recoverReplacementOperation(client:SupabaseClient,scope:IntakeScope,user:string,predecessorId:string,isCurrent=()=>true):Promise<{status:'not_found'|'superseded';reference:null}|{status:'completed'|'historical';reference:ReplacementReference;result:ReplacementResult}>{
+ await manualContext(client,scope,user,isCurrent);
+ const response=await client.functions.invoke('replace-emission-activity',{body:{organization_id:uuid(scope.organizationId),project_id:uuid(scope.projectId),predecessor_activity_id:uuid(predecessorId),action:'recover'}});
+ if(!isCurrent())throw new Error('登入或專案已切換；不採用舊伺服器恢復結果。');
+ if(response.error||!response.data?.success||response.data.error)throw new Error(response.data?.error?.message||response.error?.message||'無法核對伺服器取代請求；尚不可建立新請求。');
+ const value=response.data.data;
+ if(!object(value)||value.organization_id!==uuid(scope.organizationId)||value.project_id!==uuid(scope.projectId)||value.predecessor_activity_id!==uuid(predecessorId))throw new Error('伺服器恢復範圍不符；尚不可建立新請求。');
+ if(value.operation_status==='not_found'||value.operation_status==='superseded'){
+  if(['activity_id','request_id','mode','reason','input','canonical_input'].some(key=>value[key]!==null))throw new Error('未保存／他人取代的回覆不可帶入操作意圖。');
+  return {status:value.operation_status,reference:null};
+ }
+ if(!['completed','historical'].includes(String(value.operation_status))||!object(value.canonical_input))throw new Error('伺服器恢復結果不完整，原狀態仍未知。');
+ const reference={requestId:uuid(value.request_id),predecessorId:uuid(predecessorId),intent:canonicalReplacementIntent({mode:value.mode,reason:value.reason,input:value.input})};
+ parseReplacementResult(value,scope,reference);
+ const result=await replacementOperation(client,scope,user,reference,'lookup',isCurrent);
+ if(result.operation_status==='not_found')throw new Error('恢復請求再次核對時不存在；保留識別，不建立新請求。');
+ return {status:result.operation_status,reference,result};
 }

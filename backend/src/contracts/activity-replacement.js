@@ -2,6 +2,12 @@ import {validateManualActivityInput} from './manual-activity.js';
 const object=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
 const invalid=message=>{throw new Error('ACTIVITY_REPLACEMENT_INPUT_INVALID: '+message);};
 export function validateActivityReplacementInput(value){
+ if(object(value)&&value.action==='recover'){
+  const allowed=['organization_id','project_id','predecessor_activity_id','action'];
+  if(Object.keys(value).some(key=>!allowed.includes(key))||allowed.some(key=>!Object.hasOwn(value,key)))invalid('Recovery accepts only scope and predecessor');
+  const readId=key=>{if(typeof value[key]!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value[key]))invalid('UUID required');return value[key].toLowerCase();};
+  return {organization_id:readId('organization_id'),project_id:readId('project_id'),predecessor_activity_id:readId('predecessor_activity_id'),action:'recover'};
+ }
  const keys=['organization_id','project_id','predecessor_activity_id','request_id','mode','reason','input','action'];
  if(!object(value)||Object.keys(value).some(key=>!keys.includes(key)))invalid('Unsupported field');
  if(!['correct','exclude'].includes(value.mode)||typeof value.reason!=='string'||!value.reason.trim()||value.reason.trim().length>2000||!object(value.input))invalid('Explicit mode, reason and input required');

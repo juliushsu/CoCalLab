@@ -168,6 +168,7 @@ export async function readActivityDetail(client: Pick<SupabaseClient, 'from'|'rp
 export function matchingActivityDetailState<T, K extends object>(state: {key: K;value: T} | null, key: K): T | null {
   return state?.key === key ? state.value : null;
 }
-export function formatActivityEmissions(kg: number | null | undefined): string {
+export function formatActivityEmissions(kg: number | null | undefined,inclusionStatus?:string,calculationStatus?:string): string {
+  if(inclusionStatus==='excluded'||calculationStatus==='superseded')return '已排除／不計入';
   return nonnegative(kg) ? `${kg} kgCO₂e / ${kg / 1000} tCO₂e` : '未知（沒有最新有效計算結果）';
 }

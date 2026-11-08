@@ -10,3 +10,8 @@ test('replacement accepts explicit correction or empty exclude input; never cons
 test('replacement rejects missing reasons, forged identities/sources/calculations and zeroing or editing exclusion payloads',()=>{
  for(const patch of [{reason:''},{mode:'archive'},{action:'reset'},{actor_user_id:id},{activity_id:id},{input:{...input,source_document_id:id}},{input:{...input,created_by_user_id:id}},{input:{...input,co2e_kg:0}},{input:{...input,status:'archived'}},{input:{...input,inclusion_status:'excluded',exclusion_reason:'x'}},{mode:'exclude',input:{quantity:0,unit:'kg'}}])assert.throws(()=>validateActivityReplacementInput({...body,...patch}));
 });
+test('server recovery accepts only scope/predecessor/action and never trusts caller actor/request or saved intent',()=>{
+ const request={organization_id:id,project_id:id,predecessor_activity_id:id,action:'recover'};
+ assert.deepEqual(validateActivityReplacementInput(request),request);
+ for(const patch of [{actor_user_id:id},{request_id:id},{mode:'correct'},{reason:'forged'},{input:{}}])assert.throws(()=>validateActivityReplacementInput({...request,...patch}));
+});

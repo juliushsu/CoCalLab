@@ -1,7 +1,7 @@
 // Installed SDK with intercepted synthetic transport only; no real Supabase/JWT acceptance claim.
 import test from 'node:test';import assert from 'node:assert/strict';import {createClient} from '@supabase/supabase-js';
-import {canonicalReplacementIntent,replacementOperation,parseReplacementResult,replacementReferenceForm} from '../src/services/activityReplacement.ts';
-import {replacementReference,readReplacementReferences,clearReplacementReference,replacementReferencePrefix,replacementReferenceKey,captureReplacementReferences,abandonCapturedReplacementReference} from '../src/services/activityReplacementRecovery.ts';
+import {canonicalReplacementIntent,replacementOperation,parseReplacementResult,replacementReferenceForm,recoverReplacementOperation} from '../src/services/activityReplacement.ts';
+import {replacementReference,readReplacementReferences,clearReplacementReference,replacementReferencePrefix,replacementReferenceKey,captureReplacementReferences,abandonCapturedReplacementReference,retainRecoveredReplacementReference} from '../src/services/activityReplacementRecovery.ts';
 const O='11111111-1111-4111-8111-111111111111',P='22222222-2222-4222-8222-222222222222',U='33333333-3333-4333-8333-333333333333',A='44444444-4444-4444-8444-444444444444',B='55555555-5555-4555-8555-555555555555',R='66666666-6666-4666-8666-666666666666',scope={organizationId:O,projectId:P};
 const fields={activity_name:'SYNTHETIC corrected electricity',activity_date:'2026-01-15',category:'energy',subcategory:null,activity_type:'electricity',quantity:120,unit:'kWh',final_scope:2,inclusion_status:'included',exclusion_reason:null,review_note:null,data_quality:'primary',status:'active'};
 const intent=()=>canonicalReplacementIntent({mode:'correct',reason:'SYNTHETIC measured correction',input:fields}),reference=()=>({requestId:R,predecessorId:A,intent:intent()});
@@ -38,4 +38,20 @@ test('selecting any restored correction displays its saved quantity/unit rather 
  const original={activity_name:'Original',activity_date:'2026-01-15',category:'energy',activity_type:'electricity',quantity:'100',unit:'kWh',final_scope:'2',inclusion_status:'included',exclusion_reason:'',notes:''};
  for(const quantity of [120,140]){const selected=canonicalReplacementIntent({...intent(),input:{...fields,quantity}}),form=replacementReferenceForm(selected,original);assert.equal(form.quantity,String(quantity));assert.equal(form.unit,'kWh');assert.equal(form.notes,'');}
  assert.equal(replacementReferenceForm({mode:'exclude',reason:'boundary',input:{}},original),original);
+});
+test('empty session journal recovers the server request and immutable intent before any new request can be made',async()=>{
+ const h=sdk({result:{...result(),replayed:true,reason:intent().reason,input:intent().input,canonical_input:intent().input}}),s=store();
+ const recovered=await recoverReplacementOperation(h.client,scope,U,A);
+ assert.ok(recovered.reference);assert.equal(recovered.reference.requestId,R);assert.deepEqual(recovered.reference.intent,intent());
+ retainRecoveredReplacementReference(s,scope,U,recovered.reference);assert.deepEqual(readReplacementReferences(s,scope,U,A),[reference()]);
+ const writes=h.requests.filter(r=>r.path.startsWith('/functions/'));assert.deepEqual(writes.map(r=>r.body.action),['recover','lookup']);
+ assert.deepEqual(Object.keys(writes[0].body).sort(),['action','organization_id','predecessor_activity_id','project_id']);assert.equal(writes.some(r=>r.body.action==='replace'),false);
+});
+test('server recovery failure, stale context, foreign scope and leaked other-actor intent never authorize a fresh request',async()=>{
+ const absent={...result(),operation_status:'not_found',activity_id:null,request_id:null,mode:null,reason:null,input:null,canonical_input:null,is_effective:false,recalculation_required:null};
+ assert.equal((await recoverReplacementOperation(sdk({result:absent}).client,scope,U,A)).status,'not_found');
+ assert.equal((await recoverReplacementOperation(sdk({result:{...absent,operation_status:'superseded'}}).client,scope,U,A)).status,'superseded');
+ for(const body of [{...absent,reason:'other actor secret'},{...absent,project_id:B},{...result(),canonical_input:{}}])await assert.rejects(()=>recoverReplacementOperation(sdk({result:body}).client,scope,U,A));
+ await assert.rejects(()=>recoverReplacementOperation(sdk({status:503}).client,scope,U,A));
+ let current=true;const delayed=sdk({late:()=>{current=false;}});await assert.rejects(()=>recoverReplacementOperation(delayed.client,scope,U,A,()=>current));assert.equal(delayed.requests.filter(r=>r.path.startsWith('/functions/')).length,1);
 });

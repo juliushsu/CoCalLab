@@ -19,3 +19,11 @@ export function replacementReference(storage:Store,scope:IntakeScope,user:string
  const ref={requestId:crypto.randomUUID(),predecessorId:uuid(predecessorId),intent:canonical},key=replacementReferenceKey(scope,user,ref),raw=JSON.stringify(ref);storage.setItem(key,raw);if(storage.getItem(key)!==raw)throw new Error('無法持久保存取代參考，尚未送出。');return ref;
 }
 export function clearReplacementReference(storage:Store,scope:IntakeScope,user:string,reference:ReplacementReference){const key=replacementReferenceKey(scope,user,reference),raw=storage.getItem(key);if(raw===null)return;if(raw!==JSON.stringify(reference))throw new Error('取代參考已變更，未清除其他操作。');storage.removeItem(key);if(storage.getItem(key)!==null)throw new Error('無法清除本機取代參考；伺服器資料未變更。');}
+export function retainRecoveredReplacementReference(storage:Store,scope:IntakeScope,user:string,reference:ReplacementReference){
+ const ref={requestId:uuid(reference.requestId),predecessorId:uuid(reference.predecessorId),intent:canonicalReplacementIntent(reference.intent)};
+ const key=replacementReferenceKey(scope,user,ref),raw=JSON.stringify(ref),prior=storage.getItem(key);
+ if(prior!==null&&prior!==raw)throw new Error('本機同ID參考不同，保留原資料；須明確核對，不以伺服器恢復覆寫。');
+ if(prior===null)storage.setItem(key,raw);
+ if(storage.getItem(key)!==raw)throw new Error('無法持久保存恢復的原請求，尚不可重試。');
+ return ref;
+}

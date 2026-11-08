@@ -1,8 +1,9 @@
 import type {SupabaseClient} from '@supabase/supabase-js';
 import type {IntakeScope} from './documentIntake.ts';
 import {canonicalUuid} from './navigationScope.ts';
+import {parseReplacementProvenance,type ReplacementProvenance} from './replacementDisclosure.ts';
 export interface ActivityVersion {activity_id:string;predecessor_activity_id:string|null;successor_activity_id:string|null;version_index:number;is_effective:boolean;mode:'original'|'correct'|'exclude';reason:string|null;actor_user_id:string|null;created_at:string|null}
-export interface ActivityLineage {organization_id:string;project_id:string;activity_id:string;versions:ActivityVersion[]}
+export interface ActivityLineage {organization_id:string;project_id:string;activity_id:string;versions:ActivityVersion[];replacement_provenance?:ReplacementProvenance|null}
 const object=(value:unknown):value is Record<string,unknown>=>value!==null&&typeof value==='object'&&!Array.isArray(value);
 const uuid=(value:unknown)=>{const result=canonicalUuid(value);if(!result)throw new Error('活動版本識別無效。');return result;};
 const nullableUuid=(value:unknown)=>value===null?null:uuid(value);
@@ -14,7 +15,9 @@ export function adaptActivityLineage(value:unknown,scope:IntakeScope,id:string):
  });
  const seen=new Set<string>();for(let i=0;i<versions.length;i++){const row=versions[i];if(seen.has(row.activity_id)||row.predecessor_activity_id!==(i?versions[i-1].activity_id:null)||row.successor_activity_id!==(i+1<versions.length?versions[i+1].activity_id:null)||row.is_effective&&i!==versions.length-1)throw new Error('活動版本鏈重複、分支或次序不一致。');seen.add(row.activity_id);}
  if(!seen.has(uuid(id)))throw new Error('版本鏈沒有目前活動。');
- return {organization_id:uuid(value.organization_id),project_id:uuid(value.project_id),activity_id:uuid(value.activity_id),versions};
+ const provenance=value.replacement_provenance==null?null:parseReplacementProvenance(value.replacement_provenance);
+ if(value.replacement_provenance!=null&&!provenance)throw new Error('伺服器更正揭露無效，不能把原收據當更正數值證據。');
+ return {organization_id:uuid(value.organization_id),project_id:uuid(value.project_id),activity_id:uuid(value.activity_id),versions,replacement_provenance:provenance};
 }
 export async function readActivityLineage(client:Pick<SupabaseClient,'rpc'>,scope:IntakeScope,id:string,isCurrent=()=>true):Promise<ActivityLineage>{
  if(!isCurrent())throw new Error('活動或登入狀態已切換。');const result=await client.rpc('activity_version_lineage',{p_organization_id:uuid(scope.organizationId),p_project_id:uuid(scope.projectId),p_activity_id:uuid(id)});
