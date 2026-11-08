@@ -1,5 +1,7 @@
 # 本機原生 SQL 備份／還原驗證 — 2026-11-08
 
+> 程式/交付固定 `b701ddbf2affb818c63e6c647012c494e0c94439` 已於CI run42455636617 success，見[CI回執](evidence/native-pg-recovery-20261108/PR34_IMPLEMENTATION_CI.json)。後續狀態文件不改程式。現在等待Claude/CTO定向結果及真環境操作範圍；發布HOLD。
+
 **RELEASE HOLD。只完成本次專用本機 PG 的具名 SQL 復原檢核；不代表 Supabase／Storage／商用復原已驗收。**
 
 - 產品固定 `da5a0990c8ec82d2b55064dd7e009b771409fa73`（PR33鎖序修復）；本輪沒有產品、schema、角色政策、前後台或既有功能變更。
