@@ -1,0 +1,282 @@
+{
+  "run": "20261108062840367-7b9aab37",
+  "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "resultSha256": "c6aca9ec7c84352a2d5cbc96341c9d3b445e8c9105840d7dc7d57cb1e712fd0b",
+  "tools": {
+    "run.mjs": "2ca5f0e6d1edf5c4c029120d3044b6fc5900be1d3f6b22f63bcc0ab086a204e6",
+    "snapshot.mjs": "40f6fcf29470c3bc0434fd5001f9c5e3bff92db5293ee14239e486975833df01",
+    "private-acl.mjs": "7e67edf480dce1f6252d2937ead617345993ce914d58ebe16b3f73dc63128cdb",
+    "verifier.test.mjs": "569cfe44a643d7b121a99e21e6739bf8bd5240c6b13c033bf55eadfedce7e32f",
+    "README.md": "cbd14e983ee3d40e134f6bd3d946bf2c74ab8d26d1dc9b2cf31e1c3bf1dca37f"
+  },
+  "independentUnitTest": {
+    "command": "node --test backend/tools/native-pg-recovery/verifier.test.mjs",
+    "passed": 5,
+    "failed": 0
+  },
+  "readonlyAudits": [
+    {
+      "label": "original",
+      "database": "cocal_sql_race_20261108060154015_4430f35e",
+      "snapshotSha256": "6202ed0c8788a989bf8b65cc5f089809ec22bbe172b701182b83b14db2441f4c",
+      "tableCount": 37,
+      "notValid": 16,
+      "catalog": {
+        "schemas": 10,
+        "relations": 41,
+        "columns": 637,
+        "constraints": 171,
+        "policies": 71,
+        "functions": 216,
+        "triggers": 47,
+        "indexes": 117,
+        "views": 3,
+        "enums": 94,
+        "sequences": 1,
+        "extensions": 3,
+        "defaultPrivileges": 0,
+        "sequenceOwnership": 0,
+        "partitionDefinitions": 0,
+        "inheritance": 0
+      },
+      "queries": [
+        {
+          "sql": "select current_database() database,current_setting('server_version_num')::int version,current_setting('transaction_read_only') read_only",
+          "params": [],
+          "rows": [
+            {
+              "database": "cocal_sql_race_20261108060154015_4430f35e",
+              "version": 170011,
+              "read_only": "on"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "source",
+      "database": "cocal_recovery_source_20261108062840367_7b9aab37",
+      "snapshotSha256": "e81920702f030f512fa1c99bd6deb339ce23b49600e422664c6c7c3d6d417ecc",
+      "tableCount": 37,
+      "notValid": 16,
+      "catalog": {
+        "schemas": 10,
+        "relations": 41,
+        "columns": 637,
+        "constraints": 171,
+        "policies": 71,
+        "functions": 216,
+        "triggers": 47,
+        "indexes": 117,
+        "views": 3,
+        "enums": 94,
+        "sequences": 1,
+        "extensions": 3,
+        "defaultPrivileges": 0,
+        "sequenceOwnership": 0,
+        "partitionDefinitions": 0,
+        "inheritance": 0
+      },
+      "queries": [
+        {
+          "sql": "select current_database() database,current_setting('server_version_num')::int version,current_setting('transaction_read_only') read_only",
+          "params": [],
+          "rows": [
+            {
+              "database": "cocal_recovery_source_20261108062840367_7b9aab37",
+              "version": 170011,
+              "read_only": "on"
+            }
+          ]
+        },
+        {
+          "sql": "select r.id,r.status,r.integrity_status,r.payload_hash,p.contract_version,cocal_report_private.row_snapshot_v2(r)=p.row_snapshot proof_matches,exists(select 1 from report_snapshot_requests_v2 q where q.report_generation_id=r.id and q.request_id=p.request_id and q.actor_user_id=p.actor_user_id) request_binding_matches from report_generations r join cocal_report_private.snapshots p on p.report_id=r.id where r.id=$1",
+          "params": [
+            "4856c70e-aa81-4f85-a7d5-9daeccf8217e"
+          ],
+          "rows": [
+            {
+              "id": "4856c70e-aa81-4f85-a7d5-9daeccf8217e",
+              "status": "completed",
+              "integrity_status": "server_verified",
+              "payload_hash": "1ff293ca7ba3a476560fdecb6a547aa7b3d34591a33d1850fb1d2765cdbd7ddd",
+              "contract_version": "20261107.report.2",
+              "proof_matches": true,
+              "request_binding_matches": true
+            }
+          ]
+        },
+        {
+          "sql": "select a.id,a.quantity::text,a.unit,a.status,(exists(select 1 from effective_emission_activities e where e.id=a.id)) effective,(select count(*)::int from calculation_results c where c.emission_activity_id=a.id) calculation_rows from emission_activities a where a.id=any($1::uuid[]) order by a.id",
+          "params": [
+            [
+              "e24553b6-bf5d-4191-9d39-4120f4628701",
+              "d63feb1e-42a7-4736-be2c-55787833f8e5"
+            ]
+          ],
+          "rows": [
+            {
+              "id": "d63feb1e-42a7-4736-be2c-55787833f8e5",
+              "quantity": "120.00000000",
+              "unit": "kWh",
+              "status": "active",
+              "effective": true,
+              "calculation_rows": 1
+            },
+            {
+              "id": "e24553b6-bf5d-4191-9d39-4120f4628701",
+              "quantity": "100.00000000",
+              "unit": "kWh",
+              "status": "active",
+              "effective": false,
+              "calculation_rows": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "restore",
+      "database": "cocal_recovery_restore_20261108062840367_7b9aab37",
+      "snapshotSha256": "e81920702f030f512fa1c99bd6deb339ce23b49600e422664c6c7c3d6d417ecc",
+      "tableCount": 37,
+      "notValid": 16,
+      "catalog": {
+        "schemas": 10,
+        "relations": 41,
+        "columns": 637,
+        "constraints": 171,
+        "policies": 71,
+        "functions": 216,
+        "triggers": 47,
+        "indexes": 117,
+        "views": 3,
+        "enums": 94,
+        "sequences": 1,
+        "extensions": 3,
+        "defaultPrivileges": 0,
+        "sequenceOwnership": 0,
+        "partitionDefinitions": 0,
+        "inheritance": 0
+      },
+      "queries": [
+        {
+          "sql": "select current_database() database,current_setting('server_version_num')::int version,current_setting('transaction_read_only') read_only",
+          "params": [],
+          "rows": [
+            {
+              "database": "cocal_recovery_restore_20261108062840367_7b9aab37",
+              "version": 170011,
+              "read_only": "on"
+            }
+          ]
+        },
+        {
+          "sql": "select r.id,r.status,r.integrity_status,r.payload_hash,p.contract_version,cocal_report_private.row_snapshot_v2(r)=p.row_snapshot proof_matches,exists(select 1 from report_snapshot_requests_v2 q where q.report_generation_id=r.id and q.request_id=p.request_id and q.actor_user_id=p.actor_user_id) request_binding_matches from report_generations r join cocal_report_private.snapshots p on p.report_id=r.id where r.id=$1",
+          "params": [
+            "4856c70e-aa81-4f85-a7d5-9daeccf8217e"
+          ],
+          "rows": [
+            {
+              "id": "4856c70e-aa81-4f85-a7d5-9daeccf8217e",
+              "status": "completed",
+              "integrity_status": "server_verified",
+              "payload_hash": "1ff293ca7ba3a476560fdecb6a547aa7b3d34591a33d1850fb1d2765cdbd7ddd",
+              "contract_version": "20261107.report.2",
+              "proof_matches": true,
+              "request_binding_matches": true
+            }
+          ]
+        },
+        {
+          "sql": "select a.id,a.quantity::text,a.unit,a.status,(exists(select 1 from effective_emission_activities e where e.id=a.id)) effective,(select count(*)::int from calculation_results c where c.emission_activity_id=a.id) calculation_rows from emission_activities a where a.id=any($1::uuid[]) order by a.id",
+          "params": [
+            [
+              "e24553b6-bf5d-4191-9d39-4120f4628701",
+              "d63feb1e-42a7-4736-be2c-55787833f8e5"
+            ]
+          ],
+          "rows": [
+            {
+              "id": "d63feb1e-42a7-4736-be2c-55787833f8e5",
+              "quantity": "120.00000000",
+              "unit": "kWh",
+              "status": "active",
+              "effective": true,
+              "calculation_rows": 1
+            },
+            {
+              "id": "e24553b6-bf5d-4191-9d39-4120f4628701",
+              "quantity": "100.00000000",
+              "unit": "kWh",
+              "status": "active",
+              "effective": false,
+              "calculation_rows": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "partial",
+      "database": "cocal_recovery_partial_20261108062840367_7b9aab37",
+      "snapshotSha256": "4f83f59aa3107b6dfd3822f791a40c30b9af8eab18876fd663c11bdb686fa8ad",
+      "tableCount": 37,
+      "notValid": 16,
+      "catalog": {
+        "schemas": 10,
+        "relations": 41,
+        "columns": 637,
+        "constraints": 171,
+        "policies": 71,
+        "functions": 216,
+        "triggers": 47,
+        "indexes": 117,
+        "views": 3,
+        "enums": 94,
+        "sequences": 1,
+        "extensions": 3,
+        "defaultPrivileges": 0,
+        "sequenceOwnership": 0,
+        "partitionDefinitions": 0,
+        "inheritance": 0
+      },
+      "queries": [
+        {
+          "sql": "select current_database() database,current_setting('server_version_num')::int version,current_setting('transaction_read_only') read_only",
+          "params": [],
+          "rows": [
+            {
+              "database": "cocal_recovery_partial_20261108062840367_7b9aab37",
+              "version": 170011,
+              "read_only": "on"
+            }
+          ]
+        },
+        {
+          "sql": "select (select count(*)::int from report_generations where id=$1) public_reports,(select count(*)::int from cocal_report_private.snapshots where report_id=$1) private_proofs",
+          "params": [
+            "4856c70e-aa81-4f85-a7d5-9daeccf8217e"
+          ],
+          "rows": [
+            {
+              "public_reports": 1,
+              "private_proofs": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notRun": [
+    "Managed Supabase/cloud backup and restore",
+    "Storage object bytes: synthetic catalog only",
+    "Cross-cluster roles, secrets, credentials and infrastructure recovery",
+    "Real JWT/PostgREST/Storage/Edge/browser acceptance"
+  ],
+  "archive": {
+    "sha256": "aa3dbb0de61ac27e78a9f89b2b8fb18c957c02a7386f2ebd41fe5d68df8bc47e",
+    "unchanged": true,
+    "bytes": 591588
+  }
+}

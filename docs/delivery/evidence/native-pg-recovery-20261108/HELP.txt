@@ -1,0 +1,2 @@
+Usage: node backend/tools/native-pg-recovery/run.mjs --run --source-run <17digits-8hex>
+No flag: no credential read, connection or database creation.

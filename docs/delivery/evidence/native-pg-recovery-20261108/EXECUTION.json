@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-08",
+  "application_source_sha": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "tool_source_sha": "a05cec8221568f0d7ac14029509fad726dfefdd2",
+  "branch": "codex/native-pg-recovery-20261108",
+  "product_source_comparison": {
+    "unchanged_paths": [
+      "backend/src",
+      "backend/supabase/migrations",
+      "backend/supabase/functions",
+      "frontend/readdy-app/src",
+      "modules"
+    ],
+    "git_diff": "empty"
+  },
+  "tools": [
+    {
+      "file": "README.md",
+      "bytes": 4124,
+      "sha256": "cbd14e983ee3d40e134f6bd3d946bf2c74ab8d26d1dc9b2cf31e1c3bf1dca37f"
+    },
+    {
+      "file": "private-acl.mjs",
+      "bytes": 1843,
+      "sha256": "7e67edf480dce1f6252d2937ead617345993ce914d58ebe16b3f73dc63128cdb"
+    },
+    {
+      "file": "run.mjs",
+      "bytes": 19822,
+      "sha256": "2ca5f0e6d1edf5c4c029120d3044b6fc5900be1d3f6b22f63bcc0ab086a204e6"
+    },
+    {
+      "file": "snapshot.mjs",
+      "bytes": 7869,
+      "sha256": "40f6fcf29470c3bc0434fd5001f9c5e3bff92db5293ee14239e486975833df01"
+    },
+    {
+      "file": "verifier.test.mjs",
+      "bytes": 4123,
+      "sha256": "569cfe44a643d7b121a99e21e6739bf8bd5240c6b13c033bf55eadfedce7e32f"
+    }
+  ],
+  "validated": {
+    "native_checks": 9,
+    "independent_checks": 9,
+    "independent_is_repeat": true,
+    "verifier_unit": 5,
+    "not_valid_constraints_retained_unvalidated": 16,
+    "tables": 37
+  },
+  "source_run": "20261108060154015-4430f35e",
+  "author_run": "20261108062802408-02f757c2",
+  "independent_run": "20261108062840367-7b9aab37",
+  "evidence": [
+    "AUTHOR_RESULT.json",
+    "INDEPENDENT_RESULT.json",
+    "INDEPENDENT_AUDIT.json",
+    "VERIFIER_TESTS.txt",
+    "SQL_CLIENT_TIMELINE.json"
+  ],
+  "initial_failures": [
+    "INITIAL_ACL_VERIFIER_FAILURE.json",
+    "STARTUP_FAILURE.json"
+  ],
+  "scope": "same dedicated local PG17.11 cluster; synthetic SQL Auth/Storage catalogs; no managed service",
+  "counting": "9 native and independent9 overlap; unit5 separately scoped, never add as23 acceptance tests",
+  "archive_and_full_rows_public": false,
+  "cloud_resources_created": false,
+  "new_fees": false,
+  "existing5432_modified": false,
+  "main_merged": false,
+  "release": "HOLD",
+  "not_run": [
+    "Storage bytes and signed URLs",
+    "Cross-cluster roles/credentials/infrastructure",
+    "Managed Supabase/cloud backup/restore",
+    "JWT/PostgREST/Edge/browser native save",
+    "NOT VALID historic data validation",
+    "19+1 acceptance"
+  ],
+  "independent_tool_hashes_match": true
+}

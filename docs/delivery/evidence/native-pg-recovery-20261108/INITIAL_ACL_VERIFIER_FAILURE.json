@@ -1,0 +1,772 @@
+{
+  "schemaVersion": 1,
+  "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "sourceRun": "20261108060154015-4430f35e",
+  "sourceReceiptSha256": "4e0004d1d92bdb254a4a54a951c1efcd4c4637057213a6a396f94e0e56deedac",
+  "started": "2026-11-08T06:20:03.220Z",
+  "status": "BLOCKED_OR_FAILED",
+  "synthetic": true,
+  "host": "127.0.0.1",
+  "port": 55439,
+  "driver": "8.16.3",
+  "originalDatabase": "cocal_sql_race_20261108060154015_4430f35e",
+  "sourceDatabase": "cocal_recovery_source_20261108062003217_c7714323",
+  "restoreDatabase": "cocal_recovery_restore_20261108062003217_c7714323",
+  "partialDatabase": "cocal_recovery_partial_20261108062003217_c7714323",
+  "checks": [
+    {
+      "name": "fresh_clone_matches_unchanged_candidate",
+      "status": "PASS"
+    },
+    {
+      "name": "real_trusted_publisher_and_pre_dump_verified_read_lookup",
+      "status": "PASS"
+    }
+  ],
+  "binaries": [
+    {
+      "name": "pg_dump.exe",
+      "sha256": "eaa2d00935e0dd55a6ad7aa2f106d013dcb4e793b7e7d2c6df64bf5b60fbdcd7",
+      "version": "pg_dump (PostgreSQL) 17.11",
+      "officialArchiveEntryMatch": true
+    },
+    {
+      "name": "pg_restore.exe",
+      "sha256": "b91271bd574183dadd17b7dc996dd793805de3eab676e7f9991a067360edf4ce",
+      "version": "pg_restore (PostgreSQL) 17.11",
+      "officialArchiveEntryMatch": true
+    }
+  ],
+  "notRun": [
+    "Managed Supabase/cloud backup and restore",
+    "Storage object bytes: synthetic catalog only",
+    "Cross-cluster roles, secrets, credentials and infrastructure recovery",
+    "Real JWT/PostgREST/Storage/Edge/browser acceptance"
+  ],
+  "cloudTouched": false,
+  "existing5432Touched": false,
+  "originalBefore": {
+    "tables": [
+      {
+        "name": "cocal_activity_private.replacements",
+        "rows": 1,
+        "sha256": "1d27b259498bc8d353b1a90bc82a7aa89c32a8e2e7ea085d151d8a23ae3e87b8"
+      },
+      {
+        "name": "cocal_attachment_private.source_baseline",
+        "rows": 18,
+        "sha256": "1d84cc6d6edeae3a6abcb5b08868d06c95f4b66c1cb8604afdb7e63a8d1bcc31"
+      },
+      {
+        "name": "cocal_attachment_private.verifications",
+        "rows": 2,
+        "sha256": "a7cc5f2648428fcef52afc1b806a8a3073bf8b50852b92533f23627d3b1b97e1"
+      },
+      {
+        "name": "cocal_delete_private.operations",
+        "rows": 3,
+        "sha256": "bf04189278daf0dd75d347f8a0bdf21edfb5fed10cc1dd3e7260b505534db353"
+      },
+      {
+        "name": "cocal_delete_private.processing_leases",
+        "rows": 1,
+        "sha256": "a4a318ca5bb612de1b283b0d42acd4bd0aea7cb50049f72a449d0c7960d04d4f"
+      },
+      {
+        "name": "cocal_delete_private.source_baseline",
+        "rows": 24,
+        "sha256": "aa95fd96a6c94f58771c9a48ecf943e20ff07a2568e605d4996a874263a28761"
+      },
+      {
+        "name": "cocal_manual_private.confirmation_requests",
+        "rows": 1,
+        "sha256": "03eb8043634b2181e38375f3cec555541e00254ea375692a37fdc72b9ac8c6c9"
+      },
+      {
+        "name": "cocal_recalc_private.activity_requests",
+        "rows": 9,
+        "sha256": "63ca7dba185f27882d541aa5f9b46f09168f4670d19d84e493d54998784a2def"
+      },
+      {
+        "name": "cocal_recalc_private.requests",
+        "rows": 5,
+        "sha256": "5badc337ed1b8d3e51c829f424eb1776a690ec0ec3c2497512932b24bc0e2eba"
+      },
+      {
+        "name": "cocal_report_private.snapshots",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "cocal_storage_private.deployment_baseline",
+        "rows": 28,
+        "sha256": "fd72ee66e491e4f05a5a559cf9ed4d730796e5583287403b378cc44f16b3a53f"
+      },
+      {
+        "name": "public.action_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_applications",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_audit_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_certificates",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_claim_rules",
+        "rows": 5,
+        "sha256": "3395a358dd00f1776da4d53df3d7ea544d9cedc2e7ee60572d744cc170eba0d5"
+      },
+      {
+        "name": "public.ai_audit_results",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.audit_logs",
+        "rows": 19,
+        "sha256": "20e749d145eafea535f350a9dddf7a49aab133bc4a91130cff3400b090d206ae"
+      },
+      {
+        "name": "public.calculation_results",
+        "rows": 5,
+        "sha256": "2148f3d6f67471e5c78a53438258bd1b4b675d71e9fbd9a9d07661fbac36de57"
+      },
+      {
+        "name": "public.carbon_adjustment_items",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.emission_activities",
+        "rows": 10,
+        "sha256": "611669eb32ec7e901aa9f605a4555bd584a3faee9dfade2f217068258f16c13f"
+      },
+      {
+        "name": "public.emission_activity_classifications",
+        "rows": 20,
+        "sha256": "07d46532fbd7e273fec4c0a8f1271ab67af60877ee51eadc5facebf599eda55d"
+      },
+      {
+        "name": "public.emission_factors",
+        "rows": 8,
+        "sha256": "f360b428c4984b1f4deda2db174587d66251e2429b295740da7ba4a9ce4a130d"
+      },
+      {
+        "name": "public.extracted_document_drafts",
+        "rows": 2,
+        "sha256": "35aaa1f882c90a28a453cd64d10826dcd0e7d781284359ff664d2b912b32c94b"
+      },
+      {
+        "name": "public.legal_entities",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.organization_members",
+        "rows": 8,
+        "sha256": "1d0c705f06cf00953eff59fb2fc979f6f42081e36f0939ee46ea1924852dc722"
+      },
+      {
+        "name": "public.organizations",
+        "rows": 8,
+        "sha256": "c56d254bbd62925b8a80c5ac8a988725e0918b6d642f9034e3ae4c9382c6ce4a"
+      },
+      {
+        "name": "public.projects",
+        "rows": 8,
+        "sha256": "54a991998b66da733d73e680a809ef047c2cabecbdb2285c8d3997b4b87730c7"
+      },
+      {
+        "name": "public.report_generations",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.report_snapshot_requests_v2",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.seed_pack_registry",
+        "rows": 1,
+        "sha256": "95fcf83776ac69f005076ccf3d2467248af8a3be8659a9e0948a86563d8f4f2c"
+      },
+      {
+        "name": "public.seed_pack_reseed_runs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.sites",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.subscriptions",
+        "rows": 8,
+        "sha256": "5bc9fa69051780942cf52d93c768f64aef29d7c56144819a963215d79a99cc57"
+      },
+      {
+        "name": "public.uploaded_documents",
+        "rows": 5,
+        "sha256": "234b115fe48abd4a4dc85feb6b295c8f7fa64ad951f87dcd86f0ca300f00b1ee"
+      },
+      {
+        "name": "storage.buckets",
+        "rows": 3,
+        "sha256": "79f6765aadbe34e95412f71c0ef805d6ea7cd406529e4b20ef36ed045f28ab25"
+      },
+      {
+        "name": "storage.objects",
+        "rows": 4,
+        "sha256": "056afdbe08e7a67b78d16986723af01b2effaaf49c4a8e157a975935685ed6aa"
+      }
+    ],
+    "catalog": {
+      "schemas": {
+        "rows": 10,
+        "sha256": "f007d74db9e604f3994d169641d646228b3ccefa90064e12fbafe17dabada2ce"
+      },
+      "relations": {
+        "rows": 41,
+        "sha256": "ad31942cf574747392206a2c52307b327cb35280a6c3ad3067f3f7d67c49e4c4"
+      },
+      "columns": {
+        "rows": 637,
+        "sha256": "f57726ed97773e710056ff1f0418fb088a6f57f33a9a86e7ceec7f171776770c"
+      },
+      "constraints": {
+        "rows": 171,
+        "sha256": "bb452aff313e37a0cbc6e163746cc3edb2a462bb9a35a3f1c2e4fb108e751b04"
+      },
+      "policies": {
+        "rows": 71,
+        "sha256": "b8dfc33b8c189dc1eddeecef6eaa2f8958f7003962c9dc342668cd48b197e768"
+      },
+      "functions": {
+        "rows": 216,
+        "sha256": "f1d6142178e20a97b182cdf49dbd0512934f56bbc2b905d30c9ce996e68b0226"
+      },
+      "triggers": {
+        "rows": 47,
+        "sha256": "3b4de6ade0ac6f82ec10b58773efc7a3e1b333dc8bf8967f7d2732055ae5f1a1"
+      },
+      "indexes": {
+        "rows": 117,
+        "sha256": "f01093a5526adfd36be39454eab01bc364dccac1c4cd33f143dcf7f1e0418566"
+      },
+      "views": {
+        "rows": 3,
+        "sha256": "f379b1d099d861b15d7869270f9be62d72259e2e8a49d65965ef8635393aa58b"
+      },
+      "enums": {
+        "rows": 94,
+        "sha256": "45c3cc7be931bd4649ffa97b966a14674ab4dd63125692bce94d14fe5e8f7d56"
+      },
+      "sequences": {
+        "rows": 1,
+        "sha256": "55d9e66d3f16eafd5f955879b6ac4175e3188c6c428680cbccf52c417d6ff5fe"
+      },
+      "extensions": {
+        "rows": 3,
+        "sha256": "6e695439b9fabe1a1617fb16dd1fdb397f03e2be6f86271fb1d981417f9937a9"
+      }
+    },
+    "sequences": {
+      "cocal_recalc_private.completion_order": {
+        "sha256": "20d5f9cc1cbf959ddb743a3eb40b8fcef05ca6225e9ddf0d0c45b3f5735569bc"
+      }
+    },
+    "notValid": [
+      {
+        "schema": "public",
+        "table": "action_logs",
+        "name": "action_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_applications",
+        "name": "adjustment_applications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_audit_logs",
+        "name": "adjustment_audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_certificates",
+        "name": "adjustment_certificates_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "ai_audit_results",
+        "name": "ai_audit_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "audit_logs",
+        "name": "audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "calculation_results",
+        "name": "calculation_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "carbon_adjustment_items",
+        "name": "carbon_adjustment_items_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activities",
+        "name": "emission_activities_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activity_classifications",
+        "name": "emission_activity_classifications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "extracted_document_drafts",
+        "name": "extracted_document_drafts_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_site_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "report_generations",
+        "name": "report_generations_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "sites",
+        "name": "sites_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "uploaded_documents",
+        "name": "uploaded_documents_project_tenant_fk",
+        "validated": false
+      }
+    ],
+    "sha256": "a94a97592b0dc3dab6af1e1abd06671508e28f2f95db29b9db99330065357cc8"
+  },
+  "report": {
+    "organizationId": "0dfd43a1-ef3d-4e55-a929-43b8a1716cef",
+    "projectId": "9d5c504a-7a93-4c8b-a656-5ab01ede737a",
+    "reportId": "f3e03d4e-5d4a-4cf6-b88a-db237bcc10bc",
+    "requestId": "667c9e5e-9627-4b69-925f-25fffb4007ce",
+    "status": "completed",
+    "integrityStatus": "server_verified",
+    "grossKg": 60,
+    "activityIds": [
+      "d63feb1e-42a7-4736-be2c-55787833f8e5"
+    ],
+    "calculationIds": [
+      "651618ad-ed65-4d0d-9d4b-0550b6ffe490"
+    ],
+    "predecessorActivityId": "e24553b6-bf5d-4191-9d39-4120f4628701",
+    "calculationAuthority": {
+      "request_id": "69c59702-205e-4adb-852e-ebbfae8e03a2",
+      "completion_order": 4
+    }
+  },
+  "sourceSnapshot": {
+    "tables": [
+      {
+        "name": "cocal_activity_private.replacements",
+        "rows": 1,
+        "sha256": "1d27b259498bc8d353b1a90bc82a7aa89c32a8e2e7ea085d151d8a23ae3e87b8"
+      },
+      {
+        "name": "cocal_attachment_private.source_baseline",
+        "rows": 18,
+        "sha256": "1d84cc6d6edeae3a6abcb5b08868d06c95f4b66c1cb8604afdb7e63a8d1bcc31"
+      },
+      {
+        "name": "cocal_attachment_private.verifications",
+        "rows": 2,
+        "sha256": "a7cc5f2648428fcef52afc1b806a8a3073bf8b50852b92533f23627d3b1b97e1"
+      },
+      {
+        "name": "cocal_delete_private.operations",
+        "rows": 3,
+        "sha256": "bf04189278daf0dd75d347f8a0bdf21edfb5fed10cc1dd3e7260b505534db353"
+      },
+      {
+        "name": "cocal_delete_private.processing_leases",
+        "rows": 1,
+        "sha256": "a4a318ca5bb612de1b283b0d42acd4bd0aea7cb50049f72a449d0c7960d04d4f"
+      },
+      {
+        "name": "cocal_delete_private.source_baseline",
+        "rows": 24,
+        "sha256": "aa95fd96a6c94f58771c9a48ecf943e20ff07a2568e605d4996a874263a28761"
+      },
+      {
+        "name": "cocal_manual_private.confirmation_requests",
+        "rows": 1,
+        "sha256": "03eb8043634b2181e38375f3cec555541e00254ea375692a37fdc72b9ac8c6c9"
+      },
+      {
+        "name": "cocal_recalc_private.activity_requests",
+        "rows": 9,
+        "sha256": "63ca7dba185f27882d541aa5f9b46f09168f4670d19d84e493d54998784a2def"
+      },
+      {
+        "name": "cocal_recalc_private.requests",
+        "rows": 5,
+        "sha256": "5badc337ed1b8d3e51c829f424eb1776a690ec0ec3c2497512932b24bc0e2eba"
+      },
+      {
+        "name": "cocal_report_private.snapshots",
+        "rows": 1,
+        "sha256": "3244387dc3dc6e98c6cdab71abe9be3a5697a6f522e3763968606f01582daffb"
+      },
+      {
+        "name": "cocal_storage_private.deployment_baseline",
+        "rows": 28,
+        "sha256": "fd72ee66e491e4f05a5a559cf9ed4d730796e5583287403b378cc44f16b3a53f"
+      },
+      {
+        "name": "public.action_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_applications",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_audit_logs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_certificates",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.adjustment_claim_rules",
+        "rows": 5,
+        "sha256": "3395a358dd00f1776da4d53df3d7ea544d9cedc2e7ee60572d744cc170eba0d5"
+      },
+      {
+        "name": "public.ai_audit_results",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.audit_logs",
+        "rows": 21,
+        "sha256": "f0356fa2a8273ba827458337ffd447a73df514690de3458c274e6dfe8e8f3c3d"
+      },
+      {
+        "name": "public.calculation_results",
+        "rows": 5,
+        "sha256": "2148f3d6f67471e5c78a53438258bd1b4b675d71e9fbd9a9d07661fbac36de57"
+      },
+      {
+        "name": "public.carbon_adjustment_items",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.emission_activities",
+        "rows": 10,
+        "sha256": "611669eb32ec7e901aa9f605a4555bd584a3faee9dfade2f217068258f16c13f"
+      },
+      {
+        "name": "public.emission_activity_classifications",
+        "rows": 20,
+        "sha256": "07d46532fbd7e273fec4c0a8f1271ab67af60877ee51eadc5facebf599eda55d"
+      },
+      {
+        "name": "public.emission_factors",
+        "rows": 8,
+        "sha256": "f360b428c4984b1f4deda2db174587d66251e2429b295740da7ba4a9ce4a130d"
+      },
+      {
+        "name": "public.extracted_document_drafts",
+        "rows": 2,
+        "sha256": "35aaa1f882c90a28a453cd64d10826dcd0e7d781284359ff664d2b912b32c94b"
+      },
+      {
+        "name": "public.legal_entities",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.organization_members",
+        "rows": 9,
+        "sha256": "b5b307c51e14298ecf338277286f4dae1132d375fb279b9a766ac5ae02362dc0"
+      },
+      {
+        "name": "public.organizations",
+        "rows": 8,
+        "sha256": "c56d254bbd62925b8a80c5ac8a988725e0918b6d642f9034e3ae4c9382c6ce4a"
+      },
+      {
+        "name": "public.projects",
+        "rows": 8,
+        "sha256": "54a991998b66da733d73e680a809ef047c2cabecbdb2285c8d3997b4b87730c7"
+      },
+      {
+        "name": "public.report_generations",
+        "rows": 1,
+        "sha256": "86493369985039b92e3728e5f0caa2cc47dcc8ca9007b83745ea7b26f608654d"
+      },
+      {
+        "name": "public.report_snapshot_requests_v2",
+        "rows": 1,
+        "sha256": "70ef69761922db930661582521ab151366c7b62b9b941fd3966aba9078be2511"
+      },
+      {
+        "name": "public.seed_pack_registry",
+        "rows": 1,
+        "sha256": "95fcf83776ac69f005076ccf3d2467248af8a3be8659a9e0948a86563d8f4f2c"
+      },
+      {
+        "name": "public.seed_pack_reseed_runs",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.sites",
+        "rows": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "public.subscriptions",
+        "rows": 8,
+        "sha256": "5bc9fa69051780942cf52d93c768f64aef29d7c56144819a963215d79a99cc57"
+      },
+      {
+        "name": "public.uploaded_documents",
+        "rows": 5,
+        "sha256": "234b115fe48abd4a4dc85feb6b295c8f7fa64ad951f87dcd86f0ca300f00b1ee"
+      },
+      {
+        "name": "storage.buckets",
+        "rows": 3,
+        "sha256": "79f6765aadbe34e95412f71c0ef805d6ea7cd406529e4b20ef36ed045f28ab25"
+      },
+      {
+        "name": "storage.objects",
+        "rows": 4,
+        "sha256": "056afdbe08e7a67b78d16986723af01b2effaaf49c4a8e157a975935685ed6aa"
+      }
+    ],
+    "catalog": {
+      "schemas": {
+        "rows": 10,
+        "sha256": "f007d74db9e604f3994d169641d646228b3ccefa90064e12fbafe17dabada2ce"
+      },
+      "relations": {
+        "rows": 41,
+        "sha256": "ad31942cf574747392206a2c52307b327cb35280a6c3ad3067f3f7d67c49e4c4"
+      },
+      "columns": {
+        "rows": 637,
+        "sha256": "f57726ed97773e710056ff1f0418fb088a6f57f33a9a86e7ceec7f171776770c"
+      },
+      "constraints": {
+        "rows": 171,
+        "sha256": "bb452aff313e37a0cbc6e163746cc3edb2a462bb9a35a3f1c2e4fb108e751b04"
+      },
+      "policies": {
+        "rows": 71,
+        "sha256": "b8dfc33b8c189dc1eddeecef6eaa2f8958f7003962c9dc342668cd48b197e768"
+      },
+      "functions": {
+        "rows": 216,
+        "sha256": "f1d6142178e20a97b182cdf49dbd0512934f56bbc2b905d30c9ce996e68b0226"
+      },
+      "triggers": {
+        "rows": 47,
+        "sha256": "3b4de6ade0ac6f82ec10b58773efc7a3e1b333dc8bf8967f7d2732055ae5f1a1"
+      },
+      "indexes": {
+        "rows": 117,
+        "sha256": "f01093a5526adfd36be39454eab01bc364dccac1c4cd33f143dcf7f1e0418566"
+      },
+      "views": {
+        "rows": 3,
+        "sha256": "f379b1d099d861b15d7869270f9be62d72259e2e8a49d65965ef8635393aa58b"
+      },
+      "enums": {
+        "rows": 94,
+        "sha256": "45c3cc7be931bd4649ffa97b966a14674ab4dd63125692bce94d14fe5e8f7d56"
+      },
+      "sequences": {
+        "rows": 1,
+        "sha256": "55d9e66d3f16eafd5f955879b6ac4175e3188c6c428680cbccf52c417d6ff5fe"
+      },
+      "extensions": {
+        "rows": 3,
+        "sha256": "6e695439b9fabe1a1617fb16dd1fdb397f03e2be6f86271fb1d981417f9937a9"
+      }
+    },
+    "sequences": {
+      "cocal_recalc_private.completion_order": {
+        "sha256": "20d5f9cc1cbf959ddb743a3eb40b8fcef05ca6225e9ddf0d0c45b3f5735569bc"
+      }
+    },
+    "notValid": [
+      {
+        "schema": "public",
+        "table": "action_logs",
+        "name": "action_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_applications",
+        "name": "adjustment_applications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_audit_logs",
+        "name": "adjustment_audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "adjustment_certificates",
+        "name": "adjustment_certificates_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "ai_audit_results",
+        "name": "ai_audit_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "audit_logs",
+        "name": "audit_logs_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "calculation_results",
+        "name": "calculation_results_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "carbon_adjustment_items",
+        "name": "carbon_adjustment_items_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activities",
+        "name": "emission_activities_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "emission_activity_classifications",
+        "name": "emission_activity_classifications_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "extracted_document_drafts",
+        "name": "extracted_document_drafts_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "projects",
+        "name": "projects_site_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "report_generations",
+        "name": "report_generations_project_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "sites",
+        "name": "sites_legal_entity_tenant_fk",
+        "validated": false
+      },
+      {
+        "schema": "public",
+        "table": "uploaded_documents",
+        "name": "uploaded_documents_project_tenant_fk",
+        "validated": false
+      }
+    ],
+    "sha256": "23de13c5ee24795d13d9c7f96e2595801546c4b08b1903f5d21c63db9a3c5873"
+  },
+  "archive": {
+    "location": "<DEDICATED_RUNTIME>/recovery/20261108062003217-c7714323/database.dump",
+    "bytes": 591580,
+    "sha256": "455576f3c33405a9aeb03d289ac3e0e0812755363ecea2430660bbb3bb9d975d",
+    "format": "custom",
+    "ownerRestrictedParentInherited": true
+  },
+  "error": {
+    "code": "ERR_ASSERTION",
+    "message": "RECOVERY_CONTENT_MISMATCH: [{\"section\":\"catalog\",\"key\":\"schemas\",\"expected\":\"f007d74db9e604f3994d169641d646228b3ccefa90064e12fbafe17dabada2ce\",\"actual\":\"457e5676f65bc543eaee40b1ddbd205e7eae43db423b12a410f16c44f3d175ba\"},{\"section\":\"catalog\",\"key\":\"relations\",\"expected\":\"ad31942cf574747392206a2c52307b327cb35280a6c3ad3067f3f7d67c49e4c4\",\"actual\":\"856c21be2c4b29829b69ca8c5aafedcf1c356922d8eae30f291471ea2457f5dd\"}]\n\n2 !== 0\n"
+  },
+  "finished": "2026-11-08T06:20:08.335Z",
+  "raw_evidence": {
+    "bytes": 96037,
+    "sha256": "193c9c1f1adfe54bf33ad8f453181a0e3395672da8f5e062dc0bf0576c3a8865",
+    "location": "workspace tooling/native-pg17-20261108/recovery-runs/20261108062003217-c7714323/result.json"
+  },
+  "classification": "Verifier compared raw ACL representation; native restore rows matched, ready=true. Canonical effective ACL comparison fixes test code only; product unchanged."
+}

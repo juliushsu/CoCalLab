@@ -1,0 +1,14 @@
+{
+  "status": "HARNESS_STARTUP_FAILURE",
+  "runName": "20261108062424836-6626f71d",
+  "recordedRetrospectively": true,
+  "recordedAt": "2026-11-08T06:29:03.088Z",
+  "toolSourceHashAtFailure": "NOT_CAPTURED",
+  "phase": "archive_parent_acl_check_before_database_creation",
+  "failure": "Windows PowerShell Get-Acl could not autoload Microsoft.PowerShell.Security; actual executed command returned CouldNotAutoloadMatchingModule",
+  "databaseCreated": false,
+  "originalCandidateConnected": false,
+  "dumpCreated": false,
+  "retainedResources": "new empty recovery evidence/runtime directories only",
+  "resolution": "Read-only System.IO.Directory/File.GetAccessControl API; no privilege/ACL/product changes"
+}

@@ -1,0 +1,13 @@
+✔ opt-in accepts strict run identity and rejects paths arbitrary flags and wrong approved receipt (2.615ms)
+✔ whole row comparison retains exact numeric JSON and detects missing private proof or table (1.5063ms)
+✔ RLS grants owner function config and NOT VALID changes all fail verification (0.8652ms)
+✔ sequence value and is_called changes fail rather than silently accepting a stale authority counter (0.3912ms)
+✔ binary/archive hashes cover raw bytes and archive ACL refuses broad ordinary grants (0.4377ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 95.7886

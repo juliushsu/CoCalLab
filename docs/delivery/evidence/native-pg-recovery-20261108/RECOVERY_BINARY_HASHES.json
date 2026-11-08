@@ -1,0 +1,16 @@
+[
+  {
+    "file": "pg_dump.exe",
+    "archive_entry_sha256": "eaa2d00935e0dd55a6ad7aa2f106d013dcb4e793b7e7d2c6df64bf5b60fbdcd7",
+    "actual_sha256": "eaa2d00935e0dd55a6ad7aa2f106d013dcb4e793b7e7d2c6df64bf5b60fbdcd7",
+    "version": "pg_dump (PostgreSQL) 17.11",
+    "result": "MATCH"
+  },
+  {
+    "file": "pg_restore.exe",
+    "archive_entry_sha256": "b91271bd574183dadd17b7dc996dd793805de3eab676e7f9991a067360edf4ce",
+    "actual_sha256": "b91271bd574183dadd17b7dc996dd793805de3eab676e7f9991a067360edf4ce",
+    "version": "pg_restore (PostgreSQL) 17.11",
+    "result": "MATCH"
+  }
+]

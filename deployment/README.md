@@ -1,5 +1,7 @@
 # 固定候選部署前置 — 本機準備，非部署授權
 
+> Local SQL recovery preparation (2026-11-08): [same-cluster native backup/restore evidence](../docs/delivery/NATIVE_SQL_RECOVERY_DELIVERY_20261108.md). Product stays da5; managed Supabase, Storage bytes and cloud authorization remain separate.
+
 > New native SQL lock-order candidate (2026-11-08): [da5 delivery and real-PG evidence](../docs/delivery/NATIVE_POSTGRES_CONCURRENCY_20261108.md), [47-source manifest](uat/candidates/da5a0990c8ec/README.md). The ed6 UAT addendum and ba2/9eb sections below retain their historical scope; no cloud authorization is implied.
 
 > Current entry (2026-11-08): [ed6 N1/N3 real UAT acceptance addendum](../docs/delivery/REAL_UAT_CANDIDATE_ACCEPTANCE_20261108.md) and [ed6 candidate templates](uat/candidates/ed6ca9bbfbc5/README.md). The ba2/9eb sections below preserve historical evidence, not current deployment authorization or status. Owner choice/budget/retention are already recorded; cloud execution remains on hold.
