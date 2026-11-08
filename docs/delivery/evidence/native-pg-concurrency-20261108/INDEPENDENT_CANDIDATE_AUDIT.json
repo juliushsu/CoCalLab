@@ -1,0 +1,452 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "independent review_export",
+  "recordedAt": "2026-11-08T06:05:10.413Z",
+  "source": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "baselineSource": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "run": "20261108060154015-4430f35e",
+  "baselineRun": "20261108055523123-bbe1b96b",
+  "database": "cocal_sql_race_20261108060154015_4430f35e",
+  "result": "PASS_NAMED_NATIVE_CASES_ONLY",
+  "synthetic": true,
+  "runCommand": "node backend/tools/native-pg-concurrency/run.mjs --candidate da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "toolHashes": {
+    "run.mjs": "1e49a406ff4419097aff8305b07a0a8e7e52f25e14b5b262a5496732d19f8081",
+    "boundaries.mjs": "2d4b2699f8be37a5e76f2df6e1f06271e209d85c4cb28d9a899395b2b7de4ba2",
+    "guard.test.mjs": "09060e75a7609e87644d8d725422dbe749731b1bacffe057d0f8008bf111372e",
+    "README.md": "bf2a75dcc417ca4d662c1e46b2fd35817a0c15fb02d925a08808b81d6bd27eef"
+  },
+  "resultSha256": "4e0004d1d92bdb254a4a54a951c1efcd4c4637057213a6a396f94e0e56deedac",
+  "appliedSchemaMigrations": 44,
+  "omitted": [
+    "202603160008_v1_frontend_fixture_seed.sql",
+    "202603180007_v1_staging_fixture_alignment.sql",
+    "202604070005_v1_adjustment_fixture_seed.sql"
+  ],
+  "connections": [
+    {
+      "label": "A",
+      "pid": 68624
+    },
+    {
+      "label": "B",
+      "pid": 38608
+    },
+    {
+      "label": "observer",
+      "pid": 60608
+    }
+  ],
+  "cases": [
+    {
+      "name": "same_request_recalculation_and_committed_reply_discard_lookup",
+      "status": "PASS",
+      "actorPids": [
+        68624,
+        38608
+      ],
+      "observerPid": 60608,
+      "counts": {
+        "calculations": "1",
+        "max_version": 1,
+        "audits": "1"
+      },
+      "notes": "A completed actual RPC but held outer transaction until B Lock was observed; no extra row/advisory locks were injected. Saved reply deliberately discarded at application level, not TCP packet loss."
+    },
+    {
+      "name": "concurrent_controlled_edit_rejects_old_input_and_fresh_retry",
+      "status": "PASS",
+      "errorCode": "P0001",
+      "error": "RECALCULATION_INPUT_CHANGED",
+      "freshCo2eKg": 100,
+      "oldRequestRollbackState": {
+        "saved_result": null,
+        "result_snapshot": null,
+        "completed_at": null,
+        "completion_order": null,
+        "audits": "1"
+      }
+    },
+    {
+      "name": "delete_prepare_fences_concurrent_reference",
+      "status": "PASS",
+      "errorCode": "42501",
+      "error": "DOCUMENT_DELETION_FENCED",
+      "state": {
+        "deletion_state": "pending",
+        "drafts": "0",
+        "operations": "1"
+      },
+      "notes": "Actual RPC/trigger locks; outer transaction held until observer saw the second backend waiting. No Storage bytes deleted."
+    },
+    {
+      "name": "reference_fences_concurrent_delete_prepare",
+      "status": "PASS",
+      "errorCode": "P0001",
+      "error": "DOCUMENT_HAS_REFERENCES",
+      "state": {
+        "deletion_state": "active",
+        "drafts": "1",
+        "operations": "0"
+      },
+      "notes": "Actual RPC/trigger locks; outer transaction held until observer saw the second backend waiting. No Storage bytes deleted."
+    },
+    {
+      "name": "N1_same_request_confirmation_one_original_result",
+      "status": "PASS",
+      "counts": {
+        "activities": "1",
+        "calculations": "1",
+        "audits": "1",
+        "requests": "1"
+      },
+      "emissionActivityId": "1df3fd85-d421-4c0f-adf5-b78a50f73018",
+      "calculationResultId": "02e2ba61-a89c-4c88-8cfc-e4c78704a93c"
+    },
+    {
+      "name": "N3_competing_replacements_one_leaf_preserve_retired_calculation",
+      "status": "PASS",
+      "errorCode": "P0001",
+      "error": "ACTIVITY_REPLACEMENT_SUPERSEDED",
+      "counts": {
+        "replacements": "1",
+        "effective": "1",
+        "co2e_kg": "60.0000000000"
+      },
+      "replayedActivityId": "d63feb1e-42a7-4736-be2c-55787833f8e5",
+      "retiredRowsUnchanged": true
+    },
+    {
+      "name": "N4_fixed_early_project_lock_serializes_delete_manual_create",
+      "status": "PASS",
+      "syntheticBarrier": {
+        "triggerSql": "create function public.native_race_barrier() returns trigger language plpgsql as $$begin if new.id='be71200c-47e8-499d-b84b-64db77756375'::uuid and old.deletion_state='active' and new.deletion_state='pending' then perform pg_advisory_xact_lock(2026110801);end if;return new;end$$;create trigger native_race_barrier before update on public.uploaded_documents for each row execute function public.native_race_barrier()",
+        "observerPid": 60608,
+        "released": "2026-11-08T06:01:58.280Z"
+      },
+      "naturalBlocking": {
+        "label": "N4_fixed_manual_create_waits_for_early_project_lock",
+        "observed": "2026-11-08T06:01:58.277Z",
+        "pid": 38608,
+        "state": "idle",
+        "wait_event_type": "Lock",
+        "wait_event": "transactionid",
+        "blockers": [
+          68624
+        ]
+      },
+      "errorCode": "42501",
+      "error": "DOCUMENT_DELETION_FENCED",
+      "state": {
+        "deletion_state": "pending",
+        "drafts": "0",
+        "operations": "1",
+        "manual_audits": "0",
+        "delete_audits": "1"
+      },
+      "noDeadlockInThisNamedSchedule": true
+    },
+    {
+      "name": "fixed_finalize_replay_and_revoked_actor_lease_cleanup_keep_authorization",
+      "status": "PASS",
+      "ordinaryRoleDeniedEntryPoints": 3,
+      "wrongActorDenied": true,
+      "revokedOriginalActorCleanup": true,
+      "restoredOcrStatus": "pending",
+      "state": {
+        "status": "archived",
+        "deletion_state": "deleted",
+        "deletion_audits": "2",
+        "drafts": "0"
+      },
+      "notes": "SQL catalog object deletion only; no Storage HTTP bytes. Finalize/MANUAL schedule has independent backend lock observation."
+    }
+  ],
+  "lockObservations": [
+    {
+      "label": "same_request_commit_B_waits_for_A_rpc_locks",
+      "observed": "2026-11-08T06:01:57.857Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "stale_recalculation_B_waits_for_controlled_edit_A",
+      "observed": "2026-11-08T06:01:57.917Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "draft_reference_waits_for_delete_prepare",
+      "observed": "2026-11-08T06:01:57.962Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "advisory",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "delete_prepare_waits_for_new_reference",
+      "observed": "2026-11-08T06:01:58.030Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "same_confirmation_request_waits_for_first_commit",
+      "observed": "2026-11-08T06:01:58.109Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "N3_competing_successor_waits_for_first_replacement",
+      "observed": "2026-11-08T06:01:58.141Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "N4_SYNTHETIC_barrier_pauses_delete_before_late_project_lock",
+      "observed": "2026-11-08T06:01:58.230Z",
+      "pid": 68624,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "advisory",
+      "blockers": [
+        60608
+      ]
+    },
+    {
+      "label": "N4_fixed_manual_create_waits_for_early_project_lock",
+      "observed": "2026-11-08T06:01:58.277Z",
+      "pid": 38608,
+      "state": "idle",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    },
+    {
+      "label": "fixed_finalize_early_project_lock_fences_manual_create",
+      "observed": "2026-11-08T06:01:58.321Z",
+      "pid": 38608,
+      "state": "active",
+      "wait_event_type": "Lock",
+      "wait_event": "transactionid",
+      "blockers": [
+        68624
+      ]
+    }
+  ],
+  "sqlFailures": [
+    {
+      "connection": "B",
+      "code": "P0001",
+      "message": "RECALCULATION_INPUT_CHANGED"
+    },
+    {
+      "connection": "B",
+      "code": "42501",
+      "message": "DOCUMENT_DELETION_FENCED"
+    },
+    {
+      "connection": "B",
+      "code": "P0001",
+      "message": "DOCUMENT_HAS_REFERENCES"
+    },
+    {
+      "connection": "B",
+      "code": "P0001",
+      "message": "ACTIVITY_REPLACEMENT_SUPERSEDED"
+    },
+    {
+      "connection": "B",
+      "code": "42501",
+      "message": "DOCUMENT_DELETION_FENCED"
+    },
+    {
+      "connection": "observer",
+      "code": "42501",
+      "message": "permission denied for function document_deletion_request"
+    },
+    {
+      "connection": "observer",
+      "code": "42501",
+      "message": "permission denied for function finalize_document_deletion"
+    },
+    {
+      "connection": "observer",
+      "code": "42501",
+      "message": "permission denied for function release_document_processing"
+    },
+    {
+      "connection": "observer",
+      "code": "42501",
+      "message": "DOCUMENT_PROCESSING_LEASE_DENIED"
+    },
+    {
+      "connection": "B",
+      "code": "42501",
+      "message": "DOCUMENT_DELETION_FENCED"
+    }
+  ],
+  "migrationReadOnlyAudit": {
+    "functionsSql": "select p.oid::regprocedure::text signature,p.prosrc body,md5(pg_get_functiondef(p.oid)) definition_md5,coalesce(p.proacl,acldefault('f',p.proowner))::text acl,p.proowner owner,p.proconfig config,p.prosecdef security_definer,p.provolatile volatility from pg_proc p where p.oid in(to_regprocedure('public.document_deletion_request(uuid,jsonb,text)'),to_regprocedure('public.finalize_document_deletion(uuid,jsonb)'),to_regprocedure('public.release_document_processing(uuid,uuid)')) order by signature",
+    "metadata": [
+      {
+        "signature": "public.document_deletion_request(uuid,jsonb,text)",
+        "beforeDefinitionMd5": "166dcf2657864970bed1e490c9d093ae",
+        "afterDefinitionMd5": "35ba95d0ebe40fd6129780578104149d",
+        "acl": "{cocal_uat_admin=X/cocal_uat_admin,service_role=X/cocal_uat_admin}",
+        "owner": 10,
+        "config": [
+          "search_path=\"\""
+        ],
+        "security_definer": true,
+        "volatility": "v",
+        "onlyApprovedLockInserted": true
+      },
+      {
+        "signature": "public.finalize_document_deletion(uuid,jsonb)",
+        "beforeDefinitionMd5": "50f70539065f2da67e15d573dd4a478d",
+        "afterDefinitionMd5": "6af9120ad1e82540042a65c9bc4962b5",
+        "acl": "{cocal_uat_admin=X/cocal_uat_admin,service_role=X/cocal_uat_admin}",
+        "owner": 10,
+        "config": [
+          "search_path=\"\""
+        ],
+        "security_definer": true,
+        "volatility": "v",
+        "onlyApprovedLockInserted": true
+      },
+      {
+        "signature": "public.release_document_processing(uuid,uuid)",
+        "beforeDefinitionMd5": "3661172c3302d83f34e9b78bd3a5af61",
+        "afterDefinitionMd5": "4c41089ba5b9bb91d6bc706a3ea6b3d6",
+        "acl": "{cocal_uat_admin=X/cocal_uat_admin,service_role=X/cocal_uat_admin}",
+        "owner": 10,
+        "config": [
+          "search_path=\"\""
+        ],
+        "security_definer": true,
+        "volatility": "v",
+        "onlyApprovedLockInserted": true
+      }
+    ],
+    "catalogSql": "select * from cocal_delete_private.catalog_state() order by kind,object_key",
+    "changedCatalogRows": [
+      {
+        "kind": "function",
+        "object_key": "public.document_deletion_request(uuid,jsonb,text)",
+        "fingerprint": "3a8c5bc7aa803b936cc45d10276fa829"
+      },
+      {
+        "kind": "function",
+        "object_key": "public.finalize_document_deletion(uuid,jsonb)",
+        "fingerprint": "330fb59abc2d800cb8cfc38dc982cf29"
+      },
+      {
+        "kind": "function",
+        "object_key": "public.release_document_processing(uuid,uuid)",
+        "fingerprint": "4b6b6c8376bf4d8ccada4e703c65d7f9"
+      }
+    ],
+    "readiness": {
+      "ready": true
+    },
+    "bodyDiffAssertions": "Exactly the approved single project FOR NO KEY UPDATE line after each approved anchor; all other function text unchanged",
+    "stateSql": "select u.id,u.status,u.deletion_state,u.ocr_status,(select phase from cocal_delete_private.operations o where o.document_id=u.id) phase,(select count(*)::int from public.extracted_document_drafts d where d.uploaded_document_id=u.id) drafts,(select count(*)::int from public.audit_logs a where a.entity_id=u.id and a.action='document_delete_prepared') prepared_audits,(select count(*)::int from public.audit_logs a where a.entity_id=u.id and a.action='document_delete_finalized') finalized_audits,(select count(*)::int from cocal_delete_private.processing_leases l where l.document_id=u.id and l.state='released') released_leases,(select count(*)::int from storage.objects s where s.bucket_id=u.storage_bucket and s.name=u.storage_path) catalog_objects from public.uploaded_documents u where u.id=$1",
+    "stateParams": {
+      "pending": "be71200c-47e8-499d-b84b-64db77756375",
+      "finalized": "4d49fa43-a2ef-43c3-bd6d-a46ccf67053e"
+    },
+    "actual": {
+      "pending": {
+        "id": "be71200c-47e8-499d-b84b-64db77756375",
+        "status": "active",
+        "deletion_state": "pending",
+        "ocr_status": "pending",
+        "phase": "prepared",
+        "drafts": 0,
+        "prepared_audits": 1,
+        "finalized_audits": 0,
+        "released_leases": 0,
+        "catalog_objects": 1
+      },
+      "finalized": {
+        "id": "4d49fa43-a2ef-43c3-bd6d-a46ccf67053e",
+        "status": "archived",
+        "deletion_state": "deleted",
+        "ocr_status": "pending",
+        "phase": "finalized",
+        "drafts": 0,
+        "prepared_audits": 1,
+        "finalized_audits": 1,
+        "released_leases": 1,
+        "catalog_objects": 0
+      }
+    },
+    "noObserved40P01": true
+  },
+  "rolesMutexReview": {
+    "finding": "Original mutex on per-run databases was database-scoped and could not serialize cluster-wide role creation",
+    "fix": "Role bootstrap now uses the guarded common postgres/admin connection",
+    "readOnlyNativeSql": "select current_database() db,pg_backend_pid() pid,pg_try_advisory_xact_lock(20261108,55439) acquired",
+    "commonDatabaseResults": {
+      "first": {
+        "db": "postgres",
+        "pid": 49736,
+        "acquired": true
+      },
+      "blocked": {
+        "db": "postgres",
+        "pid": 64384,
+        "acquired": false
+      },
+      "retry": {
+        "db": "postgres",
+        "pid": 64384,
+        "acquired": true
+      }
+    },
+    "roleChangesPerformedByReviewer": false
+  },
+  "guardTests": {
+    "command": "node --test backend/tools/native-pg-concurrency/guard.test.mjs",
+    "passed": 2,
+    "failed": 0,
+    "notes": "Exclusive fresh fixture root, empty-directory cleanup only; no SQL or credentials read by unit guard tests"
+  },
+  "notRun": [
+    "Managed Supabase/PostgREST/JWT/Storage/Edge",
+    "Native file chooser/save",
+    "Cloud migration/backup/restore",
+    "Other lock combinations beyond named cases"
+  ],
+  "scope": "Only named SQL interleavings. Baseline 40P01 is preserved in independent baseline receipt. Candidate does not prove universal deadlock freedom, hosted Supabase/JWT/Storage/Edge, or deployment readiness."
+}

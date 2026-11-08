@@ -1,0 +1,49 @@
+{
+  "run": "20261108055257247-ed5d3a59",
+  "source": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "status": "BLOCKED_OR_FAILED",
+  "error": {
+    "code": "42501",
+    "message": "Manual provenance is server-managed"
+  },
+  "cases": [
+    {
+      "name": "same_request_recalculation_and_committed_reply_discard_lookup",
+      "status": "PASS",
+      "actorPids": [
+        13764,
+        86304
+      ],
+      "observerPid": 88236,
+      "counts": {
+        "calculations": "1",
+        "max_version": 1,
+        "audits": "1"
+      },
+      "notes": "A completed actual RPC but held outer transaction until B Lock was observed; no extra row/advisory locks were injected. Saved reply deliberately discarded at application level, not TCP packet loss."
+    },
+    {
+      "name": "concurrent_controlled_edit_rejects_old_input_and_fresh_retry",
+      "status": "PASS",
+      "errorCode": "P0001",
+      "error": "RECALCULATION_INPUT_CHANGED",
+      "freshCo2eKg": 100
+    },
+    {
+      "name": "delete_prepare_fences_concurrent_reference",
+      "status": "PASS",
+      "errorCode": "42501",
+      "error": "DOCUMENT_DELETION_FENCED",
+      "state": {
+        "deletion_state": "pending",
+        "drafts": "0",
+        "operations": "1"
+      },
+      "notes": "Actual RPC/trigger locks; outer transaction held until observer saw the second backend waiting. No Storage bytes deleted."
+    }
+  ],
+  "classification": "test provider fixture contained MANUAL token and correctly hit existing MANUAL guard; renamed explicit synthetic OCR fixture, product predicate unchanged",
+  "raw_bytes": 458124,
+  "raw_sha256": "92424f65025a8891f628e43c2bd26b5bd14215558b4ada51ab9b8cd21fd06f98",
+  "raw_location": "workspace tooling/native-pg17-20261108/runs/20261108055257247-ed5d3a59/result.json"
+}

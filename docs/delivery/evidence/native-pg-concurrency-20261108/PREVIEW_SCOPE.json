@@ -1,0 +1,12 @@
+{
+  "check": "GET/login200 and GET/health200",
+  "synthetic": true,
+  "existing_preview_application": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "frontend": "http://127.0.0.1:4215/login",
+  "api": "http://127.0.0.1:4214/health",
+  "native_candidate_application": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "native_candidate_entry": "node backend/tools/native-pg-concurrency/run.mjs --candidate da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "same_database": false,
+  "managed_service": false,
+  "ui_native_acceptance": false
+}

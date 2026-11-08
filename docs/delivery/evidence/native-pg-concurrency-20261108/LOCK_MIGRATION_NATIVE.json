@@ -1,0 +1,23 @@
+{
+  "migration": "202611080001_document_lock_order.sql",
+  "base_application": "ed6ca9bbfbc5581cdcacf2969340575217fcb8c4",
+  "scope": "dedicated local native schema-only database",
+  "source_sha256": "279aade972a485f0d267d13d57eeda6df47f8fefd16b10974aa8416f79f0a1d9",
+  "changed_catalog_entries": [
+    {
+      "kind": "function",
+      "object_key": "public.document_deletion_request(uuid,jsonb,text)"
+    },
+    {
+      "kind": "function",
+      "object_key": "public.finalize_document_deletion(uuid,jsonb)"
+    },
+    {
+      "kind": "function",
+      "object_key": "public.release_document_processing(uuid,uuid)"
+    }
+  ],
+  "acl_owner_config_preserved": true,
+  "deployment_ready": true,
+  "status": "PASS"
+}

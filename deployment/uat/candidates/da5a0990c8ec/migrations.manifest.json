@@ -1,0 +1,432 @@
+{
+  "source_sha": "da5a0990c8ec82d2b55064dd7e009b771409fa73",
+  "status": "SOURCE_CANDIDATE_ONLY_NOT_EXECUTED_ON_CLOUD",
+  "source_count": 47,
+  "proposed_fresh_schema_count": 44,
+  "fixture_history_decision_required": true,
+  "migrations": [
+    {
+      "order": 1,
+      "file": "202603160001_v1_core_schema.sql",
+      "sha256": "c57662f2e5c9802ce8a9fd92f4d892600c6c32a9e5d48fa592c871a6dc8c5b0a",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 2,
+      "file": "202603160002_v1_hardening_atomic_rpc.sql",
+      "sha256": "06596af1e83e811cd75cb99985d4466a5391000c174e5eca599ec8aac9d56488",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 3,
+      "file": "202603160003_v1_hardening_document_atomic_rpc.sql",
+      "sha256": "1ce309ac4cee191407633efa1fad61b3f86c7a6601d2eece29775c95f1ed021c",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 4,
+      "file": "202603160004_v1_hardening_recalculate_atomic_rpc.sql",
+      "sha256": "915f42af129caacbf3d303b32044d36563ec48ef09ac856ae7198fe776fe607e",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 5,
+      "file": "202603160005_v1_hardening_generate_report_atomic_rpc.sql",
+      "sha256": "41b9a0152376c091b0c8c8b78fd3eeec988b8466ef925a7a2973695155c75a0a",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 6,
+      "file": "202603160006_v1_hardening_run_ai_audit_atomic_rpc.sql",
+      "sha256": "d6780dc277b9c1b3307cb7b23358128254cf387b6ed7a548b14d9ac79d2fdf07",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 7,
+      "file": "202603160007_v1_hardening_classify_atomic_rpc.sql",
+      "sha256": "c5200592fff450eb779fc28e5027b55a13dc127fc2cb865d679236e6c09ad385",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 8,
+      "file": "202603160008_v1_frontend_fixture_seed.sql",
+      "sha256": "a6c16053bf30f32b2108330cc9e4d8d2447631e7c362989b23ad14b421599539",
+      "classification": "HISTORICAL_FIXTURE_DML_HOLD",
+      "fresh_uat_proposal": "EXCLUDE_PURE_FIXTURE_AFTER_EXPLICIT_FRESH_ENV_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 9,
+      "file": "202603160009_v1_p0_process_document_atomic_fix.sql",
+      "sha256": "df2394818e238ddea003375e0957f95ae75adb45ea77e8aeee206386fce79221",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 10,
+      "file": "202603160010_v1_p0_classify_atomic_fix.sql",
+      "sha256": "69c2809fa0b2e7847cd744fe62c9334f04bcc55557637b6c05c2356417e2ad2d",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 11,
+      "file": "202603160011_v1_p0_confirm_atomic_fix.sql",
+      "sha256": "4e0af1ec523f5277ef7cc9747656de058b4031a30479ff1472113860ae7323f6",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 12,
+      "file": "202603180001_v1_staging_hardening_columns.sql",
+      "sha256": "ec09e37e3793c8e59de18550b4150bca5266b95362db5bd6a0c5fdd90e4cc330",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 13,
+      "file": "202603180002_v1_staging_action_logs.sql",
+      "sha256": "8cd370317344589b4f86c99a62498f8e843bfdef8f60f5a2050d01acf76a6eee",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 14,
+      "file": "202603180003_v1_staging_purge_dry_run.sql",
+      "sha256": "0fa12f4bfc4c90f247bd0c5c959724c096f250fd70a044d740dcba9646296e54",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 15,
+      "file": "202603180004_v1_staging_purge_function.sql",
+      "sha256": "5b4cff65fb0700b3285c94444c6d00cc926b792d60f5fe149e50450b9c64e289",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 16,
+      "file": "202603180005_v1_staging_storage_isolation.sql",
+      "sha256": "10fe15af02bb4b7c5430b2ce4b28a3f409cc495e534dd22014dc65eda613ffb8",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 17,
+      "file": "202603180006_v1_staging_hardening_followup.sql",
+      "sha256": "b1d0b6c734e491689be9772c1a7287c181f120327084987418ee71bd8de8531b",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 18,
+      "file": "202603180007_v1_staging_fixture_alignment.sql",
+      "sha256": "0b0cd9bfd9771e8faa2b3504178e89f9c424a789ea025662bba28ead8991e7cf",
+      "classification": "HISTORICAL_FIXTURE_DML_HOLD",
+      "fresh_uat_proposal": "EXCLUDE_PURE_FIXTURE_AFTER_EXPLICIT_FRESH_ENV_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 19,
+      "file": "202603180008_v1_p1_org_membership_alignment.sql",
+      "sha256": "f50f7bd2c5f6f4c731e0b7392252e1f858568bcb86d3954925d865d7b0fccec3",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 20,
+      "file": "202603180009_v1_member_management_rpc.sql",
+      "sha256": "3ea6e40fbd1dabddc7e90a5c194a17d9020ab6dee037909b8e837b4852183a44",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 21,
+      "file": "202604070001_v1_org_read_chain_fix.sql",
+      "sha256": "6b850d64b9cb35fbdbe2cd83eb9e34bcf33112de1a2ec6a0128679a59b9ef208",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 22,
+      "file": "202604070002_v1_analytics_classification_backbone.sql",
+      "sha256": "405f6fafff39143cd08444b025ff27f67de94e9574bb11070f7a10130a21efb1",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 23,
+      "file": "202604070003_v1_adjustments_and_report_integration.sql",
+      "sha256": "f3db51ce05d05f3ae9073bd03018c1bdcf0534f19b64efb973201b33ee168567",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 24,
+      "file": "202604070004_v1_adjustment_rule_engine_and_purge_update.sql",
+      "sha256": "deb5f4c611d67f63ebad3c6c1f1f39fdbc655b22b78125c33de24c166b6bb390",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 25,
+      "file": "202604070005_v1_adjustment_fixture_seed.sql",
+      "sha256": "41b9317e0a2a8d4ccaf394751f1c3626df725829be3f34bd6fabbc37e83105f8",
+      "classification": "HISTORICAL_FIXTURE_DML_HOLD",
+      "fresh_uat_proposal": "EXCLUDE_PURE_FIXTURE_AFTER_EXPLICIT_FRESH_ENV_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 26,
+      "file": "202604070006_v1_canonical_seed_pack_governance.sql",
+      "sha256": "feecbc41fb8e6984e8b6ae071a1b3678252b0d27413b53555d32d52417421c26",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 27,
+      "file": "202605080001_phase1_boundary_governance_staging.sql",
+      "sha256": "320123171cd8a8bce5eea7a31687c82561057f2d8ec6139aa5b23be2d5bb5fa6",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 28,
+      "file": "202610310001_organization_profile_update.sql",
+      "sha256": "44b0e230025d91a905be5f12656ff913d159ec9b208c8c87d5bdbc4ca4f46da3",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 29,
+      "file": "202610310002_project_identity_guard.sql",
+      "sha256": "590ed6dad872a16c24dc8e63e74b20273c104073a8bf172bd675d3b4be467db4",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 30,
+      "file": "202610310003_atomic_rpc_service_role_only.sql",
+      "sha256": "ef285acba8bbc9dab65c95a55bb294ed6deb01551c55f01f4134db693a6bc482",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 31,
+      "file": "202610310004_tenant_relationship_integrity.sql",
+      "sha256": "7345c2c7ea5a22daae7b037aa2f473da0468de9ce270036f9fb1bf057e269ed1",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": true
+    },
+    {
+      "order": 32,
+      "file": "202610310005_project_lookup_acl.sql",
+      "sha256": "b595612111f760a7e9bb8c27f8db6d5b6a52f03c6ed59884f87e33198a98bce5",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 33,
+      "file": "202610310006_action_logs_read_boundary.sql",
+      "sha256": "6c7dec851605323ef46ada4d0868703f849caf15bd35cf2e57988194a5fdedb7",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 34,
+      "file": "202611020001_secure_upload_storage.sql",
+      "sha256": "87b109ea0fd1124d7715b51812762e802c85f7c59cdc03c0cda6e061a8d4c8a7",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": true
+    },
+    {
+      "order": 35,
+      "file": "202611020002_storage_receipt_review_fixes.sql",
+      "sha256": "d3b6760ba0bcb873aa464a82b363545a3d0256f7c5d91cdd3998a82a674911d8",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 36,
+      "file": "202611060001_report_snapshot_atomic_v2.sql",
+      "sha256": "a952b36d0a0e621d711f9ca30ccd2e60ad578939d158a96a9bca1880e75922f0",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 37,
+      "file": "202611060002_manual_transcription_v1.sql",
+      "sha256": "25db5353b20eaf38fef2e63017c97f99c8ada7ae481ecb6161cfd1d70cfb7b7d",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 38,
+      "file": "202611060003_server_attachment_verification.sql",
+      "sha256": "2382e8abf661003aca6551342d9b3b193930ae0e1aee61cb207f163031d10beb",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 39,
+      "file": "202611060004_recalculation_requests.sql",
+      "sha256": "69d292cffb7185e5c51b1704617a9c2177a41984771dde173d6a9a613941b815",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 40,
+      "file": "202611060005_controlled_document_deletion.sql",
+      "sha256": "48140e5037fb54ad69b2d71dd114fc80bd1272c9d1f1aa1922c3cc01f2f2a82f",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 41,
+      "file": "202611060006_report_snapshot_integrity.sql",
+      "sha256": "eb079b1550078be4656de6abae2570f6bbad6f3c9e3c3ac53e54f59f66201a3f",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 42,
+      "file": "202611070001_calculation_source_authority.sql",
+      "sha256": "e36b2acb0c1cd6f3e22603c02b71addb83ff84abb5b6da816f0d35b4614503a8",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 43,
+      "file": "202611070002_manual_processing_fences.sql",
+      "sha256": "7bdcaccdb940f222a2e1f6c4f45238a20f04b189d296bdb4e15e3999e819ed6c",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 44,
+      "file": "202611070003_report_source_retention.sql",
+      "sha256": "ef5d90af38303f96d93f7866c085b5a9f4e4cd57f2dc673e55042f573375f0fb",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 45,
+      "file": "202611070004_manual_document_confirmation_boundary.sql",
+      "sha256": "64c88774d0cc15eca86956a377abe7280f4433fc3f719eeabf97f63382236fb3",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 46,
+      "file": "202611070005_activity_replacements.sql",
+      "sha256": "95ee70942c4410864f2bc65a18a558098c3abd2f432d67709aa188e6ce63583a",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    },
+    {
+      "order": 47,
+      "file": "202611080001_document_lock_order.sql",
+      "sha256": "279aade972a485f0d267d13d57eeda6df47f8fefd16b10974aa8416f79f0a1d9",
+      "classification": "SCHEMA_AND_GOVERNANCE_CANDIDATE",
+      "fresh_uat_proposal": "APPLY_IN_ORDER_ONLY_AFTER_APPROVAL",
+      "cloud_applied": "UNKNOWN",
+      "not_valid_requires_separate_validation": false
+    }
+  ]
+}

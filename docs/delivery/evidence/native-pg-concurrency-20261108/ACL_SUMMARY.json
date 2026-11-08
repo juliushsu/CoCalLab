@@ -1,0 +1,7 @@
+{
+  "root": "dedicated ASCII temporary runtime",
+  "inheritance_disabled": true,
+  "explicit_allow_rule_count": 1,
+  "credential_value_disclosed": false,
+  "scope": "ACL inspection only; PostgreSQL clients separately read the restricted local password as authorized"
+}

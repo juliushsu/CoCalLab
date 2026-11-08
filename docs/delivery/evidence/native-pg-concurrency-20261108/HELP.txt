@@ -1,0 +1,2 @@
+Usage: node backend/tools/native-pg-concurrency/run.mjs --probe | --run | --candidate da5a0990c8ec82d2b55064dd7e009b771409fa73
+No flag: no credential read, connection or database creation. Fixed local 127.0.0.1:55439 only.
