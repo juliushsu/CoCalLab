@@ -95,7 +95,7 @@
           "event": "BLOCKED",
           "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
           "targetRef": "SYNTHETIC-UAT-20261109-512e414f-backup_failure",
-          "reason": "ENOENT: no such file or directory, open 'C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\uat-lifecycle-20261109\\20261109-512e414f\\backup_failure\\backup-manifest.json'"
+          "reason": "ENOENT: no such file or directory, open '<TOOL_ROOT>\\uat-lifecycle-20261109\\20261109-512e414f\\backup_failure\\backup-manifest.json'"
         }
       ],
       "localAlertPresent": true
@@ -137,7 +137,7 @@
           "event": "BLOCKED",
           "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
           "targetRef": "SYNTHETIC-UAT-20261109-512e414f-restore_failure",
-          "reason": "ENOENT: no such file or directory, open 'C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\uat-lifecycle-20261109\\20261109-512e414f\\restore_failure\\backup-manifest.json'"
+          "reason": "ENOENT: no such file or directory, open '<TOOL_ROOT>\\uat-lifecycle-20261109\\20261109-512e414f\\restore_failure\\backup-manifest.json'"
         }
       ],
       "localAlertPresent": true

@@ -1,11 +1,11 @@
 {
-  "engine": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\source\\deployment\\uat\\lifecycle\\synthetic-scheduler-engine.mjs",
+  "engine": "<REPO_ROOT>\\deployment\\uat\\lifecycle\\synthetic-scheduler-engine.mjs",
   "principal": "Interactive/Limited",
   "user": "<OWNER_ACCOUNT>",
   "taskPath": "\\CoCalLab-UAT-Lifecycle\\20261109-512e414f\\",
   "limitation": "Requires this Windows account logged in and PC powered on; not a 24x7/cloud deadline guarantee. Local alerts are not delivered notifications.",
   "cloudExecutionArmed": false,
-  "node": "C:\\Users\\User\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+  "node": "<NODE_BINARY>",
   "engineSHA256": "C2935EBEB7E5D4F22317785EFB0250E06E57F8F537AF7405B232853041E57EA9",
   "registeredAt": "2026-11-09T00:43:22.1949655Z",
   "tasks": [
@@ -73,6 +73,6 @@
   "runId": "20261109-512e414f",
   "nodeSHA256": "86F361A88F4CC3ECAF1EA93236B0D8EDF07BF00FE87AD9F60305513F58FC2C17",
   "syntheticOnly": true,
-  "directory": "C:\\Users\\User\\OneDrive\\文件\\ChatGPT\\CaCalLab\\local-uat\\CoCalLab-UAT-LOCAL-01\\tooling\\uat-lifecycle-20261109\\20261109-512e414f",
+  "directory": "<TOOL_ROOT>\\uat-lifecycle-20261109\\20261109-512e414f",
   "notice": "Actual Windows Task Scheduler registration; test phases only. No real T0/expiry jobs armed."
 }
