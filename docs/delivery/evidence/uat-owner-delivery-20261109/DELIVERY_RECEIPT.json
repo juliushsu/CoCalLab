@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-09T02:53:43.885Z",
+  "scope": "SYNTHETIC_LOCAL_DELIVERY_ONLY",
+  "actualNewUatRef": null,
+  "tests": {
+    "encryptedFile": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0
+  },
+  "sourceSha256": {
+    "encrypted-artifact.mjs": "dc9ddad3bab2f7bf414b4c38c1de2e0ae83158ea71152e76be15cfd2e11de71d",
+    "encrypted-artifact.test.mjs": "9d990e3993528ce6cd2f8164762824f8a646db02f22d7c14aa9a9b633563fbd6",
+    "owner-delivery-probe.mjs": "771c5ba2dd4c8229b3bfe9b116ba3f8a8883c466bd9df3ae3a8debd5643f6ff4",
+    "test-owner-delivery.ps1": "528719fb714a24a837e88263fc68e8d9d178f9c4a8d9c4b59d268c560e341cf0"
+  },
+  "ownerNativeProbe": {
+    "acl": "OWNER_AND_SYSTEM_ONLY_VERIFIED",
+    "space": "PASSED_FOR_SMALL_SYNTHETIC_PROBE_NOT_ACTUAL_BACKUP_SIZING",
+    "keyReadback": "PASSED",
+    "overwriteRefused": "PASSED",
+    "wrongKeyAndTamperRefused": "PASSED",
+    "fileCount": 6,
+    "manifestSha256": "8f0ff05b6339019c6e638ed8d955e00de253efad0677d68425009c58054bda5b",
+    "privateReceiptSha256": "7a4713a2835acfef1886644e19b722c8d3f46d77af73c64cb1fc8a75745d2a9c"
+  },
+  "offsiteBackup": false,
+  "ownerAcceptedActualBackup": false,
+  "realDatabaseRestore": "NOT_RUN",
+  "realStorageRestore": "NOT_RUN",
+  "newPaidResources": 0,
+  "productCandidate": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "mainOperationsMerge": "94d01b9c9f081df494f805b41166599ccd73541e",
+  "mainOperationsApprovedHead": "a8f8f4c89f720d099d995ddaafb205cad4aa301a",
+  "githubNotificationProbe": {
+    "runId": 42552744150,
+    "jobResult": "EXPECTED_FAILURE_EXIT_1",
+    "observe": "SKIPPED",
+    "emailDelivery": "UNVERIFIED"
+  },
+  "release": "HOLD"
+}

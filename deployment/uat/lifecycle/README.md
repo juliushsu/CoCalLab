@@ -1,3 +1,9 @@
+# Local encrypted-file implementation
+
+New [v1 interface and portability guide](ENCRYPTED_ARTIFACT.md), [source evidence](../../../docs/delivery/UAT_OWNER_DELIVERY_IMPLEMENTATION_20261109.md) and synthetic tests are available. This module does not perform provider provisioning, database backup/restore, scheduling or cloud deletion. Current governance/execution records remain in the restricted Owner report; the historical scheduler description below is not a live execution authorization.
+
+---
+
 # Windows lifecycle scheduler proof — SYNTHETIC ONLY
 
 The Install instructions below describe the earlier completed OS scheduler probe.

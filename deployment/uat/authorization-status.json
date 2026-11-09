@@ -17,7 +17,7 @@
     "change_requires_owner": true
   },
   "resource_execution": {
-    "status": "WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL",
+    "status": "OWNER_APPROVED_IMPLEMENTING_MAIN_WORKFLOW_GATE",
     "authorized": true,
     "planned_name": "CoCalLab-UAT-CLOUD-01",
     "organization_id": "empvseawywarugdnyhzl",
@@ -25,7 +25,7 @@
     "compute_proposal": "Micro",
     "new_project_ref": null,
     "do_not_modify_existing_ref": "wynqnvidepzzcwutexvn",
-    "reason": "Owner-assisted read-only platform and notification checks completed. Detailed account/billing/resource observations remain in an Owner-only local approval packet. The concrete lifecycle plan, new isolated helper resources, bounded credentials and fault-notification tests require Owner approval; main watchdog requires a separate fixed-diff approval. No resources, schedules or credentials may be created now.",
+    "reason": "Plan A is approved; do not ask the same plan again. Main operations workflow approval and technical prerequisites remain. No paid resources have been created.",
     "scope_authorized_by_owner": true,
     "scope": [
       "Only new CoCalLab-UAT-CLOUD-01 in the Owner-specified organization",
@@ -63,9 +63,9 @@
     "can_provision_now": false,
     "organization_name": null,
     "pending_execution_gates": [
-      "Owner approval of concrete lifecycle plan A: isolated helper resources, cumulative budget allocation, credential scope, fault-notification tests, backup handoff and exact helper cleanup",
-      "Fixed implementation and separate approval of the main-only operations watchdog workflow; no product merge or production deployment",
-      "After approval: isolated scheduler/connectivity/delivery probes before paid Supabase UAT; bind exact new ref then perform immediate real baseline backup/restore before relying on expiry"
+      "Finish tested provider/backup source and obtain separate fixed-diff main operations workflow approval",
+      "Prepare and validate Owner-approved local delivery ACL/space/encryption; never overwrite; Owner receipt required before deleting the cloud-only backup",
+      "Only after prerequisites: provision approved isolated helpers, bind T0, test actual scopes/scheduler/delivery, then new Supabase UAT with immediate real baseline restore"
     ],
     "live_preflight": {
       "owner_assisted_read_only_check_completed": true,
@@ -75,14 +75,18 @@
     },
     "organization_name_visibility": "LOCAL_OWNER_REPORT_ONLY",
     "lifecycle_plan": {
-      "status": "WAITING_OWNER_APPROVAL",
+      "status": "OWNER_APPROVED",
       "public_document": "docs/delivery/UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md",
       "proposal_file": "deployment/uat/lifecycle/execution-proposal.json",
       "restricted_packet": "LOCAL_OWNER_REPORT_ONLY",
       "railway_read_only_inventory_completed": true,
       "notifications_read_only_inventory_completed": true,
       "mac_runtime": "UNVERIFIED",
-      "actual_configuration_authorized": false
+      "actual_configuration_authorized": false,
+      "approved_plan_commit": "ca081cc6c81b102393673d22456febe94a5e2de4",
+      "approval_source": "Owner reply in this chat: approve plan A and restricted packet; main operations workflow requires separate fixed-diff approval",
+      "backup_receiver": "Owner",
+      "backup_delivery_location": "OWNER_APPROVED_RESTRICTED_LOCAL_TARGET; verify ACL/space/encryption readback first; same-machine, not offsite"
     }
   },
   "agent_actions": {

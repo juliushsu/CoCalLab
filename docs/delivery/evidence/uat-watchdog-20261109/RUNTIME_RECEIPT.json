@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-11-09T02:32:36.712Z",
+  "watchdogTests": {
+    "pass": 23,
+    "fail": 0,
+    "tap": "watchdog.tap"
+  },
+  "workflowContracts": {
+    "pass": 3,
+    "fail": 0,
+    "tap": "workflow-contract.tap",
+    "yamlParsed": true
+  },
+  "sourceSha256": {
+    "railway-watchdog.mjs": "6715dd40334348351c8f60a71cdd331f8b732ca2b98eecd0ce1b205a90ded30e",
+    "railway-watchdog.test.mjs": "fb56874658dcfeee7158dbe57fa917dca4d10d2d6b8ceb557ae2495d5dc7e9b8",
+    "render-watchdog-workflow.mjs": "6db863d321d3527e49efc202de4b2ecaa17de96326f8cb2c8beb27f1c0db6a10",
+    "render-watchdog-workflow.test.mjs": "1cde19d16d2b83e1a02d349083b48fb46e4a44198ffdead62dd28482b8486bbe"
+  },
+  "networkEvidence": "Synthetic fixtures and actual loopback HTTP only; real Railway API/credentials and email delivery NOT_RUN",
+  "sourceReferences": [
+    "https://docs.railway.com/integrations/api",
+    "https://github.com/railwayapp/cli/blob/master/src/gql/queries/strings/DeploymentInstanceExecutions.graphql"
+  ],
+  "cloudChanges": false,
+  "paidResourcesCreated": 0,
+  "mainChanged": false,
+  "release": "HOLD"
+}

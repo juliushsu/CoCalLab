@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "mode": "PROPOSAL_ONLY",
-  "status": "WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL",
+  "status": "OWNER_APPROVED_PENDING_PREREQUISITES",
   "product_candidate_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
   "dry_run_source_sha": "37f8168929260ae696096b85ea628c539bd354b6",
   "can_create_resources_now": false,
@@ -76,5 +76,14 @@
     "exact restore target, backup handoff and helper cleanup",
     "main operations workflow fixed diff and approval"
   ],
-  "release": "HOLD"
+  "release": "HOLD",
+  "owner_approval": {
+    "approved": true,
+    "plan_commit": "ca081cc6c81b102393673d22456febe94a5e2de4",
+    "backup_receiver": "Owner",
+    "delivery_location_approved": true,
+    "delivery_validation_status": "NOT_RUN",
+    "offsite_backup": false,
+    "main_workflow_approval": "SEPARATE_FIXED_DIFF_REQUIRED"
+  }
 }
