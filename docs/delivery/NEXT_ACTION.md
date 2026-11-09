@@ -1,13 +1,19 @@
-# Next action — 2026-11-08／來源結案與固定UAT包
+# Next action — 2026-11-09
 
-- 專案目標：暫停／WAITING_UAT_ENVIRONMENT_AUTHORIZATION。本輪已授權本機包與文件全部完成；來源結案採CTO最新裁定，**不再等待Claude或CTO重複回覆**。RELEASE HOLD；正式UAT參考基準7dccd5452152f2495d10ad1437d5d03215166065不變。
-- Branch codex/uat-candidate-package-20261108；產品固定fd7efcfc6450dbf10f54aa97b65fe48e431b277d。已ff保留Claude e4fd606eff21e0641352aec1f97b51051542a4b7。fd7只補收據狀態的時間語意／斷言；server/SQL/Edge/modules與已結案0405097相同，不重審來源。
-- SOURCE_CLOSURE_20261108.md：F1/F2、恢復與排除交集、相容小修SOURCE_CLOSED；N4-R1 INSERT只限具名排程關閉，UPDATE／其他並行列UAT。N1/N2/N5與P2-1～3沿先前來源關閉。P3高精度witness／historical-is_latest／effective規範只列隊，不改歷史證據。
-- 本輪部署必備已實作：報告頁／HTML／JSON明示報告產生時原收據狀態；活動即時查詢是本次查詢時。保存payload/proof不改。既有專案必須明確重算才能新報告，進行中舊重算可能失敗；不自動重算／補簽／覆寫。
-- 本輪export/disclosure8PASS、type/lint與真Vite隔離空設定build PASS；React實際元件render核對兩種時間標示且payload不變。ZIP build／standalone verify／實際讀ZIP通過：9,024,245bytes，SHA256 06d196296123eb07df6496179302e1bfba90a1335127ae459d38d0e94e590c74；413固定來源／189包內檔案。PACKAGE_RECEIPT.json與manifest/evidence已提交。
-- 新CI5d345281ed11674ba4b1bfea0010a838b08d001d／run42478675372 success：backend44／整合388PASS+2NOT_RUN／FE241、type/lint/build；不加總8目標測試與完整套件。舊native與Claude來源證據維持原固定範圍，沒有重審。後續僅交付文件，不偷換此CI版本。
-- 固定包工具：node deployment/uat/prepare-fixed-package.mjs build 或 verify；只本機且不讀.env／憑證，不連網／cloud/psql。產品source/archive、無mock adapter的未配置前端、16靜態Edge、13部署提案、46schema與3held、Auth/CORS/JWT proposal與交接文件；實體在../tooling/uat-package-fd7efcfc6450/，不進Git。
-- UAT_FIXED_CANDIDATE_20261108.md 是入口，UAT_REMAINING_ACCEPTANCE_20261108.md 是四組真服務與代表使用者待驗表；目標ref=null，未建立／部署／操作雲端，main/Readdy/5432不變。不重試Docker/WSL或擴張原生chooser/download權限。
-- 預算紀錄已更正：Owner已確認累計新增US$20／保留14天（非每月，非平台硬上限），**不是預算未授權**；具體資源／操作仍待授權。deployment/uat/authorization-status.json為機讀單一紀錄，UAT_AUTHORIZATION_RECORD_20261108.md列一次核准範圍。T0/expiry=null，本代理未建付費資源；建立前核准停止計費／到期處理，不自刪、不重問同一預算。
-- 剩餘BLOCKED/NOT_RUN：真Auth/JWT/RPC/Storage/Edge/ESZIP、瀏覽器登出切換撤權／前景刷新、原生選檔與實際下載落盤、UPDATE兩trigger間及其他獨立SQL排程、現版migration/NOT VALID歷史驗證、完整DB+Storage備份／復原、19+1代表驗收。合成結果不代填。
-- 下一條可執行命令（repo root，本機唯讀核包）：node deployment/uat/prepare-fixed-package.mjs verify。環境授權後先記實際org/ref/入口/版本／費用T0／資源與憑證安全取得位置／唯一復原目標，再開始真服務。未核准不得自建雲端，也不拿既有wyn專案試寫。Session保留此接續，不承諾無限背景運行。
+- **專案目標：暫停／WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL；發布 HOLD。** 兩平台與通知偏好的能取得唯讀盤點已完成，不再等相同登入／組織／US$20／14天或已選到期處理。Mac runtime仍未驗，不假設電腦長期在線。
+- [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**；dry-run固定 **`37f8168929260ae696096b85ea628c539bd354b6`**，本次僅補唯讀回執、方案及機讀狀態。原Windows probe固定d7a95a5，既有10個tasks仍停用。正式UAT參考基準7dccd5452152f2495d10ad1437d5d03215166065不變，未合併main／未部署。
+- 本輪唯讀收尾／方案A與機讀提案固定 **`ca081cc6c81b102393673d22456febe94a5e2de4`**；後續僅此固定版本接續記錄，不改待核准方案或已測程式。
+- **一次核准入口**：`UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md`；`deployment/uat/lifecycle/execution-proposal.json` 為PROPOSAL_ONLY、actual-config flags全false。精確候選workspace、帳務／服務／通知證據及核准包僅在Git／OneDrive外的Owner-only報告，不公開。
+- **方案A**：新Railway project `CoCalLab-UAT-LIFECYCLE-01`／environment `uat-lifecycle`／service `uat-lifecycle-cron`／private bucket `uat-lifecycle-backups`；主job UTC 7,22,37,52每15分鐘，GitHub UTC41每小時獨立watchdog。watchdog不拿Supabase／DB／解密key，不刪除。main維運workflow另交固定差異核准，不合併產品候選；新service不用已棄用railway.toml/json。
+- **費用與時鐘**：Railway提案最多US$2，包含在累計總US$20；公開單價示例約1.12／14天，不是帳戶報價或credit保證。T0提案取第一個新增計費輔助資源，不等部署完；T0+12天驗最終備份、T0+13天Owner／指定人接收archive/manifest/key並核對可解密、T0+14天停測及退出。新UAT僅在完整驗證且精確新ref匹配後刪；新helper service/bucket退出另綁精確ID及已交接證據，不刪既有資源或唯一備份，不靜默續期。
+- **權限與風險**：Supabase scoped PAT只選實際新ref，Project Settings Read-write也能修改該UAT，不是delete-only；拒絕Legacy／all-project／workspace全權。Railway project/env token也可能有deployment變更能力，不能稱只讀。Railway公開網路事件仍為Identified/Partial Outage；Dashboard可開不能替代runner路徑、scope、互斥及送達實測。真bucket沒有native SSE／object lock／lifecycle，不假設自動TTL。
+- **按序前置**：Owner核准方案→完成固定provider/backup來源及main維運workflow差異批准→建隔離輔助資源、記T0並測排程／故障通知／scope／連線合成probe→通過才建Supabase新UAT並記ref/入口/expiry、配置僅新ref資格→部署／初始化後立即做真baseline備份復原→接21項真驗收與到期程序。不存在的ref不可能已完成真備份，不等T0+12天才發現缺口。
+- **實測與未驗**：既有17/17合成決策與TAP沿37f固定來源，本次未重跑；不與原生10次probe或其他套件加總。本次僅JSON／去敏／狀態一致性及固定程式不變核對。21真服務案例、真排程、provider資格、實際收件、完整還原、真刪除與原生並行仍BLOCKED／NOT_RUN。
+- **目前副作用**：本次新資源／新排程／新憑證／通知／雲端寫入全0，新ref／T0／expiry為null。實際配置待方案核准；不把既有UAT總範圍核准當作本次helper／credential／main權限擴張。建議Owner／指定人負責備份接收與例外裁定，最終受限位置及helper退出須建立前確認。
+- **下一步**：Owner審受限核准包及公開方案，裁定上述新資源、限範圍資格、故障通知測試、備份交接與精確退出；main維運PR另交固定差異批准。不再要求相同登入、不重做已關閉來源審查，不承諾背景無限運行。
+
+下一條可執行命令（repo root，明示合成、無網路／憑證／排程副作用）：
+
+```powershell
+node deployment/uat/lifecycle/lifecycle-dry-run.mjs --scenario expired-missing-backup
+```

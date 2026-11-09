@@ -1,0 +1,14 @@
+{
+  "recorded_on": "2026-11-09",
+  "product_candidate_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "status": "READ_ONLY_PREFLIGHT_COMPLETED_WAITING_OWNER_PLAN",
+  "details_destination": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY",
+  "cloud_resources_created": 0,
+  "cloud_mutations": false,
+  "actual_uat_deployment_sha": null,
+  "real_service_cases": "NOT_RUN",
+  "next_step": "Owner approval of concrete plan A; main operations workflow remains a separate fixed-diff approval. No current resources/schedules/credentials/notifications may be configured.",
+  "release": "HOLD",
+  "railway_read_only_check_completed": true,
+  "notifications_read_only_check_completed": true
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "recorded_on": "2026-11-08",
+  "recorded_on": "2026-11-09",
   "budget": {
     "status": "OWNER_CONFIRMED",
     "currency": "USD",
@@ -17,15 +17,73 @@
     "change_requires_owner": true
   },
   "resource_execution": {
-    "status": "WAITING_UAT_ENVIRONMENT_AUTHORIZATION",
-    "authorized": false,
+    "status": "WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL",
+    "authorized": true,
     "planned_name": "CoCalLab-UAT-CLOUD-01",
-    "organization_id": null,
+    "organization_id": "empvseawywarugdnyhzl",
     "region_proposal": "ap-northeast-1",
     "compute_proposal": "Micro",
     "new_project_ref": null,
     "do_not_modify_existing_ref": "wynqnvidepzzcwutexvn",
-    "reason": "Budget/retention conditions are confirmed; latest CTO requires completion of this local package then a concrete UAT environment operation authorization. No new budget decision or Claude review is required for the local deliverables."
+    "reason": "Owner-assisted read-only platform and notification checks completed. Detailed account/billing/resource observations remain in an Owner-only local approval packet. The concrete lifecycle plan, new isolated helper resources, bounded credentials and fault-notification tests require Owner approval; main watchdog requires a separate fixed-diff approval. No resources, schedules or credentials may be created now.",
+    "scope_authorized_by_owner": true,
+    "scope": [
+      "Only new CoCalLab-UAT-CLOUD-01 in the Owner-specified organization",
+      "Micro, Tokyo/ap-northeast-1, fixed fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+      "46 proposed schema migrations; 3 historical DML remain held",
+      "13 allowed functions; 3 mock/provider functions not deployed",
+      "Private buckets, dedicated test Auth users and synthetic-data acceptance",
+      "Frontend localhost only; no changes to existing projects, production DNS, Readdy or main"
+    ],
+    "pending_required_fields": [],
+    "end_of_life": {
+      "selected": "backup_verified_then_delete_this_new_UAT",
+      "backup_then_delete_authorized": true,
+      "alternative_plan_authorized": false,
+      "backup_due_offset_hours_before_expiry": 48,
+      "retention_days": 14,
+      "actual_delete_target_ref": null,
+      "live_delete_armed": false,
+      "restore_target": null,
+      "restore_execution_authorized": false,
+      "responsible_party": "Owner: budget/exception decision and designated duty operator; actual unattended executor/contact must be confirmed before creation",
+      "scope": "Delete only the exact new UAT ref after verified backup; never existing projects; no automatic renewal",
+      "failure_rule": "Notify Owner immediately on backup/restore/delete failure or forecast overrun. Do not report deletion/backup success falsely or silently continue charging. Backup failure does not authorize unverified deletion.",
+      "note": "Exact restore target must be listed before execution; no assumed second paid project or existing restore target."
+    },
+    "approval_evidence": {
+      "kind": "Latest Owner reply in this chat on2026-11-09",
+      "organization_id_supplied": "empvseawywarugdnyhzl",
+      "organization_name_rule": "Read actual name after login; do not guess or create an organization",
+      "expiry_selection": "備份驗證後刪除該 UAT",
+      "source_reference": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/docs/handover/PC_AGENT_RESOURCE_INVENTORY_20261102.md",
+      "historical_id_match_verified": true,
+      "restricted_live_preflight_recorded": true
+    },
+    "can_provision_now": false,
+    "organization_name": null,
+    "pending_execution_gates": [
+      "Owner approval of concrete lifecycle plan A: isolated helper resources, cumulative budget allocation, credential scope, fault-notification tests, backup handoff and exact helper cleanup",
+      "Fixed implementation and separate approval of the main-only operations watchdog workflow; no product merge or production deployment",
+      "After approval: isolated scheduler/connectivity/delivery probes before paid Supabase UAT; bind exact new ref then perform immediate real baseline backup/restore before relying on expiry"
+    ],
+    "live_preflight": {
+      "owner_assisted_read_only_check_completed": true,
+      "details_destination": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY",
+      "project_creation_submitted": false,
+      "new_uat_ref": null
+    },
+    "organization_name_visibility": "LOCAL_OWNER_REPORT_ONLY",
+    "lifecycle_plan": {
+      "status": "WAITING_OWNER_APPROVAL",
+      "public_document": "docs/delivery/UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md",
+      "proposal_file": "deployment/uat/lifecycle/execution-proposal.json",
+      "restricted_packet": "LOCAL_OWNER_REPORT_ONLY",
+      "railway_read_only_inventory_completed": true,
+      "notifications_read_only_inventory_completed": true,
+      "mac_runtime": "UNVERIFIED",
+      "actual_configuration_authorized": false
+    }
   },
   "agent_actions": {
     "created_cloud_resources": 0,
@@ -34,7 +92,16 @@
     "billing_start_at": null,
     "retention_start_at": null,
     "retention_expires_at": null,
-    "provider_bill_status": "NOT_QUERIED_THIS_LOCAL_ONLY_BATCH"
+    "provider_bill_status": "READ_ONLY_PREFLIGHT_COMPLETED_DETAILS_LOCAL_ONLY",
+    "scheduler_test": {
+      "registered_tasks": 10,
+      "automatically_triggered_tasks": 10,
+      "synthetic_scenarios": 5,
+      "manual_idempotency_replay_verified": true,
+      "test_tasks_disabled_after_proof": 10,
+      "production_lifecycle_armed": false,
+      "unattended_notifications_verified": false
+    }
   },
   "time_and_cost_control": {
     "retention_start_event": "First authorized UAT resource creation; record actual UTC timestamp and expiry+14days before deployment",
@@ -47,13 +114,31 @@
       "charged taxes"
     ],
     "guard": "Before provisioning, verify console estimate fits cumulative US$20 and14days; unknown pricing/add-ons or forecast/actual exceedance stops the affected paid action for Owner decision. This record does not enforce a provider hard cap.",
-    "expiry": "No automatic deletion authorized. Before creation, approve the exact stop-billing/pause/delete and backup-retention actions for this disposable target; preserve evidence. At expiry stop tests/new work and execute only that approved target-specific plan."
+    "expiry": "Owner selected backup-verified-then-delete only the new UAT. Prepare restricted DB/private-ledger/proof/Storage/config backups48hours before expiry and validate restoration before deleting. Stop tests at expiry; verify exact new ref, resource removal and later billing. Failures require immediate operator report, no false success or silent renewal. Live controls are not armed.",
+    "public_preflight": {
+      "checked_on": "2026-11-09",
+      "micro_hourly_usd": 0.01344,
+      "hours_14_days": 336,
+      "compute_only_usd": 4.51584,
+      "compute_rounded_usd": 4.52,
+      "credits_assumed": 0,
+      "organization_estimate_status": "DETAILS_RESTRICTED_LOCAL_OWNER_REPORT",
+      "extras": "Storage/disk/egress/tax and any allowed backup charges must be checked on the actual target organization before creation; total is not confirmed.",
+      "paid_project_pause_supported": false,
+      "delete_stops_new_usage": true,
+      "accrued_usage_still_payable": true,
+      "source_compute": "https://supabase.com/docs/guides/platform/manage-your-usage/compute",
+      "source_stop_billing": "https://supabase.com/docs/guides/platform/delete-project"
+    }
   },
   "not_authorized": [
-    "Cloud resource/bucket/account creation or configuration until concrete environment approval",
-    "Cloud migration/seed/reset/restore and real upload until exact test scope approval",
-    "Production/main merge/traffic switch",
-    "Paid OCR/AI, external data transfer, paid PITR/add-ons outside the approved scope"
+    "Provisioning before live organization/price match and lifecycle readiness conditions pass",
+    "Changes to existing projects, production DNS, Readdy or main",
+    "Restoration before an exact restore target is listed and within the approved scope",
+    "Deletion of any existing project or deletion of new UAT without verified backup and exact-ref match",
+    "Automatic renewal, extension beyond14days or forecast/actual cumulative spend aboveUSD20 without Owner decision",
+    "New paid organization/subscription, paid OCR/AI/add-ons, or additional cloud scheduler/restore resources outside this scope",
+    "Actual lifecycle schedules, credentials or notification configuration before the concrete plan is approved under latest Owner instruction"
   ],
   "release": "HOLD"
 }

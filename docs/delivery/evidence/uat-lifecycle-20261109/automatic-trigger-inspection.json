@@ -1,0 +1,283 @@
+{
+  "cloudExecutionArmed": false,
+  "tasks": [
+    {
+      "lastRunUtc": "2026-11-09T00:44:44.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 0,
+      "trigger": "2026-11-09T00:44:22Z",
+      "name": "happy-backup"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:45:45.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 0,
+      "trigger": "2026-11-09T00:45:22Z",
+      "name": "happy-expire"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:44:44.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:44:22Z",
+      "name": "backup_failure-backup"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:45:45.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:45:22Z",
+      "name": "backup_failure-expire"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:44:44.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:44:22Z",
+      "name": "restore_failure-backup"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:45:45.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:45:22Z",
+      "name": "restore_failure-expire"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:44:44.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 0,
+      "trigger": "2026-11-09T00:44:22Z",
+      "name": "tamper_after_verification-backup"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:45:45.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:45:22Z",
+      "name": "tamper_after_verification-expire"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:44:44.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:44:22Z",
+      "name": "target_mismatch-backup"
+    },
+    {
+      "lastRunUtc": "2026-11-09T00:45:45.0000000Z",
+      "state": "Ready",
+      "nextRunUtc": null,
+      "lastResult": 23,
+      "trigger": "2026-11-09T00:45:22Z",
+      "name": "target_mismatch-expire"
+    }
+  ],
+  "cases": [
+    {
+      "localAlertPresent": false,
+      "events": [
+        {
+          "time": "2026-11-09T00:44:22.243Z",
+          "pid": 62468,
+          "phase": "backup",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-happy"
+        },
+        {
+          "time": "2026-11-09T00:44:22.282Z",
+          "pid": 62468,
+          "phase": "backup",
+          "event": "BACKUP_TEST_VERIFIED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-happy",
+          "files": 4
+        },
+        {
+          "time": "2026-11-09T00:45:22.665Z",
+          "pid": 75652,
+          "phase": "expire",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-happy"
+        },
+        {
+          "time": "2026-11-09T00:45:22.669Z",
+          "pid": 75652,
+          "phase": "expire",
+          "event": "SYNTHETIC_DELETE_MARKER_ONLY",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-happy"
+        }
+      ],
+      "deleteTransitions": 1,
+      "name": "happy",
+      "resourcePresent": false
+    },
+    {
+      "localAlertPresent": true,
+      "events": [
+        {
+          "time": "2026-11-09T00:44:23.105Z",
+          "pid": 83264,
+          "phase": "backup",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-backup_failure"
+        },
+        {
+          "time": "2026-11-09T00:44:23.106Z",
+          "pid": 83264,
+          "phase": "backup",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-backup_failure",
+          "reason": "INJECTED_SYNTHETIC_BACKUP_FAILURE"
+        },
+        {
+          "time": "2026-11-09T00:45:22.524Z",
+          "pid": 88976,
+          "phase": "expire",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-backup_failure"
+        },
+        {
+          "time": "2026-11-09T00:45:22.525Z",
+          "pid": 88976,
+          "phase": "expire",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-backup_failure",
+          "reason": "ENOENT: no such file or directory, open '<TOOL_ROOT>\\uat-lifecycle-20261109\\20261109-512e414f\\backup_failure\\backup-manifest.json'"
+        }
+      ],
+      "deleteTransitions": 0,
+      "name": "backup_failure",
+      "resourcePresent": true
+    },
+    {
+      "localAlertPresent": true,
+      "events": [
+        {
+          "time": "2026-11-09T00:44:22.95Z",
+          "pid": 76924,
+          "phase": "backup",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-restore_failure"
+        },
+        {
+          "time": "2026-11-09T00:44:22.967Z",
+          "pid": 76924,
+          "phase": "backup",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-restore_failure",
+          "reason": "RESTORE_ROUNDTRIP_FAILED\n\u001b[32mactual\u001b[39m \u001b[31mexpected\u001b[39m\n\n\u001b[39m'\u001b[39m\u001b[31md\u001b[39m\u001b[31mc\u001b[39m\u001b[39m0\u001b[39m\u001b[32m6\u001b[39m\u001b[32m9\u001b[39m\u001b[31m4\u001b[39m\u001b[31m4\u001b[39m\u001b[31m2\u001b[39m\u001b[31m2\u001b[39m\u001b[31m0\u001b[39m\u001b[39me\u001b[39m\u001b[32m6\u001b[39m\u001b[32mc\u001b[39m\u001b[31m7\u001b[39m\u001b[31m1\u001b[39m\u001b[39m9\u001b[39m\u001b[31md\u001b[39m\u001b[31md\u001b[39m\u001b[31mf\u001b[39m\u001b[31m9\u001b[39m\u001b[39m1\u001b[39m\u001b[32mc\u001b[39m\u001b[39m6\u001b[39m\u001b[31m3\u001b[39m\u001b[31m4\u001b[39m\u001b[31m6\u001b[39m\u001b[39m8\u001b[39m\u001b[31m3\u001b[39m\u001b[31m2\u001b[39m\u001b[31m9\u001b[39m\u001b[39md\u001b[39m\u001b[32me\u001b[39m\u001b[32md\u001b[39m\u001b[31m2\u001b[39m\u001b[31mb\u001b[39m\u001b[39mc\u001b[39m\u001b[31m6\u001b[39m\u001b[31m9\u001b[39m\u001b[31m4\u001b[39m\u001b[31m4\u001b[39m\u001b[31m9\u001b[39m\u001b[39m5\u001b[39m\u001b[32m0\u001b[39m\u001b[32m3\u001b[39m\u001b[32m7\u001b[39m\u001b[32mf\u001b[39m\u001b[31m8\u001b[39m\u001b[31m8\u001b[39m\u001b[39mb\u001b[39m\u001b[32mf\u001b[39m\u001b[32mf\u001b[39m\u001b[32m1\u001b[39m\u001b[31mc\u001b[39m\u001b[39m2\u001b[39m\u001b[31m6\u001b[39m\u001b[39m1\u001b[39m\u001b[32m1\u001b[39m\u001b[32m7\u001b[39m\u001b[32md\u001b[39m\u001b[39m2\u001b[39m\u001b[31mc\u001b[39m\u001b[39m8\u001b[39m\u001b[32md\u001b[39m\u001b[32m7\u001b[39m\u001b[32m3\u001b[39m\u001b[31ma\u001b[39m\u001b[39m6\u001b[39m\u001b[32mb\u001b[39m\u001b[32m2\u001b[39m\u001b[32m5\u001b[39m\u001b[31m3\u001b[39m\u001b[39me\u001b[39m\u001b[39m8\u001b[39m\u001b[32m8\u001b[39m\u001b[39mb\u001b[39m\u001b[32m9\u001b[39m\u001b[39ma\u001b[39m\u001b[32mf\u001b[39m\u001b[39m5\u001b[39m\u001b[32mc\u001b[39m\u001b[32m5\u001b[39m\u001b[32mb\u001b[39m\u001b[32m0\u001b[39m\u001b[32m1\u001b[39m\u001b[32m2\u001b[39m\u001b[32m0\u001b[39m\u001b[32md\u001b[39m\u001b[32m3\u001b[39m\u001b[31m4\u001b[39m\u001b[39me\u001b[39m\u001b[31m4\u001b[39m\u001b[31m5\u001b[39m\u001b[31mf\u001b[39m\u001b[31m9\u001b[39m\u001b[31m6\u001b[39m\u001b[31mc\u001b[39m\u001b[39ma\u001b[39m\u001b[32m7\u001b[39m\u001b[39mf\u001b[39m\u001b[32m0\u001b[39m\u001b[32m0\u001b[39m\u001b[32md\u001b[39m\u001b[32m2\u001b[39m\u001b[32m8\u001b[39m\u001b[31mf\u001b[39m\u001b[39m'\u001b[39m\n"
+        },
+        {
+          "time": "2026-11-09T00:45:22.39Z",
+          "pid": 68628,
+          "phase": "expire",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-restore_failure"
+        },
+        {
+          "time": "2026-11-09T00:45:22.391Z",
+          "pid": 68628,
+          "phase": "expire",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-restore_failure",
+          "reason": "ENOENT: no such file or directory, open '<TOOL_ROOT>\\uat-lifecycle-20261109\\20261109-512e414f\\restore_failure\\backup-manifest.json'"
+        }
+      ],
+      "deleteTransitions": 0,
+      "name": "restore_failure",
+      "resourcePresent": true
+    },
+    {
+      "localAlertPresent": true,
+      "events": [
+        {
+          "time": "2026-11-09T00:44:22.878Z",
+          "pid": 95584,
+          "phase": "backup",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-tamper_after_verification"
+        },
+        {
+          "time": "2026-11-09T00:44:22.906Z",
+          "pid": 95584,
+          "phase": "backup",
+          "event": "BACKUP_TEST_VERIFIED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-tamper_after_verification",
+          "files": 4
+        },
+        {
+          "time": "2026-11-09T00:45:22.289Z",
+          "pid": 100380,
+          "phase": "expire",
+          "event": "START",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-tamper_after_verification"
+        },
+        {
+          "time": "2026-11-09T00:45:22.293Z",
+          "pid": 100380,
+          "phase": "expire",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-tamper_after_verification",
+          "reason": "BACKUP_BYTES_CHANGED\n\u001b[32mactual\u001b[39m \u001b[31mexpected\u001b[39m\n\n\u001b[39m'\u001b[39m\u001b[31m1\u001b[39m\u001b[31mf\u001b[39m\u001b[31m9\u001b[39m\u001b[31m3\u001b[39m\u001b[31m0\u001b[39m\u001b[31m1\u001b[39m\u001b[31m4\u001b[39m\u001b[39ma\u001b[39m\u001b[39mf\u001b[39m\u001b[31m2\u001b[39m\u001b[39mb\u001b[39m\u001b[32md\u001b[39m\u001b[39mb\u001b[39m\u001b[31m1\u001b[39m\u001b[31m6\u001b[39m\u001b[31m4\u001b[39m\u001b[31mf\u001b[39m\u001b[39md\u001b[39m\u001b[32m8\u001b[39m\u001b[39m6\u001b[39m\u001b[32m0\u001b[39m\u001b[32mb\u001b[39m\u001b[31m1\u001b[39m\u001b[31m3\u001b[39m\u001b[31mf\u001b[39m\u001b[31m4\u001b[39m\u001b[39m7\u001b[39m\u001b[39me\u001b[39m\u001b[32m4\u001b[39m\u001b[32m4\u001b[39m\u001b[32ma\u001b[39m\u001b[32mf\u001b[39m\u001b[32ma\u001b[39m\u001b[39m1\u001b[39m\u001b[32m5\u001b[39m\u001b[32mb\u001b[39m\u001b[31m1\u001b[39m\u001b[31m4\u001b[39m\u001b[39m9\u001b[39m\u001b[32mc\u001b[39m\u001b[39md\u001b[39m\u001b[31m9\u001b[39m\u001b[31me\u001b[39m\u001b[31m8\u001b[39m\u001b[39md\u001b[39m\u001b[32md\u001b[39m\u001b[32ma\u001b[39m\u001b[32m3\u001b[39m\u001b[32m0\u001b[39m\u001b[39m5\u001b[39m\u001b[32m9\u001b[39m\u001b[31m5\u001b[39m\u001b[31m5\u001b[39m\u001b[39m0\u001b[39m\u001b[32m4\u001b[39m\u001b[32mb\u001b[39m\u001b[39mc\u001b[39m\u001b[32m9\u001b[39m\u001b[39m7\u001b[39m\u001b[32m3\u001b[39m\u001b[32md\u001b[39m\u001b[31m6\u001b[39m\u001b[39m4\u001b[39m\u001b[31m8\u001b[39m\u001b[31m1\u001b[39m\u001b[31md\u001b[39m\u001b[31md\u001b[39m\u001b[31m3\u001b[39m\u001b[31mf\u001b[39m\u001b[31mb\u001b[39m\u001b[39m0\u001b[39m\u001b[32m6\u001b[39m\u001b[39m8\u001b[39m\u001b[32m2\u001b[39m\u001b[31m9\u001b[39m\u001b[39m5\u001b[39m\u001b[39mb\u001b[39m\u001b[32ma\u001b[39m\u001b[31m8\u001b[39m\u001b[31m4\u001b[39m\u001b[39m7\u001b[39m\u001b[32mb\u001b[39m\u001b[39me\u001b[39m\u001b[32m0\u001b[39m\u001b[39ma\u001b[39m\u001b[32m5\u001b[39m\u001b[32m6\u001b[39m\u001b[32m5\u001b[39m\u001b[32m6\u001b[39m\u001b[39mc\u001b[39m\u001b[32m5\u001b[39m\u001b[32m5\u001b[39m\u001b[39m1\u001b[39m\u001b[32md\u001b[39m\u001b[32m1\u001b[39m\u001b[32m0\u001b[39m\u001b[31m3\u001b[39m\u001b[39m5\u001b[39m\u001b[32m7\u001b[39m\u001b[31m0\u001b[39m\u001b[31m2\u001b[39m\u001b[39m'\u001b[39m\n"
+        }
+      ],
+      "deleteTransitions": 0,
+      "name": "tamper_after_verification",
+      "resourcePresent": true
+    },
+    {
+      "localAlertPresent": true,
+      "events": [
+        {
+          "time": "2026-11-09T00:44:22.733Z",
+          "pid": 92388,
+          "phase": "backup",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-target_mismatch",
+          "reason": "EXACT_TARGET_MISMATCH\n\u001b[32mactual\u001b[39m \u001b[31mexpected\u001b[39m\n\n\u001b[39m'\u001b[39m\u001b[39mS\u001b[39m\u001b[39mY\u001b[39m\u001b[39mN\u001b[39m\u001b[39mT\u001b[39m\u001b[39mH\u001b[39m\u001b[39mE\u001b[39m\u001b[39mT\u001b[39m\u001b[39mI\u001b[39m\u001b[39mC\u001b[39m\u001b[39m-\u001b[39m\u001b[32mO\u001b[39m\u001b[31mU\u001b[39m\u001b[31mA\u001b[39m\u001b[39mT\u001b[39m\u001b[32mH\u001b[39m\u001b[32mE\u001b[39m\u001b[32mR\u001b[39m\u001b[39m-\u001b[39m\u001b[32mR\u001b[39m\u001b[32mE\u001b[39m\u001b[32mS\u001b[39m\u001b[32mO\u001b[39m\u001b[32mU\u001b[39m\u001b[32mR\u001b[39m\u001b[32mC\u001b[39m\u001b[32mE\u001b[39m\u001b[31m2\u001b[39m\u001b[31m0\u001b[39m\u001b[31m2\u001b[39m\u001b[31m6\u001b[39m\u001b[31m1\u001b[39m\u001b[31m1\u001b[39m\u001b[31m0\u001b[39m\u001b[31m9\u001b[39m\u001b[31m-\u001b[39m\u001b[31m5\u001b[39m\u001b[31m1\u001b[39m\u001b[31m2\u001b[39m\u001b[31me\u001b[39m\u001b[31m4\u001b[39m\u001b[31m1\u001b[39m\u001b[31m4\u001b[39m\u001b[31mf\u001b[39m\u001b[31m-\u001b[39m\u001b[31mt\u001b[39m\u001b[31ma\u001b[39m\u001b[31mr\u001b[39m\u001b[31mg\u001b[39m\u001b[31me\u001b[39m\u001b[31mt\u001b[39m\u001b[31m_\u001b[39m\u001b[31mm\u001b[39m\u001b[31mi\u001b[39m\u001b[31ms\u001b[39m\u001b[31mm\u001b[39m\u001b[31ma\u001b[39m\u001b[31mt\u001b[39m\u001b[31mc\u001b[39m\u001b[31mh\u001b[39m\u001b[39m'\u001b[39m\n"
+        },
+        {
+          "time": "2026-11-09T00:45:22.162Z",
+          "pid": 98100,
+          "phase": "expire",
+          "event": "BLOCKED",
+          "mode": "SYNTHETIC_SCHEDULER_TEST_ONLY",
+          "targetRef": "SYNTHETIC-UAT-20261109-512e414f-target_mismatch",
+          "reason": "EXACT_TARGET_MISMATCH\n\u001b[32mactual\u001b[39m \u001b[31mexpected\u001b[39m\n\n\u001b[39m'\u001b[39m\u001b[39mS\u001b[39m\u001b[39mY\u001b[39m\u001b[39mN\u001b[39m\u001b[39mT\u001b[39m\u001b[39mH\u001b[39m\u001b[39mE\u001b[39m\u001b[39mT\u001b[39m\u001b[39mI\u001b[39m\u001b[39mC\u001b[39m\u001b[39m-\u001b[39m\u001b[32mO\u001b[39m\u001b[31mU\u001b[39m\u001b[31mA\u001b[39m\u001b[39mT\u001b[39m\u001b[32mH\u001b[39m\u001b[32mE\u001b[39m\u001b[32mR\u001b[39m\u001b[39m-\u001b[39m\u001b[32mR\u001b[39m\u001b[32mE\u001b[39m\u001b[32mS\u001b[39m\u001b[32mO\u001b[39m\u001b[32mU\u001b[39m\u001b[32mR\u001b[39m\u001b[32mC\u001b[39m\u001b[32mE\u001b[39m\u001b[31m2\u001b[39m\u001b[31m0\u001b[39m\u001b[31m2\u001b[39m\u001b[31m6\u001b[39m\u001b[31m1\u001b[39m\u001b[31m1\u001b[39m\u001b[31m0\u001b[39m\u001b[31m9\u001b[39m\u001b[31m-\u001b[39m\u001b[31m5\u001b[39m\u001b[31m1\u001b[39m\u001b[31m2\u001b[39m\u001b[31me\u001b[39m\u001b[31m4\u001b[39m\u001b[31m1\u001b[39m\u001b[31m4\u001b[39m\u001b[31mf\u001b[39m\u001b[31m-\u001b[39m\u001b[31mt\u001b[39m\u001b[31ma\u001b[39m\u001b[31mr\u001b[39m\u001b[31mg\u001b[39m\u001b[31me\u001b[39m\u001b[31mt\u001b[39m\u001b[31m_\u001b[39m\u001b[31mm\u001b[39m\u001b[31mi\u001b[39m\u001b[31ms\u001b[39m\u001b[31mm\u001b[39m\u001b[31ma\u001b[39m\u001b[31mt\u001b[39m\u001b[31mc\u001b[39m\u001b[31mh\u001b[39m\u001b[39m'\u001b[39m\n"
+        }
+      ],
+      "deleteTransitions": 0,
+      "name": "target_mismatch",
+      "resourcePresent": true
+    }
+  ],
+  "taskPath": "\\CoCalLab-UAT-Lifecycle\\20261109-512e414f\\",
+  "syntheticOnly": true,
+  "inspectedAt": "2026-11-09T00:46:43.1110113Z"
+}

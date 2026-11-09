@@ -1,0 +1,30 @@
+{
+  "recordedOn": "2026-11-09",
+  "stage": "FOLLOWUP_OWNER_FIELDS_RESOLVED",
+  "productSHA": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "organizationCandidate": "empvseawywarugdnyhzl",
+  "organizationName": null,
+  "ownerScopeAuthorized": true,
+  "canProvisionNow": false,
+  "expirySelection": "backup_verified_then_delete_this_new_UAT",
+  "incrementalCumulativeUSD": 20,
+  "retentionDays": 14,
+  "historyEvidence": {
+    "commit": "60677af8726e21033bda6302964a08386a7f46fe",
+    "path": "docs/handover/PC_AGENT_RESOURCE_INVENTORY_20261102.md",
+    "idMatches": true,
+    "priorAssociation": "NAME MATCH ONLY; not live paid-company confirmation"
+  },
+  "liveChecks": {
+    "dashboard": "Sign-in page at /dashboard/sign-in?returnTo=%2Forg%2Fempvseawywarugdnyhzl",
+    "officialCLI": "orgs list --output json: exit1, access token not provided",
+    "officialCLISecretRead": false,
+    "liveOrganizationAndConsoleEstimate": "UNVERIFIED"
+  },
+  "lifecycleEvidence": "../uat-lifecycle-20261109/SCHEDULER_TEST_RECEIPT.json",
+  "cloudResourcesCreated": 0,
+  "newProjectRef": null,
+  "clockStarted": null,
+  "release": "HOLD",
+  "note": "Supersedes pending organization/expiry fields in the initial PREFLIGHT.json snapshot; preserves NOT_RUN real-service acceptance."
+}

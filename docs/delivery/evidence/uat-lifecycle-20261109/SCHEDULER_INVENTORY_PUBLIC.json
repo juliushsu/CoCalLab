@@ -1,0 +1,81 @@
+{
+  "recorded_on": "2026-11-09",
+  "scope": "Read-only scheduling inventory; public repository facts and redacted capability status only",
+  "github": {
+    "repository": "juliushsu/CoCalLab",
+    "visibility": "public",
+    "default_branch": "main",
+    "main_workflow_directory_read_status": 404,
+    "workflow_file_on_candidate": ".github/workflows/verify.yml",
+    "candidate_file_sha": "452282f61a106206574723c084b3d69af7773326",
+    "triggers": [
+      "pull_request",
+      "push:main"
+    ],
+    "runner": "ubuntu-latest",
+    "observed_recent_runs": [
+      {
+        "id": 42543530695,
+        "sha": "452282f61a106206574723c084b3d69af7773326",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42543530695",
+        "workflow_path": ".github/workflows/verify.yml"
+      },
+      {
+        "id": 42543424530,
+        "sha": "93fd816c1796c37c19d1c501562a5b5f8a58fb37",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42543424530",
+        "workflow_path": ".github/workflows/verify.yml"
+      },
+      {
+        "id": 42543352157,
+        "sha": "d7a95a512e746c3d047f894f2bb331659a07bbd5",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/juliushsu/CoCalLab/actions/runs/42543352157",
+        "workflow_path": ".github/workflows/verify.yml"
+      }
+    ],
+    "observed_schedule_event_history_count": 0,
+    "credentials_inspected": false,
+    "notifications_configured": false
+  },
+  "railway": {
+    "status": "READ_ONLY_CHECK_COMPLETED_DETAILS_LOCAL_ONLY",
+    "url": "https://railway.com/dashboard",
+    "account_plan_usage_or_resources": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY",
+    "resources_created": 0,
+    "local_cli_available": false
+  },
+  "pc": {
+    "status": "Interactive Task Scheduler capability previously proven; future availability not guaranteed",
+    "existing_synthetic_tasks": "Disabled in retained proof",
+    "settings_changed": false,
+    "details_destination": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY"
+  },
+  "mac": {
+    "status": "UNVERIFIED",
+    "reason": "No authorized live management connection available in this session; historical source handover is not a runtime probe"
+  },
+  "cloud_writes": 0,
+  "actual_schedules_created_in_this_batch": 0,
+  "release": "HOLD",
+  "notification_preferences": {
+    "status": "READ_ONLY_CHECK_COMPLETED_DETAILS_LOCAL_ONLY",
+    "delivery_tests": "NOT_RUN",
+    "configuration_changed": false
+  },
+  "public_status_incident": {
+    "url": "https://status.railway.com/incident/QBCLHG1V",
+    "checked_on": "2026-11-09",
+    "status": "Identified / Partial Outage",
+    "future_runner_connectivity": "NOT_RUN"
+  },
+  "followup_note": "Supersedes the earlier login blocker; no re-run of existing source tests or actual scheduler probes in this documentation-only update."
+}
