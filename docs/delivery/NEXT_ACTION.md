@@ -1,7 +1,7 @@
 # Next action — 2026-11-09
 
 - **專案目標：暫停／WAITING_RAILWAY_LOGIN_THEN_OWNER_PLAN；發布 HOLD。** 指定 Supabase 帳戶唯讀前置已完成，不再等相同登入／UAT 組織／US$20／14 天或已選到期處理。Railway 登入頁已交 Owner；實際工作區／資源未核實。Mac 無本次可用管理連線，不能假定電腦連續在線。
-- [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**；原生排程 probe 程式固定 `d7a95a512e746c3d047f894f2bb331659a07bbd5`；新 dry-run 固定提交見本檔後續版本紀錄與 PR。正式 UAT 參考基準 `7dccd5452152f2495d10ad1437d5d03215166065` 不變，沒有合併 main 或正式部署。
+- [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**；原生排程 probe 程式固定 `d7a95a512e746c3d047f894f2bb331659a07bbd5`；新 dry-run／去敏盤點與建議方案固定 **`37f8168929260ae696096b85ea628c539bd354b6`**，後續僅此接續文件。正式 UAT 參考基準 `7dccd5452152f2495d10ad1437d5d03215166065` 不變，沒有合併 main 或正式部署。
 - **本輪實作**：scheduler-neutral pure decision dry-run，17/17 合成測試通過，實際 TAP／來源 hash 在 `evidence/uat-lifecycle-20261109/LIFECYCLE_DRY_RUN_RECEIPT.json`。涵蓋 T-48h／到期前後、備份／還原失敗、錯 ref／組織／lease／版本、缺物件／proof、後續寫入、漏跑、未來 heartbeat、重送／進行中與回覆遺失、未知／超額費用。不是真 DB／Storage／簽章驗證、原生並行或真服務驗收；不與既有排程10次或其他測試加總。
 - **唯讀盤點**：GitHub 有成功的 public CI run 42543530695／452282f；候選 verify.yml 只有 PR／push-main，讀 main workflow 目錄回404、schedule event歷史0。PC Task Scheduler可用，既有10個合成tasks已停用；只有時點證據。Railway 無可用CLI、Dashboard待登入；Mac runtime UNVERIFIED。見 `SCHEDULER_INVENTORY_PUBLIC.json`，不把缺登入當不存在付費資源。
 - **建議方案入口**：`UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md`：Railway小型cron主執行、GitHub Actions獨立watchdog＋原生失敗通知；有公開單價推算、逾時／漏跑／備份失敗處置、備份保留與停費、精確新ref及必要權限。這是待核實／核准提案；default-branch watchdog、備份存放／保留及任何新服務／token／通知都需具體批准，不搭便車修改main或既有服務。
