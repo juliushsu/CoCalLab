@@ -17,7 +17,7 @@
     "change_requires_owner": true
   },
   "resource_execution": {
-    "status": "APPROVED_WAITING_LIFECYCLE_PLAN",
+    "status": "WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL",
     "authorized": true,
     "planned_name": "CoCalLab-UAT-CLOUD-01",
     "organization_id": "empvseawywarugdnyhzl",
@@ -25,7 +25,7 @@
     "compute_proposal": "Micro",
     "new_project_ref": null,
     "do_not_modify_existing_ref": "wynqnvidepzzcwutexvn",
-    "reason": "Owner-assisted read-only preflight completed; detailed account/billing observations are retained only in an Owner-restricted local report. Latest Owner instruction requires read-only inventory of existing scheduling options and a concrete approved plan before actual schedules, credentials, notifications or paid UAT creation.",
+    "reason": "Owner-assisted read-only platform and notification checks completed. Detailed account/billing/resource observations remain in an Owner-only local approval packet. The concrete lifecycle plan, new isolated helper resources, bounded credentials and fault-notification tests require Owner approval; main watchdog requires a separate fixed-diff approval. No resources, schedules or credentials may be created now.",
     "scope_authorized_by_owner": true,
     "scope": [
       "Only new CoCalLab-UAT-CLOUD-01 in the Owner-specified organization",
@@ -63,9 +63,9 @@
     "can_provision_now": false,
     "organization_name": null,
     "pending_execution_gates": [
-      "Read-only inventory of existing GitHub Actions/Railway/PC/Mac scheduling options and Owner approval of one concrete lifecycle plan",
-      "Final bounded UAT cost envelope and live backup/restore/exact-target deletion adapters, credentials and delivered notifications within the approved plan",
-      "Actual new ref/T0/expiry bound after creation; exact restoration target listed before execution"
+      "Owner approval of concrete lifecycle plan A: isolated helper resources, cumulative budget allocation, credential scope, fault-notification tests, backup handoff and exact helper cleanup",
+      "Fixed implementation and separate approval of the main-only operations watchdog workflow; no product merge or production deployment",
+      "After approval: isolated scheduler/connectivity/delivery probes before paid Supabase UAT; bind exact new ref then perform immediate real baseline backup/restore before relying on expiry"
     ],
     "live_preflight": {
       "owner_assisted_read_only_check_completed": true,
@@ -73,7 +73,17 @@
       "project_creation_submitted": false,
       "new_uat_ref": null
     },
-    "organization_name_visibility": "LOCAL_OWNER_REPORT_ONLY"
+    "organization_name_visibility": "LOCAL_OWNER_REPORT_ONLY",
+    "lifecycle_plan": {
+      "status": "WAITING_OWNER_APPROVAL",
+      "public_document": "docs/delivery/UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md",
+      "proposal_file": "deployment/uat/lifecycle/execution-proposal.json",
+      "restricted_packet": "LOCAL_OWNER_REPORT_ONLY",
+      "railway_read_only_inventory_completed": true,
+      "notifications_read_only_inventory_completed": true,
+      "mac_runtime": "UNVERIFIED",
+      "actual_configuration_authorized": false
+    }
   },
   "agent_actions": {
     "created_cloud_resources": 0,

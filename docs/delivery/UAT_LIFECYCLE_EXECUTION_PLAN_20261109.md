@@ -1,8 +1,10 @@
+> 2026-11-09最新：兩平台與通知偏好唯讀盤點已完成，細節僅在Owner-only核准包。方案A已備，現等Owner核准新資源／限範圍權限／費用及備份退出；main維運workflow仍另交固定差異批准。以下舊提案與登入前快照保留歷史，現行以NEXT_ACTION與execution-proposal.json為準。
+
 > 同日後續：指定帳戶的 Owner 協助唯讀前置已完成，詳細證據僅存本機受限 Owner 報告；不再等待相同登入。最新 Owner 要求先盤點既有排程選項、提交具體方案並測 dry-run；實際排程／憑證／通知配置與付費 UAT 待方案核准。以下登入前的描述保留當時範圍，現行狀態以 authorization-status.json 與 NEXT_ACTION.md 為準。
 
 # UAT 建立條件與生命週期執行方案 — 2026-11-09
 
-專案目標：本輪本機前置已完成；WAITING_LIFECYCLE_PLAN。發布 HOLD。Owner 已補齊指定組織與到期選項，不再等待同一範圍授權；**尚未建立付費 UAT**。
+專案目標：本輪本機前置已完成；WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL。發布 HOLD。Owner 已補齊指定組織與到期選項，不再等待同一範圍授權；**尚未建立付費 UAT**。
 
 產品固定 `fd7efcfc6450dbf10f54aa97b65fe48e431b277d`，此批只增加生命週期測試與授權紀錄。固定包、既有功能、來源結案與 main 均不變。現行機讀狀態見 [authorization-status.json](../../deployment/uat/authorization-status.json)。
 
@@ -23,7 +25,7 @@
 
 | 狀態 | 條件與下一步 |
 |---|---|
-| BLOCKED_LOGIN | 指定組織 Dashboard 導向登入頁，已顯示並交 Owner 操作。官方 CLI 唯讀 `orgs list --output json` 也回報沒有 access token，未擷取瀏覽器 token。登入後只核公司實名、付費資格、Micro／東京與估價，不讀業務資料或金鑰 |
+| HISTORICAL_LOGIN_BLOCKER_RESOLVED | 指定組織 Dashboard 導向登入頁，已顯示並交 Owner 操作。官方 CLI 唯讀 `orgs list --output json` 也回報沒有 access token，未擷取瀏覽器 token。登入後只核公司實名、付費資格、Micro／東京與估價，不讀業務資料或金鑰 |
 | UNVERIFIED_COST | 實際 console 增量估價、disk／Storage／egress／稅及備份費尚未核實；未知或預計超出累計 20 即停止受影響操作 |
 | MISSING_LIVE_EXECUTOR | 以下真實備份／還原／精確目標刪除 adapter 與受限憑證尚未配置；已測試的程式刻意不接受真雲端模式，不能拿它當 production runner |
 | MISSING_AVAILABILITY_AND_ALERT | Windows 測試採 Interactive/Limited，依賴 Owner 登入及 PC 在線；未驗斷電／登出後執行。`ALERT_REQUIRED.json` 只是本機標記，尚無已測試的人員通知送達。建立前要有可用執行主機、值班人及告警送達證據；新增付費排程服務另需授權 |

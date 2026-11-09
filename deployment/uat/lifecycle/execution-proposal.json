@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "mode": "PROPOSAL_ONLY",
+  "status": "WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL",
+  "product_candidate_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "dry_run_source_sha": "37f8168929260ae696096b85ea628c539bd354b6",
+  "can_create_resources_now": false,
+  "can_register_schedules_now": false,
+  "can_configure_credentials_now": false,
+  "can_send_test_notifications_now": false,
+  "can_merge_main_now": false,
+  "target_workspace": "EXACT_ID_IN_LOCAL_OWNER_APPROVAL_PACKET_ONLY",
+  "proposed_railway_resources": {
+    "project_name": "CoCalLab-UAT-LIFECYCLE-01",
+    "environment_name": "uat-lifecycle",
+    "service_name": "uat-lifecycle-cron",
+    "private_backup_bucket_name": "uat-lifecycle-backups",
+    "actual_project_id": null,
+    "actual_environment_id": null,
+    "actual_service_id": null,
+    "actual_bucket_id": null,
+    "reuse_existing_product_services": false,
+    "upgrade_existing_plan": false,
+    "cron_proposal_utc": "7,22,37,52 * * * *"
+  },
+  "github_watchdog": {
+    "repository": "juliushsu/CoCalLab",
+    "proposed_path": ".github/workflows/uat-lifecycle-watchdog.yml",
+    "default_branch": "main",
+    "schedule_proposal_utc": "41 * * * *",
+    "main_fixed_diff_approval": "SEPARATE_REQUIRED_NOT_GRANTED",
+    "runner_proposal": "standard Ubuntu",
+    "secret_exposure_to_pr_code": false,
+    "holds_supabase_or_backup_decryption_keys": false,
+    "performs_deletion": false
+  },
+  "cost_and_time_proposal": {
+    "currency": "USD",
+    "incremental_cumulative_total_limit": 20,
+    "railway_allocation_within_total_limit": 2,
+    "retention_days_max": 14,
+    "clock_start": "Earliest newly chargeable resource for this UAT, including helper service or bucket",
+    "actual_clock_start_at": null,
+    "backup_before_expiry_hours": 48,
+    "proposed_owner_handoff_before_expiry_hours": 24,
+    "automatic_extension": false,
+    "backup_final_destination_and_duty_operator": "OWNER_CONFIRMATION_REQUIRED",
+    "helper_cleanup": "Only newly created exact helper IDs after verified backup handoff; separate scope in plan approval; no existing resource cleanup"
+  },
+  "credential_proposal": {
+    "supabase": "Scoped PAT selecting only the actual new UAT ref; Project Settings Read-write is not delete-only; no Legacy/all-project/org/billing token",
+    "backup": "Only the new UAT DB/Storage credentials; writable credentials must not be called read-only",
+    "railway_watchdog": "Only the new operations project/environment token; provider deployment mutation capability must be disclosed, not labelled read-only",
+    "values_in_repository": false
+  },
+  "notification_proposal": {
+    "primary": "Railway native Email and In-App",
+    "watchdog": "GitHub Actions failed-workflow Email",
+    "existing_preferences": "LOCAL_OWNER_REPORT_ONLY",
+    "delivery_test_status": "NOT_RUN",
+    "change_other_product_preferences": false
+  },
+  "deletion_conditions": [
+    "actual new Supabase UAT ref bound, never name-only targeting",
+    "current org/name/lease/candidate match the exact ref",
+    "expiry reached and tests stopped",
+    "complete current DB/private-ledger/proof/Storage/settings backup verified against an explicitly listed isolated restore target",
+    "no post-checkpoint writes or unexamined in-progress operation",
+    "lost response reconciled by same-ref lookup, never another name/ref"
+  ],
+  "unverified": [
+    "actual provider execution and delivered failure notifications",
+    "real scoped credentials and permissions enforcement",
+    "real complete backup, decryption, SQL/Storage restore and source identity preservation",
+    "native concurrent execution and persistent-operation recovery",
+    "exact restore target, backup handoff and helper cleanup",
+    "main operations workflow fixed diff and approval"
+  ],
+  "release": "HOLD"
+}

@@ -7,3 +7,5 @@ Owner 協助的唯讀檢查已完成；不再將登入列為阻礙。詳細帳�
 依最新 Owner 指示，先唯讀盤點既有 GitHub Actions、Railway 及 PC／Mac，提出一個具體排程／通知／費用／失敗恢復方案。可測 dry-run；實際排程、憑證、通知及付費 UAT 待具體方案核准。不假定電腦連續開機14天。
 
 現行接續見 NEXT_ACTION.md；機讀授權見 deployment/uat/authorization-status.json。詳細本機報告位置只在 Owner 回覆中提供，不公開帳務資訊。
+
+同日後續：Railway與通知偏好唯讀盤點已完成，不再等待登入；方案A交Owner核准，細節僅存受限本機。未新增實際配置。

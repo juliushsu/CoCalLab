@@ -1,3 +1,5 @@
+> 2026-11-09最新：兩平台與通知偏好唯讀盤點已完成，細節僅在Owner-only核准包。方案A已備，現等Owner核准新資源／限範圍權限／費用及備份退出；main維運workflow仍另交固定差異批准。以下舊提案與登入前快照保留歷史，現行以NEXT_ACTION與execution-proposal.json為準。
+
 > 同日後續：指定帳戶的 Owner 協助唯讀前置已完成，詳細證據僅存本機受限 Owner 報告；不再等待相同登入。最新 Owner 要求先盤點既有排程選項、提交具體方案並測 dry-run；實際排程／憑證／通知配置與付費 UAT 待方案核准。以下登入前的描述保留當時範圍，現行狀態以 authorization-status.json 與 NEXT_ACTION.md 為準。
 
 # UAT 執行範圍核准收件 — 2026-11-09

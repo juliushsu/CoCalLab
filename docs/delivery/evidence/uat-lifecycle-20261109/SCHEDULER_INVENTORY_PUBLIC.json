@@ -47,9 +47,9 @@
     "notifications_configured": false
   },
   "railway": {
-    "status": "BLOCKED_LOGIN",
+    "status": "READ_ONLY_CHECK_COMPLETED_DETAILS_LOCAL_ONLY",
     "url": "https://railway.com/dashboard",
-    "account_plan_usage_or_resources": "NOT_VERIFIED",
+    "account_plan_usage_or_resources": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY",
     "resources_created": 0,
     "local_cli_available": false
   },
@@ -65,5 +65,17 @@
   },
   "cloud_writes": 0,
   "actual_schedules_created_in_this_batch": 0,
-  "release": "HOLD"
+  "release": "HOLD",
+  "notification_preferences": {
+    "status": "READ_ONLY_CHECK_COMPLETED_DETAILS_LOCAL_ONLY",
+    "delivery_tests": "NOT_RUN",
+    "configuration_changed": false
+  },
+  "public_status_incident": {
+    "url": "https://status.railway.com/incident/QBCLHG1V",
+    "checked_on": "2026-11-09",
+    "status": "Identified / Partial Outage",
+    "future_runner_connectivity": "NOT_RUN"
+  },
+  "followup_note": "Supersedes the earlier login blocker; no re-run of existing source tests or actual scheduler probes in this documentation-only update."
 }
