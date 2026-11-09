@@ -1,3 +1,5 @@
+> 同日後續：指定帳戶的 Owner 協助唯讀前置已完成，詳細證據僅存本機受限 Owner 報告；不再等待相同登入。最新 Owner 要求先盤點既有排程選項、提交具體方案並測 dry-run；實際排程／憑證／通知配置與付費 UAT 待方案核准。以下登入前的描述保留當時範圍，現行狀態以 authorization-status.json 與 NEXT_ACTION.md 為準。
+
 # UAT 執行範圍核准收件 — 2026-11-09
 
 > 後續已補齊：Owner提供org empvseawywarugdnyhzl，選「備份驗證後刪除該UAT」。下方未填欄位表保留初次收件時點，**不是現在待Owner再填**。現行建立條件及真排程測試見 [生命週期執行方案](UAT_LIFECYCLE_EXECUTION_PLAN_20261109.md)；現在缺live登入／計費核對與真正無人值守執行能力，不缺同一範圍授權。

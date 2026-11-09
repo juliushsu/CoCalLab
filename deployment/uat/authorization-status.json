@@ -17,7 +17,7 @@
     "change_requires_owner": true
   },
   "resource_execution": {
-    "status": "APPROVED_WAITING_LIVE_PREFLIGHT_AND_LIFECYCLE_READINESS",
+    "status": "APPROVED_WAITING_LIFECYCLE_PLAN",
     "authorized": true,
     "planned_name": "CoCalLab-UAT-CLOUD-01",
     "organization_id": "empvseawywarugdnyhzl",
@@ -25,7 +25,7 @@
     "compute_proposal": "Micro",
     "new_project_ref": null,
     "do_not_modify_existing_ref": "wynqnvidepzzcwutexvn",
-    "reason": "Owner supplied candidate organization ID and backup-verified-then-delete lifecycle. Scope/budget are approved. Actual organization name/paid eligibility/console estimate require login; live unattended backup/restore/delete and alert delivery are not configured or verified. Do not start billing until the creation conditions pass.",
+    "reason": "Owner-assisted read-only preflight completed; detailed account/billing observations are retained only in an Owner-restricted local report. Latest Owner instruction requires read-only inventory of existing scheduling options and a concrete approved plan before actual schedules, credentials, notifications or paid UAT creation.",
     "scope_authorized_by_owner": true,
     "scope": [
       "Only new CoCalLab-UAT-CLOUD-01 in the Owner-specified organization",
@@ -58,15 +58,22 @@
       "expiry_selection": "備份驗證後刪除該 UAT",
       "source_reference": "https://github.com/juliushsu/CoCalLab/blob/60677af8726e21033bda6302964a08386a7f46fe/docs/handover/PC_AGENT_RESOURCE_INVENTORY_20261102.md",
       "historical_id_match_verified": true,
-      "live_company_paid_org_verified": false
+      "restricted_live_preflight_recorded": true
     },
     "can_provision_now": false,
     "organization_name": null,
     "pending_execution_gates": [
-      "Live login/read-only confirmation of company-designated paid org, Micro/Tokyo availability and total estimate",
-      "Production lifecycle runner credentials/adapters, always-on execution and immediate operator notification proven before billing",
-      "Exact new project ref/T0/expiry bound after creation; restore source/target listed before any restore"
-    ]
+      "Read-only inventory of existing GitHub Actions/Railway/PC/Mac scheduling options and Owner approval of one concrete lifecycle plan",
+      "Final bounded UAT cost envelope and live backup/restore/exact-target deletion adapters, credentials and delivered notifications within the approved plan",
+      "Actual new ref/T0/expiry bound after creation; exact restoration target listed before execution"
+    ],
+    "live_preflight": {
+      "owner_assisted_read_only_check_completed": true,
+      "details_destination": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY",
+      "project_creation_submitted": false,
+      "new_uat_ref": null
+    },
+    "organization_name_visibility": "LOCAL_OWNER_REPORT_ONLY"
   },
   "agent_actions": {
     "created_cloud_resources": 0,
@@ -75,7 +82,7 @@
     "billing_start_at": null,
     "retention_start_at": null,
     "retention_expires_at": null,
-    "provider_bill_status": "NOT_QUERIED_THIS_LOCAL_ONLY_BATCH",
+    "provider_bill_status": "READ_ONLY_PREFLIGHT_COMPLETED_DETAILS_LOCAL_ONLY",
     "scheduler_test": {
       "registered_tasks": 10,
       "automatically_triggered_tasks": 10,
@@ -105,7 +112,7 @@
       "compute_only_usd": 4.51584,
       "compute_rounded_usd": 4.52,
       "credits_assumed": 0,
-      "organization_estimate_status": "BLOCKED_LOGIN_REQUIRED",
+      "organization_estimate_status": "DETAILS_RESTRICTED_LOCAL_OWNER_REPORT",
       "extras": "Storage/disk/egress/tax and any allowed backup charges must be checked on the actual target organization before creation; total is not confirmed.",
       "paid_project_pause_supported": false,
       "delete_stops_new_usage": true,
@@ -120,7 +127,8 @@
     "Restoration before an exact restore target is listed and within the approved scope",
     "Deletion of any existing project or deletion of new UAT without verified backup and exact-ref match",
     "Automatic renewal, extension beyond14days or forecast/actual cumulative spend aboveUSD20 without Owner decision",
-    "New paid organization/subscription, paid OCR/AI/add-ons, or additional cloud scheduler/restore resources outside this scope"
+    "New paid organization/subscription, paid OCR/AI/add-ons, or additional cloud scheduler/restore resources outside this scope",
+    "Actual lifecycle schedules, credentials or notification configuration before the concrete plan is approved under latest Owner instruction"
   ],
   "release": "HOLD"
 }

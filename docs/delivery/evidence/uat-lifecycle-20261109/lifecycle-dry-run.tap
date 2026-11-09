@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: before T-48h no backup or delete is proposed
+ok 1 - before T-48h no backup or delete is proposed
+  ---
+  duration_ms: 3.1253
+  type: 'test'
+  ...
+# Subtest: T-48h begins backup and explicit restore verification
+ok 2 - T-48h begins backup and explicit restore verification
+  ---
+  duration_ms: 0.2772
+  type: 'test'
+  ...
+# Subtest: expiry with a consistent synthetic receipt targets exactly the new ref
+ok 3 - expiry with a consistent synthetic receipt targets exactly the new ref
+  ---
+  duration_ms: 0.2426
+  type: 'test'
+  ...
+# Subtest: one second before expiry cannot delete even with verified backup
+ok 4 - one second before expiry cannot delete even with verified backup
+  ---
+  duration_ms: 0.1945
+  type: 'test'
+  ...
+# Subtest: backup failure, missing backup, and restore mismatch prevent deletion
+ok 5 - backup failure, missing backup, and restore mismatch prevent deletion
+  ---
+  duration_ms: 0.2521
+  type: 'test'
+  ...
+# Subtest: same name cannot authorize a different ref or organization
+ok 6 - same name cannot authorize a different ref or organization
+  ---
+  duration_ms: 0.2757
+  type: 'test'
+  ...
+# Subtest: protected existing ref cannot become the lease target
+ok 7 - protected existing ref cannot become the lease target
+  ---
+  duration_ms: 0.1775
+  type: 'test'
+  ...
+# Subtest: backup for another lease, ref or candidate cannot authorize deletion
+ok 8 - backup for another lease, ref or candidate cannot authorize deletion
+  ---
+  duration_ms: 0.2893
+  type: 'test'
+  ...
+# Subtest: missing private evidence, storage object or restore target blocks deletion
+ok 9 - missing private evidence, storage object or restore target blocks deletion
+  ---
+  duration_ms: 0.2473
+  type: 'test'
+  ...
+# Subtest: post-checkpoint writes or a future verification receipt invalidate backup
+ok 10 - post-checkpoint writes or a future verification receipt invalidate backup
+  ---
+  duration_ms: 0.2836
+  type: 'test'
+  ...
+# Subtest: missed primary execution raises cloud-watchdog requirement and catches up after expiry
+ok 11 - missed primary execution raises cloud-watchdog requirement and catches up after expiry
+  ---
+  duration_ms: 0.2184
+  type: 'test'
+  ...
+# Subtest: missed backup cannot be skipped during delayed expiry catch-up
+ok 12 - missed backup cannot be skipped during delayed expiry catch-up
+  ---
+  duration_ms: 0.1476
+  type: 'test'
+  ...
+# Subtest: future heartbeat cannot hide a missed execution
+ok 13 - future heartbeat cannot hide a missed execution
+  ---
+  duration_ms: 0.1277
+  type: 'test'
+  ...
+# Subtest: repeat decisions keep the same operation id; in-progress operation is reconciled
+ok 14 - repeat decisions keep the same operation id; in-progress operation is reconciled
+  ---
+  duration_ms: 0.2143
+  type: 'test'
+  ...
+# Subtest: lost delete reply uses exact-ref absence reconciliation, never a name lookup
+ok 15 - lost delete reply uses exact-ref absence reconciliation, never a name lookup
+  ---
+  duration_ms: 0.1647
+  type: 'test'
+  ...
+# Subtest: unknown or over-budget costs stop new paid work and require Owner decision
+ok 16 - unknown or over-budget costs stop new paid work and require Owner decision
+  ---
+  duration_ms: 0.2303
+  type: 'test'
+  ...
+# Subtest: real refs or execution mode are rejected and input is not mutated
+ok 17 - real refs or execution mode are rejected and input is not mutated
+  ---
+  duration_ms: 1.8818
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 106.6765

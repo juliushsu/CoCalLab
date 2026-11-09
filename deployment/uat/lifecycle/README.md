@@ -1,5 +1,10 @@
 # Windows lifecycle scheduler proof — SYNTHETIC ONLY
 
+The Install instructions below describe the earlier completed OS scheduler probe.
+Under the latest Owner instruction, do not install or re-arm tasks before the
+specific lifecycle plan is approved. Only the scheduler-neutral dry-run below is
+used for the current batch.
+
 This harness registers real one-time Windows Task Scheduler tasks. It deliberately has **no Supabase adapter, credentials, networking, real database restore, or cloud deletion**. The fixed product remains `fd7efcfc6450dbf10f54aa97b65fe48e431b277d`.
 
 Run from the repository root in the existing Owner Windows account using PowerShell 7, Node, and the built-in ScheduledTasks module. No new account, stored password, execution-policy bypass, system service, or machine-wide installation is required. The Codex sandbox identity cannot use this host's Task Scheduler; the actual-account invocation requires the normal tool approval boundary.
@@ -29,3 +34,24 @@ Inspect again after completion: happy must show `ALREADY_MARKED_ABSENT`, with `d
 This is a small, serial synthetic probe. It does not validate interrupted/rebooted execution, multi-run races, crash recovery, real DB/Storage consistency, genuine credentials, budget enforcement, or production backup/deletion. Interactive/Limited tasks require the Owner logged in and PC powered on. Task Scheduler metadata and engine audit timestamps differed in the observed run; neither a punctuality SLA nor 24x7 operation has been proven.
 
 See [the execution plan](../../../docs/delivery/UAT_LIFECYCLE_EXECUTION_PLAN_20261109.md) and [actual evidence](../../../docs/delivery/evidence/uat-lifecycle-20261109/SCHEDULER_TEST_RECEIPT.json). No real paid project may rely on this test engine as its lifecycle controller.
+
+## Scheduler-neutral decision dry-run (latest Owner scope)
+
+The latest Owner instruction allows simulation while actual schedules, credentials,
+notification setup and paid UAT creation await a concrete plan. No more Windows
+tasks are created for this work. Run:
+
+```powershell
+node --test deployment/uat/lifecycle/lifecycle-dry-run.test.mjs
+node deployment/uat/lifecycle/lifecycle-dry-run.mjs --scenario expired-missing-backup
+```
+
+Other synthetic scenarios: `backup-due`, `expired-verified`, `missed-primary`,
+`wrong-ref`. The pure function proposes actions but performs none: it imports no
+provider SDK/network client, reads no credentials and rejects real project refs.
+Fixture dates are not a real UAT creation date. `wouldDelete` is a simulation
+result, never an authorization or cloud response. Backup fields are supplied
+synthetic claims; real bytes, SQL restore, signature authenticity, distributed
+locks, scheduler delivery and human notifications remain unverified. Repeated
+decisions retain an operation ID; this does not prove live concurrent execution
+is idempotent. Do not replace the real backup/restore verifier with this model.

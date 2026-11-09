@@ -1,0 +1,135 @@
+{
+  "recorded_at_utc": "2026-11-09T01:31:48.894Z",
+  "product_candidate_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "mode": "SYNTHETIC_DRY_RUN_ONLY",
+  "test_command": "node --test --test-reporter=tap deployment/uat/lifecycle/lifecycle-dry-run.test.mjs",
+  "observed_test_result": {
+    "tests": 17,
+    "pass": 17,
+    "fail": 0,
+    "skipped": 0,
+    "raw_stdout_saved": true,
+    "scope": "Actual targeted command after tightening the pre-expiry case; overlaps the prior17 tests and is not additive.",
+    "raw_stdout": "lifecycle-dry-run.tap"
+  },
+  "source_hash_scope": "Exact tested working-tree bytes",
+  "source_sha256": {
+    "lifecycle-dry-run.mjs": "ecf5563aaa5d960ff1b212d609ab06437c78bf53949843562c01792b634dce11",
+    "lifecycle-dry-run.test.mjs": "50efd139ed66d2a5f2e9d76db360815b12c56744fba125340ecc4bac82f6e129",
+    "fixtures/lifecycle-scenarios.mjs": "6ef8daca023ec5097bc6e771d2906ca9df9578aa205452ad6935f6337d602f64"
+  },
+  "scenarios": {
+    "backup-due": {
+      "mode": "DRY_RUN_ONLY",
+      "productionAuthorized": false,
+      "cloudCalls": 0,
+      "schedulesRegistered": 0,
+      "notificationsSent": 0,
+      "backupDue": "2026-11-21T00:00:00.000Z",
+      "expiresAt": "2026-11-23T00:00:00.000Z",
+      "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+      "actions": [
+        "STOP_TEST_WRITES",
+        "BACKUP_TO_PRIVATE_STORE",
+        "RESTORE_TO_LISTED_TARGET_AND_VERIFY"
+      ],
+      "alerts": [],
+      "wouldDelete": null,
+      "status": "BACKUP_AND_RESTORE_REQUIRED"
+    },
+    "expired-verified": {
+      "mode": "DRY_RUN_ONLY",
+      "productionAuthorized": false,
+      "cloudCalls": 0,
+      "schedulesRegistered": 0,
+      "notificationsSent": 0,
+      "backupDue": "2026-11-21T00:00:00.000Z",
+      "expiresAt": "2026-11-23T00:00:00.000Z",
+      "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+      "actions": [
+        "STOP_TEST_WRITES",
+        "STOP_TESTS",
+        "WOULD_DELETE_EXACT_REF_THEN_VERIFY_ABSENCE_AND_BILLING"
+      ],
+      "alerts": [],
+      "wouldDelete": {
+        "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+        "ref": "SYNTHETIC-UAT-01",
+        "organizationId": "SYNTHETIC-ORG-01"
+      },
+      "status": "WOULD_DELETE_EXACT_REF"
+    },
+    "expired-missing-backup": {
+      "mode": "DRY_RUN_ONLY",
+      "productionAuthorized": false,
+      "cloudCalls": 0,
+      "schedulesRegistered": 0,
+      "notificationsSent": 0,
+      "backupDue": "2026-11-21T00:00:00.000Z",
+      "expiresAt": "2026-11-23T00:00:00.000Z",
+      "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+      "actions": [
+        "STOP_TEST_WRITES",
+        "BACKUP_TO_PRIVATE_STORE",
+        "RESTORE_TO_LISTED_TARGET_AND_VERIFY"
+      ],
+      "alerts": [
+        "NO_VALID_CURRENT_BACKUP_DO_NOT_DELETE"
+      ],
+      "wouldDelete": null,
+      "status": "EXPIRED_BACKUP_RECOVERY_REQUIRED"
+    },
+    "missed-primary": {
+      "mode": "DRY_RUN_ONLY",
+      "productionAuthorized": false,
+      "cloudCalls": 0,
+      "schedulesRegistered": 0,
+      "notificationsSent": 0,
+      "backupDue": "2026-11-21T00:00:00.000Z",
+      "expiresAt": "2026-11-23T00:00:00.000Z",
+      "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+      "actions": [
+        "STOP_TEST_WRITES",
+        "STOP_TESTS",
+        "WOULD_DELETE_EXACT_REF_THEN_VERIFY_ABSENCE_AND_BILLING"
+      ],
+      "alerts": [
+        "PRIMARY_HEARTBEAT_MISSING_WATCHDOG_REQUIRED"
+      ],
+      "wouldDelete": {
+        "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+        "ref": "SYNTHETIC-UAT-01",
+        "organizationId": "SYNTHETIC-ORG-01"
+      },
+      "status": "WOULD_DELETE_EXACT_REF"
+    },
+    "wrong-ref": {
+      "mode": "DRY_RUN_ONLY",
+      "productionAuthorized": false,
+      "cloudCalls": 0,
+      "schedulesRegistered": 0,
+      "notificationsSent": 0,
+      "backupDue": "2026-11-21T00:00:00.000Z",
+      "expiresAt": "2026-11-23T00:00:00.000Z",
+      "operationId": "65afe74725c5d73d21eaeaba6853ee9c129db0b5ba3df8bd08a4b2c194c06a60",
+      "actions": [],
+      "alerts": [
+        "EXACT_REF_OR_SCOPE_MISMATCH"
+      ],
+      "wouldDelete": null,
+      "status": "BLOCKED_TARGET"
+    }
+  },
+  "cloud_calls": 0,
+  "schedules_registered": 0,
+  "credentials_configured": 0,
+  "notifications_sent": 0,
+  "production_authorized": false,
+  "limitations": [
+    "Claims in synthetic backup receipts, not real files/SQL/signatures",
+    "No native concurrent execution or distributed-lock proof",
+    "No real provider schedule or delivered notification",
+    "Railway account inventory blocked on login; Mac runtime unverified"
+  ],
+  "release": "HOLD"
+}

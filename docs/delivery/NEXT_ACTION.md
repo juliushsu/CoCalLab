@@ -1,18 +1,18 @@
 # Next action — 2026-11-09
 
-- **專案目標：暫停／WAITING_OWNER_LOGIN_AND_LIFECYCLE_READINESS；發布 HOLD。** 本輪本機前置已完成，不再等待相同預算／組織／到期選項或已關閉來源審查。指定 org Dashboard 已交 Owner 登入；沒有無限背景執行承諾。
-- [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`，接續 PR #36 文件 HEAD `bb30f2abbc92543ff946d13e4749fa03493232c9`；本輪排程程式固定提交 **`d7a95a512e746c3d047f894f2bb331659a07bbd5`**，後續僅證據路徑去敏與接續文件，原始本機證據未改。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**，正式 UAT 參考基準 `7dccd5452152f2495d10ad1437d5d03215166065` 不變。main 未合併、未部署。
-- **Owner 已核准** org `empvseawywarugdnyhzl`／新 `CoCalLab-UAT-CLOUD-01`／Micro 東京；累計新增 US$20、T0 起 14 天。T0+12 天準備受限完整備份並驗復原，T0+14 天停測且備份合格後只刪精確新 ref。46 schema／13 functions／private buckets／專用測試帳號與合成驗收屬新環境範圍；3 歷史 DML／3 Mock 或 provider functions 不部署。不自續、不動既有 wyn／DNS／Readdy／5432。復原前先列精確目標。
-- **尚不能建立**：真公司組織實名／付費資格及 console 總估價待登入；官方 CLI 無既有 access token。真備份／復原／刪除 adapter、受限憑證、持續可用執行器、人員告警送達未配置／未驗。scope 已授權與 `can_provision_now=false` 分開記於 `deployment/uat/authorization-status.json`。新 ref／T0／expiry 仍 null；代理本輪雲端建立 0，不等於整個帳戶帳單為零。
-- **實際成果**：`deployment/uat/lifecycle/` 真 Windows Task Scheduler harness；run `20261109-512e414f` 的 10 個測試任務均自觸發，5 個 SYNTHETIC 情境符合預期，3 次 exit 0／7 次預期 guard 拒絕 23。另真排程手動重送仍僅一次本機刪除標記。10 任務已停用、證據保留。這不是真 DB／Storage 復原或雲端刪除；Interactive/Limited 依賴登入與 PC 在線，本機 alert 不是已送達通知。時間 API 與 audit 值有差異，不宣稱精準 deadline SLA。
-- **本輪核包**：191 項 hash 重新通過；ZIP 仍 9,024,245 bytes／SHA256 `06d196296123eb07df6496179302e1bfba90a1335127ae459d38d0e94e590c74`，位於 `../tooling/uat-package-fd7efcfc6450/`。未改產品或重建 ZIP。先前工具 `5d345281ed11674ba4b1bfea0010a838b08d001d` CI run 42478675372 success 是固定歷史證據，不能算本批重跑。
-- **沿用來源結案**：Claude `e4fd606eff21e0641352aec1f97b51051542a4b7`／F1／F2／恢復與排除交集等見 `SOURCE_CLOSURE_20261108.md`；N4-R1 INSERT 僅具名排程，UPDATE／其他並行仍未驗。既有專案須重算才能新報告；舊重算可能失敗，不自動重算／補簽／覆寫歷史；收據狀態為「報告產生時」。
-- **仍 BLOCKED／NOT_RUN**：21 個真服務待驗案例，含 JWT／RPC／Storage、瀏覽器切換撤權與舊請求、原生選檔／下載落盤、UPDATE 並行、migration／NOT VALID 歷史驗證、完整備份／復原及代表使用者驗收；合成排程不代填。
-- **接續入口**：`UAT_LIFECYCLE_EXECUTION_PLAN_20261109.md`。Micro compute 14 天單項約 US$4.52，實際總額未驗；付費專案不能直接 pause，刪除後既有用量仍可能結算。
-- **下一步**：Owner 完成已顯示的指定 org 登入（或明示沿用 Chrome），再唯讀核實公司付費 org／Micro 東京／console 估價；接續真正 lifecycle executor 與通知能力。gates 通過後才建立並先交真 ref／T0／expiry 回執；不拿既有 wyn 試寫，不默認新增付費 scheduler 或第二個還原專案。
+- **專案目標：暫停／WAITING_RAILWAY_LOGIN_THEN_OWNER_PLAN；發布 HOLD。** 指定 Supabase 帳戶唯讀前置已完成，不再等相同登入／UAT 組織／US$20／14 天或已選到期處理。Railway 登入頁已交 Owner；實際工作區／資源未核實。Mac 無本次可用管理連線，不能假定電腦連續在線。
+- [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**；原生排程 probe 程式固定 `d7a95a512e746c3d047f894f2bb331659a07bbd5`；新 dry-run 固定提交見本檔後續版本紀錄與 PR。正式 UAT 參考基準 `7dccd5452152f2495d10ad1437d5d03215166065` 不變，沒有合併 main 或正式部署。
+- **本輪實作**：scheduler-neutral pure decision dry-run，17/17 合成測試通過，實際 TAP／來源 hash 在 `evidence/uat-lifecycle-20261109/LIFECYCLE_DRY_RUN_RECEIPT.json`。涵蓋 T-48h／到期前後、備份／還原失敗、錯 ref／組織／lease／版本、缺物件／proof、後續寫入、漏跑、未來 heartbeat、重送／進行中與回覆遺失、未知／超額費用。不是真 DB／Storage／簽章驗證、原生並行或真服務驗收；不與既有排程10次或其他測試加總。
+- **唯讀盤點**：GitHub 有成功的 public CI run 42543530695／452282f；候選 verify.yml 只有 PR／push-main，讀 main workflow 目錄回404、schedule event歷史0。PC Task Scheduler可用，既有10個合成tasks已停用；只有時點證據。Railway 無可用CLI、Dashboard待登入；Mac runtime UNVERIFIED。見 `SCHEDULER_INVENTORY_PUBLIC.json`，不把缺登入當不存在付費資源。
+- **建議方案入口**：`UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md`：Railway小型cron主執行、GitHub Actions獨立watchdog＋原生失敗通知；有公開單價推算、逾時／漏跑／備份失敗處置、備份保留與停費、精確新ref及必要權限。這是待核實／核准提案；default-branch watchdog、備份存放／保留及任何新服務／token／通知都需具體批准，不搭便車修改main或既有服務。
+- **新 Owner 邊界**：只唯讀及本機 dry-run。實際排程／憑證／通知配置與付費 UAT 暫不建立；不以之前的整體 UAT 範圍授權跳過本次生命週期方案批准。本輪 cloudCalls／新建資源／新建排程／通知均0，新ref／T0／expiry為null。過往10個Windows測試tasks早已停用，這次沒有新增或啟用。
+- **資料保護**：自動審查拒絕把詳細帳戶／帳務／用量資訊推上GitHub；安全替代版只發布去敏進度與合成證據。詳情放Git／OneDrive以外、Owner＋SYSTEM ACL的本機報告，位置另交Owner；不在repo複製帳單、付款、key或企業資料。`authorization-status.json` 是公開去敏狀態，詳細live結論在Owner報告，不再用歷史BLOCKED_LOGIN覆蓋本次已完成的指定帳戶檢查。
+- **保留成果**：固定ZIP仍沿先前核包191項／SHA256 `06d196296123eb07df6496179302e1bfba90a1335127ae459d38d0e94e590c74`，未重建或再次跑無關產品套件。Claude e4fd606來源結案沿用，N4-R1 UPDATE／其他並行未驗。既有專案須重算才能新報告，收據狀態是報告產生時；不改歷史證據。
+- **仍未驗**：21個真服務案例維持 BLOCKED／NOT_RUN；provider排程、故障通知送達、真備份／還原／刪除、分散式互斥及真租戶隔離驗收均未由本dry-run關閉。
+- **下一步**：Owner完成Railway既有付費帳戶登入後唯讀核實可用工作區、cron／備份資源、通知及增量費用，細節存Owner受限報告；據此補同一具體方案的精確目標／scope／退出方式，一次交Owner核准。未授權不建立任何計費資源、憑證或實際排程。不承諾session結束後無限背景運行。
 
-下一條可執行命令（repo root，無秘密、只本機核包）：
+下一條可執行命令（repo root，明示合成、無網路／憑證／排程副作用）：
 
 ```powershell
-node deployment/uat/prepare-fixed-package.mjs verify
+node deployment/uat/lifecycle/lifecycle-dry-run.mjs --scenario expired-missing-backup
 ```

@@ -1,0 +1,12 @@
+{
+  "recorded_on": "2026-11-09",
+  "product_candidate_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "status": "READ_ONLY_PREFLIGHT_RECORDED_LOCALLY",
+  "details_destination": "LOCAL_RESTRICTED_OWNER_REPORT_ONLY",
+  "cloud_resources_created": 0,
+  "cloud_mutations": false,
+  "actual_uat_deployment_sha": null,
+  "real_service_cases": "NOT_RUN",
+  "next_step": "Inventory existing lifecycle scheduling options; dry-run allowed; actual schedules/credentials/notifications/paid UAT await specific plan approval",
+  "release": "HOLD"
+}

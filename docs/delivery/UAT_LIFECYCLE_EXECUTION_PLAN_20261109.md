@@ -1,6 +1,8 @@
+> 同日後續：指定帳戶的 Owner 協助唯讀前置已完成，詳細證據僅存本機受限 Owner 報告；不再等待相同登入。最新 Owner 要求先盤點既有排程選項、提交具體方案並測 dry-run；實際排程／憑證／通知配置與付費 UAT 待方案核准。以下登入前的描述保留當時範圍，現行狀態以 authorization-status.json 與 NEXT_ACTION.md 為準。
+
 # UAT 建立條件與生命週期執行方案 — 2026-11-09
 
-專案目標：本輪本機前置已完成；WAITING_OWNER_LOGIN_AND_LIFECYCLE_READINESS。發布 HOLD。Owner 已補齊指定組織與到期選項，不再等待同一範圍授權；**尚未建立付費 UAT**。
+專案目標：本輪本機前置已完成；WAITING_LIFECYCLE_PLAN。發布 HOLD。Owner 已補齊指定組織與到期選項，不再等待同一範圍授權；**尚未建立付費 UAT**。
 
 產品固定 `fd7efcfc6450dbf10f54aa97b65fe48e431b277d`，此批只增加生命週期測試與授權紀錄。固定包、既有功能、來源結案與 main 均不變。現行機讀狀態見 [authorization-status.json](../../deployment/uat/authorization-status.json)。
 
