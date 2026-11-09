@@ -2,6 +2,7 @@
 
 - **專案目標：暫停／WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL；發布 HOLD。** 兩平台與通知偏好的能取得唯讀盤點已完成，不再等相同登入／組織／US$20／14天或已選到期處理。Mac runtime仍未驗，不假設電腦長期在線。
 - [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**；dry-run固定 **`37f8168929260ae696096b85ea628c539bd354b6`**，本次僅補唯讀回執、方案及機讀狀態。原Windows probe固定d7a95a5，既有10個tasks仍停用。正式UAT參考基準7dccd5452152f2495d10ad1437d5d03215166065不變，未合併main／未部署。
+- 本輪唯讀收尾／方案A與機讀提案固定 **`ca081cc6c81b102393673d22456febe94a5e2de4`**；後續僅此固定版本接續記錄，不改待核准方案或已測程式。
 - **一次核准入口**：`UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md`；`deployment/uat/lifecycle/execution-proposal.json` 為PROPOSAL_ONLY、actual-config flags全false。精確候選workspace、帳務／服務／通知證據及核准包僅在Git／OneDrive外的Owner-only報告，不公開。
 - **方案A**：新Railway project `CoCalLab-UAT-LIFECYCLE-01`／environment `uat-lifecycle`／service `uat-lifecycle-cron`／private bucket `uat-lifecycle-backups`；主job UTC 7,22,37,52每15分鐘，GitHub UTC41每小時獨立watchdog。watchdog不拿Supabase／DB／解密key，不刪除。main維運workflow另交固定差異核准，不合併產品候選；新service不用已棄用railway.toml/json。
 - **費用與時鐘**：Railway提案最多US$2，包含在累計總US$20；公開單價示例約1.12／14天，不是帳戶報價或credit保證。T0提案取第一個新增計費輔助資源，不等部署完；T0+12天驗最終備份、T0+13天Owner／指定人接收archive/manifest/key並核對可解密、T0+14天停測及退出。新UAT僅在完整驗證且精確新ref匹配後刪；新helper service/bucket退出另綁精確ID及已交接證據，不刪既有資源或唯一備份，不靜默續期。
