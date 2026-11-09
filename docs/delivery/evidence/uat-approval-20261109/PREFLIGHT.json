@@ -1,0 +1,53 @@
+{
+  "client_checked_on": "2026-11-09",
+  "product_sha": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d",
+  "scope_approval_received": true,
+  "organization_id": null,
+  "end_of_life_selection": null,
+  "status": "WAITING_OWNER_TARGET_AND_END_ACTION",
+  "package_verify": {
+    "command": "node deployment/uat/prepare-fixed-package.mjs verify",
+    "exit": 0,
+    "tool_chunk": "88f07f",
+    "manifest_items_verified": 191,
+    "archive_sha256": "06d196296123eb07df6496179302e1bfba90a1335127ae459d38d0e94e590c74",
+    "result": "LOCAL_PACKAGE_INTEGRITY_PASS_NOT_UAT_ACCEPTANCE"
+  },
+  "public_billing_check": {
+    "checked_on": "2026-11-09",
+    "micro_hourly_usd": 0.01344,
+    "hours_14_days": 336,
+    "compute_only_usd": 4.51584,
+    "compute_rounded_usd": 4.52,
+    "credits_assumed": 0,
+    "organization_estimate_status": "NOT_VERIFIED_ORGANIZATION_UNSPECIFIED",
+    "extras": "Storage/disk/egress/tax and any allowed backup charges must be checked on the actual target organization before creation; total is not confirmed.",
+    "paid_project_pause_supported": false,
+    "delete_stops_new_usage": true,
+    "accrued_usage_still_payable": true,
+    "source_compute": "https://supabase.com/docs/guides/platform/manage-your-usage/compute",
+    "source_stop_billing": "https://supabase.com/docs/guides/platform/delete-project"
+  },
+  "organization_console_estimate": "NOT_RUN; actual organization unspecified",
+  "cloud_actions": {
+    "project_created": false,
+    "migrations_applied": false,
+    "functions_deployed": false,
+    "buckets_created": false,
+    "test_users_created": false,
+    "uploads_or_restore": false,
+    "existing_project_changes": false
+  },
+  "authorization_record_sha256": "de91ef948c0c42e0b6adbd76f8834167bae439e95473e8ba6c2e31c81158dde3",
+  "remaining_cases_record_sha256": "695899142f4524c99fd14d9b6c1eb96574215b4257496660236445de6030413b",
+  "prior_frozen_package_receipt": "https://github.com/juliushsu/CoCalLab/blob/bb30f2abbc92543ff946d13e4749fa03493232c9/docs/delivery/evidence/uat-package-20261108/PACKAGE_RECEIPT.json",
+  "not_rerun": [
+    "Source-closed Claude review",
+    "Product SQL/frontend/backend suites"
+  ],
+  "not_run": [
+    "Organization-specific estimate and account/region match",
+    "All21 true-service UAT cases",
+    "Restoration; exact target not specified"
+  ]
+}

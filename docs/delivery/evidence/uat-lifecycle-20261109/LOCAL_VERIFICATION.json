@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-11-09T01:00:01.144Z",
+  "result": "PASS",
+  "scope": "Read existing automatic scheduler evidence, source hashes and current authorization; no task rerun or cloud action",
+  "automaticTasks": 10,
+  "distinctSyntheticScenarios": 5,
+  "disabledTasks": 10,
+  "replayDeleteTransitions": 1,
+  "realServiceCasesStillNotRun": 21,
+  "knownTimestampDiscrepancy": "Preserved API vs audit differences; deadline accuracy not asserted",
+  "productSHA": "fd7efcfc6450dbf10f54aa97b65fe48e431b277d"
+}

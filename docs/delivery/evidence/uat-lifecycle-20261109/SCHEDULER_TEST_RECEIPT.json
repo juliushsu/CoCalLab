@@ -1,0 +1,43 @@
+{
+  "client_date": "2026-11-09",
+  "runId": "20261109-512e414f",
+  "actual_tasks_registered": 10,
+  "actual_automatic_trigger_executions": 10,
+  "expected_exit_codes": {
+    "success": 3,
+    "intentional_guard_rejections": 7
+  },
+  "distinct_synthetic_scenarios": 5,
+  "manual_replay": {
+    "actual_scheduler_run": true,
+    "observed_event": "ALREADY_MARKED_ABSENT",
+    "deleteTransitions": 1
+  },
+  "source_engine_sha256": "c2935ebeb7e5d4f22317785efb0250e06e57f8f537af7405b232853041e57ea9",
+  "source_installer_sha256": "63e8e04b6ae1940e56803dc479a7b0d67364da85330ff190ea9d39f63a76a867",
+  "node_sha256": "86f361a88f4cc3ecaf1ea93236b0d8edf07bf00fe87ad9f60305513f58fc2c17",
+  "principal": "Actual Owner Windows account; Interactive/Limited",
+  "automatic_backup_trigger": "2026-11-09T00:44:22.0000000Z",
+  "automatic_expiry_trigger": "2026-11-09T00:45:22.0000000Z",
+  "test_alerts": "Local ALERT_REQUIRED.json only; no unattended delivery verified",
+  "archive_state": "Only these10 owned test tasks disabled after proof; tasks/logs/fixtures retained",
+  "synthetic_only": true,
+  "real_cloud_actions": 0,
+  "real_lifecycle_armed": false,
+  "real_db_or_storage_restore": "NOT_RUN; synthetic file roundtrip only",
+  "utc_deadline_guarantee": "NOT_PROVEN; Task Scheduler LastRunTime differs from engine audit timestamps. Preserve both; do not infer precise latency. PC/account availability is required.",
+  "blocked": [
+    "Dashboard login required for actual company/paid org verification",
+    "Official CLI has no existing access token",
+    "Live scoped backup/restore/delete adapter and credentials not configured",
+    "Always-on execution and immediate operator alert delivery not verified",
+    "Real new UAT ref/T0/restore target not created or bound"
+  ],
+  "raw_local_run": "<TOOL_ROOT>/uat-lifecycle-20261109/20261109-512e414f",
+  "task_api_reported_backup_last_run": "2026-11-09T00:44:44.0000000Z",
+  "task_api_reported_expiry_last_run": "2026-11-09T00:45:45.0000000Z",
+  "engine_audit_happy_backup_start": "2026-11-09T00:44:22.243Z",
+  "engine_audit_happy_expiry_start": "2026-11-09T00:45:22.665Z",
+  "hash_scope": "Exact Windows working-tree bytes at receipt time, not Git object IDs; line-ending conversion may change byte hashes.",
+  "installer_hash_scope": "Inspection-fixed source snapshot. Registration pins executed engine/node hashes; the Install-time installer hash was not recorded."
+}
