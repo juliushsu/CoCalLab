@@ -1,6 +1,7 @@
 # Next action — 2026-11-09
 
-- **專案目標：暫停／WAITING_OWNER_LIFECYCLE_PLAN_APPROVAL；發布 HOLD。** 兩平台與通知偏好的能取得唯讀盤點已完成，不再等相同登入／組織／US$20／14天或已選到期處理。Mac runtime仍未驗，不假設電腦長期在線。
+- **專案目標：進行中／維運程式與備份交付前置；發布 HOLD。** Owner已核准方案A及交付位置，由Owner接收；不再等待同一方案。main維運workflow仍另送固定差異核准，未建立計費資源。
+- 本輪分支codex/uat-watchdog-runtime-20261109；新watchdog23/23、workflow契約3/3與YAML parse通過，證據見UAT_WATCHDOG_IMPLEMENTATION_20261109.md。先準備只含一個workflow的main PR，並繼續Owner本機ACL／磁碟／加解密讀回前置。以下舊提案保留歷史，現行機讀授權已標Owner核准。
 - [PR #37](https://github.com/juliushsu/CoCalLab/pull/37)，分支 `codex/uat-lifecycle-preflight-20261109`。產品固定 **`fd7efcfc6450dbf10f54aa97b65fe48e431b277d`**；dry-run固定 **`37f8168929260ae696096b85ea628c539bd354b6`**，本次僅補唯讀回執、方案及機讀狀態。原Windows probe固定d7a95a5，既有10個tasks仍停用。正式UAT參考基準7dccd5452152f2495d10ad1437d5d03215166065不變，未合併main／未部署。
 - 本輪唯讀收尾／方案A與機讀提案固定 **`ca081cc6c81b102393673d22456febe94a5e2de4`**；後續僅此固定版本接續記錄，不改待核准方案或已測程式。
 - **一次核准入口**：`UAT_LIFECYCLE_SCHEDULER_OPTIONS_20261109.md`；`deployment/uat/lifecycle/execution-proposal.json` 為PROPOSAL_ONLY、actual-config flags全false。精確候選workspace、帳務／服務／通知證據及核准包僅在Git／OneDrive外的Owner-only報告，不公開。

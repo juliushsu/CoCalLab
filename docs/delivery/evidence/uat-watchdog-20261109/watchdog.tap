@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: unset activation is distinctly disabled and performs no provider reads
+ok 1 - unset activation is distinctly disabled and performs no provider reads
+  ---
+  duration_ms: 2.0995
+  type: 'test'
+  ...
+# Subtest: malformed activation, IDs and missing token fail before a request
+ok 2 - malformed activation, IDs and missing token fail before a request
+  ---
+  duration_ms: 0.6986
+  type: 'test'
+  ...
+# Subtest: future start, invalid calendar and expired monitoring window fail before requests
+ok 3 - future start, invalid calendar and expired monitoring window fail before requests
+  ---
+  duration_ms: 0.3468
+  type: 'test'
+  ...
+# Subtest: scoped token project/environment identity and names must match before reading history
+ok 4 - scoped token project/environment identity and names must match before reading history
+  ---
+  duration_ms: 3.9035
+  type: 'test'
+  ...
+# Subtest: account-level response cannot substitute for a project token
+ok 5 - account-level response cannot substitute for a project token
+  ---
+  duration_ms: 1.2106
+  type: 'test'
+  ...
+# Subtest: two bounded queries use only the project-token header and no mutations/logs/variables
+ok 6 - two bounded queries use only the project-token header and no mutations/logs/variables
+  ---
+  duration_ms: 1.5943
+  type: 'test'
+  ...
+# Subtest: deployment SUCCESS is not accepted as a completed cron execution
+ok 7 - deployment SUCCESS is not accepted as a completed cron execution
+  ---
+  duration_ms: 0.5642
+  type: 'test'
+  ...
+# Subtest: another service or missing service binding is rejected
+ok 8 - another service or missing service binding is rejected
+  ---
+  duration_ms: 0.5941
+  type: 'test'
+  ...
+# Subtest: empty history, stale history and pre-lease history cannot report healthy
+ok 9 - empty history, stale history and pre-lease history cannot report healthy
+  ---
+  duration_ms: 0.7317
+  type: 'test'
+  ...
+# Subtest: a later successful retry does not hide a recent crash or skipped invocation
+ok 10 - a later successful retry does not hide a recent crash or skipped invocation
+  ---
+  duration_ms: 0.978
+  type: 'test'
+  ...
+# Subtest: in-progress run is distinguished while a recent completed run exists
+ok 11 - in-progress run is distinguished while a recent completed run exists
+  ---
+  duration_ms: 0.3371
+  type: 'test'
+  ...
+# Subtest: overlong running job and no completed job both alarm
+ok 12 - overlong running job and no completed job both alarm
+  ---
+  duration_ms: 0.4844
+  type: 'test'
+  ...
+# Subtest: EXITED requires an actual completion timestamp
+ok 13 - EXITED requires an actual completion timestamp
+  ---
+  duration_ms: 0.2582
+  type: 'test'
+  ...
+# Subtest: future timestamps and duplicate run IDs fail closed
+ok 14 - future timestamps and duplicate run IDs fail closed
+  ---
+  duration_ms: 0.4349
+  type: 'test'
+  ...
+# Subtest: provider failures and reflected secrets are discarded
+ok 15 - provider failures and reflected secrets are discarded
+  ---
+  duration_ms: 0.5724
+  type: 'test'
+  ...
+# Subtest: malformed and oversized provider responses are rejected
+ok 16 - malformed and oversized provider responses are rejected
+  ---
+  duration_ms: 0.6542
+  type: 'test'
+  ...
+# Subtest: sanitized CLI error never echoes raw config or token
+ok 17 - sanitized CLI error never echoes raw config or token
+  ---
+  duration_ms: 0.1858
+  type: 'test'
+  ...
+# Subtest: actual loopback HTTP exercises headers/body and never contacts Railway
+ok 18 - actual loopback HTTP exercises headers/body and never contacts Railway
+  ---
+  duration_ms: 40.5476
+  type: 'test'
+  ...
+# Subtest: redirects are not followed, including a potential credential destination
+ok 19 - redirects are not followed, including a potential credential destination
+  ---
+  duration_ms: 7.0454
+  type: 'test'
+  ...
+# Subtest: network stalls hit a bounded abort and remain sanitized
+ok 20 - network stalls hit a bounded abort and remain sanitized
+  ---
+  duration_ms: 24.8914
+  type: 'test'
+  ...
+# Subtest: malformed GraphQL errors cannot accompany a healthy scope result
+ok 21 - malformed GraphQL errors cannot accompany a healthy scope result
+  ---
+  duration_ms: 0.3998
+  type: 'test'
+  ...
+# Subtest: empty service binding cannot authenticate the requested service
+ok 22 - empty service binding cannot authenticate the requested service
+  ---
+  duration_ms: 0.4496
+  type: 'test'
+  ...
+# Subtest: an exited job exceeding the bounded runtime still alarms
+ok 23 - an exited job exceeding the bounded runtime still alarms
+  ---
+  duration_ms: 0.328
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 197.7798

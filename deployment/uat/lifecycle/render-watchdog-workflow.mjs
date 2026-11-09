@@ -1,0 +1,63 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+
+export function renderWatchdogWorkflow(sourceSHA) {
+  assert.equal(sourceSHA?.length, 40);
+  assert.match(sourceSHA, /^[a-f0-9]{40}$/, 'An immutable reviewed source commit is required');
+  const main = "github.repository == 'juliushsu/CoCalLab' && github.ref == 'refs/heads/main'";
+  return [
+    'name: UAT lifecycle watchdog',
+    'on:',
+    '  schedule:',
+    "    - cron: '41 * * * *'",
+    '  workflow_dispatch:',
+    '    inputs:',
+    '      mode:',
+    '        type: choice',
+    '        default: observe',
+    '        options: [observe, notification-failure-probe]',
+    'permissions:',
+    '  contents: read',
+    'concurrency:',
+    '  group: cocallab-uat-lifecycle-watchdog',
+    '  cancel-in-progress: false',
+    'jobs:',
+    '  notification-probe:',
+    '    if: ' + main + " && github.event_name == 'workflow_dispatch' && inputs.mode == 'notification-failure-probe'",
+    '    runs-on: ubuntu-24.04',
+    '    timeout-minutes: 1',
+    '    steps:',
+    '      - name: Deliberate synthetic failure for Owner email acceptance',
+    '        shell: bash',
+    '        run: |',
+    "          echo 'SYNTHETIC_NOTIFICATION_PROBE_ONLY: no provider calls or secrets'",
+    '          exit 1',
+    '  observe:',
+    '    if: ' + main + " && vars.UAT_LIFECYCLE_ENABLED == 'true' && (github.event_name != 'workflow_dispatch' || inputs.mode == 'observe')",
+    '    runs-on: ubuntu-24.04',
+    '    timeout-minutes: 3',
+    '    steps:',
+    '      - name: Checkout only the reviewed immutable operations source',
+    '        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262',
+    '        with:',
+    '          repository: juliushsu/CoCalLab',
+    '          ref: ' + sourceSHA,
+    '          persist-credentials: false',
+    '          fetch-depth: 1',
+    '      - name: Use Node 24 without installing product dependencies',
+    '        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020',
+    '        with:',
+    "          node-version: '24'",
+    '      - name: Read the isolated Railway cron execution history',
+    '        env:',
+    "          UAT_LIFECYCLE_ENABLED: 'true'",
+    '          UAT_RAILWAY_PROJECT_TOKEN: ${{ secrets.UAT_RAILWAY_PROJECT_TOKEN }}',
+    '          UAT_RAILWAY_PROJECT_ID: ${{ secrets.UAT_RAILWAY_PROJECT_ID }}',
+    '          UAT_RAILWAY_ENVIRONMENT_ID: ${{ secrets.UAT_RAILWAY_ENVIRONMENT_ID }}',
+    '          UAT_RAILWAY_SERVICE_ID: ${{ secrets.UAT_RAILWAY_SERVICE_ID }}',
+    '          UAT_LIFECYCLE_T0_UTC: ${{ secrets.UAT_LIFECYCLE_T0_UTC }}',
+    '        run: node deployment/uat/lifecycle/railway-watchdog.mjs',
+    '',
+  ].join('\n');
+}
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) process.stdout.write(renderWatchdogWorkflow(process.argv[2]));

@@ -1,0 +1,28 @@
+TAP version 13
+# Subtest: workflow cannot follow a mutable branch or user-controlled checkout
+ok 1 - workflow cannot follow a mutable branch or user-controlled checkout
+  ---
+  duration_ms: 2.448
+  type: 'test'
+  ...
+# Subtest: both jobs are main-only and live observation requires explicit activation
+ok 2 - both jobs are main-only and live observation requires explicit activation
+  ---
+  duration_ms: 0.2204
+  type: 'test'
+  ...
+# Subtest: secrets are individual, only on observer step; no artifacts or write token
+ok 3 - secrets are individual, only on observer step; no artifacts or write token
+  ---
+  duration_ms: 0.2795
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 81.4776
