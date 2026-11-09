@@ -1,0 +1,88 @@
+TAP version 13
+# Subtest: real multi-chunk binary round trip binds metadata and returns only non-secret digests
+ok 1 - real multi-chunk binary round trip binds metadata and returns only non-secret digests
+  ---
+  duration_ms: 37.8444
+  type: 'test'
+  ...
+# Subtest: empty file is authenticated and readable
+ok 2 - empty file is authenticated and readable
+  ---
+  duration_ms: 12.7743
+  type: 'test'
+  ...
+# Subtest: wrong key never publishes unauthenticated plaintext
+ok 3 - wrong key never publishes unauthenticated plaintext
+  ---
+  duration_ms: 21.3687
+  type: 'test'
+  ...
+# Subtest: wrong product, tenant, project, lease or source binding refuses reuse
+ok 4 - wrong product, tenant, project, lease or source binding refuses reuse
+  ---
+  duration_ms: 32.2265
+  type: 'test'
+  ...
+# Subtest: tampered header, nonce, ciphertext and tag are refused without final output
+ok 5 - tampered header, nonce, ciphertext and tag are refused without final output
+  ---
+  duration_ms: 49.604
+  type: 'test'
+  ...
+# Subtest: truncated or appended archive cannot match trusted manifest
+ok 6 - truncated or appended archive cannot match trusted manifest
+  ---
+  duration_ms: 30.8998
+  type: 'test'
+  ...
+# Subtest: trusted manifest is required and both plaintext and archive digest must match
+ok 7 - trusted manifest is required and both plaintext and archive digest must match
+  ---
+  duration_ms: 22.21
+  type: 'test'
+  ...
+# Subtest: encrypt and decrypt preserve existing destination bytes
+ok 8 - encrypt and decrypt preserve existing destination bytes
+  ---
+  duration_ms: 33.1492
+  type: 'test'
+  ...
+# Subtest: concurrent same destination publication has exactly one winner, no overwrite or partial files
+ok 9 - concurrent same destination publication has exactly one winner, no overwrite or partial files
+  ---
+  duration_ms: 25.2963
+  type: 'test'
+  ...
+# Subtest: size limits reject encryption and decryption without publishing
+ok 10 - size limits reject encryption and decryption without publishing
+  ---
+  duration_ms: 29.6145
+  type: 'test'
+  ...
+# Subtest: invalid key, empty binding and same-path overwrite fail before writing
+ok 11 - invalid key, empty binding and same-path overwrite fail before writing
+  ---
+  duration_ms: 9.3877
+  type: 'test'
+  ...
+# Subtest: hard-linked or non-regular sources are refused
+ok 12 - hard-linked or non-regular sources are refused
+  ---
+  duration_ms: 3.8374
+  type: 'test'
+  ...
+# Subtest: linked parent directories cannot redirect source or destination
+ok 13 - linked parent directories cannot redirect source or destination
+  ---
+  duration_ms: 9.1126
+  type: 'test'
+  ...
+1..13
+# tests 13
+# suites 0
+# pass 13
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 401.1829
